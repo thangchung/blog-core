@@ -1,41 +1,30 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using BlogCore.Core;
-using BlogCore.Core.BlogFeature;
-using BlogCore.Core.PostFeature;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogCore.Infrastructure.Data
 {
     public class BlogCoreDbContext : DbContext
     {
-        private readonly IDomainEventDispatcher _dispatcher;
-
-        public BlogCoreDbContext(DbContextOptions options, IDomainEventDispatcher dispatcher)
+        public BlogCoreDbContext(DbContextOptions options)
             : base(options)
         {
-            _dispatcher = dispatcher;
         }
 
-        public DbSet<Blog> Blogs { get; set; }
-        public DbSet<Post> Posts { get; set; }
-
-        public override int SaveChanges()
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var entitiesWithEvents = ChangeTracker.Entries<EntityBase>()
-                .Select(e => e.Entity)
-                .Where(e => e.Events.Any())
-                .ToArray();
+            var typeToRegisters = new List<Type>();
+            typeToRegisters.AddRange(typeof(EntityBase).GetTypeInfo().Assembly.DefinedTypes.Select(t => t.AsType()));
+            var entityTypes = typeToRegisters.Where(x => !x.GetTypeInfo().IsAbstract
+                                                         && x.GetTypeInfo().BaseType == typeof(EntityBase));
 
-            foreach (var entity in entitiesWithEvents)
-            {
-                var events = entity.Events.ToArray();
-                entity.Events.Clear();
-                foreach (var domainEvent in events)
-                {
-                    _dispatcher.Dispatch(domainEvent);
-                }
-            }
-            return base.SaveChanges();
+            foreach (var type in entityTypes)
+                modelBuilder.Entity(type);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

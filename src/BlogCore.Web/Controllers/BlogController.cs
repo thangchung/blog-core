@@ -1,38 +1,42 @@
 ﻿using System.Collections.Generic;
+using System.Reactive.Linq;
+using BlogCore.Core.BlogFeature;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCore.Web.Controllers
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("api/blogs")]
+    public class BlogController : Controller
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IBlogService _blogService;
+
+        public BlogController(IBlogService blogService)
         {
-            return new string[] { "value1", "value2" };
+            _blogService = blogService;
         }
 
-        // GET api/values/5
+        [HttpGet]
+        public IEnumerable<Blog> Get()
+        {
+            return _blogService.GetBlogs().ToEnumerable();
+        }
+
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return "blog";
         }
 
-        // POST api/values
         [HttpPost]
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
