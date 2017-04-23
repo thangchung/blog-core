@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Core;
-using BlogCore.Core.BlogFeature.Impl;
+using BlogCore.Core.BlogFeature;
 using BlogCore.Infrastructure.Data;
+using BlogCore.Web.BlogFeature;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +23,8 @@ namespace BlogCore.Web
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -38,8 +42,45 @@ namespace BlogCore.Web
             services.AddDbContext<BlogCoreDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
 
+            // Mediator
+            builder
+                .RegisterType<Mediator>()
+                .As<IMediator>()
+                .InstancePerLifetimeScope();
+
+            // Request handlers
+            builder
+                .Register<SingleInstanceFactory>(ctx =>
+                {
+                    var c = ctx.Resolve<IComponentContext>();
+                    return t =>
+                    {
+                        object o;
+                        return c.TryResolve(t, out o) ? o : null;
+                    };
+                })
+                .InstancePerLifetimeScope();
+
+            // Notification handlers
+            builder
+                .Register<MultiInstanceFactory>(ctx =>
+                {
+                    var c = ctx.Resolve<IComponentContext>();
+                    return t => (IEnumerable<object>) c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
+                })
+                .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(
+                typeof(EntityBase).GetTypeInfo().Assembly,
+                typeof(Startup).GetTypeInfo().Assembly
+            ).AsImplementedInterfaces();
+
+            // Core & Infra registers
             builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>));
-            builder.RegisterType<BlogService>().AsImplementedInterfaces();
+            builder.RegisterType<BlogInteractor>().AsSelf();
+
+            // Web register
+            builder.RegisterType<BlogPresenter>().AsSelf();
 
             builder.Populate(services);
             return builder.Build().Resolve<IServiceProvider>();

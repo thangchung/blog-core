@@ -1,24 +1,28 @@
 ﻿using System.Collections.Generic;
-using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BlogCore.Core.BlogFeature;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.Web.Controllers
+namespace BlogCore.Web.BlogFeature
 {
     [Route("api/blogs")]
     public class BlogController : Controller
     {
-        private readonly IBlogService _blogService;
+        private readonly BlogInteractor _blogUseCase;
+        private readonly BlogPresenter _blogPresenter;
 
-        public BlogController(IBlogService blogService)
+        public BlogController(BlogInteractor blogUseCase, BlogPresenter blogPresenter)
         {
-            _blogService = blogService;
+            _blogUseCase = blogUseCase;
+            _blogPresenter = blogPresenter;
         }
 
         [HttpGet]
-        public IEnumerable<Blog> Get()
+        public async Task<IEnumerable<ListOfBlogViewModel>> Get()
         {
-            return _blogService.GetBlogs().ToEnumerable();
+            var blogResponses = await _blogUseCase.Handle(new ListOfBlogRequestMsg());
+            var viewModel = _blogPresenter.Handle(blogResponses);
+            return viewModel;
         }
 
         [HttpGet("{id}")]
