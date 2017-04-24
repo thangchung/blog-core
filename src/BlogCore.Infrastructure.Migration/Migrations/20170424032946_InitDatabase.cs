@@ -13,7 +13,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations
                 name: "Blog",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DaysToComment = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
@@ -32,7 +32,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations
                 name: "Comment",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
@@ -44,7 +44,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations
                 name: "Post",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>

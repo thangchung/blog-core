@@ -18,7 +18,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations
 
             modelBuilder.Entity("BlogCore.Core.BlogFeature.Blog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("DaysToComment");
@@ -42,7 +42,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations
 
             modelBuilder.Entity("BlogCore.Core.PostFeature.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.HasKey("Id");
@@ -52,7 +52,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations
 
             modelBuilder.Entity("BlogCore.Core.PostFeature.Post", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.HasKey("Id");

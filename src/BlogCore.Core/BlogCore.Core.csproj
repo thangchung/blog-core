@@ -5,10 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="6.4.1" />
     <PackageReference Include="MediatR" Version="3.0.1" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
     <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>..\..\..\..\..\thangchung.HARVEYNASH\.nuget\packages\system.componentmodel.annotations\4.3.0\ref\netstandard1.4\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

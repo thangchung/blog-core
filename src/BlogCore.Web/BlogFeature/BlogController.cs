@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogCore.Core.BlogFeature;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCore.Web.BlogFeature
@@ -8,19 +9,19 @@ namespace BlogCore.Web.BlogFeature
     [Route("api/blogs")]
     public class BlogController : Controller
     {
-        private readonly BlogInteractor _blogUseCase;
         private readonly BlogPresenter _blogPresenter;
+        private readonly IMediator _mediator;
 
-        public BlogController(BlogInteractor blogUseCase, BlogPresenter blogPresenter)
+        public BlogController(BlogPresenter blogPresenter, IMediator mediator)
         {
-            _blogUseCase = blogUseCase;
             _blogPresenter = blogPresenter;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IEnumerable<ListOfBlogViewModel>> Get()
         {
-            var blogResponses = await _blogUseCase.Handle(new ListOfBlogRequestMsg());
+            var blogResponses = await _mediator.Send(new ListOfBlogRequestMsg());
             var viewModel = _blogPresenter.Handle(blogResponses);
             return viewModel;
         }

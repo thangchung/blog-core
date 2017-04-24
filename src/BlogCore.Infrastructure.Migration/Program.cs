@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.MigrationConsole.SeedData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,10 +19,18 @@ namespace BlogCore.Infrastructure.MigrationConsole
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("Start to migration...");
-            RegisterServices();
-            InitializeBlogCoreDb();
-            Console.WriteLine("Done.");
+            try
+            {
+                Console.WriteLine("Start to migration...");
+                RegisterServices();
+                InitializeBlogCoreDb().Wait();
+                Console.WriteLine("Done.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void RegisterServices()
@@ -48,12 +58,13 @@ namespace BlogCore.Infrastructure.MigrationConsole
             _serviceProvider = containerBuilder.Build().Resolve<IServiceProvider>();
         }
 
-        private static void InitializeBlogCoreDb()
+        private static async Task InitializeBlogCoreDb()
         {
             using (var serviceScope = _serviceProvider.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<BlogCoreDbContext>();
                 context.Database.Migrate();
+                await BlogSeeder.Seed(context);
             }
         }
     }
