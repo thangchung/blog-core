@@ -9,7 +9,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.SeedData
         public static async Task Seed(BlogCoreDbContext dbContext)
         {
             for (var i = 1; i <= 100; i++)
-            {
                 await dbContext.Set<Blog>().AddAsync(new Blog
                 {
                     Title = $"Blog {i}",
@@ -20,8 +19,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.SeedData
                     ModerateComments = true,
                     DaysToComment = 10
                 });
-            }
-            
+
             await dbContext.SaveChangesAsync();
         }
     }

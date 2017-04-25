@@ -3,7 +3,6 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Core;
-using BlogCore.Core.BlogFeature;
 using BlogCore.Infrastructure.Data;
 using BlogCore.Web.BlogFeature;
 using FluentValidation.AspNetCore;
@@ -45,11 +44,10 @@ namespace BlogCore.Web
                 typeof(EntityBase).GetTypeInfo().Assembly,
                 typeof(Startup).GetTypeInfo().Assembly);
 
-            // Core & Infra registers
+            // Core & Infra register
             builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>));
-            builder.RegisterType<BlogInteractor>().AsSelf();
 
-            // Web register
+            // Web registers
             builder.RegisterType<BlogPresenter>().AsSelf();
 
             builder.Populate(services);
