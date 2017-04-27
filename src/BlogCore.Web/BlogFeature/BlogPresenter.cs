@@ -15,5 +15,14 @@ namespace BlogCore.Web.BlogFeature
                 Image = x.Image
             });
         }
+
+        public CategoryCreatedViewModel Handle(CreateBlogResponseMsg response)
+        {
+            // TODO: we will send the full blog object back to client
+            return new CategoryCreatedViewModel
+            {
+                BlogId = response.BlogId
+            };
+        }
     }
 }

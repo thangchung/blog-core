@@ -33,8 +33,11 @@ namespace BlogCore.Web.BlogFeature
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
+            var blogCreated = await _mediator.Send(blogRequest);
+            var viewModel = _blogPresenter.Handle(blogCreated);
+            return viewModel;
         }
 
         [HttpPut("{id}")]
