@@ -1,6 +1,8 @@
-﻿namespace BlogCore.Core
+﻿using MediatR;
+
+namespace BlogCore.Core
 {
-    public abstract class DomainEventBase
+    public abstract class DomainEventBase : INotification
     {
     }
 }

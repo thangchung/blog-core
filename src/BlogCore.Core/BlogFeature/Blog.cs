@@ -2,6 +2,11 @@
 {
     public class Blog : EntityBase
     {
+        public Blog()
+        {
+            Events.Add(new BlogCreatedEvent());
+        }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public string Theme { get; set; }

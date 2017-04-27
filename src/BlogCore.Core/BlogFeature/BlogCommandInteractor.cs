@@ -8,11 +8,13 @@ namespace BlogCore.Core.BlogFeature
     {
         private readonly IRepository<Blog> _blogRepo;
         private readonly IValidator<CreateBlogRequestMsg> _createBlogValidator;
+        private readonly IMediator _mediator;
 
-        public BlogCommandInteractor(IRepository<Blog> blogRepo, IValidator<CreateBlogRequestMsg> createBlogValidator)
+        public BlogCommandInteractor(IRepository<Blog> blogRepo, IValidator<CreateBlogRequestMsg> createBlogValidator, IMediator mediator)
         {
             _blogRepo = blogRepo;
             _createBlogValidator = createBlogValidator;
+            _mediator = mediator;
         }
 
         public Task<CreateBlogResponseMsg> Handle(CreateBlogRequestMsg message)
@@ -20,6 +22,7 @@ namespace BlogCore.Core.BlogFeature
             var validationResult = _createBlogValidator.Validate(message);
             if (validationResult.IsValid == false)
                 return Task.FromResult(new CreateBlogResponseMsg(null, validationResult));
+
             var blog = new Blog
             {
                 Title = message.Title,
@@ -30,6 +33,13 @@ namespace BlogCore.Core.BlogFeature
                 ModerateComments = message.ModerateComments
             };
             var blogCreated = _blogRepo.Add(blog);
+
+            // raise events
+            foreach (var @event in blog.Events)
+            {
+                _mediator.Publish(@event);
+            }
+
             return Task.FromResult(new CreateBlogResponseMsg(blogCreated.Id, validationResult));
         }
     }

@@ -67,6 +67,7 @@ namespace BlogCore.Web
 
             services.AddMediatR(
                 typeof(EntityBase).GetTypeInfo().Assembly,
+                typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
                 typeof(Startup).GetTypeInfo().Assembly);
 
             // Core & Infra register
