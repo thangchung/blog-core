@@ -14,17 +14,16 @@ namespace BlogCore.Core.ManageBlog.ListOfBlog
             _blogRepo = blogRepo;
         }
 
-        public Task<IEnumerable<ListOfBlogResponseMsg>> Handle(ListOfBlogRequestMsg request)
+        public async Task<IEnumerable<ListOfBlogResponseMsg>> Handle(ListOfBlogRequestMsg request)
         {
-            var blogs = _blogRepo.List();
+            var blogs = await _blogRepo.ListAsync();
             var responses = blogs.Select(x => new ListOfBlogResponseMsg(
                 x.Title,
                 x.Description,
                 x.Image
             ));
 
-            // TODO: re-visit it later
-            return Task.FromResult(responses);
+            return responses;
         }
     }
 }

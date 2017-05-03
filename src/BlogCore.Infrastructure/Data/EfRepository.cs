@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BlogCore.Core;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,43 +15,43 @@ namespace BlogCore.Infrastructure.Data
             DbContext = dbContext;
         }
 
-        public virtual TEntity GetById(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
-            return DbContext.Set<TEntity>()
-                .SingleOrDefault(e => e.Id == id);
+            return await DbContext.Set<TEntity>()
+                .SingleOrDefaultAsync(e => e.Id == id);
         }
 
-        public List<TEntity> List()
+        public async Task<IEnumerable<TEntity>> ListAsync()
         {
-            return DbContext.Set<TEntity>().ToList();
+            return await DbContext.Set<TEntity>().ToListAsync();
         }
 
-        public List<TEntity> List(ISpecification<TEntity> spec)
+        public async Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> spec)
         {
-            return DbContext.Set<TEntity>()
+            return await DbContext.Set<TEntity>()
                 .Include(spec.Include)
                 .Where(spec.Criteria)
-                .ToList();
+                .ToListAsync();
         }
 
-        public TEntity Add(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            DbContext.Set<TEntity>().Add(entity);
-            DbContext.SaveChanges();
+            await DbContext.Set<TEntity>().AddAsync(entity);
+            await DbContext.SaveChangesAsync();
 
             return entity;
         }
 
-        public void Delete(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
             DbContext.Set<TEntity>().Remove(entity);
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
         }
 
-        public void Update(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             DbContext.Entry(entity).State = EntityState.Modified;
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
         }
     }
 }

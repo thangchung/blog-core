@@ -32,7 +32,7 @@ namespace BlogCore.Core.ManageBlog.CreateBlog
                 DaysToComment = message.DaysToComment,
                 ModerateComments = message.ModerateComments
             };
-            var blogCreated = _blogRepo.Add(blog);
+            var blogCreated = _blogRepo.AddAsync(blog);
 
             // raise events
             foreach (var @event in blog.Events)
