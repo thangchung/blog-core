@@ -11,4 +11,5 @@ Follow the Clean Architecture
 ### Database migration
 
 `dotnet ef migrations add InitDatabase`
+
 `dotnet run`
