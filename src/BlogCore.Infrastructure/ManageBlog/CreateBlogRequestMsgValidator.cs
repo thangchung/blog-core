@@ -1,4 +1,4 @@
-﻿using BlogCore.Core.ManageBlog;
+﻿using BlogCore.Core.ManageBlog.CreateBlog;
 using FluentValidation;
 
 namespace BlogCore.Infrastructure.ManageBlog

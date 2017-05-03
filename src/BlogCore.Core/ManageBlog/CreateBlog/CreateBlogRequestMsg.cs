@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace BlogCore.Core.ManageBlog
+namespace BlogCore.Core.ManageBlog.CreateBlog
 {
     public class CreateBlogRequestMsg : IMesssage, IRequest<CreateBlogResponseMsg>
     {

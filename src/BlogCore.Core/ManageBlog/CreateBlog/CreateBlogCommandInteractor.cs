@@ -2,15 +2,15 @@
 using FluentValidation;
 using MediatR;
 
-namespace BlogCore.Core.ManageBlog
+namespace BlogCore.Core.ManageBlog.CreateBlog
 {
-    public class BlogCommandInteractor : IAsyncRequestHandler<CreateBlogRequestMsg, CreateBlogResponseMsg>
+    public class CreateBlogCommandInteractor : IAsyncRequestHandler<CreateBlogRequestMsg, CreateBlogResponseMsg>
     {
         private readonly IRepository<Blog> _blogRepo;
         private readonly IValidator<CreateBlogRequestMsg> _createBlogValidator;
         private readonly IMediator _mediator;
 
-        public BlogCommandInteractor(IRepository<Blog> blogRepo, IValidator<CreateBlogRequestMsg> createBlogValidator, IMediator mediator)
+        public CreateBlogCommandInteractor(IRepository<Blog> blogRepo, IValidator<CreateBlogRequestMsg> createBlogValidator, IMediator mediator)
         {
             _blogRepo = blogRepo;
             _createBlogValidator = createBlogValidator;

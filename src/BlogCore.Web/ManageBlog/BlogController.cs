@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlogCore.Core.ManageBlog;
+using BlogCore.Core.ManageBlog.CreateBlog;
+using BlogCore.Core.ManageBlog.ListOfBlog;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

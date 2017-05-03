@@ -1,10 +1,10 @@
-namespace BlogCore.Core.ManageBlog
+namespace BlogCore.Core.ManageBlog.ListOfBlog
 {
     public class ListOfBlogResponseMsg : IMesssage
     {
         public ListOfBlogResponseMsg(
-            string title, 
-            string description, 
+            string title,
+            string description,
             string image)
         {
             Title = title;

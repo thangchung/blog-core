@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BlogCore.Core.ManageBlog;
+using BlogCore.Core.ManageBlog.ListOfBlog;
+using BlogCore.Core.ManageBlog.CreateBlog;
 
 namespace BlogCore.Web.ManageBlog
 {
