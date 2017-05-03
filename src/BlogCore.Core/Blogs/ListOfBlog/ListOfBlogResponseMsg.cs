@@ -1,4 +1,4 @@
-namespace BlogCore.Core.ManageBlog.ListOfBlog
+namespace BlogCore.Core.Blogs.ListOfBlog
 {
     public class ListOfBlogResponseMsg : IMesssage
     {

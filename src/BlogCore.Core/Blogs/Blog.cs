@@ -1,4 +1,6 @@
-﻿namespace BlogCore.Core.ManageBlog
+﻿using BlogCore.Core.Blogs.CreateBlog;
+
+namespace BlogCore.Core.Blogs
 {
     public class Blog : EntityBase
     {

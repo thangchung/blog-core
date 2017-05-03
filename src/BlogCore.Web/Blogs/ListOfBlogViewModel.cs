@@ -1,4 +1,4 @@
-﻿namespace BlogCore.Web.ManageBlog
+﻿namespace BlogCore.Web.Blogs
 {
     public class ListOfBlogViewModel
     {

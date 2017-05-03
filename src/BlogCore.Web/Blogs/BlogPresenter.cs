@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BlogCore.Core.ManageBlog.ListOfBlog;
-using BlogCore.Core.ManageBlog.CreateBlog;
+using BlogCore.Core.Blogs.CreateBlog;
+using BlogCore.Core.Blogs.ListOfBlog;
 
-namespace BlogCore.Web.ManageBlog
+namespace BlogCore.Web.Blogs
 {
     public class BlogPresenter
     {

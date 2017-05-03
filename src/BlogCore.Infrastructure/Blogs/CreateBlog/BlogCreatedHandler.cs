@@ -1,7 +1,7 @@
-﻿using BlogCore.Core.ManageBlog;
+﻿using BlogCore.Core.Blogs.CreateBlog;
 using MediatR;
 
-namespace BlogCore.Infrastructure.ManageBlog
+namespace BlogCore.Infrastructure.Blogs.CreateBlog
 {
     public class BlogCreatedHandler : INotificationHandler<BlogCreatedEvent>
     {

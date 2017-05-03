@@ -4,7 +4,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Core;
 using BlogCore.Infrastructure.Data;
-using BlogCore.Web.ManageBlog;
+using BlogCore.Web.Blogs;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;

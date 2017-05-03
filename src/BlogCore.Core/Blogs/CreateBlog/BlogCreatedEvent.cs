@@ -1,4 +1,4 @@
-﻿namespace BlogCore.Core.ManageBlog
+﻿namespace BlogCore.Core.Blogs.CreateBlog
 {
     public class BlogCreatedEvent : DomainEventBase
     {

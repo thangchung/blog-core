@@ -1,7 +1,7 @@
-﻿using BlogCore.Core.ManageBlog.CreateBlog;
+﻿using BlogCore.Core.Blogs.CreateBlog;
 using FluentValidation;
 
-namespace BlogCore.Infrastructure.ManageBlog
+namespace BlogCore.Infrastructure.Blogs.CreateBlog
 {
     public class CreateBlogRequestMsgValidator : AbstractValidator<CreateBlogRequestMsg>
     {

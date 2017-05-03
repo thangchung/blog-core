@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using BlogCore.Core.ManageBlog;
+using BlogCore.Core.Blogs;
 using BlogCore.Infrastructure.Data;
 
 namespace BlogCore.Infrastructure.MigrationConsole.SeedData

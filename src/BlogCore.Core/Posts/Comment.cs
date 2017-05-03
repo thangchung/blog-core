@@ -1,4 +1,4 @@
-﻿namespace BlogCore.Core.ManagePost
+﻿namespace BlogCore.Core.Posts
 {
     public class Comment : EntityBase
     {
