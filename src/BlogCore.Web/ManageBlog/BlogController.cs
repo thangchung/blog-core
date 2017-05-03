@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlogCore.Core.BlogFeature;
+using BlogCore.Core.ManageBlog;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.Web.BlogFeature
+namespace BlogCore.Web.ManageBlog
 {
     [Route("api/blogs")]
     public class BlogController : Controller

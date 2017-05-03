@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BlogCore.Core.BlogFeature;
+using BlogCore.Core.ManageBlog;
 
-namespace BlogCore.Web.BlogFeature
+namespace BlogCore.Web.ManageBlog
 {
     public class BlogPresenter
     {

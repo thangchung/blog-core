@@ -2,7 +2,7 @@
 using FluentValidation;
 using MediatR;
 
-namespace BlogCore.Core.BlogFeature
+namespace BlogCore.Core.ManageBlog
 {
     public class BlogCommandInteractor : IAsyncRequestHandler<CreateBlogRequestMsg, CreateBlogResponseMsg>
     {

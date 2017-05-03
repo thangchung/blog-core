@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace BlogCore.Core.BlogFeature
+namespace BlogCore.Core.ManageBlog
 {
     public class CreateBlogResponseMsg : IMesssage
     {

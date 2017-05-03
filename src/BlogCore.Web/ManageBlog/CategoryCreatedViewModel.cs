@@ -1,4 +1,4 @@
-﻿namespace BlogCore.Web.BlogFeature
+﻿namespace BlogCore.Web.ManageBlog
 {
     public class CategoryCreatedViewModel
     {
