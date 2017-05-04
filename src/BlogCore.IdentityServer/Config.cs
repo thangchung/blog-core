@@ -52,66 +52,33 @@ namespace BlogCore.IdentityServer
         {
             return new[]
             {
-                /*
-                // client credentials flow client
-                new Client
-                {
-                    ClientId = "client",
-                    ClientName = "Client Credentials Client",
-
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("373f4671-0c18-48d6-9da3-962b1c81299a".Sha256()) },
-
-                    AllowedScopes = { "blog_core_api" }
-                },
-
-                // MVC client using hybrid flow
-                new Client
-                {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
-
-                    AllowedGrantTypes = GrantTypes.Hybrid,
-                    ClientSecrets = { new Secret("373f4671-0c18-48d6-9da3-962b1c81299a".Sha256()) },
-
-                    RedirectUris = { "http://localhost:5001/signin-oidc" },
-                    LogoutUri = "http://localhost:5001/signout-oidc",
-                    PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc" },
-
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "blog_core_api" }
-                },
-
                 // SPA client using implicit flow
                 new Client
                 {
-                    ClientId = "spa",
-                    ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
+                    ClientId = "blog_core_client",
+                    ClientName = "Blog Core Client",
+                    ClientUri = "http://localhost:8485",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "http://localhost:8485/index.html"
                     },
 
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
+                    PostLogoutRedirectUris = { "http://localhost:8485/index.html" },
+                    AllowedCorsOrigins = { "http://localhost:8485" },
+                    AccessTokenLifetime = 300,
 
                     AllowedScopes = { "openid", "profile", "blog_core_api" }
-                }, */
+                },
 
                 // swagger UI
                 new Client
                 {
                     ClientId = "swagger",
                     ClientName = "swagger",
-                    // ClientUri = "http://localhost:8484/swagger",
 
                     ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Implicit,

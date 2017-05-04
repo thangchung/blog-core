@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Infrastructure.Data;
 using BlogCore.Infrastructure.MigrationConsole.SeedData;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace BlogCore.Infrastructure.MigrationConsole
             {
                 Console.WriteLine("Start to migration...");
                 RegisterServices();
+                InitializeIdentityServer().Wait();
                 InitializeBlogCoreDb().Wait();
                 Console.WriteLine("Done.");
             }
@@ -54,8 +56,27 @@ namespace BlogCore.Infrastructure.MigrationConsole
             services.AddDbContext<BlogCoreDbContext>(
                 options => options.UseSqlServer(connString, b => b.MigrationsAssembly(migrationsAssembly)));
 
+            services.AddIdentityServer()
+                .AddConfigurationStore(x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)))
+                .AddOperationalStore(x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)));
+
             containerBuilder.Populate(services);
             _serviceProvider = containerBuilder.Build().Resolve<IServiceProvider>();
+        }
+
+        private static async Task InitializeIdentityServer()
+        {
+            using (var serviceScope = _serviceProvider.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+
+                // TODO: do something for migration here
+                // TODO: ...
+
+                await context.SaveChangesAsync();
+            }
         }
 
         private static async Task InitializeBlogCoreDb()

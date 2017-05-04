@@ -70,8 +70,8 @@ namespace BlogCore.Web
                     {
                         Type = "oauth2",
                         Flow = "implicit",
-                        TokenUrl = "http://localhost:8481/connect/token",
-                        AuthorizationUrl = "http://localhost:8481/connect/authorize",
+                        TokenUrl = "http://localhost:8483/connect/token",
+                        AuthorizationUrl = "http://localhost:8483/connect/authorize",
                         Scopes = new Dictionary<string, string> { { "blog_core_api", "My Blog Core API" } }
                     });
                 });
@@ -105,7 +105,7 @@ namespace BlogCore.Web
                 AuthenticationScheme = "Bearer",
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                Authority = "http://localhost:8481",
+                Authority = "http://localhost:8483",
                 SaveToken = true,
                 AllowedScopes = new[] { "blog_core_api" },
                 RequireHttpsMetadata = false,

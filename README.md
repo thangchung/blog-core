@@ -1,7 +1,5 @@
 ### blog-core
-The mini blog that using the modern architecture
-
-Follow the Clean Architecture
+The mini blog that using the Clean Architecture
 
 ![GitHub Logo](https://8thlight.com/blog/assets/posts/2012-08-13-the-clean-architecture/CleanArchitecture-8b00a9d7e2543fa9ca76b81b05066629.jpg)
 
@@ -10,6 +8,11 @@ Follow the Clean Architecture
 
 ### Database migration
 
-`dotnet ef migrations add InitDatabase`
+> `dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Migrations/PersistedGrantDb`
 
-`dotnet run`
+> `dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Migrations/ConfigurationDb`
+
+> `dotnet ef migrations add InitDatabase -c BlogCoreDbContext -o Migrations/BlogCoreDb`
+
+> `dotnet run`
+
