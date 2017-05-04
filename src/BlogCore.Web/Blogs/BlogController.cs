@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using BlogCore.Core.Blogs.CreateBlog;
 using BlogCore.Core.Blogs.ListOfBlog;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCore.Web.Blogs
 {
-    [Route("api/blogs")]
+    [Route("api/blogs"), Authorize]
     public class BlogController : Controller
     {
         private readonly BlogPresenter _blogPresenter;

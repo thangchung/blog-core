@@ -24,6 +24,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="1.0.0" />
+    <PackageReference Include="IdentityServer4" Version="1.5.0" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.1" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="1.0.1" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />

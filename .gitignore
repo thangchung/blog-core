@@ -268,3 +268,5 @@ paket-files/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+**/*log.txt
