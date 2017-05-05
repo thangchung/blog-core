@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.json" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
@@ -15,6 +19,13 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 
     <PackageReference Include="IdentityServer4" Version="1.5.0" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="1.0.0" />
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

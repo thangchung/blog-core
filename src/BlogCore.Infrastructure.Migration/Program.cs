@@ -7,6 +7,7 @@ using Autofac.Extensions.DependencyInjection;
 using BlogCore.Infrastructure.Data;
 using BlogCore.Infrastructure.MigrationConsole.SeedData;
 using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,9 +24,16 @@ namespace BlogCore.Infrastructure.MigrationConsole
             try
             {
                 Console.WriteLine("Start to migration...");
+
+                Console.WriteLine("Initialize the services...");
                 RegisterServices();
+
+                Console.WriteLine("Migrate IdentityServer data...");
                 InitializeIdentityServer().Wait();
+
+                Console.WriteLine("Migrate BlogCore data...");
                 InitializeBlogCoreDb().Wait();
+
                 Console.WriteLine("Done.");
             }
             catch (Exception ex)
@@ -57,8 +65,10 @@ namespace BlogCore.Infrastructure.MigrationConsole
                 options => options.UseSqlServer(connString, b => b.MigrationsAssembly(migrationsAssembly)));
 
             services.AddIdentityServer()
-                .AddConfigurationStore(x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)))
-                .AddOperationalStore(x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)));
+                .AddConfigurationStore(
+                    x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)))
+                .AddOperationalStore(
+                    x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)));
 
             containerBuilder.Populate(services);
             _serviceProvider = containerBuilder.Build().Resolve<IServiceProvider>();
@@ -70,10 +80,16 @@ namespace BlogCore.Infrastructure.MigrationConsole
             {
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
-                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
 
-                // TODO: do something for migration here
-                // TODO: ...
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                foreach (var resource in IdentityServerSeeder.GetIdentityResources())
+                    await context.IdentityResources.AddAsync(resource.ToEntity());
+
+                foreach (var resource in IdentityServerSeeder.GetApiResources())
+                    await context.ApiResources.AddAsync(resource.ToEntity());
+
+                foreach (var client in IdentityServerSeeder.GetClients())
+                    await context.Clients.AddAsync(client.ToEntity());
 
                 await context.SaveChangesAsync();
             }
@@ -85,7 +101,10 @@ namespace BlogCore.Infrastructure.MigrationConsole
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<BlogCoreDbContext>();
                 context.Database.Migrate();
+
+                await UserSeeder.Seed(context);
                 await BlogSeeder.Seed(context);
+                await PostSeeder.Seed(context);
             }
         }
     }

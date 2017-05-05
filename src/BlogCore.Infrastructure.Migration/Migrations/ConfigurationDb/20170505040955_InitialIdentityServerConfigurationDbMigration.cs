@@ -9,12 +9,8 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "config");
-
             migrationBuilder.CreateTable(
                 name: "ApiResources",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -31,7 +27,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "Clients",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -73,7 +68,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "IdentityResources",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -93,7 +87,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ApiClaims",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -107,7 +100,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ApiClaims_ApiResources_ApiResourceId",
                         column: x => x.ApiResourceId,
-                        principalSchema: "config",
                         principalTable: "ApiResources",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -115,7 +107,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ApiScopes",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -134,7 +125,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ApiScopes_ApiResources_ApiResourceId",
                         column: x => x.ApiResourceId,
-                        principalSchema: "config",
                         principalTable: "ApiResources",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -142,7 +132,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ApiSecrets",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -159,7 +148,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ApiSecrets_ApiResources_ApiResourceId",
                         column: x => x.ApiResourceId,
-                        principalSchema: "config",
                         principalTable: "ApiResources",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -167,7 +155,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientClaims",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -182,7 +169,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientClaims_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -190,7 +176,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientCorsOrigins",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -204,7 +189,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientCorsOrigins_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -212,7 +196,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientGrantTypes",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -226,7 +209,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientGrantTypes_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -234,7 +216,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientIdPRestrictions",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -248,7 +229,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientIdPRestrictions_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -256,7 +236,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientPostLogoutRedirectUris",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -270,7 +249,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientPostLogoutRedirectUris_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -278,7 +256,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientRedirectUris",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -292,7 +269,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientRedirectUris_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -300,7 +276,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientScopes",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -314,7 +289,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientScopes_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -322,7 +296,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ClientSecrets",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -339,7 +312,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ClientSecrets_Clients_ClientId",
                         column: x => x.ClientId,
-                        principalSchema: "config",
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -347,7 +319,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "IdentityClaims",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -361,7 +332,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_IdentityClaims_IdentityResources_IdentityResourceId",
                         column: x => x.IdentityResourceId,
-                        principalSchema: "config",
                         principalTable: "IdentityResources",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -369,7 +339,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateTable(
                 name: "ApiScopeClaims",
-                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -383,7 +352,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
                     table.ForeignKey(
                         name: "FK_ApiScopeClaims_ApiScopes_ApiScopeId",
                         column: x => x.ApiScopeId,
-                        principalSchema: "config",
                         principalTable: "ApiScopes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -391,106 +359,89 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiResources_Name",
-                schema: "config",
                 table: "ApiResources",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiClaims_ApiResourceId",
-                schema: "config",
                 table: "ApiClaims",
                 column: "ApiResourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiScopes_ApiResourceId",
-                schema: "config",
                 table: "ApiScopes",
                 column: "ApiResourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiScopes_Name",
-                schema: "config",
                 table: "ApiScopes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiScopeClaims_ApiScopeId",
-                schema: "config",
                 table: "ApiScopeClaims",
                 column: "ApiScopeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiSecrets_ApiResourceId",
-                schema: "config",
                 table: "ApiSecrets",
                 column: "ApiResourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ClientId",
-                schema: "config",
                 table: "Clients",
                 column: "ClientId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientClaims_ClientId",
-                schema: "config",
                 table: "ClientClaims",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientCorsOrigins_ClientId",
-                schema: "config",
                 table: "ClientCorsOrigins",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientGrantTypes_ClientId",
-                schema: "config",
                 table: "ClientGrantTypes",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientIdPRestrictions_ClientId",
-                schema: "config",
                 table: "ClientIdPRestrictions",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientPostLogoutRedirectUris_ClientId",
-                schema: "config",
                 table: "ClientPostLogoutRedirectUris",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientRedirectUris_ClientId",
-                schema: "config",
                 table: "ClientRedirectUris",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientScopes_ClientId",
-                schema: "config",
                 table: "ClientScopes",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientSecrets_ClientId",
-                schema: "config",
                 table: "ClientSecrets",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityClaims_IdentityResourceId",
-                schema: "config",
                 table: "IdentityClaims",
                 column: "IdentityResourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityResources_Name",
-                schema: "config",
                 table: "IdentityResources",
                 column: "Name",
                 unique: true);
@@ -499,68 +450,52 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApiClaims",
-                schema: "config");
+                name: "ApiClaims");
 
             migrationBuilder.DropTable(
-                name: "ApiScopeClaims",
-                schema: "config");
+                name: "ApiScopeClaims");
 
             migrationBuilder.DropTable(
-                name: "ApiSecrets",
-                schema: "config");
+                name: "ApiSecrets");
 
             migrationBuilder.DropTable(
-                name: "ClientClaims",
-                schema: "config");
+                name: "ClientClaims");
 
             migrationBuilder.DropTable(
-                name: "ClientCorsOrigins",
-                schema: "config");
+                name: "ClientCorsOrigins");
 
             migrationBuilder.DropTable(
-                name: "ClientGrantTypes",
-                schema: "config");
+                name: "ClientGrantTypes");
 
             migrationBuilder.DropTable(
-                name: "ClientIdPRestrictions",
-                schema: "config");
+                name: "ClientIdPRestrictions");
 
             migrationBuilder.DropTable(
-                name: "ClientPostLogoutRedirectUris",
-                schema: "config");
+                name: "ClientPostLogoutRedirectUris");
 
             migrationBuilder.DropTable(
-                name: "ClientRedirectUris",
-                schema: "config");
+                name: "ClientRedirectUris");
 
             migrationBuilder.DropTable(
-                name: "ClientScopes",
-                schema: "config");
+                name: "ClientScopes");
 
             migrationBuilder.DropTable(
-                name: "ClientSecrets",
-                schema: "config");
+                name: "ClientSecrets");
 
             migrationBuilder.DropTable(
-                name: "IdentityClaims",
-                schema: "config");
+                name: "IdentityClaims");
 
             migrationBuilder.DropTable(
-                name: "ApiScopes",
-                schema: "config");
+                name: "ApiScopes");
 
             migrationBuilder.DropTable(
-                name: "Clients",
-                schema: "config");
+                name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "IdentityResources",
-                schema: "config");
+                name: "IdentityResources");
 
             migrationBuilder.DropTable(
-                name: "ApiResources",
-                schema: "config");
+                name: "ApiResources");
         }
     }
 }

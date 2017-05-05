@@ -18,7 +18,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
 
             modelBuilder.Entity("BlogCore.Core.Blogs.Blog", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("DaysToComment");
@@ -37,27 +37,37 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blog");
+                    b.ToTable("Blogs","blog");
                 });
 
             modelBuilder.Entity("BlogCore.Core.Posts.Comment", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("PostId");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Comment");
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments","blog");
                 });
 
             modelBuilder.Entity("BlogCore.Core.Posts.Post", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("BlogId");
+
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Post");
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("Posts","blog");
                 });
 
             modelBuilder.Entity("BlogCore.Infrastructure.Data.AppUser", b =>
@@ -215,6 +225,21 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("BlogCore.Core.Posts.Comment", b =>
+                {
+                    b.HasOne("BlogCore.Core.Posts.Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId");
+                });
+
+            modelBuilder.Entity("BlogCore.Core.Posts.Post", b =>
+                {
+                    b.HasOne("BlogCore.Core.Blogs.Blog")
+                        .WithMany("Posts")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

@@ -13,7 +13,6 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasDefaultSchema("config")
                 .HasAnnotation("ProductVersion", "1.1.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

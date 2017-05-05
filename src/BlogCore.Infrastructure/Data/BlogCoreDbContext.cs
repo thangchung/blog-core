@@ -22,8 +22,9 @@ namespace BlogCore.Infrastructure.Data
             var entityTypes = typeToRegisters.Where(x => !x.GetTypeInfo().IsAbstract
                                                          && x.GetTypeInfo().BaseType == typeof(EntityBase));
 
+            // temporary to concanate with s at the end, but need to have a way to translate it to a plural noun
             foreach (var type in entityTypes)
-                modelBuilder.Entity(type);
+                modelBuilder.Entity(type).ToTable($"{type.Name}s", "blog");
 
             base.OnModelCreating(modelBuilder);
         }

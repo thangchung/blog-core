@@ -31,7 +31,7 @@ namespace BlogCore.Infrastructure.MigrationConsole
             var optionsBuilder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
             optionsBuilder.UseSqlServer(connstr, b => b.MigrationsAssembly(migrationsAssembly));
 
-            return new PersistedGrantDbContext(optionsBuilder.Options, new OperationalStoreOptions { DefaultSchema = "operational" });
+            return new PersistedGrantDbContext(optionsBuilder.Options, new OperationalStoreOptions());
         }
     }
 }

@@ -8,12 +8,8 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.PersistedGrantDb
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "operational");
-
             migrationBuilder.CreateTable(
                 name: "PersistedGrants",
-                schema: "operational",
                 columns: table => new
                 {
                     Key = table.Column<string>(maxLength: 200, nullable: false),
@@ -31,19 +27,16 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.PersistedGrantDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_SubjectId",
-                schema: "operational",
                 table: "PersistedGrants",
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_SubjectId_ClientId",
-                schema: "operational",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "ClientId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_SubjectId_ClientId_Type",
-                schema: "operational",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "ClientId", "Type" });
         }
@@ -51,8 +44,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.PersistedGrantDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PersistedGrants",
-                schema: "operational");
+                name: "PersistedGrants");
         }
     }
 }

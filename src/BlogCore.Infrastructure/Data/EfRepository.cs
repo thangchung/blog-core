@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogCore.Core;
@@ -15,10 +16,10 @@ namespace BlogCore.Infrastructure.Data
             DbContext = dbContext;
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await DbContext.Set<TEntity>()
-                .SingleOrDefaultAsync(e => e.Id == id);
+                .SingleOrDefaultAsync(e => e.Id.Equals(id));
         }
 
         public async Task<IEnumerable<TEntity>> ListAsync()

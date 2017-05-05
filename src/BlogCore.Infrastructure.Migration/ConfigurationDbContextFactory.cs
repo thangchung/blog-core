@@ -31,7 +31,7 @@ namespace BlogCore.Infrastructure.MigrationConsole
             var optionsBuilder = new DbContextOptionsBuilder<ConfigurationDbContext>();
             optionsBuilder.UseSqlServer(connstr, b => b.MigrationsAssembly(migrationsAssembly));
 
-            return new ConfigurationDbContext(optionsBuilder.Options, new ConfigurationStoreOptions { DefaultSchema = "config" });
+            return new ConfigurationDbContext(optionsBuilder.Options, new ConfigurationStoreOptions());
         }
     }
 }

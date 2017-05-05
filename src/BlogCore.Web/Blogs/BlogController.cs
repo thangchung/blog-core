@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCore.Web.Blogs
 {
-    [Route("api/blogs"), Authorize]
+    [Route("api/blogs")]
     public class BlogController : Controller
     {
         private readonly BlogPresenter _blogPresenter;
@@ -20,7 +20,7 @@ namespace BlogCore.Web.Blogs
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public async Task<IEnumerable<ListOfBlogViewModel>> Get()
         {
             var blogResponses = await _mediator.Send(new ListOfBlogRequestMsg());
@@ -28,13 +28,14 @@ namespace BlogCore.Web.Blogs
             return viewModel;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), AllowAnonymous]
         public string Get(int id)
         {
             return "blog";
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
             var blogCreated = await _mediator.Send(blogRequest);
@@ -43,11 +44,13 @@ namespace BlogCore.Web.Blogs
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public void Delete(int id)
         {
         }

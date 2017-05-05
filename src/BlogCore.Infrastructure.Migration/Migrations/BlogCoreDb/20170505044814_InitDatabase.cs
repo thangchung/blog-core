@@ -9,12 +9,15 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "blog");
+
             migrationBuilder.CreateTable(
-                name: "Blog",
+                name: "Blogs",
+                schema: "blog",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     DaysToComment = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
@@ -25,31 +28,7 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Blog", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Comment",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comment", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Post",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.PrimaryKey("PK_Blogs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,6 +82,27 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                schema: "blog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    BlogId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalSchema: "blog",
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,6 +191,38 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                schema: "blog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PostId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalSchema: "blog",
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostId",
+                schema: "blog",
+                table: "Comments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_BlogId",
+                schema: "blog",
+                table: "Posts",
+                column: "BlogId");
+
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
@@ -232,13 +264,8 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Blog");
-
-            migrationBuilder.DropTable(
-                name: "Comment");
-
-            migrationBuilder.DropTable(
-                name: "Post");
+                name: "Comments",
+                schema: "blog");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -256,10 +283,18 @@ namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Posts",
+                schema: "blog");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Blogs",
+                schema: "blog");
         }
     }
 }

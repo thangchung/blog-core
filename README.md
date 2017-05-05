@@ -6,7 +6,7 @@ The mini blog that using the Clean Architecture
 ### Usecase Diagram
 ![Usecases](https://github.com/thangchung/blog-core/blob/master/docs/Usecases.png)
 
-### Database migration
+### Database migrations
 
 > `dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Migrations/PersistedGrantDb`
 

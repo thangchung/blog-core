@@ -8,13 +8,12 @@ using IdentityServer4.EntityFramework.DbContexts;
 namespace BlogCore.Infrastructure.MigrationConsole.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20170504124146_InitialIdentityServerConfigurationDbMigration")]
+    [Migration("20170505040955_InitialIdentityServerConfigurationDbMigration")]
     partial class InitialIdentityServerConfigurationDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasDefaultSchema("config")
                 .HasAnnotation("ProductVersion", "1.1.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

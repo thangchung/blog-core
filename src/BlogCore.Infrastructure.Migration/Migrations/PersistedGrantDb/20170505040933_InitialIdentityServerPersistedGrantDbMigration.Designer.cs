@@ -8,13 +8,12 @@ using IdentityServer4.EntityFramework.DbContexts;
 namespace BlogCore.Infrastructure.MigrationConsole.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20170504123748_InitialIdentityServerPersistedGrantDbMigration")]
+    [Migration("20170505040933_InitialIdentityServerPersistedGrantDbMigration")]
     partial class InitialIdentityServerPersistedGrantDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasDefaultSchema("operational")
                 .HasAnnotation("ProductVersion", "1.1.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
