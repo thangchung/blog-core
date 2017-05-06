@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using BlogCore.IdentityServer.Services;
 using BlogCore.Infrastructure.Data;
-using IdentityServer4;
-using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -10,110 +7,88 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace BlogCore.IdentityServer
 {
     public class Startup
     {
-        public Startup(ILoggerFactory loggerFactory, IHostingEnvironment environment)
+        public Startup(IHostingEnvironment env)
         {
-            Environment = environment;
-
-            var serilog = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.FromLogContext()
-                .WriteTo.File(@"identityserver4_log.txt")
-                .WriteTo.LiterateConsole(
-                    outputTemplate:
-                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message}{NewLine}{Exception}{NewLine}");
-
-            loggerFactory
-                .WithFilter(new FilterLoggerSettings
-                {
-                    {"IdentityServer4", LogLevel.Debug},
-                    {"Microsoft", LogLevel.Warning},
-                    {"System", LogLevel.Warning}
-                })
-                .AddSerilog(serilog.CreateLogger());
-
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true)
-                .AddJsonFile($"appsettings.{Environment.EnvironmentName}.json", true);
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
-        public IHostingEnvironment Environment { get; }
         public IConfigurationRoot Configuration { get; }
 
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var connString = Configuration.GetConnectionString("DefaultConnection");
 
+            // Add framework services.
             services.AddDbContext<BlogCoreDbContext>(options =>
                 options.UseSqlServer(connString));
 
             services.AddIdentity<AppUser, IdentityRole>()
-                .AddRoleStore<ExtendedRoleStore>()
-                .AddUserStore<ExtendedUserStore>()
+                .AddEntityFrameworkStores<BlogCoreDbContext>()
                 .AddDefaultTokenProviders()
                 .AddIdentityServerUserClaimsPrincipalFactory();
 
             services.AddMvc();
 
-            services.AddIdentityServer(SetIdentityServerOptions)
+            // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            services.AddIdentityServer()
                 .AddTemporarySigningCredential()
                 .AddConfigurationStore(x => x.UseSqlServer(connString))
                 .AddOperationalStore(x => x.UseSqlServer(connString))
                 .AddAspNetIdentity<AppUser>();
         }
 
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            if (Environment.IsDevelopment())
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+                app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
+            }
+            else
             {
-                AuthenticationScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme,
-                CookieName = "blogcore.auth",
-                ExpireTimeSpan = TimeSpan.FromMinutes(20),
-                SlidingExpiration = true,
-                AutomaticAuthenticate = false,
-                AutomaticChallenge = false
-            });
+                app.UseExceptionHandler("/Home/Error");
+            }
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
-                AutomaticAuthenticate = false,
-                AutomaticChallenge = false
-            });
+            app.UseStaticFiles();
 
             app.UseIdentity();
             app.UseIdentityServer();
 
-            // middleware for google authentication
-            // must use http://localhost:5000 for this configuration to work
+            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseGoogleAuthentication(new GoogleOptions
             {
                 AuthenticationScheme = "Google",
-                SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
-                ClientId = "708996912208-9m4dkjb5hscn7cjrn5u0r4tbgkbj1fko.apps.googleusercontent.com",
-                ClientSecret = "wdfPY6t8H8cecgjlxud__4Gh"
+                SignInScheme = "Identity.External", // this is the name of the cookie middleware registered by UseIdentity()
+                ClientId = "998042782978-s07498t8i8jas7npj4crve1skpromf37.apps.googleusercontent.com",
+                ClientSecret = "HsnwJri_53zn7VcO1Fm7THBb",
             });
 
-            app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
-        }
-
-        private static void SetIdentityServerOptions(IdentityServerOptions identityServerOptions)
-        {
-            identityServerOptions.Authentication.AuthenticationScheme =
-                IdentityServerConstants.DefaultCookieAuthenticationScheme;
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

@@ -1,35 +1,33 @@
-﻿<div class="welcome-page">
-    <div class="row page-header">
-        <div class="col-sm-10">
-            <h1>
-                <img class="icon" src="~/icon.jpg">
-                Welcome to IdentityServer4
-                @*<small>(build {version})</small>*@
-            </h1>
-        </div>
-    </div>
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
 
-    <div class="row">
-        <div class="col-sm-8">
-            <p>
-                IdentityServer publishes a
-                <a href="~/.well-known/openid-configuration">discovery document</a>
-                where you can find metadata and links to all the endpoints, key material, etc.
-            </p>
-        </div>
-        <div class="col-sm-8">
-            <p>
-                Click <a href="~/grants">here</a> to manage your stored grants.
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-8">
-            <p>
-                Here are links to the
-                <a href="https://github.com/identityserver/IdentityServer4">source code repository</a>,
-                and <a href="https://github.com/identityserver/IdentityServer4.Samples">ready to use samples</a>.
-            </p>
-        </div>
-    </div>
-</div>
+<h1>Home</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>Welcome back @User.Identity.Name</h1>
+    <h2>User Claims</h2>
+    <dl>
+        @foreach (var claim in User.Claims)
+        {
+            <dt>@claim.Type</dt>
+            <dd>@claim.Value</dd>
+        }
+    </dl>
+
+    var authScheme = "Identity.Application";
+    if (!String.IsNullOrWhiteSpace(authScheme))
+    {
+        <h2>Cookies Properties</h2>
+        <dl>
+            @{
+                var props = (await Context.Authentication.GetAuthenticateInfoAsync(authScheme)).Properties;
+            }
+            @foreach (var item in props.Items)
+            {
+                <dt>@item.Key</dt>
+                <dd>@item.Value</dd>
+            }
+        </dl>
+    }
+}

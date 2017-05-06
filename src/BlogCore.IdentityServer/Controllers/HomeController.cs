@@ -1,12 +1,10 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using BlogCore.IdentityServer.Quickstart;
+using BlogCore.IdentityServer.Quickstart.Home;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.IdentityServer.Quickstart.Home
+namespace BlogCore.IdentityServer.Controllers
 {
     [SecurityHeaders]
     public class HomeController : Controller
@@ -23,9 +21,20 @@ namespace BlogCore.IdentityServer.Quickstart.Home
             return View();
         }
 
-        /// <summary>
-        /// Shows the error page
-        /// </summary>
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
         public async Task<IActionResult> Error(string errorId)
         {
             var vm = new ErrorViewModel();

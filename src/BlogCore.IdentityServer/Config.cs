@@ -1,99 +1,87 @@
-﻿using System.Collections.Generic;
-using IdentityModel;
+﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace BlogCore.IdentityServer
 {
-    public static class Config
+    public class Config
     {
+        // scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            return new IdentityResource[]
+            return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Email(),
-                new IdentityResources.Address(),
-                new IdentityResources.Phone()
             };
         }
 
-        public static IEnumerable<ApiResource> GetApis()
+        public static IEnumerable<ApiResource> GetApiResources()
         {
-            return new[]
+            return new List<ApiResource>
             {
-                new ApiResource
+                new ApiResource("api1", "My API")
+            };
+        }
+
+        // clients want to access resources (aka scopes)
+        public static IEnumerable<Client> GetClients()
+        {
+            // client credentials client
+            return new List<Client>
+            {
+                new Client
                 {
-                    Name = "blog.core.api",
-                    ApiSecrets =
+                    ClientId = "client",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    ClientSecrets = 
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = { "api1" }
+                },
+
+                // resource owner password grant client
+                new Client
+                {
+                    ClientId = "ro.client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    ClientSecrets = 
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = { "api1" }
+                },
+
+                // OpenID Connect hybrid flow and client credentials client (MVC)
+                new Client
+                {
+                    ClientId = "mvc",
+                    ClientName = "MVC Client",
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+
+                    RequireConsent = true,
+
+                    ClientSecrets = 
                     {
                         new Secret("secret".Sha256())
                     },
 
-                    UserClaims =
+                    RedirectUris = { "http://localhost:5002/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+
+                    AllowedScopes =
                     {
-                        JwtClaimTypes.Name,
-                        JwtClaimTypes.Email
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
                     },
-
-                    Scopes =
-                    {
-                        new Scope()
-                        {
-                            Name = "blog_core_api",
-                            DisplayName = "My Blog Core API"
-                        }
-                    }
-                }
-            };
-        }
-
-        public static IEnumerable<Client> GetClients()
-        {
-            return new[]
-            {
-                // SPA client using implicit flow
-                new Client
-                {
-                    ClientId = "blog_core_client",
-                    ClientName = "Blog Core Client",
-                    ClientUri = "http://localhost:8485",
-
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    
-                    RedirectUris =
-                    {
-                        "http://localhost:8485/index.html"
-                    },
-
-                    PostLogoutRedirectUris = { "http://localhost:8485/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:8485" },
-                    AccessTokenLifetime = 300,
-
-                    AllowedScopes = { "openid", "profile", "blog_core_api" }
-                },
-
-                // swagger UI
-                new Client
-                {
-                    ClientId = "swagger",
-                    ClientName = "swagger",
-
-                    ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris =
-                    {
-                        "http://localhost:8484/swagger/o2c.html"
-                    },
-
-                    PostLogoutRedirectUris = { "http://localhost:8484/swagger" },
-                    AllowedCorsOrigins = { "http://localhost:8484" },
-                    AccessTokenLifetime = 300,
-
-                    AllowedScopes = { "openid", "profile", "blog_core_api" }
+                    AllowOfflineAccess = true
                 }
             };
         }
