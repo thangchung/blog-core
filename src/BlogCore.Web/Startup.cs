@@ -43,18 +43,26 @@ namespace BlogCore.Web
         {
             var builder = new ContainerBuilder();
 
-            services.AddMvc()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(typeof(BlogCoreDbContext).GetTypeInfo().Assembly));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
 
-            services.AddAuthorization()
-                .AddCors(options =>
-                {
-                    options.AddPolicy("CorsPolicy",
-                        policy => policy.AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials());
-                });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("BlogsAdmin",
+                    policyAdmin => { policyAdmin.RequireClaim("role", "blogcore_blogs__admin"); });
+                options.AddPolicy("BlogsUser",
+                    policyUser => { policyUser.RequireClaim("role", "blogcore_blogs__user"); });
+            });
+
+            services.AddMvc()
+                .AddFluentValidation(
+                    fv => fv.RegisterValidatorsFromAssembly(typeof(BlogCoreDbContext).GetTypeInfo().Assembly));
 
             if (Environment.IsDevelopment())
                 services.AddSwaggerGen(options =>
@@ -72,7 +80,11 @@ namespace BlogCore.Web
                         Flow = "implicit",
                         TokenUrl = "http://localhost:8483/connect/token",
                         AuthorizationUrl = "http://localhost:8483/connect/authorize",
-                        Scopes = new Dictionary<string, string> { { "blog_core_api", "My Blog Core API" } }
+                        Scopes = new Dictionary<string, string>
+                        {
+                            {"blogcore_api_blogs", "The Blog APIs"},
+                            {"blogcore_api_posts", "The Post APIs"}
+                        }
                     });
                 });
 
@@ -106,8 +118,10 @@ namespace BlogCore.Web
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 Authority = "http://localhost:8483",
+                // ApiName = "blogcore_api_scope",
+                // ApiSecret = "secret",
                 SaveToken = true,
-                AllowedScopes = new[] { "blog_core_api" },
+                AllowedScopes = new[] { "blogcore_api_blogs", "blogcore_api_posts" },
                 RequireHttpsMetadata = false,
                 JwtBearerEvents = new JwtBearerEvents
                 {
@@ -136,7 +150,8 @@ namespace BlogCore.Web
             var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
 
             // build up the id_token and put it into current claim identity
-            var headerToken = context.Request.Headers["Authorization"][0].Substring(context.Ticket.AuthenticationScheme.Length + 1);
+            var headerToken =
+                context.Request.Headers["Authorization"][0].Substring(context.Ticket.AuthenticationScheme.Length + 1);
             claimsIdentity?.AddClaim(new Claim("id_token", headerToken));
 
             // TODO: do something for building up the SecurityContext here

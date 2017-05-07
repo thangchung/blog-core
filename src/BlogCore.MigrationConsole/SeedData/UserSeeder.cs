@@ -4,7 +4,7 @@ using BlogCore.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace BlogCore.Infrastructure.MigrationConsole.SeedData
+namespace BlogCore.MigrationConsole.SeedData
 {
     public static class UserSeeder
     {

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogCore.Infrastructure.Data
 {
+    // TODO: consider to separate current IdentityDbContext out to this, because we make it loose coupling with others 
     public class BlogCoreDbContext : IdentityDbContext<AppUser>
     {
         public BlogCoreDbContext(DbContextOptions<BlogCoreDbContext> options)

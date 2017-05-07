@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
+namespace BlogCore.MigrationConsole.Migrations.BlogCoreDb
 {
     public partial class InitDatabase : Migration
     {

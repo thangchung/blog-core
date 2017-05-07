@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlogCore.Infrastructure.MigrationConsole.Migrations.PersistedGrantDb
+namespace BlogCore.MigrationConsole.Migrations.PersistedGrantDb
 {
     public partial class InitialIdentityServerPersistedGrantDbMigration : Migration
     {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using BlogCore.Core.Blogs;
 using BlogCore.Infrastructure.Data;
 
-namespace BlogCore.Infrastructure.MigrationConsole.SeedData
+namespace BlogCore.MigrationConsole.SeedData
 {
     public static class BlogSeeder
     {

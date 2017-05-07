@@ -1,4 +1,5 @@
 ## BlogCore project
+> The project is under implementation phrase so that there is a lot of changes. If you get the source code, please make sure run the migration and build the project from scratch.
 ### Database migrations 
 ```
   dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Migrations/PersistedGrantDb

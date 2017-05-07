@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Reflection;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Options;
+using BlogCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 
-namespace BlogCore.Infrastructure.MigrationConsole
+namespace BlogCore.MigrationConsole
 {
-    public class PersistedGrantDbContextFactory : IDbContextFactory<PersistedGrantDbContext>
+    public class BlogCoreDbContextFactory : IDbContextFactory<BlogCoreDbContext>
     {
-        public PersistedGrantDbContext Create(DbContextFactoryOptions options)
+        public BlogCoreDbContext Create(DbContextFactoryOptions options)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(options.ContentRootPath)
@@ -27,11 +26,11 @@ namespace BlogCore.Infrastructure.MigrationConsole
             if (string.IsNullOrEmpty(connstr))
                 throw new InvalidOperationException($"{nameof(connstr)} is null or empty.");
 
-            var migrationsAssembly = typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name;
-            var optionsBuilder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
+            var migrationsAssembly = typeof(BlogCoreDbContextFactory).GetTypeInfo().Assembly.GetName().Name;
+            var optionsBuilder = new DbContextOptionsBuilder<BlogCoreDbContext>();
             optionsBuilder.UseSqlServer(connstr, b => b.MigrationsAssembly(migrationsAssembly));
 
-            return new PersistedGrantDbContext(optionsBuilder.Options, new OperationalStoreOptions());
+            return new BlogCoreDbContext(optionsBuilder.Options);
         }
     }
 }

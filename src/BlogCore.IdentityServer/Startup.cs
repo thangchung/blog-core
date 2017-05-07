@@ -49,7 +49,8 @@ namespace BlogCore.IdentityServer
                 .AddTemporarySigningCredential()
                 .AddConfigurationStore(x => x.UseSqlServer(connString))
                 .AddOperationalStore(x => x.UseSqlServer(connString))
-                .AddAspNetIdentity<AppUser>();
+                .AddAspNetIdentity<AppUser>()
+                .AddProfileService<IdentityWithAdditionalClaimsProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

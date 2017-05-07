@@ -1,11 +1,11 @@
 ﻿using System;
+using BlogCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using BlogCore.Infrastructure.Data;
 
-namespace BlogCore.Infrastructure.MigrationConsole.Migrations.BlogCoreDb
+namespace BlogCore.MigrationConsole.Migrations.BlogCoreDb
 {
     [DbContext(typeof(BlogCoreDbContext))]
     [Migration("20170505044814_InitDatabase")]

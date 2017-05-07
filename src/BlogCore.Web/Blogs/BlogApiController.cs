@@ -9,18 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogCore.Web.Blogs
 {
     [Route("api/blogs")]
-    public class BlogController : Controller
+    public class BlogApiController : Controller
     {
         private readonly BlogPresenter _blogPresenter;
         private readonly IMediator _mediator;
 
-        public BlogController(BlogPresenter blogPresenter, IMediator mediator)
+        public BlogApiController(BlogPresenter blogPresenter, IMediator mediator)
         {
             _blogPresenter = blogPresenter;
             _mediator = mediator;
         }
 
-        [HttpGet, AllowAnonymous]
+        [HttpGet, /*AllowAnonymous*/]
+        [Authorize("BlogsAdmin")]
         public async Task<IEnumerable<ListOfBlogViewModel>> Get()
         {
             var blogResponses = await _mediator.Send(new ListOfBlogRequestMsg());
@@ -28,14 +29,15 @@ namespace BlogCore.Web.Blogs
             return viewModel;
         }
 
-        [HttpGet("{id}"), AllowAnonymous]
+        [HttpGet("{id}"), /*AllowAnonymous*/]
+        [Authorize("BlogsUser")]
         public string Get(int id)
         {
             return "blog";
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize("BlogsAdmin")]
         public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
             var blogCreated = await _mediator.Send(blogRequest);
@@ -44,13 +46,13 @@ namespace BlogCore.Web.Blogs
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize("BlogsAdmin")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize("BlogsAdmin")]
         public void Delete(int id)
         {
         }
