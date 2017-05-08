@@ -20,8 +20,7 @@ namespace BlogCore.Web.Blogs
             _mediator = mediator;
         }
 
-        [HttpGet, /*AllowAnonymous*/]
-        [Authorize("BlogsAdmin")]
+        [HttpGet, Authorize("BlogsAdmin")]
         public async Task<IEnumerable<ListOfBlogViewModel>> Get()
         {
             var blogResponses = await _mediator.Send(new ListOfBlogRequestMsg());
@@ -29,15 +28,13 @@ namespace BlogCore.Web.Blogs
             return viewModel;
         }
 
-        [HttpGet("{id}"), /*AllowAnonymous*/]
-        [Authorize("BlogsUser")]
+        [HttpGet("{id}"), AllowAnonymous]
         public string Get(int id)
         {
             return "blog";
         }
 
-        [HttpPost]
-        [Authorize("BlogsAdmin")]
+        [HttpPost, Authorize("BlogsUser")]
         public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
             var blogCreated = await _mediator.Send(blogRequest);
@@ -46,13 +43,13 @@ namespace BlogCore.Web.Blogs
         }
 
         [HttpPut("{id}")]
-        [Authorize("BlogsAdmin")]
+        [Authorize("BlogsUser")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         [HttpDelete("{id}")]
-        [Authorize("BlogsAdmin")]
+        [Authorize("BlogsUser")]
         public void Delete(int id)
         {
         }

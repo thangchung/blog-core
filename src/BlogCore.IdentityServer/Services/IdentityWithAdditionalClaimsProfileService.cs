@@ -16,7 +16,8 @@ namespace BlogCore.IdentityServer.Services
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsFactory;
         private readonly UserManager<AppUser> _userManager;
 
-        public IdentityWithAdditionalClaimsProfileService(UserManager<AppUser> userManager, IUserClaimsPrincipalFactory<AppUser> claimsFactory)
+        public IdentityWithAdditionalClaimsProfileService(UserManager<AppUser> userManager,
+            IUserClaimsPrincipalFactory<AppUser> claimsFactory)
         {
             _userManager = userManager;
             _claimsFactory = claimsFactory;
@@ -33,11 +34,18 @@ namespace BlogCore.IdentityServer.Services
 
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
 
-            claims.Add(new Claim(JwtClaimTypes.GivenName, user.UserName));
-
-            // TODO: temporary to hard code for the admin
+            claims.Add(new Claim(JwtClaimTypes.Name, user.UserName));
             claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs"));
-            claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs__admin"));
+
+            var isAdmin = claims.Any(claim => claim.Type == "role" && claim.Value == "admin");
+            if (isAdmin)
+            {
+                claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs__admin"));
+            }
+            else
+            {
+                claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs__user"));
+            }
 
             claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
 

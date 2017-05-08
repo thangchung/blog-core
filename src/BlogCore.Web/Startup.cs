@@ -8,6 +8,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Core;
 using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.Security;
 using BlogCore.Web.Blogs;
 using FluentValidation.AspNetCore;
 using IdentityServer4.Models;
@@ -96,11 +97,21 @@ namespace BlogCore.Web
                 typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
                 typeof(Startup).GetTypeInfo().Assembly);
 
+            // security context
+            builder.RegisterType<SecurityContextProvider>()
+                .As<ISecurityContext>()
+                .As<ISecurityContextPrincipal>()
+                .InstancePerLifetimeScope();
+
             // Core & Infra register
-            builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>));
+            builder.RegisterGeneric(typeof(EfRepository<>))
+                .As(typeof(IRepository<>))
+                .InstancePerRequest();
 
             // Web registers
-            builder.RegisterType<BlogPresenter>().AsSelf();
+            builder.RegisterType<BlogPresenter>()
+                .AsSelf()
+                .InstancePerRequest();
 
             builder.Populate(services);
             return builder.Build().Resolve<IServiceProvider>();
@@ -154,8 +165,13 @@ namespace BlogCore.Web
                 context.Request.Headers["Authorization"][0].Substring(context.Ticket.AuthenticationScheme.Length + 1);
             claimsIdentity?.AddClaim(new Claim("id_token", headerToken));
 
-            // TODO: do something for building up the SecurityContext here
-            // TODO: ...
+            var securityContextInstance = context.HttpContext.RequestServices.GetService<ISecurityContext>();
+            var securityContextPrincipal = securityContextInstance as ISecurityContextPrincipal;
+            if (securityContextPrincipal == null)
+            {
+                throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
+            }
+            securityContextPrincipal.Principal = principal;
 
             await Task.FromResult(0);
         }
