@@ -11,8 +11,6 @@ class HomeComponent extends Component {
 
   render() {
     var { profile } = this.props;
-    console.log(profile);
-    console.log("heheheh");
     return (
       <div>
         <h1>Home page</h1>
