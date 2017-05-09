@@ -85,17 +85,26 @@ namespace BlogCore.MigrationConsole.SeedData
                 {
                     ClientId = "blogcore_client",
                     ClientName = "Blogcore Client",
-                    ClientUri = "http://localhost:8485",
+                    ClientUri = "http://localhost:3000",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris =
                     {
-                        "http://localhost:8485/index.html"
+                        "http://localhost:3000/callback"
                     },
-                    PostLogoutRedirectUris = {"http://localhost:8485/index.html"},
-                    AllowedCorsOrigins = {"http://localhost:8485"},
+                    PostLogoutRedirectUris = {"http://localhost:3000"},
+                    AllowedCorsOrigins = {"http://localhost:3000"},
                     AccessTokenLifetime = 300,
-                    AllowedScopes = {"openid", "profile"}
+                    AllowedScopes =
+                    {
+                        "openid",
+                        "profile",
+                        "role",
+                        "blogcore_identity_scope",
+                        "blogcore_api",
+                        "blogcore_api_blogs",
+                        "blogcore_api_posts"
+                    }
                 },
 
                 // swagger UI

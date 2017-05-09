@@ -71,7 +71,7 @@ namespace BlogCore.IdentityServer
             }
 
             app.UseStaticFiles();
-
+            
             app.UseIdentity();
             app.UseIdentityServer();
 
