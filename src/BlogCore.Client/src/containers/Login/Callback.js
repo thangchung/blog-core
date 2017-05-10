@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { CallbackComponent } from "redux-oidc";
 import { browserHistory } from "react-router";
-import userManager from "../utils/userManager";
+import userManager from "../../utils/userManager";
 
-class CallbackPage extends React.Component {
+class Callback extends React.Component {
   successCallback = () => {
     this.props.dispatch(browserHistory.push("/"));
   };
@@ -31,4 +31,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(CallbackPage);
+export default connect(null, mapDispatchToProps)(Callback);

@@ -1,5 +1,5 @@
 import React from "react";
-import userManager from "../utils/userManager";
+import userManager from "../../utils/userManager";
 
 const styles = {
   root: {
@@ -11,7 +11,7 @@ const styles = {
   }
 };
 
-class LoginPage extends React.Component {
+class Login extends React.Component {
   onLoginButtonClick = event => {
     event.preventDefault();
     userManager.signinRedirect();
@@ -27,4 +27,4 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+export default Login;

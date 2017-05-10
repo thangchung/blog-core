@@ -100,6 +100,7 @@ namespace BlogCore.MigrationConsole.SeedData
                         "openid",
                         "profile",
                         "role",
+                        "admin",
                         "blogcore_identity_scope",
                         "blogcore_api",
                         "blogcore_api_blogs",

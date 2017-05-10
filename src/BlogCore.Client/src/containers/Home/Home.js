@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
-import userManager from "../utils/userManager";
+import userManager from "../../utils/userManager";
 
-class HomeComponent extends Component {
-  onLogoutButtonClicked = event => {
-    event.preventDefault();
+class Home extends Component {
+  onLogoutButtonClicked = e => {
+    e.preventDefault();
     userManager.removeUser(); // removes the user data from sessionStorage
   };
 
@@ -20,6 +20,7 @@ class HomeComponent extends Component {
             <h3>Email: {profile.email} </h3>
           </div>}
         {profile === "" && <Link to="/login">Login</Link>}
+        {profile && <Link to="/blog-info">Blog Information</Link>}
         {profile &&
           <button onClick={this.onLogoutButtonClicked}>Logout</button>}
       </div>
@@ -40,4 +41,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, null)(HomeComponent);
+export default connect(mapStateToProps, null)(Home);
