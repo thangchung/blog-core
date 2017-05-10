@@ -105,13 +105,11 @@ namespace BlogCore.Web
 
             // Core & Infra register
             builder.RegisterGeneric(typeof(EfRepository<>))
-                .As(typeof(IRepository<>))
-                .InstancePerRequest();
+                .As(typeof(IRepository<>));
 
             // Web registers
             builder.RegisterType<BlogPresenter>()
-                .AsSelf()
-                .InstancePerRequest();
+                .AsSelf();
 
             builder.Populate(services);
             return builder.Build().Resolve<IServiceProvider>();

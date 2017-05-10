@@ -29,9 +29,13 @@ namespace BlogCore.Web.Blogs
         }
 
         [HttpGet("{id}"), AllowAnonymous]
-        public string Get(int id)
+        public ListOfBlogViewModel Get(int id)
         {
-            return "blog";
+            return new ListOfBlogViewModel
+            {
+                Title = $"Sample {id}",
+                Description = $"This is a sample {id}."
+            };
         }
 
         [HttpPost, Authorize("BlogsUser")]
