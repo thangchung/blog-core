@@ -2,7 +2,7 @@ import React from "react";
 import { IndexRoute, Route } from "react-router";
 import AppLayout from "./containers/App/AppLayout";
 import Home from "./containers/Home/Home";
-import BlogInfo from "./containers/Blog/Info";
+import BlogInfo from "./containers/Blog/BlogInfo";
 import Login from "./containers/Login/Login";
 import Callback from "./containers/Login/Callback";
 import NotFound from "./containers/NotFound/NotFound";

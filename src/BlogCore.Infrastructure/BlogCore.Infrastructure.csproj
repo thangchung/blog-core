@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.5.0" />
+    <PackageReference Include="AutoMapper" Version="6.0.2" />
     <PackageReference Include="FluentValidation" Version="6.4.1" />
     <PackageReference Include="MediatR" Version="3.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BlogCore.Core.Blogs.CreateBlog
 {
-    public class CreateBlogCommandInteractor : IAsyncRequestHandler<CreateBlogRequestMsg, CreateBlogResponseMsg>
+    public class CreateBlogCommandInteractor : IInputBoundary<CreateBlogRequestMsg, CreateBlogResponseMsg>
     {
         private readonly IRepository<Blog> _blogRepo;
         private readonly IValidator<CreateBlogRequestMsg> _createBlogValidator;

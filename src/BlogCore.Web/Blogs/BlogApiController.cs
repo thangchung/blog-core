@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlogCore.Core;
 using BlogCore.Core.Blogs.CreateBlog;
+using BlogCore.Core.Blogs.GetBlog;
 using BlogCore.Core.Blogs.ListOfBlog;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,39 +14,54 @@ namespace BlogCore.Web.Blogs
     [Route("api/blogs")]
     public class BlogApiController : Controller
     {
-        private readonly BlogPresenter _blogPresenter;
+        private readonly IObjectOutputBoundary<
+            CreateBlogResponseMsg,
+            CategoryCreatedViewModel> _blogCreatedPresenter;
+
+        private readonly IObjectOutputBoundary<
+            GetBlogResponseMsg,
+            BlogItemViewModel> _getBlogPresenter;
+
+        private readonly IEnumerableOutputBoundary<
+            IEnumerable<ListOfBlogResponseMsg>,
+            IEnumerable<BlogItemViewModel>> _listOfBlogPresenter;
+
         private readonly IMediator _mediator;
 
-        public BlogApiController(BlogPresenter blogPresenter, IMediator mediator)
+        public BlogApiController(
+            IMediator mediator,
+            IObjectOutputBoundary<CreateBlogResponseMsg, CategoryCreatedViewModel> blogCreatedPresenter,
+            IEnumerableOutputBoundary<IEnumerable<ListOfBlogResponseMsg>, IEnumerable<BlogItemViewModel>> listOfBlogPresenter,
+            IObjectOutputBoundary<GetBlogResponseMsg, BlogItemViewModel> getBlogPresenter)
         {
-            _blogPresenter = blogPresenter;
             _mediator = mediator;
+            _blogCreatedPresenter = blogCreatedPresenter;
+            _listOfBlogPresenter = listOfBlogPresenter;
+            _getBlogPresenter = getBlogPresenter;
         }
 
-        [HttpGet, Authorize("BlogsAdmin")]
-        public async Task<IEnumerable<ListOfBlogViewModel>> Get()
+        [HttpGet]
+        [Authorize("BlogsAdmin")]
+        public async Task<IEnumerable<BlogItemViewModel>> Get()
         {
             var blogResponses = await _mediator.Send(new ListOfBlogRequestMsg());
-            var viewModel = _blogPresenter.Handle(blogResponses);
-            return viewModel;
+            return _listOfBlogPresenter.Transform(blogResponses);
         }
 
-        [HttpGet("{id}"), AllowAnonymous]
-        public ListOfBlogViewModel Get(int id)
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<BlogItemViewModel> Get(Guid id)
         {
-            return new ListOfBlogViewModel
-            {
-                Title = $"Sample {id}",
-                Description = $"This is a sample {id}."
-            };
+            var blogResponse = await _mediator.Send(new GetBlogRequestMsg {Id = id});
+            return _getBlogPresenter.Transform(blogResponse);
         }
 
-        [HttpPost, Authorize("BlogsUser")]
+        [HttpPost]
+        [Authorize("BlogsUser")]
         public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
             var blogCreated = await _mediator.Send(blogRequest);
-            var viewModel = _blogPresenter.Handle(blogCreated);
-            return viewModel;
+            return _blogCreatedPresenter.Transform(blogCreated);
         }
 
         [HttpPut("{id}")]

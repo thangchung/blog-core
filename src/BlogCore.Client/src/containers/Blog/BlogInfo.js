@@ -3,11 +3,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as blogActions from "../../redux/modules/blogs";
 
-class Info extends Component {
+class BlogInfo extends Component {
   componentDidMount() {
-    console.log("xxx");
-    console.log(this.props);
-    this.props.getBlogInfo(1);
+    this.props.getBlogInfo("5B1FA7C2-F814-47F2-A2F3-03866F978C49");
   }
 
   render() {
@@ -30,4 +28,4 @@ function mapStateToProps(state, ownProps) {
 export const mapDispatchToProps = dispatch =>
   bindActionCreators(blogActions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Info);
+export default connect(mapStateToProps, mapDispatchToProps)(BlogInfo);

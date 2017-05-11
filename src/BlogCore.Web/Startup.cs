@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Core;
+using BlogCore.Core.Blogs.CreateBlog;
+using BlogCore.Core.Blogs.GetBlog;
+using BlogCore.Core.Blogs.ListOfBlog;
 using BlogCore.Infrastructure.Data;
 using BlogCore.Infrastructure.Security;
 using BlogCore.Web.Blogs;
@@ -108,8 +111,12 @@ namespace BlogCore.Web
                 .As(typeof(IRepository<>));
 
             // Web registers
-            builder.RegisterType<BlogPresenter>()
-                .AsSelf();
+            builder.RegisterType<ListOfBlogPresenter>()
+                .As<IEnumerableOutputBoundary<IEnumerable<ListOfBlogResponseMsg>, IEnumerable<BlogItemViewModel>>>();
+            builder.RegisterType<GetBlogPresenter>()
+                .As<IObjectOutputBoundary<GetBlogResponseMsg, BlogItemViewModel>>();
+            builder.RegisterType<CreateBlogPresenter>()
+                .As<IObjectOutputBoundary<CreateBlogResponseMsg, CategoryCreatedViewModel>>();
 
             builder.Populate(services);
             return builder.Build().Resolve<IServiceProvider>();
