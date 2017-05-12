@@ -20,9 +20,9 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div style={styles.root}>
-        <p>Please log in to continue</p>
-        <Button color="primary" onClick={this.onLoginButtonClick}>Login with IS4</Button>
+      <div>
+        <h1>Log in</h1>
+        <Button color="primary" onClick={this.onLoginButtonClick}>IS4</Button>
       </div>
     );
   }

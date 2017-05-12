@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class Header extends Component {
   sidebarToggle(e) {
@@ -22,8 +23,11 @@ class Header extends Component {
   }
 
   render() {
+    var { isAuth } = this.props;
+    console.log(isAuth);
     return (
       <header className="app-header navbar">
+      {isAuth &&
         <button
           className="navbar-toggler mobile-sidebar-toggler d-lg-none"
           onClick={this.mobileSidebarToggle}
@@ -31,7 +35,9 @@ class Header extends Component {
         >
           ☰
         </button>
+      }
         <a className="navbar-brand" href="#" />
+        {isAuth &&
         <ul className="nav navbar-nav d-md-down-none mr-auto">
           <li className="nav-item">
             <a
@@ -43,9 +49,23 @@ class Header extends Component {
             </a>
           </li>
         </ul>
+        }
       </header>
     );
   }
 }
 
-export default Header;
+function isAuth(state) {
+  if (state.oidc.user) {
+    return state.oidc.user != null;
+  }
+  return false;
+}
+
+function mapStateToProps(state, ownProps) {
+  return {
+    isAuth: isAuth(state)
+  };
+}
+
+export default connect(mapStateToProps, null)(Header);
