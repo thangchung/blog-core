@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BlogCore.Core.Blogs.CreateBlog;
 using BlogCore.Core.Posts;
 
@@ -19,5 +20,7 @@ namespace BlogCore.Core.Blogs
         public int DaysToComment { get; set; }
         public bool ModerateComments { get; set; }
         public List<Post> Posts { get; set; }
+
+        public bool HasPost => Posts?.Any() ?? false;
     }
 }

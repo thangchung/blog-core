@@ -16,8 +16,7 @@ namespace BlogCore.Web.Users
             _securityContext = securityContext;
         }
 
-        [HttpGet("currentInfo")]
-        [AllowAnonymous]
+        [HttpGet("settings"), AllowAnonymous]
         public List<string> Get()
         {
             return new List<string>
@@ -25,6 +24,36 @@ namespace BlogCore.Web.Users
                 $"Username: {_securityContext.GetCurrentUserName()}",
                 $"Email: {_securityContext.GetCurrentEmail()}"
             };
+        }
+
+        [HttpPut("settings")]
+        public string Put(int id)
+        {
+            return "Update settings.";
+        }
+
+        [HttpPut("{id}/disable")]
+        public string DisableProfile(int id)
+        {
+            return "Disable profile";
+        }
+
+        [HttpGet("{id}/photo")]
+        public string GetProfilePhoto(int id)
+        {
+            return "Get profile";
+        }
+
+        [HttpPut("{id}/photo")]
+        public string ChangeProfilePhoto(int id)
+        {
+            return "Change profile photo";
+        }
+
+        [HttpPost]
+        public string Register()
+        {
+            return "Register";
         }
     }
 }
