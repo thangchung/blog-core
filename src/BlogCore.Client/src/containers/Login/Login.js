@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from 'reactstrap';
 import userManager from "../../utils/userManager";
 
 const styles = {
@@ -21,7 +22,7 @@ class Login extends React.Component {
     return (
       <div style={styles.root}>
         <p>Please log in to continue</p>
-        <button onClick={this.onLoginButtonClick}>Login with IdentityServer4</button>
+        <Button color="primary" onClick={this.onLoginButtonClick}>Login with IS4</Button>
       </div>
     );
   }

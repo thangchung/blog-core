@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
+import { Button } from 'reactstrap';
 import userManager from "../../utils/userManager";
 
 class Home extends Component {
@@ -19,10 +20,10 @@ class Home extends Component {
             <h3>Username: {profile.name}</h3>
             <h3>Email: {profile.email} </h3>
           </div>}
-        {profile === "" && <Link to="/login">Login</Link>}
-        {profile && <Link to="/blog-info">Blog Information</Link>}
+        {profile === "" && <Button color="default"><Link to="/login">Login</Link></Button>}
+        {profile && <Button color="link"><Link to="/blog-info">Blog Information</Link></Button>}
         {profile &&
-          <button onClick={this.onLogoutButtonClicked}>Logout</button>}
+          <Button color="default" onClick={this.onLogoutButtonClicked}>Logout</Button>}
       </div>
     );
   }

@@ -26,15 +26,15 @@ namespace BlogCore.Web.Blogs
             IEnumerable<ListOfBlogResponseMsg>,
             IEnumerable<BlogItemViewModel>> _listOfBlogPresenter;
 
-        private readonly IMediator _mediator;
+        private readonly IMediator _useCases;
 
         public BlogApiController(
-            IMediator mediator,
+            IMediator useCases,
             IObjectOutputBoundary<CreateBlogResponseMsg, CategoryCreatedViewModel> blogCreatedPresenter,
             IEnumerableOutputBoundary<IEnumerable<ListOfBlogResponseMsg>, IEnumerable<BlogItemViewModel>> listOfBlogPresenter,
             IObjectOutputBoundary<GetBlogResponseMsg, BlogItemViewModel> getBlogPresenter)
         {
-            _mediator = mediator;
+            _useCases = useCases;
             _blogCreatedPresenter = blogCreatedPresenter;
             _listOfBlogPresenter = listOfBlogPresenter;
             _getBlogPresenter = getBlogPresenter;
@@ -44,7 +44,7 @@ namespace BlogCore.Web.Blogs
         [Authorize("BlogsAdmin")]
         public async Task<IEnumerable<BlogItemViewModel>> Get()
         {
-            var blogResponses = await _mediator.Send(new ListOfBlogRequestMsg());
+            var blogResponses = await _useCases.Send(new ListOfBlogRequestMsg());
             return _listOfBlogPresenter.Transform(blogResponses);
         }
 
@@ -52,7 +52,7 @@ namespace BlogCore.Web.Blogs
         [AllowAnonymous]
         public async Task<BlogItemViewModel> Get(Guid id)
         {
-            var blogResponse = await _mediator.Send(new GetBlogRequestMsg {Id = id});
+            var blogResponse = await _useCases.Send(new GetBlogRequestMsg {Id = id});
             return _getBlogPresenter.Transform(blogResponse);
         }
 
@@ -60,7 +60,7 @@ namespace BlogCore.Web.Blogs
         [Authorize("BlogsUser")]
         public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
-            var blogCreated = await _mediator.Send(blogRequest);
+            var blogCreated = await _useCases.Send(blogRequest);
             return _blogCreatedPresenter.Transform(blogCreated);
         }
 
