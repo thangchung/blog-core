@@ -19,7 +19,7 @@ dotnet run
 ### Bootstrap the application
 > Run the **IdentityServer** first
 
-> Run the **BlogCore.Web**
+> Run the **BlogCore.Api**
 
 > Username: **root@blogcore.com** / Password: **r00t1@3**
 

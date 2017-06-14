@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace BlogCore.Web
+namespace BlogCore.Api
 {
     public class Program
     {

@@ -11,7 +11,6 @@ namespace BlogCore.Core
 
     public interface IEnumerableOutputBoundary<in TInput, out TOutput>
         where TInput : IEnumerable<IMesssage>
-        where TOutput : IEnumerable<IViewModel>
     {
         TOutput Transform(TInput input);
     }

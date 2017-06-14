@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace BlogCore.Core.Blogs.ListOfBlog
+namespace BlogCore.Core.Blogs.ListOutBlogs
 {
     public class ListOfBlogRequestMsg : IMesssage, IRequest<IEnumerable<ListOfBlogResponseMsg>>
     {

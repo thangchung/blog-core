@@ -6,16 +6,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using BlogCore.Api.Blogs;
 using BlogCore.Core;
-using BlogCore.Core.Blogs.CreateBlog;
-using BlogCore.Core.Blogs.GetBlog;
-using BlogCore.Core.Blogs.ListOfBlog;
 using BlogCore.Infrastructure.Data;
 using BlogCore.Infrastructure.Security;
-using BlogCore.Web.Blogs;
 using FluentValidation.AspNetCore;
 using IdentityServer4.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,8 +20,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using MediatR;
 
-namespace BlogCore.Web
+namespace BlogCore.Api
 {
     public class Startup
     {
@@ -98,7 +95,8 @@ namespace BlogCore.Web
             services.AddMediatR(
                 typeof(EntityBase).GetTypeInfo().Assembly,
                 typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
-                typeof(Startup).GetTypeInfo().Assembly);
+                typeof(Startup).GetTypeInfo().Assembly
+            );
 
             // security context
             builder.RegisterType<SecurityContextProvider>()
@@ -111,12 +109,8 @@ namespace BlogCore.Web
                 .As(typeof(IRepository<>));
 
             // Web registers
-            builder.RegisterType<ListOfBlogPresenter>()
-                .As<IEnumerableOutputBoundary<IEnumerable<ListOfBlogResponseMsg>, IEnumerable<BlogItemViewModel>>>();
-            builder.RegisterType<GetBlogPresenter>()
-                .As<IObjectOutputBoundary<GetBlogResponseMsg, BlogItemViewModel>>();
-            builder.RegisterType<CreateBlogPresenter>()
-                .As<IObjectOutputBoundary<CreateBlogResponseMsg, CategoryCreatedViewModel>>();
+            builder.RegisterType<BlogPresenterFactory>()
+                .AsSelf();
 
             builder.Populate(services);
             return builder.Build().Resolve<IServiceProvider>();

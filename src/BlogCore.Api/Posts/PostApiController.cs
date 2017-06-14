@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.Web.Posts
+namespace BlogCore.Api.Posts
 {
     [Route("api/posts")]
     public class PostApiController : Controller

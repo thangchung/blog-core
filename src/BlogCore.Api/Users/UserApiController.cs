@@ -3,7 +3,7 @@ using BlogCore.Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.Web.Users
+namespace BlogCore.Api.Users
 {
     [Authorize]
     [Route("api/users")]

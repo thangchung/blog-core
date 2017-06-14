@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace BlogCore.Core.Blogs.ListOfBlog
+namespace BlogCore.Core.Blogs.ListOutBlogs
 {
     public class BlogQueryInteractor : IAsyncRequestHandler<ListOfBlogRequestMsg, IEnumerable<ListOfBlogResponseMsg>>
     {

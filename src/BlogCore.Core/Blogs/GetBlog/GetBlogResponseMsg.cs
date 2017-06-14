@@ -4,10 +4,24 @@ namespace BlogCore.Core.Blogs.GetBlog
 {
     public class GetBlogResponseMsg : IMesssage
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Theme { get; set; }
-        public string Image { get; set; }
+        public GetBlogResponseMsg(
+            Guid id, 
+            string title, 
+            string description, 
+            string theme, 
+            string image)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
+            Theme = theme;
+            Image = image;
+        }
+
+        public Guid Id { get; }
+        public string Title { get; }
+        public string Description { get; }
+        public string Theme { get; }
+        public string Image { get; }
     }
 }

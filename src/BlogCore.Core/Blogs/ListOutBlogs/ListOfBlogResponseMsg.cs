@@ -1,4 +1,4 @@
-namespace BlogCore.Core.Blogs.ListOfBlog
+namespace BlogCore.Core.Blogs.ListOutBlogs
 {
     public class ListOfBlogResponseMsg : IMesssage
     {
@@ -12,8 +12,8 @@ namespace BlogCore.Core.Blogs.ListOfBlog
             Image = image;
         }
 
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public string Image { get; private set; }
+        public string Title { get; }
+        public string Description { get; }
+        public string Image { get; }
     }
 }

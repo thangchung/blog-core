@@ -1,6 +1,6 @@
 ﻿using BlogCore.Core;
 
-namespace BlogCore.Web.Blogs
+namespace BlogCore.Api.Blogs
 {
     public class CategoryCreatedViewModel : IViewModel
     {

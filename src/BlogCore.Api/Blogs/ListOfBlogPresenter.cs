@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BlogCore.Core;
-using BlogCore.Core.Blogs.ListOfBlog;
+using BlogCore.Core.Blogs.ListOutBlogs;
 
-namespace BlogCore.Web.Blogs
+namespace BlogCore.Api.Blogs
 {
-    public class ListOfBlogPresenter : IEnumerableOutputBoundary<IEnumerable<ListOfBlogResponseMsg>, IEnumerable<BlogItemViewModel>>
+    public class ListOfBlogPresenter : 
+        IEnumerableOutputBoundary<IEnumerable<ListOfBlogResponseMsg>, 
+            IEnumerable<BlogItemViewModel>>
     {
         public IEnumerable<BlogItemViewModel> Transform(IEnumerable<ListOfBlogResponseMsg> input)
         {

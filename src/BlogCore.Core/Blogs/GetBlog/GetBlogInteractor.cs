@@ -15,14 +15,12 @@ namespace BlogCore.Core.Blogs.GetBlog
         public async Task<GetBlogResponseMsg> Handle(GetBlogRequestMsg message)
         {
             var blog = await _blogRepo.GetByIdAsync(message.Id);
-            return new GetBlogResponseMsg
-            {
-                Id = blog.Id,
-                Title = blog.Title,
-                Description = blog.Description,
-                Image = blog.Image,
-                Theme = blog.Theme
-            };
+            return new GetBlogResponseMsg(
+                blog.Id, 
+                blog.Title, 
+                blog.Description, 
+                blog.Image, 
+                blog.Theme);
         }
     }
 }

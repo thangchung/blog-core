@@ -1,9 +1,10 @@
 ﻿using BlogCore.Core;
 using BlogCore.Core.Blogs.CreateBlog;
 
-namespace BlogCore.Web.Blogs
+namespace BlogCore.Api.Blogs
 {
-    public class CreateBlogPresenter : IObjectOutputBoundary<CreateBlogResponseMsg, CategoryCreatedViewModel>
+    public class CreateBlogPresenter : 
+        IObjectOutputBoundary<CreateBlogResponseMsg, CategoryCreatedViewModel>
     {
         public CategoryCreatedViewModel Transform(CreateBlogResponseMsg input)
         {
