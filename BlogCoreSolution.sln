@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26510.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Web", "src\BlogCore.Web\BlogCore.Web.csproj", "{0215B8E8-0F65-4E91-B9DF-543360163171}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Core", "src\BlogCore.Core\BlogCore.Core.csproj", "{F2D2FDF7-F966-42CA-A155-496CD6466D52}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Infrastructure", "src\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj", "{5ACFBEA6-8815-4087-9BE4-84476D4229CF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCore.MigrationConsole", "src\BlogCore.MigrationConsole\BlogCore.MigrationConsole.csproj", "{F8C47864-9780-4FBE-99D0-8B9D2EBDB39B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5CD78C25-100E-41EA-BCA5-698FAEBCAC31}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.IdentityServer", "src\BlogCore.IdentityServer\BlogCore.IdentityServer.csproj", "{1B16297E-95D5-4377-97E5-453EA5252ED4}"
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "BlogCore.Client", "src\BlogCore.Client\BlogCore.Client.njsproj", "{9BCE3E1D-E985-4ED0-A191-0EC4AEC9BF31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Migrator", "src\BlogCore.Migrator\BlogCore.Migrator.csproj", "{6F151A1E-2E90-42EE-AC04-1920BC4C9FEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +42,6 @@ Global
 		{5ACFBEA6-8815-4087-9BE4-84476D4229CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ACFBEA6-8815-4087-9BE4-84476D4229CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ACFBEA6-8815-4087-9BE4-84476D4229CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8C47864-9780-4FBE-99D0-8B9D2EBDB39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8C47864-9780-4FBE-99D0-8B9D2EBDB39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8C47864-9780-4FBE-99D0-8B9D2EBDB39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8C47864-9780-4FBE-99D0-8B9D2EBDB39B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{391A138F-3E00-48E1-B0CF-3D8FB8672A2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{391A138F-3E00-48E1-B0CF-3D8FB8672A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{391A138F-3E00-48E1-B0CF-3D8FB8672A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,17 +50,16 @@ Global
 		{1B16297E-95D5-4377-97E5-453EA5252ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B16297E-95D5-4377-97E5-453EA5252ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B16297E-95D5-4377-97E5-453EA5252ED4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BCE3E1D-E985-4ED0-A191-0EC4AEC9BF31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BCE3E1D-E985-4ED0-A191-0EC4AEC9BF31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BCE3E1D-E985-4ED0-A191-0EC4AEC9BF31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BCE3E1D-E985-4ED0-A191-0EC4AEC9BF31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F151A1E-2E90-42EE-AC04-1920BC4C9FEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F151A1E-2E90-42EE-AC04-1920BC4C9FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F151A1E-2E90-42EE-AC04-1920BC4C9FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F151A1E-2E90-42EE-AC04-1920BC4C9FEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F8C47864-9780-4FBE-99D0-8B9D2EBDB39B} = {0E593F42-52D6-444D-ABBA-445A3AB2ACDF}
 		{391A138F-3E00-48E1-B0CF-3D8FB8672A2F} = {0E593F42-52D6-444D-ABBA-445A3AB2ACDF}
-		{9BCE3E1D-E985-4ED0-A191-0EC4AEC9BF31} = {0E593F42-52D6-444D-ABBA-445A3AB2ACDF}
+		{6F151A1E-2E90-42EE-AC04-1920BC4C9FEF} = {0E593F42-52D6-444D-ABBA-445A3AB2ACDF}
 	EndGlobalSection
 EndGlobal
