@@ -55,10 +55,10 @@ namespace BlogCore.Api
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("BlogsAdmin",
-                    policyAdmin => { policyAdmin.RequireClaim("role", "blogcore_blogs__admin"); });
-                options.AddPolicy("BlogsUser",
-                    policyUser => { policyUser.RequireClaim("role", "blogcore_blogs__user"); });
+                options.AddPolicy("Admin",
+                    policyAdmin => { policyAdmin.RequireClaim("role", "admin"); });
+                options.AddPolicy("User",
+                    policyUser => { policyUser.RequireClaim("role", "user"); });
             });
 
             services.AddMvc()
@@ -83,8 +83,7 @@ namespace BlogCore.Api
                         AuthorizationUrl = "http://localhost:8483/connect/authorize",
                         Scopes = new Dictionary<string, string>
                         {
-                            {"blogcore_api_blogs", "The Blog APIs"},
-                            {"blogcore_api_posts", "The Post APIs"}
+                            {"blogcore_api_scope", "The Blog APIs"},
                         }
                     });
                 });
@@ -128,10 +127,8 @@ namespace BlogCore.Api
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 Authority = "http://localhost:8483",
-                // ApiName = "blogcore_api_scope",
-                // ApiSecret = "secret",
                 SaveToken = true,
-                AllowedScopes = new[] { "blogcore_api_blogs", "blogcore_api_posts" },
+                AllowedScopes = new[] { "blogcore_api_scope" },
                 RequireHttpsMetadata = false,
                 JwtBearerEvents = new JwtBearerEvents
                 {

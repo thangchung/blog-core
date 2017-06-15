@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlogCore.MigrationConsole.Migrations.PersistedGrantDb
+namespace BlogCore.Migrator.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
     [Migration("20170505040933_InitialIdentityServerPersistedGrantDbMigration")]

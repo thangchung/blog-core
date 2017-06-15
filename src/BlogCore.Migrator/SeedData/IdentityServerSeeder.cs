@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using IdentityServer4.Models;
 
-namespace BlogCore.MigrationConsole.SeedData
+namespace BlogCore.Migrator.SeedData
 {
     public static class IdentityServerSeeder
     {
@@ -17,10 +17,7 @@ namespace BlogCore.MigrationConsole.SeedData
                     {
                         "role",
                         "admin",
-                        "user",
-                        "blogcore_blogs",
-                        "blogcore_blogs__admin",
-                        "blogcore_blogs__user"
+                        "user"
                     })
             };
         }
@@ -35,7 +32,7 @@ namespace BlogCore.MigrationConsole.SeedData
             {
                 new ApiResource
                 {
-                    Name = "blogcore_api",
+                    Name = "blogcore_api_resource",
                     DisplayName = "My Blog Core API",
                     ApiSecrets =
                     {
@@ -45,30 +42,13 @@ namespace BlogCore.MigrationConsole.SeedData
                     {
                         new Scope
                         {
-                            Name = "blogcore_api_blogs",
+                            Name = "blogcore_api_scope",
                             DisplayName = "The blog API scope.",
                             UserClaims =
                             {
                                 "role",
                                 "admin",
-                                "user",
-                                "blogcore_blogs",
-                                "blogcore_blogs__admin",
-                                "blogcore_blogs__user"
-                            }
-                        },
-                        new Scope
-                        {
-                            Name = "blogcore_api_posts",
-                            DisplayName = "The post API scope.",
-                            UserClaims =
-                            {
-                                "role",
-                                "admin",
-                                "user",
-                                "blogcore_posts",
-                                "blogcore_posts__admin",
-                                "blogcore_posts__user"
+                                "user"
                             }
                         }
                     }
@@ -100,11 +80,10 @@ namespace BlogCore.MigrationConsole.SeedData
                         "openid",
                         "profile",
                         "role",
+                        "user",
                         "admin",
                         "blogcore_identity_scope",
-                        "blogcore_api",
-                        "blogcore_api_blogs",
-                        "blogcore_api_posts"
+                        "blogcore_api_scope"
                     }
                 },
 
@@ -128,10 +107,10 @@ namespace BlogCore.MigrationConsole.SeedData
                         "openid",
                         "profile",
                         "role",
+                        "user",
+                        "admin",
                         "blogcore_identity_scope",
-                        "blogcore_api",
-                        "blogcore_api_blogs",
-                        "blogcore_api_posts"
+                        "blogcore_api_scope"
                     }
                 }
             };

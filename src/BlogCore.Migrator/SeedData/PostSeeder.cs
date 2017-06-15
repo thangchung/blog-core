@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using BlogCore.Core.Posts;
 using BlogCore.Infrastructure.Data;
 
-namespace BlogCore.MigrationConsole.SeedData
+namespace BlogCore.Migrator.SeedData
 {
     public static class PostSeeder
     {

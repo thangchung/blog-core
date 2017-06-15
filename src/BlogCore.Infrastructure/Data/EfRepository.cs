@@ -22,7 +22,7 @@ namespace BlogCore.Infrastructure.Data
                 .SingleOrDefaultAsync(e => e.Id.Equals(id));
         }
 
-        public async Task<IEnumerable<TEntity>> ListAsync()
+        public async Task<IReadOnlyList<TEntity>> ListAsync()
         {
             return await DbContext.Set<TEntity>().ToListAsync();
         }

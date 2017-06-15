@@ -19,6 +19,8 @@ namespace BlogCore.Core.Blogs
         public int PostsPerPage { get; set; }
         public int DaysToComment { get; set; }
         public bool ModerateComments { get; set; }
+        public string OwnerEmail { get; set; }
+
         public List<Post> Posts { get; set; }
 
         public bool HasPost => Posts?.Any() ?? false;

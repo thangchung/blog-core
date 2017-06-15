@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 
-namespace BlogCore.MigrationConsole
+namespace BlogCore.Migrator
 {
     public class BlogCoreDbContextFactory : IDbContextFactory<BlogCoreDbContext>
     {

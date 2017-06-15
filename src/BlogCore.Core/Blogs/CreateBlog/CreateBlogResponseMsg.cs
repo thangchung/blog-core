@@ -1,11 +1,12 @@
-﻿using FluentValidation.Results;
+﻿using System;
+using FluentValidation.Results;
 
 namespace BlogCore.Core.Blogs.CreateBlog
 {
     public class CreateBlogResponseMsg : IMesssage
     {
         public CreateBlogResponseMsg(
-            long? blogId, 
+            Guid blogId, 
             ValidationResult validationResult)
         {
             BlogId = blogId;
@@ -13,6 +14,6 @@ namespace BlogCore.Core.Blogs.CreateBlog
         }
 
         public ValidationResult ValidationResult { get; }
-        public long? BlogId { get; }
+        public Guid BlogId { get; }
     }
 }

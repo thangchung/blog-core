@@ -26,7 +26,7 @@ namespace BlogCore.Api.Blogs
         }
 
         [HttpGet]
-        [Authorize("BlogsAdmin")]
+        [Authorize("Admin")]
         public async Task<IEnumerable<BlogItemViewModel>> Get()
         {
             var blogResponses = await _eventAggregator.Send(new ListOfBlogRequestMsg());
@@ -46,7 +46,7 @@ namespace BlogCore.Api.Blogs
         }
 
         [HttpPost]
-        [Authorize("BlogsUser")]
+        [Authorize("User")]
         public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
             var blogCreated = await _eventAggregator.Send(blogRequest);
@@ -56,13 +56,13 @@ namespace BlogCore.Api.Blogs
         }
 
         [HttpPut("{id}")]
-        [Authorize("BlogsUser")]
+        [Authorize("User")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         [HttpDelete("{id}")]
-        [Authorize("BlogsUser")]
+        [Authorize("User")]
         public void Delete(int id)
         {
         }

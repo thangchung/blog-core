@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlogCore.MigrationConsole.Migrations.ConfigurationDb
+namespace BlogCore.Migrator.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
     [Migration("20170505040955_InitialIdentityServerConfigurationDbMigration")]

@@ -40,11 +40,11 @@ namespace BlogCore.IdentityServer.Services
             var isAdmin = claims.Any(claim => claim.Type == "role" && claim.Value == "admin");
             if (isAdmin)
             {
-                claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs__admin"));
+                claims.Add(new Claim(JwtClaimTypes.Role, "admin"));
             }
             else
             {
-                claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs__user"));
+                claims.Add(new Claim(JwtClaimTypes.Role, "user"));
             }
 
             claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));

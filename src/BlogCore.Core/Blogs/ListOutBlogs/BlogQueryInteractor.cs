@@ -18,6 +18,7 @@ namespace BlogCore.Core.Blogs.ListOutBlogs
         {
             var blogs = await _blogRepo.ListAsync();
             var responses = blogs.Select(x => new ListOfBlogResponseMsg(
+                x.Id,
                 x.Title,
                 x.Description,
                 x.Image

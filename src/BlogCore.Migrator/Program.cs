@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Infrastructure.Data;
-using BlogCore.MigrationConsole.SeedData;
+using BlogCore.Migrator.SeedData;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlogCore.MigrationConsole
+namespace BlogCore.Migrator
 {
     internal class Program
     {

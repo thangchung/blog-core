@@ -1,8 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace BlogCore.MigrationConsole.Migrations.BlogCoreDb
+namespace BlogCore.Migrator.Migrations.BlogCoreDb
 {
     public partial class InitDatabase : Migration
     {
@@ -21,6 +22,7 @@ namespace BlogCore.MigrationConsole.Migrations.BlogCoreDb
                     Description = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
                     ModerateComments = table.Column<bool>(nullable: false),
+                    OwnerEmail = table.Column<string>(nullable: true),
                     PostsPerPage = table.Column<int>(nullable: false),
                     Theme = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true)

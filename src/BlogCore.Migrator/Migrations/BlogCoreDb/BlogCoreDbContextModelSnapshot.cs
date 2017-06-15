@@ -1,10 +1,11 @@
 ﻿using System;
-using BlogCore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using BlogCore.Infrastructure.Data;
 
-namespace BlogCore.MigrationConsole.Migrations.BlogCoreDb
+namespace BlogCore.Migrator.Migrations.BlogCoreDb
 {
     [DbContext(typeof(BlogCoreDbContext))]
     partial class BlogCoreDbContextModelSnapshot : ModelSnapshot
@@ -12,7 +13,7 @@ namespace BlogCore.MigrationConsole.Migrations.BlogCoreDb
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.1")
+                .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BlogCore.Core.Blogs.Blog", b =>
@@ -27,6 +28,8 @@ namespace BlogCore.MigrationConsole.Migrations.BlogCoreDb
                     b.Property<string>("Image");
 
                     b.Property<bool>("ModerateComments");
+
+                    b.Property<string>("OwnerEmail");
 
                     b.Property<int>("PostsPerPage");
 

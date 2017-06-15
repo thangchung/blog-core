@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 
@@ -17,11 +18,11 @@ namespace BlogCore.Core.Blogs.CreateBlog
             _mediator = mediator;
         }
 
-        public Task<CreateBlogResponseMsg> Handle(CreateBlogRequestMsg message)
+        public async Task<CreateBlogResponseMsg> Handle(CreateBlogRequestMsg message)
         {
             var validationResult = _createBlogValidator.Validate(message);
             if (validationResult.IsValid == false)
-                return Task.FromResult(new CreateBlogResponseMsg(null, validationResult));
+                return await Task.FromResult(new CreateBlogResponseMsg(Guid.Empty, validationResult));
 
             var blog = new Blog
             {
@@ -32,15 +33,15 @@ namespace BlogCore.Core.Blogs.CreateBlog
                 DaysToComment = message.DaysToComment,
                 ModerateComments = message.ModerateComments
             };
-            var blogCreated = _blogRepo.AddAsync(blog);
+            var blogCreated = await _blogRepo.AddAsync(blog);
 
             // raise events
             foreach (var @event in blog.Events)
             {
-                _mediator.Publish(@event);
+                await _mediator.Publish(@event);
             }
 
-            return Task.FromResult(new CreateBlogResponseMsg(blogCreated.Id, validationResult));
+            return await Task.FromResult(new CreateBlogResponseMsg(blogCreated.Id, validationResult));
         }
     }
 }

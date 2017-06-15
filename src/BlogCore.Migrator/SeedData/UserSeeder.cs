@@ -4,7 +4,7 @@ using BlogCore.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace BlogCore.MigrationConsole.SeedData
+namespace BlogCore.Migrator.SeedData
 {
     public static class UserSeeder
     {
@@ -37,9 +37,27 @@ namespace BlogCore.MigrationConsole.SeedData
                 LockoutEnabled = true
             };
 
-            rootUser.PasswordHash = password.HashPassword(rootUser, "r00t1@3");
+            var normalUser = new AppUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "user1",
+                Email = "user1@blogcore.com",
+                NormalizedEmail = "user1@blogcore.com",
+                NormalizedUserName = "user1@blogcore.com",
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+                LockoutEnabled = true
+            };
+
+            rootUser.PasswordHash = password.HashPassword(rootUser, "r00t");
+            normalUser.PasswordHash = password.HashPassword(normalUser, "user1");
+
+            // add users
             await userStore.CreateAsync(rootUser);
+            await userStore.CreateAsync(normalUser);
+
+            // assign roles
             await userStore.AddToRoleAsync(rootUser, "admin");
+            await userStore.AddToRoleAsync(normalUser, "user");
         }
     }
 }
