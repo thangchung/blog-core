@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace BlogCore.Infrastructure.Security
+namespace BlogCore.Core.Security
 {
     public interface ISecurityContextPrincipal
     {

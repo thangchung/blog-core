@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Api.Blogs;
 using BlogCore.Core;
+using BlogCore.Core.Security;
+using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.Data;
 using BlogCore.Infrastructure.Security;
-using FluentValidation.AspNetCore;
-using IdentityServer4.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Swagger;
-using MediatR;
 
 namespace BlogCore.Api
 {
@@ -28,12 +22,7 @@ namespace BlogCore.Api
     {
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = env.BuildConfiguration();
             Environment = env;
         }
 
@@ -44,58 +33,20 @@ namespace BlogCore.Api
         {
             var builder = new ContainerBuilder();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    policy => policy.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
-            });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Admin",
-                    policyAdmin => { policyAdmin.RequireClaim("role", "admin"); });
-                options.AddPolicy("User",
-                    policyUser => { policyUser.RequireClaim("role", "user"); });
-            });
-
-            services.AddMvc()
-                .AddFluentValidation(
-                    fv => fv.RegisterValidatorsFromAssembly(typeof(BlogCoreDbContext).GetTypeInfo().Assembly));
+            services.AddCorsForBlog()
+                .AddAuthorizationForBlog()
+                .AddMvcForBlog(typeof(BlogCoreDbContext).GetTypeInfo().Assembly);
 
             if (Environment.IsDevelopment())
-                services.AddSwaggerGen(options =>
-                {
-                    options.DescribeAllEnumsAsStrings();
-                    options.SwaggerDoc("v1", new Info
-                    {
-                        Title = "Blog Core",
-                        Version = "v1",
-                        Description = "Blog Core APIs"
-                    });
-                    options.AddSecurityDefinition("oauth2", new OAuth2Scheme
-                    {
-                        Type = "oauth2",
-                        Flow = "implicit",
-                        TokenUrl = "http://localhost:8483/connect/token",
-                        AuthorizationUrl = "http://localhost:8483/connect/authorize",
-                        Scopes = new Dictionary<string, string>
-                        {
-                            {"blogcore_api_scope", "The Blog APIs"},
-                        }
-                    });
-                });
+                services.AddSwaggerForBlog();
 
             services.AddDbContext<BlogCoreDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
-
-            services.AddMediatR(
-                typeof(EntityBase).GetTypeInfo().Assembly,
-                typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
-                typeof(Startup).GetTypeInfo().Assembly
-            );
+                    options.UseSqlServer(Configuration.GetConnectionString("MainDb")))
+                .AddMediatR(
+                    typeof(EntityBase).GetTypeInfo().Assembly,
+                    typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
+                    typeof(Startup).GetTypeInfo().Assembly
+                );
 
             // security context
             builder.RegisterType<SecurityContextProvider>()
@@ -120,56 +71,13 @@ namespace BlogCore.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            JwtSecurityTokenHandler.DefaultInboundClaimFilter.Clear();
-            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
-            {
-                AuthenticationScheme = "Bearer",
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                Authority = "http://localhost:8483",
-                SaveToken = true,
-                AllowedScopes = new[] { "blogcore_api_scope" },
-                RequireHttpsMetadata = false,
-                JwtBearerEvents = new JwtBearerEvents
-                {
-                    OnTokenValidated = OnTokenValidated
-                }
-            });
-
-            app.UseStaticFiles().UseCors("CorsPolicy");
-            app.UseMvc();
+            app.UseIdentityServerForBlog()
+                .UseStaticFiles()
+                .UseCors("CorsPolicy")
+                .UseMvc();
 
             if (env.IsDevelopment())
-                app.UseSwagger().UseSwaggerUI(
-                    c =>
-                    {
-                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog Core APIs");
-                        c.ConfigureOAuth2("swagger", "secret".Sha256(), "swagger", "swagger");
-                    });
-        }
-
-        private static async Task OnTokenValidated(TokenValidatedContext context)
-        {
-            // get current principal
-            var principal = context.Ticket.Principal;
-
-            // get current claim identity
-            var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
-
-            // build up the id_token and put it into current claim identity
-            var headerToken =
-                context.Request.Headers["Authorization"][0].Substring(context.Ticket.AuthenticationScheme.Length + 1);
-            claimsIdentity?.AddClaim(new Claim("id_token", headerToken));
-
-            var securityContextInstance = context.HttpContext.RequestServices.GetService<ISecurityContext>();
-            var securityContextPrincipal = securityContextInstance as ISecurityContextPrincipal;
-            if (securityContextPrincipal == null)
-            {
-                throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
-            }
-            securityContextPrincipal.Principal = principal;
-
-            await Task.FromResult(0);
+                app.UseSwaggerUiForBlog();
         }
     }
 }

@@ -8,12 +8,14 @@ namespace BlogCore.Core.Blogs.ListOutBlogs
             Guid id,
             string title,
             string description,
-            string image)
+            string image,
+            string theme)
         {
             Id = id;
             Title = title;
             Description = description;
             Image = image;
+            Theme = theme;
         }
 
         public Guid Id { get; }
@@ -21,5 +23,6 @@ namespace BlogCore.Core.Blogs.ListOutBlogs
         public string Title { get; }
         public string Description { get; }
         public string Image { get; }
+        public string Theme { get; }
     }
 }

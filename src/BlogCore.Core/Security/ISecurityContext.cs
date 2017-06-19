@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace BlogCore.Infrastructure.Security
+namespace BlogCore.Core.Security
 {
     public interface ISecurityContext
     {
         bool HasPrincipal();
+        bool IsAdmin();
         Guid GetCurrentUserId();
         string GetCurrentUserName();
         string GetCurrentEmail();

@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlogCore.Core\BlogCore.Core.csproj" />
+    <ProjectReference Include="..\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
   </ItemGroup>
 

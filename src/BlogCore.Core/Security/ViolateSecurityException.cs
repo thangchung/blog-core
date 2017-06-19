@@ -1,6 +1,4 @@
-﻿using BlogCore.Core;
-
-namespace BlogCore.Infrastructure.Security
+﻿namespace BlogCore.Core.Security
 {
     public class ViolateSecurityException : BlogCoreException
     {
