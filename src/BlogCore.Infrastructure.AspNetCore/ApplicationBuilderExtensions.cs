@@ -1,6 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BlogCore.Core;
+using BlogCore.Core.Blogs;
 using BlogCore.Core.Security;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -58,6 +61,12 @@ namespace BlogCore.Infrastructure.AspNetCore
             if (securityContextPrincipal == null)
                 throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
             securityContextPrincipal.Principal = principal;
+
+            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IRepository<Blog>>();
+            var email = securityContextInstance.GetCurrentEmail();
+            var blogs = await blogRepoInstance.ListAsync();
+            var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);
+            securityContextPrincipal.SetBlog(blog);
 
             await Task.FromResult(0);
         }

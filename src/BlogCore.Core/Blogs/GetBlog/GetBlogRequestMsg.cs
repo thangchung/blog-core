@@ -5,6 +5,11 @@ namespace BlogCore.Core.Blogs.GetBlog
 {
     public class GetBlogRequestMsg : IMesssage, IRequest<GetBlogResponseMsg>
     {
-        public Guid Id { get; set; }
+        public GetBlogRequestMsg(Guid id)
+        {
+            Id = id;            
+        }
+
+        public Guid Id { get; }
     }
 }

@@ -19,8 +19,8 @@ namespace BlogCore.Core.Blogs.GetBlog
                 blog.Id, 
                 blog.Title, 
                 blog.Description, 
-                blog.Image, 
-                blog.Theme);
+                blog.Theme, 
+                blog.Image);
         }
     }
 }

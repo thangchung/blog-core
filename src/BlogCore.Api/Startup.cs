@@ -2,7 +2,6 @@
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using BlogCore.Api.Blogs;
 using BlogCore.Core;
 using BlogCore.Core.Security;
 using BlogCore.Infrastructure.AspNetCore;
@@ -42,11 +41,7 @@ namespace BlogCore.Api
 
             services.AddDbContext<BlogCoreDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MainDb")))
-                .AddMediatR(
-                    typeof(EntityBase).GetTypeInfo().Assembly,
-                    typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
-                    typeof(Startup).GetTypeInfo().Assembly
-                );
+                .AddMediatR(RegisteredAssemblies());
 
             // security context
             builder.RegisterType<SecurityContextProvider>()
@@ -54,13 +49,12 @@ namespace BlogCore.Api
                 .As<ISecurityContextPrincipal>()
                 .InstancePerLifetimeScope();
 
-            // Core & Infra register
+            // core & infra register
             builder.RegisterGeneric(typeof(EfRepository<>))
                 .As(typeof(IRepository<>));
 
-            // Web registers
-            builder.RegisterType<BlogPresenterFactory>()
-                .AsSelf();
+            // scan modules in other assemblies
+            builder.RegisterAssemblyModules(RegisteredAssemblies());
 
             builder.Populate(services);
             return builder.Build().Resolve<IServiceProvider>();
@@ -78,6 +72,16 @@ namespace BlogCore.Api
 
             if (env.IsDevelopment())
                 app.UseSwaggerUiForBlog();
+        }
+
+        private static Assembly[] RegisteredAssemblies()
+        {
+            return new[]
+            {
+                typeof(EntityBase).GetTypeInfo().Assembly,
+                typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
+                typeof(Startup).GetTypeInfo().Assembly
+            };
         }
     }
 }

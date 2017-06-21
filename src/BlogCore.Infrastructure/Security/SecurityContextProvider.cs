@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
+using BlogCore.Core.Blogs;
 using BlogCore.Core.Security;
 using BlogCore.Infrastructure.Extensions;
 
@@ -12,6 +13,7 @@ namespace BlogCore.Infrastructure.Security
         private const string UserName = "name";
         private const string IdentityProvider = "idp";
         private const string Role = "role";
+        private Blog _blog;
 
         public bool HasPrincipal()
         {
@@ -38,12 +40,22 @@ namespace BlogCore.Infrastructure.Security
             return FindFirstValue(IdentityProvider);
         }
 
+        public Guid GetBlogId()
+        {
+            return _blog.Id;
+        }
+
         public bool IsAdmin()
         {
             return FindFirstValue(Role).ToLowerInvariant() == "admin";
         }
 
         public ClaimsPrincipal Principal { get; set; }
+
+        public void SetBlog(Blog blog)
+        {
+            _blog = blog;
+        }
 
         private string FindFirstValue(string claimType)
         {

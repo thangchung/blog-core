@@ -10,5 +10,6 @@ namespace BlogCore.Core.Security
         string GetCurrentUserName();
         string GetCurrentEmail();
         string GetIndentityProvider();
+        Guid GetBlogId();
     }
 }

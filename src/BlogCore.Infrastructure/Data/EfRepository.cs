@@ -19,17 +19,19 @@ namespace BlogCore.Infrastructure.Data
         public virtual async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await DbContext.Set<TEntity>()
+                .AsNoTracking()
                 .SingleOrDefaultAsync(e => e.Id.Equals(id));
         }
 
         public async Task<IReadOnlyList<TEntity>> ListAsync()
         {
-            return await DbContext.Set<TEntity>().ToListAsync();
+            return await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> spec)
         {
             return await DbContext.Set<TEntity>()
+                .AsNoTracking()
                 .Include(spec.Include)
                 .Where(spec.Criteria)
                 .ToListAsync();

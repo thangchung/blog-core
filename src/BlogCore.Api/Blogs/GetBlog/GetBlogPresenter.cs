@@ -1,7 +1,8 @@
-﻿using BlogCore.Core;
+﻿using BlogCore.Api.Blogs.Shared;
+using BlogCore.Core;
 using BlogCore.Core.Blogs.GetBlog;
 
-namespace BlogCore.Api.Blogs
+namespace BlogCore.Api.Blogs.GetBlog
 {
     public class GetBlogPresenter : IObjectOutputBoundary<GetBlogResponseMsg, BlogItemViewModel>
     {
