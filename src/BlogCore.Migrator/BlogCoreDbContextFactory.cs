@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;

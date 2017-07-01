@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.EfCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 

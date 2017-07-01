@@ -1,5 +1,5 @@
 ﻿using BlogCore.IdentityServer.Services;
-using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.EfCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

@@ -4,7 +4,7 @@ using BlogCore.IdentityServer.Models;
 using BlogCore.IdentityServer.Models.ManageViewModels;
 using BlogCore.IdentityServer.Quickstart;
 using BlogCore.IdentityServer.Services;
-using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.EfCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

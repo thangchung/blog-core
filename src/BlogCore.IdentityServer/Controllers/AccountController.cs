@@ -6,7 +6,7 @@ using BlogCore.IdentityServer.Models.AccountViewModels;
 using BlogCore.IdentityServer.Quickstart;
 using BlogCore.IdentityServer.Quickstart.Account;
 using BlogCore.IdentityServer.Services;
-using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.EfCore;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authorization;

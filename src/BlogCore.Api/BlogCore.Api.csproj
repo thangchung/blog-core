@@ -37,7 +37,12 @@
   <ItemGroup>
     <ProjectReference Include="..\BlogCore.Core\BlogCore.Core.csproj" />
     <ProjectReference Include="..\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
+    <ProjectReference Include="..\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\BlogCore.Blog.Domain\BlogCore.Blog.Domain.csproj" />
+    <ProjectReference Include="..\Modules\BlogCore.Blog.Infrastructure\BlogCore.Blog.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\BlogCore.Security.Domain\BlogCore.Security.Domain.csproj" />
+    <ProjectReference Include="..\Modules\BlogCore.Security.Infrastructure\BlogCore.Security.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

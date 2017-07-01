@@ -1,9 +1,9 @@
 ﻿using System;
+using BlogCore.Infrastructure.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using BlogCore.Infrastructure.Data;
 
 namespace BlogCore.Migrator.Migrations.BlogCoreDb
 {

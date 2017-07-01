@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlogCore.Core.Blogs;
-using BlogCore.Infrastructure.Data;
+using BlogCore.Core.BlogContext;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Migrator.SeedData
 {

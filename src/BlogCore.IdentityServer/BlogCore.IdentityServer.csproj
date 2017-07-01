@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlogCore.Core\BlogCore.Core.csproj" />
+    <ProjectReference Include="..\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
   </ItemGroup>
 

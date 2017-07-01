@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Core;
-using BlogCore.Core.Security;
 using BlogCore.Infrastructure.AspNetCore;
-using BlogCore.Infrastructure.Data;
-using BlogCore.Infrastructure.Security;
+using BlogCore.Infrastructure.EfCore;
+using BlogCore.Security.Domain;
+using BlogCore.Security.Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace BlogCore.Api
 {
@@ -65,7 +69,7 @@ namespace BlogCore.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseIdentityServerForBlog()
+            app.UseIdentityServerForBlog(OnTokenValidated)
                 .UseStaticFiles()
                 .UseCors("CorsPolicy")
                 .UseMvc();
@@ -82,6 +86,34 @@ namespace BlogCore.Api
                 typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
                 typeof(Startup).GetTypeInfo().Assembly
             };
+        }
+
+        private static async Task OnTokenValidated(TokenValidatedContext context)
+        {
+            // get current principal
+            var principal = context.Ticket.Principal;
+
+            // get current claim identity
+            var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
+
+            // build up the id_token and put it into current claim identity
+            var headerToken =
+                context.Request.Headers["Authorization"][0].Substring(context.Ticket.AuthenticationScheme.Length + 1);
+            claimsIdentity?.AddClaim(new Claim("id_token", headerToken));
+
+            var securityContextInstance = context.HttpContext.RequestServices.GetService<ISecurityContext>();
+            var securityContextPrincipal = securityContextInstance as ISecurityContextPrincipal;
+            if (securityContextPrincipal == null)
+                throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
+            securityContextPrincipal.Principal = principal;
+
+            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IRepository<Blog.Domain.Blog>>();
+            var email = securityContextInstance.GetCurrentEmail();
+            var blogs = await blogRepoInstance.ListAsync();
+            var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);
+            securityContextPrincipal.SetBlog(blog);
+
+            await Task.FromResult(0);
         }
     }
 }

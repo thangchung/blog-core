@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using BlogCore.Infrastructure.Data;
+using BlogCore.Infrastructure.EfCore;
 using BlogCore.Migrator.SeedData;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
