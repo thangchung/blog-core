@@ -7,11 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogCore.Infrastructure.EfCore
 {
-    public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
+    public class EfRepository<TDbContext, TEntity> : IRepository<TDbContext, TEntity> 
+        where TEntity : EntityBase
+        where TDbContext : DbContext
     {
-        protected readonly BlogCoreDbContext DbContext;
+        protected readonly TDbContext DbContext;
 
-        public EfRepository(BlogCoreDbContext dbContext)
+        public EfRepository(TDbContext dbContext)
         {
             DbContext = dbContext;
         }
@@ -56,5 +58,19 @@ namespace BlogCore.Infrastructure.EfCore
             DbContext.Entry(entity).State = EntityState.Modified;
             await DbContext.SaveChangesAsync();
         }
+    }
+
+    public class EfRepository<TEntity> : EfRepository<BlogCoreDbContext, TEntity> where TEntity : EntityBase
+    {
+        public EfRepository(BlogCoreDbContext dbContext) : base(dbContext)
+        {
+        }
+    }
+
+    public interface IRepository<TDbContext, TEntity> : IRepository<TEntity>
+        where TEntity : EntityBase
+        where TDbContext : DbContext
+    {
+           
     }
 }

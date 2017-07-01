@@ -38,7 +38,7 @@ namespace BlogCore.Api
 
             services.AddCorsForBlog()
                 .AddAuthorizationForBlog()
-                .AddMvcForBlog(typeof(BlogCoreDbContext).GetTypeInfo().Assembly);
+                .AddMvcForBlog(RegisteredAssemblies());
 
             if (Environment.IsDevelopment())
                 services.AddSwaggerForBlog();
@@ -54,8 +54,8 @@ namespace BlogCore.Api
                 .InstancePerLifetimeScope();
 
             // core & infra register
-            builder.RegisterGeneric(typeof(EfRepository<>))
-                .As(typeof(IRepository<>));
+            builder.RegisterGeneric(typeof(EfRepository<,>))
+                .As(typeof(IRepository<,>));
 
             // scan modules in other assemblies
             builder.RegisterAssemblyModules(RegisteredAssemblies());

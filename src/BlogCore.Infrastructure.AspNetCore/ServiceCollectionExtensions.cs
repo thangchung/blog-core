@@ -31,11 +31,13 @@ namespace BlogCore.Infrastructure.AspNetCore
             });
         }
 
-        public static IMvcBuilder AddMvcForBlog(this IServiceCollection services, Assembly assembly)
+        public static IMvcBuilder AddMvcForBlog(this IServiceCollection services, Assembly[] assemblies)
         {
-            return services.AddMvc()
-                .AddFluentValidation(
+            var serviceCollection = services.AddMvc();
+            foreach (var assembly in assemblies)
+                serviceCollection.AddFluentValidation(
                     fv => fv.RegisterValidatorsFromAssembly(assembly));
+            return serviceCollection;
         }
 
         public static IServiceCollection AddSwaggerForBlog(this IServiceCollection services)
@@ -57,7 +59,7 @@ namespace BlogCore.Infrastructure.AspNetCore
                     AuthorizationUrl = "http://localhost:8483/connect/authorize",
                     Scopes = new Dictionary<string, string>
                     {
-                        {"blogcore_api_scope", "The Blog APIs"},
+                        {"blogcore_api_scope", "The Blog APIs"}
                     }
                 });
             });
