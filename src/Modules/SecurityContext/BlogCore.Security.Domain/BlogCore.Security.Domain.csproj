@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BlogCore.Core\BlogCore.Core.csproj" />
+    <ProjectReference Include="..\..\..\BlogCore.Core\BlogCore.Core.csproj" />
   </ItemGroup>
 
 </Project>
