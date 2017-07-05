@@ -14,14 +14,21 @@ namespace BlogCore.Blog.Domain
         public string Title { get; set; }
         public string Description { get; set; }
         public string Theme { get; set; }
-        public string Image { get; set; }
-        public int PostsPerPage { get; set; }
-        public int DaysToComment { get; set; }
-        public bool ModerateComments { get; set; }
+        public string ImageFilePath { get; set; }
         public string OwnerEmail { get; set; }
-
+        public bool InActive { get; private set; }
+        public BlogSetting BlogSetting { get; set; }
         public List<PostId> Posts { get; set; }
-
         public bool HasPost => Posts?.Any() ?? false;
+
+        public void Deactivate()
+        {
+            InActive = true;
+        }
+
+        public void Activate()
+        {
+            InActive = false;
+        }
     }
 }

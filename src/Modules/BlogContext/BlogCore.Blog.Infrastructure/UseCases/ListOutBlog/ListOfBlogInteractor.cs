@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogCore.AccessControl.Domain;
 using BlogCore.Core;
-using BlogCore.Security.Domain;
 using MediatR;
 
 namespace BlogCore.Blog.Infrastructure.UseCases.ListOutBlog
@@ -27,7 +27,7 @@ namespace BlogCore.Blog.Infrastructure.UseCases.ListOutBlog
                     x.Id,
                     x.Title,
                     x.Description,
-                    x.Image,
+                    x.ImageFilePath,
                     x.Theme
                 ));
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BlogCore.Security.Domain;
+using BlogCore.AccessControl.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

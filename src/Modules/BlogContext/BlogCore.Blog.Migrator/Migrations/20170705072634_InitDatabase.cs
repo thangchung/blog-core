@@ -12,23 +12,44 @@ namespace BlogCore.Blog.Migrator.Migrations
                 name: "blog");
 
             migrationBuilder.CreateTable(
-                name: "Blogs",
+                name: "BlogSettings",
                 schema: "blog",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     DaysToComment = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
                     ModerateComments = table.Column<bool>(nullable: false),
+                    PostsPerPage = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogSettings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Blogs",
+                schema: "blog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    BlogSettingId = table.Column<Guid>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    ImageFilePath = table.Column<string>(nullable: true),
+                    InActive = table.Column<bool>(nullable: false),
                     OwnerEmail = table.Column<string>(nullable: true),
-                    PostsPerPage = table.Column<int>(nullable: false),
                     Theme = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Blogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blogs_BlogSettings_BlogSettingId",
+                        column: x => x.BlogSettingId,
+                        principalSchema: "blog",
+                        principalTable: "BlogSettings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,6 +73,12 @@ namespace BlogCore.Blog.Migrator.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Blogs_BlogSettingId",
+                schema: "blog",
+                table: "Blogs",
+                column: "BlogSettingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PostIds_BlogId",
                 schema: "blog",
                 table: "PostIds",
@@ -66,6 +93,10 @@ namespace BlogCore.Blog.Migrator.Migrations
 
             migrationBuilder.DropTable(
                 name: "Blogs",
+                schema: "blog");
+
+            migrationBuilder.DropTable(
+                name: "BlogSettings",
                 schema: "blog");
         }
     }

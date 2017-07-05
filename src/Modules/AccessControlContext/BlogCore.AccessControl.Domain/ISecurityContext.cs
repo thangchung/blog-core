@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlogCore.Security.Domain
+namespace BlogCore.AccessControl.Domain
 {
     public interface ISecurityContext
     {

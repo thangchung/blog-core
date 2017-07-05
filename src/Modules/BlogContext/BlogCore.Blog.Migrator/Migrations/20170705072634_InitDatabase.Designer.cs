@@ -8,7 +8,7 @@ using BlogCore.Blog.Infrastructure;
 namespace BlogCore.Blog.Migrator.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20170701102054_InitDatabase")]
+    [Migration("20170705072634_InitDatabase")]
     partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,17 +22,15 @@ namespace BlogCore.Blog.Migrator.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("DaysToComment");
+                    b.Property<Guid?>("BlogSettingId");
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Image");
+                    b.Property<string>("ImageFilePath");
 
-                    b.Property<bool>("ModerateComments");
+                    b.Property<bool>("InActive");
 
                     b.Property<string>("OwnerEmail");
-
-                    b.Property<int>("PostsPerPage");
 
                     b.Property<string>("Theme");
 
@@ -40,7 +38,25 @@ namespace BlogCore.Blog.Migrator.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BlogSettingId");
+
                     b.ToTable("Blogs","blog");
+                });
+
+            modelBuilder.Entity("BlogCore.Blog.Domain.BlogSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DaysToComment");
+
+                    b.Property<bool>("ModerateComments");
+
+                    b.Property<int>("PostsPerPage");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlogSettings","blog");
                 });
 
             modelBuilder.Entity("BlogCore.Blog.Domain.PostId", b =>
@@ -55,6 +71,13 @@ namespace BlogCore.Blog.Migrator.Migrations
                     b.HasIndex("BlogId");
 
                     b.ToTable("PostIds","blog");
+                });
+
+            modelBuilder.Entity("BlogCore.Blog.Domain.Blog", b =>
+                {
+                    b.HasOne("BlogCore.Blog.Domain.BlogSetting", "BlogSetting")
+                        .WithMany()
+                        .HasForeignKey("BlogSettingId");
                 });
 
             modelBuilder.Entity("BlogCore.Blog.Domain.PostId", b =>

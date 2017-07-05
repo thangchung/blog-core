@@ -21,7 +21,7 @@ namespace BlogCore.Blog.Infrastructure.UseCases.GetBlog
                 blog.Title, 
                 blog.Description, 
                 blog.Theme, 
-                blog.Image);
+                blog.ImageFilePath);
         }
     }
 }

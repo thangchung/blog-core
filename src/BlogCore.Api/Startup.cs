@@ -7,8 +7,6 @@ using Autofac.Extensions.DependencyInjection;
 using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
-using BlogCore.Security.Domain;
-using BlogCore.Security.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using BlogCore.AccessControl.Domain;
+using BlogCore.AccessControl.Infrastructure;
 
 namespace BlogCore.Api
 {

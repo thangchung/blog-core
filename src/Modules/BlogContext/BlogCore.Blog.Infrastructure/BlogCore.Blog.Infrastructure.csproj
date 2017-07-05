@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="7.0.3" />
+    <PackageReference Include="FluentValidation" Version="7.1.0" />
     <PackageReference Include="MediatR" Version="3.0.1" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
@@ -20,7 +20,7 @@
     <ProjectReference Include="..\..\..\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\..\..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\SecurityContext\BlogCore.Security.Domain\BlogCore.Security.Domain.csproj" />
+    <ProjectReference Include="..\..\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
     <ProjectReference Include="..\BlogCore.Blog.Domain\BlogCore.Blog.Domain.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlogCore.Security.Migrator
+namespace BlogCore.AccessControl.Migrator
 {
     class Program
     {

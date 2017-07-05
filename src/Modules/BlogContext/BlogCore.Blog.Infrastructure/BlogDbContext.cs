@@ -22,6 +22,7 @@ namespace BlogCore.Blog.Infrastructure
 
             var valueTypes = new List<Type>
             {
+                typeof(BlogSetting),
                 typeof(PostId)
             };
 

@@ -1,6 +1,6 @@
 ﻿using BlogCore.Core;
 
-namespace BlogCore.Security.Domain
+namespace BlogCore.AccessControl.Domain
 {
     public class ViolateSecurityException : BlogCoreException
     {

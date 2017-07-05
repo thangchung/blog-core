@@ -30,9 +30,7 @@ namespace BlogCore.Blog.Infrastructure.UseCases.CreateBlog
                 Title = message.Title,
                 Description = message.Description,
                 Theme = message.Theme,
-                PostsPerPage = message.PostsPerPage,
-                DaysToComment = message.DaysToComment,
-                ModerateComments = message.ModerateComments
+                BlogSetting = new Domain.BlogSetting(Guid.NewGuid(), message.PostsPerPage, message.DaysToComment, message.ModerateComments)
             };
             var blogCreated = await _blogRepo.AddAsync(blog);
 

@@ -10,12 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
-    <PackageReference Include="AutoMapper" Version="6.1.0" />
-    <PackageReference Include="FluentValidation" Version="7.0.3" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.0.3" />
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="FluentValidation" Version="7.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.0" />
     <PackageReference Include="MediatR" Version="3.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="2.0.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
@@ -39,10 +39,10 @@
     <ProjectReference Include="..\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
+    <ProjectReference Include="..\Modules\AccessControlContext\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\BlogContext\BlogCore.Blog.Domain\BlogCore.Blog.Domain.csproj" />
     <ProjectReference Include="..\Modules\BlogContext\BlogCore.Blog.Infrastructure\BlogCore.Blog.Infrastructure.csproj" />
-    <ProjectReference Include="..\Modules\SecurityContext\BlogCore.Security.Domain\BlogCore.Security.Domain.csproj" />
-    <ProjectReference Include="..\Modules\SecurityContext\BlogCore.Security.Infrastructure\BlogCore.Security.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

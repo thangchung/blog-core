@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{035F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlogContext", "BlogContext", "{DF0C3691-A4F0-401F-A752-FE5E189D93D1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecurityContext", "SecurityContext", "{7D558667-20EA-4AE5-815F-B8D0FA2A57CD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AccessControlContext", "AccessControlContext", "{7D558667-20EA-4AE5-815F-B8D0FA2A57CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostContext", "PostContext", "{AEBE2AA3-7860-48DD-8143-B9BF6CC67E9F}"
 EndProject
@@ -42,11 +42,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Blog.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Blog.Migrator", "src\Modules\BlogContext\BlogCore.Blog.Migrator\BlogCore.Blog.Migrator.csproj", "{760BA0B6-F370-48B3-B247-C80E855E4A31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Security.Domain", "src\Modules\SecurityContext\BlogCore.Security.Domain\BlogCore.Security.Domain.csproj", "{7B9C4ECC-E22A-42F3-A1ED-696DB70B02C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.AccessControl.Domain", "src\Modules\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj", "{BFF126EE-967C-442A-871C-40757BA3B543}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Security.Infrastructure", "src\Modules\SecurityContext\BlogCore.Security.Infrastructure\BlogCore.Security.Infrastructure.csproj", "{EE09DC8F-447A-464A-800A-B1D40D1F0243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.AccessControl.Infrastructure", "src\Modules\AccessControlContext\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj", "{8B376611-9CA5-41F8-A79D-2F430C40C00B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Security.Migrator", "src\Modules\SecurityContext\BlogCore.Security.Migrator\BlogCore.Security.Migrator.csproj", "{500F3FC3-570B-485F-A3EE-675D67E0C790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.AccessControl.Migrator", "src\Modules\AccessControlContext\BlogCore.AccessControl.Migrator\BlogCore.AccessControl.Migrator.csproj", "{6AD6AFC0-55EA-4D92-9A2A-2C31BD5298AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,18 +94,18 @@ Global
 		{760BA0B6-F370-48B3-B247-C80E855E4A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{760BA0B6-F370-48B3-B247-C80E855E4A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{760BA0B6-F370-48B3-B247-C80E855E4A31}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B9C4ECC-E22A-42F3-A1ED-696DB70B02C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B9C4ECC-E22A-42F3-A1ED-696DB70B02C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B9C4ECC-E22A-42F3-A1ED-696DB70B02C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B9C4ECC-E22A-42F3-A1ED-696DB70B02C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE09DC8F-447A-464A-800A-B1D40D1F0243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE09DC8F-447A-464A-800A-B1D40D1F0243}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE09DC8F-447A-464A-800A-B1D40D1F0243}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE09DC8F-447A-464A-800A-B1D40D1F0243}.Release|Any CPU.Build.0 = Release|Any CPU
-		{500F3FC3-570B-485F-A3EE-675D67E0C790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{500F3FC3-570B-485F-A3EE-675D67E0C790}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{500F3FC3-570B-485F-A3EE-675D67E0C790}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{500F3FC3-570B-485F-A3EE-675D67E0C790}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF126EE-967C-442A-871C-40757BA3B543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF126EE-967C-442A-871C-40757BA3B543}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF126EE-967C-442A-871C-40757BA3B543}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF126EE-967C-442A-871C-40757BA3B543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B376611-9CA5-41F8-A79D-2F430C40C00B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B376611-9CA5-41F8-A79D-2F430C40C00B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B376611-9CA5-41F8-A79D-2F430C40C00B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B376611-9CA5-41F8-A79D-2F430C40C00B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD6AFC0-55EA-4D92-9A2A-2C31BD5298AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD6AFC0-55EA-4D92-9A2A-2C31BD5298AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD6AFC0-55EA-4D92-9A2A-2C31BD5298AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD6AFC0-55EA-4D92-9A2A-2C31BD5298AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,8 +121,8 @@ Global
 		{B97B7EEB-2BC8-44C9-AF53-1D167D960749} = {DF0C3691-A4F0-401F-A752-FE5E189D93D1}
 		{2570D233-0246-444F-854F-701338940E09} = {DF0C3691-A4F0-401F-A752-FE5E189D93D1}
 		{760BA0B6-F370-48B3-B247-C80E855E4A31} = {DF0C3691-A4F0-401F-A752-FE5E189D93D1}
-		{7B9C4ECC-E22A-42F3-A1ED-696DB70B02C8} = {7D558667-20EA-4AE5-815F-B8D0FA2A57CD}
-		{EE09DC8F-447A-464A-800A-B1D40D1F0243} = {7D558667-20EA-4AE5-815F-B8D0FA2A57CD}
-		{500F3FC3-570B-485F-A3EE-675D67E0C790} = {7D558667-20EA-4AE5-815F-B8D0FA2A57CD}
+		{BFF126EE-967C-442A-871C-40757BA3B543} = {7D558667-20EA-4AE5-815F-B8D0FA2A57CD}
+		{8B376611-9CA5-41F8-A79D-2F430C40C00B} = {7D558667-20EA-4AE5-815F-B8D0FA2A57CD}
+		{6AD6AFC0-55EA-4D92-9A2A-2C31BD5298AC} = {7D558667-20EA-4AE5-815F-B8D0FA2A57CD}
 	EndGlobalSection
 EndGlobal
