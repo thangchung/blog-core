@@ -35,8 +35,8 @@ namespace BlogCore.Blog.Migrator.Migrations
                     BlogSettingId = table.Column<Guid>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ImageFilePath = table.Column<string>(nullable: true),
-                    InActive = table.Column<bool>(nullable: false),
                     OwnerEmail = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
                     Theme = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true)
                 },

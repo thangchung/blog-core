@@ -9,4 +9,17 @@ namespace BlogCore.Core
         {
         }
     }
+
+    public class DomainValidationException : BlogCoreException
+    {
+        public DomainValidationException(string message) 
+            : this(message, null)
+        {
+        }
+
+        public DomainValidationException(string message, Exception innerEx) 
+            : base(message, innerEx)
+        {
+        }
+    }
 }

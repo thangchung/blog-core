@@ -4,7 +4,7 @@ using BlogCore.Core;
 using FluentValidation;
 using MediatR;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.CreateBlog
+namespace BlogCore.Blog.UseCases.CreateBlog
 {
     public class CreateBlogInteractor : IInputBoundary<CreateBlogRequestMsg, CreateBlogResponse>
     {

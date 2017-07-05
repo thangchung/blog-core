@@ -2,7 +2,7 @@
 using BlogCore.Core;
 using MediatR;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.GetBlog
+namespace BlogCore.Blog.UseCases.GetBlog
 {
     public class GetBlogRequest : IMesssage, IRequest<GetBlogResponse>
     {

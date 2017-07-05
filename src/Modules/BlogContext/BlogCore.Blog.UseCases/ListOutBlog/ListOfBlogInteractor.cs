@@ -5,7 +5,7 @@ using BlogCore.AccessControl.Domain;
 using BlogCore.Core;
 using MediatR;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.ListOutBlog
+namespace BlogCore.Blog.UseCases.ListOutBlog
 {
     public class BlogInteractor : IAsyncRequestHandler<ListOfBlogRequest, IEnumerable<ListOfBlogResponse>>
     {

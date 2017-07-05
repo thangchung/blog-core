@@ -17,7 +17,11 @@ namespace BlogCore.Blog.Migrator
                     ImageFilePath = null,
                     Theme = "default",
                     BlogSetting = new Domain.BlogSetting(Guid.NewGuid(), 10, 10, true),
-                    OwnerEmail = "root@blogcore.com"
+                    OwnerEmail = "root@blogcore.com",
+                    Posts = new System.Collections.Generic.List<Domain.PostId>
+                    {
+                        new Domain.PostId(new Guid("f2384450-37af-4e4d-aaab-6c6dcc6c81d7"))
+                    }
                 });
 
             await dbContext.Set<Domain.Blog>().AddAsync(new Domain.Blog
@@ -28,7 +32,11 @@ namespace BlogCore.Blog.Migrator
                 ImageFilePath = null,
                 Theme = "default",
                 BlogSetting = new Domain.BlogSetting(Guid.NewGuid(), 10, 10, true),
-                OwnerEmail = "user1@blogcore.com"
+                OwnerEmail = "user1@blogcore.com",
+                Posts = new System.Collections.Generic.List<Domain.PostId>
+                {
+                    new Domain.PostId(new Guid("5ac8dbfa-c258-43db-b0a1-2c1be6160d67"))
+                }
             });
 
             await dbContext.SaveChangesAsync();

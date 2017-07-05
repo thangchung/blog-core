@@ -2,7 +2,7 @@
 using BlogCore.Core;
 using FluentValidation.Results;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.CreateBlog
+namespace BlogCore.Blog.UseCases.CreateBlog
 {
     public class CreateBlogResponse : IMesssage
     {

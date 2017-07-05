@@ -1,9 +1,9 @@
 ﻿using Autofac;
-using BlogCore.Blog.Infrastructure.UseCases.CreateBlog;
-using BlogCore.Blog.Infrastructure.UseCases.GetBlog;
-using BlogCore.Blog.Infrastructure.UseCases.ListOutBlog;
+using BlogCore.Blog.UseCases.CreateBlog;
+using BlogCore.Blog.UseCases.GetBlog;
+using BlogCore.Blog.UseCases.ListOutBlog;
 
-namespace BlogCore.Blog.Infrastructure
+namespace BlogCore.Blog.UseCases
 {
     public class BlogModule : Module
     {

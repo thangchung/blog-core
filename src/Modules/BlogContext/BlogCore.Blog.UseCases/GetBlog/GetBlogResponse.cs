@@ -1,7 +1,7 @@
 ﻿using System;
 using BlogCore.Core;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.GetBlog
+namespace BlogCore.Blog.UseCases.GetBlog
 {
     public class GetBlogResponse : IMesssage
     {

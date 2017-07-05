@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using BlogCore.Blog.Infrastructure.UseCases.Shared;
+using BlogCore.Blog.UseCases.Shared;
 using BlogCore.Core;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.ListOutBlog
+namespace BlogCore.Blog.UseCases.ListOutBlog
 {
     public class ListOfBlogPresenter : IEnumerableOutputBoundary<
         IEnumerable<ListOfBlogResponse>,

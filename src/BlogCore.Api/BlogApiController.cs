@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlogCore.Blog.Infrastructure.UseCases.CreateBlog;
-using BlogCore.Blog.Infrastructure.UseCases.GetBlog;
-using BlogCore.Blog.Infrastructure.UseCases.ListOutBlog;
-using BlogCore.Blog.Infrastructure.UseCases.Shared;
+using BlogCore.Blog.UseCases.CreateBlog;
+using BlogCore.Blog.UseCases.GetBlog;
+using BlogCore.Blog.UseCases.ListOutBlog;
+using BlogCore.Blog.UseCases.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

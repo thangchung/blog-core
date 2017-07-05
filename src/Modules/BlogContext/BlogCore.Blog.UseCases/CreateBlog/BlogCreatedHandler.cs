@@ -1,7 +1,7 @@
 ﻿using BlogCore.Blog.Domain;
 using MediatR;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.CreateBlog
+namespace BlogCore.Blog.UseCases.CreateBlog
 {
     public class BlogCreatedHandler : INotificationHandler<BlogCreatedEvent>
     {

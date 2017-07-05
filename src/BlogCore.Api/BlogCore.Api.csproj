@@ -43,6 +43,7 @@
     <ProjectReference Include="..\Modules\AccessControlContext\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\BlogContext\BlogCore.Blog.Domain\BlogCore.Blog.Domain.csproj" />
     <ProjectReference Include="..\Modules\BlogContext\BlogCore.Blog.Infrastructure\BlogCore.Blog.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\BlogContext\BlogCore.Blog.UseCases\BlogCore.Blog.UseCases.csproj" />
   </ItemGroup>
 
 </Project>

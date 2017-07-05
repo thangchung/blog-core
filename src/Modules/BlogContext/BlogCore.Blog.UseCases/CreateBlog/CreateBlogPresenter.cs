@@ -1,6 +1,6 @@
 ﻿using BlogCore.Core;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.CreateBlog
+namespace BlogCore.Blog.UseCases.CreateBlog
 {
     public class CreateBlogPresenter : 
         IObjectOutputBoundary<CreateBlogResponse, CategoryCreatedViewModel>

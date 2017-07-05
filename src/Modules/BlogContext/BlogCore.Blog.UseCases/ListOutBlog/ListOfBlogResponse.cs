@@ -1,7 +1,7 @@
 using System;
 using BlogCore.Core;
 
-namespace BlogCore.Blog.Infrastructure.UseCases.ListOutBlog
+namespace BlogCore.Blog.UseCases.ListOutBlog
 {
     public class ListOfBlogResponse : IMesssage
     {

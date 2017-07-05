@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using BlogCore.Blog.Infrastructure;
+using BlogCore.Blog.Domain;
 
 namespace BlogCore.Blog.Migrator.Migrations
 {
@@ -27,9 +28,9 @@ namespace BlogCore.Blog.Migrator.Migrations
 
                     b.Property<string>("ImageFilePath");
 
-                    b.Property<bool>("InActive");
-
                     b.Property<string>("OwnerEmail");
+
+                    b.Property<int>("Status");
 
                     b.Property<string>("Theme");
 

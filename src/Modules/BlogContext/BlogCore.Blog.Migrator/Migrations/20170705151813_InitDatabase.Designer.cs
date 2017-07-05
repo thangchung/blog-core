@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using BlogCore.Blog.Infrastructure;
+using BlogCore.Blog.Domain;
 
 namespace BlogCore.Blog.Migrator.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20170705072634_InitDatabase")]
+    [Migration("20170705151813_InitDatabase")]
     partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,9 +29,9 @@ namespace BlogCore.Blog.Migrator.Migrations
 
                     b.Property<string>("ImageFilePath");
 
-                    b.Property<bool>("InActive");
-
                     b.Property<string>("OwnerEmail");
+
+                    b.Property<int>("Status");
 
                     b.Property<string>("Theme");
 
