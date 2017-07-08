@@ -5,6 +5,7 @@
 ### Bootstrap the application
 
 > Need to run the [migration](https://github.com/thangchung/blog-core/wiki/Migrations) first
+
 > Run the **IdentityServer**
 
 > Run the **BlogCore.Api**
