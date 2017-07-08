@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BlogCore.Core\BlogCore.Core.csproj" />
+    <ProjectReference Include="..\..\..\Framework\BlogCore.Core\BlogCore.Core.csproj" />
   </ItemGroup>
 
 </Project>

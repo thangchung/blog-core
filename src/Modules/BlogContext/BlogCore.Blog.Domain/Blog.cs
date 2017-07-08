@@ -10,7 +10,6 @@ namespace BlogCore.Blog.Domain
     {
         private Blog() : base(Guid.NewGuid())
         {
-            
         }
 
         public Blog(string title, string ownerEmail) 

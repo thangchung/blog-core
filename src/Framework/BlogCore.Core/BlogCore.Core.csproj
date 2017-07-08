@@ -15,14 +15,4 @@
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TagContext\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="BlogCore.Core">
-      <HintPath>..\BlogCore.Infrastructure.EfCore\bin\Debug\netstandard1.6\BlogCore.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

@@ -12,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BlogCore.Core\BlogCore.Core.csproj" />
-    <ProjectReference Include="..\..\..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Framework\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
     <ProjectReference Include="..\..\BlogContext\BlogCore.Blog.Domain\BlogCore.Blog.Domain.csproj" />
     <ProjectReference Include="..\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
   </ItemGroup>
