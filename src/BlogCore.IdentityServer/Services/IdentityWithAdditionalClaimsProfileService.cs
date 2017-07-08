@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BlogCore.Infrastructure.EfCore;
+using BlogCore.AccessControl.Domain;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Extensions;

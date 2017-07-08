@@ -1,5 +1,6 @@
-﻿using BlogCore.IdentityServer.Services;
-using BlogCore.Infrastructure.EfCore;
+﻿using BlogCore.AccessControl.Domain;
+using BlogCore.AccessControl.Infrastructure;
+using BlogCore.IdentityServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -31,11 +32,11 @@ namespace BlogCore.IdentityServer
             var connString = Configuration.GetConnectionString("DefaultConnection");
 
             // Add framework services.
-            services.AddDbContext<BlogCoreDbContext>(options =>
+            services.AddDbContext<IdentityServerDbContext>(options =>
                 options.UseSqlServer(connString));
 
             services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<BlogCoreDbContext>()
+                .AddEntityFrameworkStores<IdentityServerDbContext>()
                 .AddDefaultTokenProviders()
                 .AddIdentityServerUserClaimsPrincipalFactory();
 

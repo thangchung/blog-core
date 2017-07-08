@@ -59,18 +59,4 @@ namespace BlogCore.Infrastructure.EfCore
             await DbContext.SaveChangesAsync();
         }
     }
-
-    public class EfRepository<TEntity> : EfRepository<BlogCoreDbContext, TEntity>
-        where TEntity : EntityBase
-    {
-        public EfRepository(BlogCoreDbContext dbContext) : base(dbContext)
-        {
-        }
-    }
-
-    public interface IRepository<TDbContext, TEntity> : IRepository<TEntity>
-        where TEntity : EntityBase
-        where TDbContext : DbContext
-    {
-    }
 }

@@ -17,8 +17,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using BlogCore.AccessControl.Domain;
+using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.AccessControl.Infrastructure;
-using BlogCore.Blog.Domain;
+using BlogCore.AccessControl.Infrastructure.SecurityContext;
+using BlogCore.Blog.Infrastructure;
+using BlogCore.Blog.UseCases;
 
 namespace BlogCore.Api
 {
@@ -44,9 +47,13 @@ namespace BlogCore.Api
             if (Environment.IsDevelopment())
                 services.AddSwaggerForBlog();
 
-            services.AddDbContext<BlogCoreDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MainDb")))
-                .AddMediatR(RegisteredAssemblies());
+            services.AddMediatR(RegisteredAssemblies());
+
+            services.AddDbContext<BlogDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
+
+            services.AddDbContext<IdentityServerDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
 
             // security context
             builder.RegisterType<SecurityContextProvider>()
@@ -83,8 +90,10 @@ namespace BlogCore.Api
         {
             return new[]
             {
-                typeof(EntityBase).GetTypeInfo().Assembly,
-                typeof(BlogCoreDbContext).GetTypeInfo().Assembly,
+                // typeof(EntityBase).GetTypeInfo().Assembly,
+                typeof(BlogDbContext).GetTypeInfo().Assembly,
+                typeof(BlogModule).GetTypeInfo().Assembly,
+                typeof(IdentityServerDbContext).GetTypeInfo().Assembly,
                 typeof(Startup).GetTypeInfo().Assembly
             };
         }
@@ -108,7 +117,7 @@ namespace BlogCore.Api
                 throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
             securityContextPrincipal.Principal = principal;
 
-            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IRepository<Blog.Domain.Blog>>();
+            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IRepository<BlogDbContext, Blog.Domain.Blog>>();
             var email = securityContextInstance.GetCurrentEmail();
             var blogs = await blogRepoInstance.ListAsync();
             var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);

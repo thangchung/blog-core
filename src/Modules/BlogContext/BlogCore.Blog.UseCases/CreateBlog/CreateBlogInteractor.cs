@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BlogCore.AccessControl.Domain;
+using BlogCore.AccessControl.Domain.SecurityContext;
+using BlogCore.Blog.Infrastructure;
 using BlogCore.Core;
 using FluentValidation;
 using MediatR;
@@ -9,13 +11,13 @@ namespace BlogCore.Blog.UseCases.CreateBlog
 {
     public class CreateBlogInteractor : IInputBoundary<CreateBlogRequestMsg, CreateBlogResponse>
     {
-        private readonly IRepository<Domain.Blog> _blogRepo;
+        private readonly IRepository<BlogDbContext, Domain.Blog> _blogRepo;
         private readonly IValidator<CreateBlogRequestMsg> _createBlogValidator;
         private readonly ISecurityContext _securityContext;
         private readonly IMediator _mediator;
 
         public CreateBlogInteractor(
-            IRepository<Domain.Blog> blogRepo, 
+            IRepository<BlogDbContext, Domain.Blog> blogRepo, 
             IValidator<CreateBlogRequestMsg> createBlogValidator,
             ISecurityContext securityContext,
             IMediator mediator)

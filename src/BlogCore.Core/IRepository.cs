@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogCore.Core
 {
-    public interface IRepository<TEntity> 
+    public interface IRepository<TDbContext, TEntity> 
         where TEntity : EntityBase
+        where TDbContext : DbContext
     {
         Task<TEntity> GetByIdAsync(Guid id);
         Task<IReadOnlyList<TEntity>> ListAsync();

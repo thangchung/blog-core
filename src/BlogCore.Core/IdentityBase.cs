@@ -11,7 +11,7 @@ namespace BlogCore.Core
 
         protected IdentityBase(Guid id)
         {
-            this.Id = id;
+            Id = id;
         }
 
         // currently for Entity Framework, set must be protected, not private.

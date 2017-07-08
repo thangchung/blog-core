@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using BlogCore.IdentityServer.Models;
+using BlogCore.AccessControl.Domain;
 using BlogCore.IdentityServer.Models.ManageViewModels;
 using BlogCore.IdentityServer.Quickstart;
 using BlogCore.IdentityServer.Services;
-using BlogCore.Infrastructure.EfCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

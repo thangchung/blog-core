@@ -8,6 +8,11 @@ namespace BlogCore.Blog.Domain
 {
     public class Blog : EntityBase
     {
+        private Blog() : base(Guid.NewGuid())
+        {
+            
+        }
+
         public Blog(string title, string ownerEmail) 
             : this(Guid.NewGuid(), title, ownerEmail)
         {
@@ -40,8 +45,10 @@ namespace BlogCore.Blog.Domain
         [Required]
         public BlogStatus Status { get; private set; }
 
-        public string Description { get; private set; }
+        [Required]
         public BlogSetting BlogSetting { get; private set; }
+
+        public string Description { get; private set; }
         public List<PostId> Posts { get; private set; } = new List<PostId>();
 
         public bool HasPost()
