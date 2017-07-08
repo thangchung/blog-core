@@ -3,11 +3,13 @@ import React, { Component } from "react";
 class Footer extends Component {
   render() {
     return (
-      <footer className="app-footer">
-        <a href="http://coreui.io">CoreUI</a> © 2017 creativeLabs.
-        <span className="float-right">
-          Powered by <a href="http://coreui.io">CoreUI</a>
-        </span>
+      <footer className="blog-footer">
+        <p>
+          Blog template built for &nbsp;<a href="https://getbootstrap.com">Bootstrap</a> by &nbsp;<a href="https://twitter.com/mdo">@mdo</a>.
+        </p>
+        <p>
+          <a href="#">Back to top</a>
+        </p>
       </footer>
     );
   }

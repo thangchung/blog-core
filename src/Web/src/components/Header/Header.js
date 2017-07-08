@@ -1,56 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router";
 
 class Header extends Component {
-  sidebarToggle(e) {
-    e.preventDefault();
-    document.body.classList.toggle("sidebar-hidden");
-  }
-
-  sidebarMinimize(e) {
-    e.preventDefault();
-    document.body.classList.toggle("sidebar-minimized");
-  }
-
-  mobileSidebarToggle(e) {
-    e.preventDefault();
-    document.body.classList.toggle("sidebar-mobile-show");
-  }
-
-  asideToggle(e) {
-    e.preventDefault();
-    document.body.classList.toggle("aside-menu-hidden");
-  }
-
   render() {
     var { isAuth } = this.props;
-    console.log(isAuth);
     return (
-      <header className="app-header navbar">
-      {isAuth &&
-        <button
-          className="navbar-toggler mobile-sidebar-toggler d-lg-none"
-          onClick={this.mobileSidebarToggle}
-          type="button"
-        >
-          ☰
-        </button>
-      }
-        <a className="navbar-brand" href="#" />
-        {isAuth &&
-        <ul className="nav navbar-nav d-md-down-none mr-auto">
-          <li className="nav-item">
-            <a
-              className="nav-link navbar-toggler sidebar-toggler"
-              onClick={this.sidebarToggle}
-              href="#"
-            >
-              ☰
-            </a>
-          </li>
-        </ul>
-        }
-      </header>
+      <div className="blog-masthead">
+        <div className="container">
+          <nav className="nav blog-nav">
+            <Link to={"/"} className="nav-link" activeClassName="active">Home</Link>
+            <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
+            <Link to={"/blog-setting"} className="nav-link">Blog Setting</Link>
+            <Link to={"/posts"} className="nav-link">Posts</Link>
+            <Link to={"/tags"} className="nav-link">Tags</Link>
+            <Link to={"/login"} className="nav-link">Login</Link>
+          </nav>
+        </div>
+      </div>
     );
   }
 }

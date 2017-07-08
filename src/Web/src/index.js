@@ -13,9 +13,6 @@ import getRoutes from "./routes";
 import createStore from "./redux/configureStore";
 import userManager from "./utils/userManager";
 
-// Style
-import "./index.css";
-
 const store = createStore(browserHistory);
 
 // load the current user into the redux store

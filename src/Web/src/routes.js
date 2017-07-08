@@ -1,7 +1,6 @@
 import React from "react";
 import { IndexRoute, Route } from "react-router";
-import SimpleLayout from "./containers/App/SimpleLayout";
-import FullLayout from "./containers/App/FullLayout";
+import BlogLayout from "./containers/App/BlogLayout";
 import Home from "./containers/Home/Home";
 import BlogInfo from "./containers/Blog/BlogInfo";
 import Login from "./containers/Login/Login";
@@ -23,17 +22,12 @@ export default store => {
 
   return (
     <Route>
-      <Route path="/" name="Dashboard" component={SimpleLayout}>
+      <Route path="/" name="Dashboard" component={BlogLayout}>
         <IndexRoute component={Home} />
         <Route name="Login" path="login" component={Login} />
         <Route path="callback" component={Callback} />
-      </Route>
-
-      <Route name="Admin" path="admin" onEnter={requireLogin} component={FullLayout}>
-        <IndexRoute component={Home} />
-        <Route name="Blog Info" path="blog-info" component={BlogInfo} />
-      </Route>
-      <Route path="*" component={NotFound} status={404} />
+        <Route path="*" component={NotFound} status={404} />
+      </Route>      
     </Route>
   );
 };
