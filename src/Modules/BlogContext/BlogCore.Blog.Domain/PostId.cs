@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using BlogCore.Core;
 
 namespace BlogCore.Blog.Domain
 {
-    public class PostId : ValueObject
+    public class PostId : ValueObjectBase
     {
         private PostId()
         {
@@ -15,5 +16,9 @@ namespace BlogCore.Blog.Domain
         }
 
         public Guid Id { get; private set; }
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Id;
+        }
     }
 }

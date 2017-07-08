@@ -17,10 +17,10 @@ namespace BlogCore.Blog.UseCases.GetBlog
         {
             var blog = await _blogRepo.GetByIdAsync(message.Id);
             return new GetBlogResponse(
-                blog.Id, 
-                blog.Title, 
-                blog.Description, 
-                blog.Theme, 
+                blog.Id,
+                blog.Title,
+                blog.Description,
+                blog.Theme,
                 blog.ImageFilePath);
         }
     }

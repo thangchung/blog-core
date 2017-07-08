@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Core
 {
-    public interface IRepository<TEntity> where TEntity : EntityBase
+    public interface IRepository<TEntity> 
+        where TEntity : EntityBase
     {
         Task<TEntity> GetByIdAsync(Guid id);
-        // Task<IEnumerable<TEntity>> ListAsync();
         Task<IReadOnlyList<TEntity>> ListAsync();
         Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> spec);
         Task<TEntity> AddAsync(TEntity entity);

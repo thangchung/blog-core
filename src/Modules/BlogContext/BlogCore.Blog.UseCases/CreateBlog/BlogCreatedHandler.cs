@@ -3,9 +3,9 @@ using MediatR;
 
 namespace BlogCore.Blog.UseCases.CreateBlog
 {
-    public class BlogCreatedHandler : INotificationHandler<BlogCreatedEvent>
+    public class BlogCreatedHandler : INotificationHandler<BlogCreated>
     {
-        public void Handle(BlogCreatedEvent notification)
+        public void Handle(BlogCreated notification)
         {
             // TODO: send an email to notify for administrator
             // TODO: ...

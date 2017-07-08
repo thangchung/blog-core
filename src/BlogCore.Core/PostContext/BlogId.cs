@@ -1,18 +1,6 @@
-﻿using System;
-
-namespace BlogCore.Core.PostContext
+﻿namespace BlogCore.Core.PostContext
 {
-    public class BlogId : ValueObject
+    public class BlogId : IdentityBase
     {
-        private BlogId()
-        {
-        }
-
-        public BlogId(Guid blogId)
-        {
-            Id = blogId;
-        }
-
-        public Guid Id { get; private set; }
     }
 }

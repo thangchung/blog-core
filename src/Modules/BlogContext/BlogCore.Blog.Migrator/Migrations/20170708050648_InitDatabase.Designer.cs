@@ -9,7 +9,7 @@ using BlogCore.Blog.Domain;
 namespace BlogCore.Blog.Migrator.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20170705151813_InitDatabase")]
+    [Migration("20170708050648_InitDatabase")]
     partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,15 +27,19 @@ namespace BlogCore.Blog.Migrator.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("ImageFilePath");
+                    b.Property<string>("ImageFilePath")
+                        .IsRequired();
 
-                    b.Property<string>("OwnerEmail");
+                    b.Property<string>("OwnerEmail")
+                        .IsRequired();
 
                     b.Property<int>("Status");
 
-                    b.Property<string>("Theme");
+                    b.Property<string>("Theme")
+                        .IsRequired();
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

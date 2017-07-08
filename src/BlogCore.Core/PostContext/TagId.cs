@@ -1,19 +1,6 @@
-﻿using System;
-
-namespace BlogCore.Core.PostContext
+﻿namespace BlogCore.Core.PostContext
 {
-    public class TagId  : ValueObject
+    public class TagId  : IdentityBase
     {
-        private TagId()
-        {
-            
-        }
-
-        public TagId(Guid tagId)
-        {
-            Id = tagId;
-        }
-
-        public Guid Id { get; private set; }
     }
 }

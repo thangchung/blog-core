@@ -1,6 +1,6 @@
 ﻿namespace BlogCore.Core.PostContext
 {
-    public class Comment 
+    public class PostId : IdentityBase
     {
     }
 }

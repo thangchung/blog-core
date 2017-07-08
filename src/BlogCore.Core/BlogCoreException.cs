@@ -10,6 +10,14 @@ namespace BlogCore.Core
         }
     }
 
+    public class BlogCoreDomainException : BlogCoreException
+    {
+        public BlogCoreDomainException(string message, Exception innerEx) 
+            : base(message, innerEx)
+        {
+        }
+    }
+
     public class DomainValidationException : BlogCoreException
     {
         public DomainValidationException(string message) 

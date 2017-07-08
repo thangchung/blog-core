@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using BlogCore.Core;
 
 namespace BlogCore.Blog.Domain
 {
-    public class BlogSetting: ValueObject
+    public class BlogSetting: ValueObjectBase
     {
         public BlogSetting(Guid id, int postsPerPage, int daysToComment, bool moderateComments)
         {
@@ -17,5 +18,12 @@ namespace BlogCore.Blog.Domain
         public int PostsPerPage { get; private set; }
         public int DaysToComment { get; private set; }
         public bool ModerateComments { get; private set; }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return PostsPerPage;
+            yield return DaysToComment;
+            yield return ModerateComments;
+        }
     }
 }

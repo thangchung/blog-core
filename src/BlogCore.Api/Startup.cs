@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using BlogCore.AccessControl.Domain;
 using BlogCore.AccessControl.Infrastructure;
+using BlogCore.Blog.Domain;
 
 namespace BlogCore.Api
 {

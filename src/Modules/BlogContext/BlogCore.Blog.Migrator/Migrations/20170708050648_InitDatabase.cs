@@ -34,11 +34,11 @@ namespace BlogCore.Blog.Migrator.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     BlogSettingId = table.Column<Guid>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    ImageFilePath = table.Column<string>(nullable: true),
-                    OwnerEmail = table.Column<string>(nullable: true),
+                    ImageFilePath = table.Column<string>(nullable: false),
+                    OwnerEmail = table.Column<string>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    Theme = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true)
+                    Theme = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

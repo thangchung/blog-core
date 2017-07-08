@@ -26,15 +26,19 @@ namespace BlogCore.Blog.Migrator.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("ImageFilePath");
+                    b.Property<string>("ImageFilePath")
+                        .IsRequired();
 
-                    b.Property<string>("OwnerEmail");
+                    b.Property<string>("OwnerEmail")
+                        .IsRequired();
 
                     b.Property<int>("Status");
 
-                    b.Property<string>("Theme");
+                    b.Property<string>("Theme")
+                        .IsRequired();
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

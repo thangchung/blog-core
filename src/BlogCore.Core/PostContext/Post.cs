@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BlogCore.Core.PostContext
 {
     public class Post : EntityBase
     {
+        public Post(Guid id) : base(id)
+        {
+        }
+
         public string Title { get; set; }
         public string Subtitle { get; set; }
         public string Excerpt { get; set; }

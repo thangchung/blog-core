@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogCore.Infrastructure.EfCore
 {
-    public class EfRepository<TDbContext, TEntity> : IRepository<TDbContext, TEntity> 
-        where TEntity : EntityBase
+    public class EfRepository<TDbContext, TEntity> : IRepository<TDbContext, TEntity>
         where TDbContext : DbContext
+        where TEntity : EntityBase
     {
         protected readonly TDbContext DbContext;
 
@@ -60,7 +60,8 @@ namespace BlogCore.Infrastructure.EfCore
         }
     }
 
-    public class EfRepository<TEntity> : EfRepository<BlogCoreDbContext, TEntity> where TEntity : EntityBase
+    public class EfRepository<TEntity> : EfRepository<BlogCoreDbContext, TEntity>
+        where TEntity : EntityBase
     {
         public EfRepository(BlogCoreDbContext dbContext) : base(dbContext)
         {
@@ -71,6 +72,5 @@ namespace BlogCore.Infrastructure.EfCore
         where TEntity : EntityBase
         where TDbContext : DbContext
     {
-           
     }
 }
