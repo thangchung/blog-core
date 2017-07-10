@@ -35,22 +35,33 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
                 NormalizedEmail = "root@blogcore.com",
                 NormalizedUserName = "root@blogcore.com",
                 SecurityStamp = Guid.NewGuid().ToString("D"),
-                LockoutEnabled = true
+                LockoutEnabled = true,
+                FamilyName = "Mr",
+                GivenName = "Root",
+                Location = "Vietnam",
+                Bio = "I am a super user",
+                Company = "@NashTech"
             };
 
             var normalUser = new AppUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "user1",
-                Email = "user1@blogcore.com",
-                NormalizedEmail = "user1@blogcore.com",
-                NormalizedUserName = "user1@blogcore.com",
+                UserName = "thangchung",
+                Email = "thangchung@blogcore.com",
+                NormalizedEmail = "thangchung@blogcore.com",
+                NormalizedUserName = "thangchung@blogcore.com",
                 SecurityStamp = Guid.NewGuid().ToString("D"),
-                LockoutEnabled = true
+                LockoutEnabled = true,
+                BlogId = new Guid("34c96712-2cdf-4e79-9e2f-768cb68dd552"),
+                FamilyName = "Chung",
+                GivenName = "Thang",
+                Location = "Saigon - Vietnam",
+                Bio = "A software developer and architect",
+                Company = "@NashTech"
             };
 
             rootUser.PasswordHash = password.HashPassword(rootUser, "r00t");
-            normalUser.PasswordHash = password.HashPassword(normalUser, "user1");
+            normalUser.PasswordHash = password.HashPassword(normalUser, "thangchung");
 
             // add users
             await userStore.CreateAsync(rootUser);

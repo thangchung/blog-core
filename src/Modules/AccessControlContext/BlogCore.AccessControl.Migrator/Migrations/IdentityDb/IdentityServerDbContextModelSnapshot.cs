@@ -23,6 +23,12 @@ namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("Bio");
+
+                    b.Property<Guid?>("BlogId");
+
+                    b.Property<string>("Company");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -30,6 +36,12 @@ namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FamilyName");
+
+                    b.Property<string>("GivenName");
+
+                    b.Property<string>("Location");
 
                     b.Property<bool>("LockoutEnabled");
 

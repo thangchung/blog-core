@@ -8,7 +8,7 @@ using BlogCore.AccessControl.Infrastructure;
 namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
 {
     [DbContext(typeof(IdentityServerDbContext))]
-    [Migration("20170708071827_InitDatabase")]
+    [Migration("20170710032941_InitDatabase")]
     partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,12 @@ namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("Bio");
+
+                    b.Property<Guid?>("BlogId");
+
+                    b.Property<string>("Company");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -31,6 +37,12 @@ namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FamilyName");
+
+                    b.Property<string>("GivenName");
+
+                    b.Property<string>("Location");
 
                     b.Property<bool>("LockoutEnabled");
 

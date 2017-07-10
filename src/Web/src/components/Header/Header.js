@@ -11,7 +11,7 @@ class Header extends Component {
           <nav className="nav blog-nav">
             <Link to={"/"} className="nav-link" activeClassName="active">Home</Link>
             <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
-            <Link to={"/blog-setting"} className="nav-link">Blog Setting</Link>
+            <Link to={"/setting"} className="nav-link">Setting</Link>
             <Link to={"/posts"} className="nav-link">Posts</Link>
             <Link to={"/tags"} className="nav-link">Tags</Link>
             <Link to={"/login"} className="nav-link">Login</Link>

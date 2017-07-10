@@ -1,6 +1,7 @@
 import React from "react";
 import { IndexRoute, Route } from "react-router";
 import BlogLayout from "./containers/App/BlogLayout";
+import SimpleBlogLayout from "./containers/App/SimpleBlogLayout";
 import Home from "./containers/Home/Home";
 import BlogInfo from "./containers/Blog/BlogInfo";
 import Login from "./containers/Login/Login";
@@ -22,12 +23,16 @@ export default store => {
 
   return (
     <Route>
-      <Route path="/" name="Dashboard" component={BlogLayout}>
-        <IndexRoute component={Home} />
-        <Route name="Login" path="login" component={Login} />
-        <Route path="callback" component={Callback} />
-        <Route path="*" component={NotFound} status={404} />
-      </Route>      
+      <Route path="/">
+        <Route name="SimpleBlogLayout" component={SimpleBlogLayout}>
+          <Route name="Login" path="login" component={Login} />
+          <Route path="callback" component={Callback} />
+          <Route path="*" component={NotFound} status={404} />
+        </Route>
+        <Route name="BlogLayout" component={BlogLayout}>
+          <IndexRoute component={Home} />
+        </Route>
+      </Route>
     </Route>
   );
 };

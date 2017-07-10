@@ -11,9 +11,9 @@ namespace BlogCore.Blog.Migrator
         {
             var defaultPost = new Domain.Blog(
                     new Guid("34c96712-2cdf-4e79-9e2f-768cb68dd552"),
-                    "Blog for user1 - Normal User",
-                    "user1@blogcore.com")
-                .UpdateDescription("Blog for user1's description")
+                    "Blog for thangchung",
+                    "thangchung@blogcore.com")
+                .UpdateDescription("Blog for thangchung's description")
                 .UpdateBlogSetting(new BlogSetting(Guid.NewGuid(), 10, 10, true))
                 .AddBlogPost(new PostId(new Guid("5ac8dbfa-c258-43db-b0a1-2c1be6160d67")));
 

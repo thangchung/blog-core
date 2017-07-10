@@ -26,8 +26,15 @@ class Login extends React.Component {
           </div>}
         {profile &&
           <div>
-            <p>Username: {profile.name}</p>
-            <p>Email: {profile.email} </p>
+            <p>UserID: {profile.sub}</p>
+            <p>User name: {profile.name}</p>
+            <p>Family name: {profile.family_name}</p>
+            <p>Given name: {profile.given_name}</p>
+            <p>Email: {profile.email}</p>
+            <p>Bio: {profile.bio}</p>
+            <p>Company: {profile.company}</p>
+            <p>Location: {profile.location}</p>
+            <p>BlogID: {profile.blog_id}</p>
           </div>}
         {profile &&
           <Button color="default" onClick={this.onLogoutButtonClicked}>

@@ -35,6 +35,11 @@ namespace BlogCore.IdentityServer.Services
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
 
             claims.Add(new Claim(JwtClaimTypes.Name, user.UserName));
+            claims.Add(new Claim(JwtClaimTypes.FamilyName, user.FamilyName));
+            claims.Add(new Claim(JwtClaimTypes.GivenName, user.GivenName));
+            claims.Add(new Claim("bio", user.Bio));
+            claims.Add(new Claim("company", user.Company));
+            claims.Add(new Claim("location", user.Location));
             claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs"));
 
             var isAdmin = claims.Any(claim => claim.Type == "role" && claim.Value == "admin");
@@ -45,6 +50,11 @@ namespace BlogCore.IdentityServer.Services
             else
             {
                 claims.Add(new Claim(JwtClaimTypes.Role, "user"));
+            }
+
+            if (user.BlogId.HasValue)
+            {
+                claims.Add(new Claim("blog_id", user.BlogId.Value.ToString()));
             }
 
             claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
