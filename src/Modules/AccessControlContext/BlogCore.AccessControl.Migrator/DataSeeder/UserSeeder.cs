@@ -38,6 +38,7 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
                 LockoutEnabled = true,
                 FamilyName = "Mr",
                 GivenName = "Root",
+                ProfilePhotoPath = "https://static.productionready.io/images/smiley-cyrus.jpg",
                 Location = "Vietnam",
                 Bio = "I am a super user",
                 Company = "@NashTech"
@@ -55,6 +56,7 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
                 BlogId = IdHelper.GenerateId("34c96712-2cdf-4e79-9e2f-768cb68dd552"),
                 FamilyName = "Chung",
                 GivenName = "Thang",
+                ProfilePhotoPath = "https://static.productionready.io/images/smiley-cyrus.jpg",
                 Location = "Saigon - Vietnam",
                 Bio = "A software developer and architect",
                 Company = "@NashTech"

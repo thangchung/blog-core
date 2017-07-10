@@ -11,7 +11,6 @@ namespace BlogCore.Blog.Domain
 
         public PostId(Guid postId) : base(postId)
         {
-            Id = postId;
         }
     }
 }
