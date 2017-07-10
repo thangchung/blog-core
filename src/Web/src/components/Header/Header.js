@@ -9,11 +9,15 @@ class Header extends Component {
       <div className="blog-masthead">
         <div className="container">
           <nav className="nav blog-nav">
-            <Link to={"/"} className="nav-link" activeClassName="active">Home</Link>
-            <Link to={"/dashboard"} className="nav-link">Dashboard</Link>
-            <Link to={"/setting"} className="nav-link">Setting</Link>
-            <Link to={"/posts"} className="nav-link">Posts</Link>
-            <Link to={"/tags"} className="nav-link">Tags</Link>
+            <Link to={"/"} className="nav-link" activeClassName="active">
+              Home
+            </Link>
+            {isAuth &&
+              <Link to={"/dashboard"} className="nav-link">Dashboard</Link>}
+            {isAuth &&
+              <Link to={"/setting"} className="nav-link">Setting</Link>}
+            {isAuth && <Link to={"/posts"} className="nav-link">Posts</Link>}
+            {isAuth && <Link to={"/tags"} className="nav-link">Tags</Link>}
             <Link to={"/login"} className="nav-link">Login</Link>
           </nav>
         </div>

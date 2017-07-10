@@ -3,7 +3,7 @@ import { IndexRoute, Route } from "react-router";
 import BlogLayout from "./containers/App/BlogLayout";
 import SimpleBlogLayout from "./containers/App/SimpleBlogLayout";
 import Home from "./containers/Home/Home";
-import BlogInfo from "./containers/Blog/BlogInfo";
+import Setting from "./containers/Setting/Setting";
 import Login from "./containers/Login/Login";
 import Callback from "./containers/Login/Callback";
 import NotFound from "./containers/NotFound/NotFound";
@@ -27,6 +27,7 @@ export default store => {
         <Route name="SimpleBlogLayout" component={SimpleBlogLayout}>
           <Route name="Login" path="login" component={Login} />
           <Route path="callback" component={Callback} />
+          <Route path="setting" component={Setting} onEnter={requireLogin} />
           <Route path="*" component={NotFound} status={404} />
         </Route>
         <Route name="BlogLayout" component={BlogLayout}>

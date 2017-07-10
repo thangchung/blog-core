@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26510.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5CD78C25-100E-41EA-BCA5-698FAEBCAC31}"
 	ProjectSection(SolutionItems) = preProject
@@ -49,6 +49,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Api", "src\Hosts\BlogCore.Api\BlogCore.Api.csproj", "{AD2EA508-492D-4345-9ECC-388B23F268A9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.IdentityServer", "src\Hosts\BlogCore.IdentityServer\BlogCore.IdentityServer.csproj", "{69897539-BE45-4F1A-AA55-B60CFB5C03A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builds", "Builds", "{A36BE10F-48B4-4398-8464-489C97C41641}"
+	ProjectSection(SolutionItems) = preProject
+		builds\start.ps1 = builds\start.ps1
+		builds\start_access_control_host.ps1 = builds\start_access_control_host.ps1
+		builds\start_api_gateway_host.ps1 = builds\start_api_gateway_host.ps1
+		builds\start_web.ps1 = builds\start_web.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
