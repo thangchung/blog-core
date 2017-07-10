@@ -6,7 +6,7 @@ namespace BlogCore.Core
     {
         protected IdentityBase()
         {
-            Id = Guid.NewGuid();
+            Id = IdHelper.GenerateId();
         }
 
         protected IdentityBase(Guid id)

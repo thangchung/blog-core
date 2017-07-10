@@ -8,12 +8,12 @@ namespace BlogCore.Blog.Domain
 {
     public class Blog : EntityBase
     {
-        private Blog() : base(Guid.NewGuid())
+        private Blog()
         {
         }
 
         public Blog(string title, string ownerEmail) 
-            : this(Guid.NewGuid(), title, ownerEmail)
+            : this(IdHelper.GenerateId(), title, ownerEmail)
         {
         }
 

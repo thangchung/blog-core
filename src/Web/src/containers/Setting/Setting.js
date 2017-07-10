@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 
+require("medium-editor/dist/css/medium-editor.css");
+require("medium-editor/dist/css/themes/beagle.css");
+
+import Editor from "react-medium-editor";
+
 class Setting extends React.Component {
   render() {
     const { profile } = this.props;
@@ -18,6 +23,26 @@ class Setting extends React.Component {
             <p>Location: {profile.location}</p>
             <p>BlogID: {profile.blog_id}</p>
           </div>}
+
+        <Editor
+          tag="pre"
+          text="test editor"
+          options={{
+            toolbar: {
+              buttons: [
+                "bold",
+                "italic",
+                "underline",
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6"
+              ]
+            }
+          }}
+        />
       </div>
     );
   }

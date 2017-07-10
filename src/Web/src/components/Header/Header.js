@@ -18,7 +18,7 @@ class Header extends Component {
               <Link to={"/setting"} className="nav-link">Setting</Link>}
             {isAuth && <Link to={"/posts"} className="nav-link">Posts</Link>}
             {isAuth && <Link to={"/tags"} className="nav-link">Tags</Link>}
-            <Link to={"/login"} className="nav-link">Login</Link>
+            <Link to={"/login"} className="nav-link">Authentication</Link>
           </nav>
         </div>
       </div>

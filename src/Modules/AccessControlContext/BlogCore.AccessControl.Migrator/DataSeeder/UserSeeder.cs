@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BlogCore.AccessControl.Domain;
 using BlogCore.AccessControl.Infrastructure;
+using BlogCore.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -14,13 +14,13 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
             var roleStore = new RoleStore<IdentityRole>(dbContext);
             await roleStore.CreateAsync(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = IdHelper.GenerateId().ToString(),
                 Name = "user",
                 NormalizedName = "user"
             });
             await roleStore.CreateAsync(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = IdHelper.GenerateId().ToString(),
                 Name = "admin",
                 NormalizedName = "admin"
             });
@@ -29,12 +29,12 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
             var password = new PasswordHasher<AppUser>();
             var rootUser = new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = IdHelper.GenerateId().ToString(),
                 UserName = "root",
                 Email = "root@blogcore.com",
                 NormalizedEmail = "root@blogcore.com",
                 NormalizedUserName = "root@blogcore.com",
-                SecurityStamp = Guid.NewGuid().ToString("D"),
+                SecurityStamp = IdHelper.GenerateId().ToString("D"),
                 LockoutEnabled = true,
                 FamilyName = "Mr",
                 GivenName = "Root",
@@ -45,14 +45,14 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
 
             var normalUser = new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = IdHelper.GenerateId().ToString(),
                 UserName = "thangchung",
                 Email = "thangchung@blogcore.com",
                 NormalizedEmail = "thangchung@blogcore.com",
                 NormalizedUserName = "thangchung@blogcore.com",
-                SecurityStamp = Guid.NewGuid().ToString("D"),
+                SecurityStamp = IdHelper.GenerateId().ToString("D"),
                 LockoutEnabled = true,
-                BlogId = new Guid("34c96712-2cdf-4e79-9e2f-768cb68dd552"),
+                BlogId = IdHelper.GenerateId("34c96712-2cdf-4e79-9e2f-768cb68dd552"),
                 FamilyName = "Chung",
                 GivenName = "Thang",
                 Location = "Saigon - Vietnam",

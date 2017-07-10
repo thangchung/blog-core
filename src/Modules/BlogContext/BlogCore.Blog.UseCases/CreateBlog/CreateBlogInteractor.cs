@@ -42,7 +42,7 @@ namespace BlogCore.Blog.UseCases.CreateBlog
                 .UpdateDescription(message.Description)
                 .UpdateBlogSetting(
                     new BlogSetting(
-                        Guid.NewGuid(),
+                        IdHelper.GenerateId(),
                         message.PostsPerPage,
                         message.DaysToComment,
                         message.ModerateComments));
