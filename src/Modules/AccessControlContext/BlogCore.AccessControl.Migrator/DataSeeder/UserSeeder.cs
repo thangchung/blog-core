@@ -29,7 +29,7 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
             var password = new PasswordHasher<AppUser>();
             var rootUser = new AppUser
             {
-                Id = IdHelper.GenerateId().ToString(),
+                Id = IdHelper.GenerateId("fc7d420b-4613-43af-9160-549cd3540222").ToString(),
                 UserName = "root",
                 Email = "root@blogcore.com",
                 NormalizedEmail = "root@blogcore.com",
@@ -46,7 +46,7 @@ namespace BlogCore.AccessControl.Migrator.DataSeeder
 
             var normalUser = new AppUser
             {
-                Id = IdHelper.GenerateId().ToString(),
+                Id = IdHelper.GenerateId("4b5f26ce-df97-494c-b747-121d215847d8").ToString(),
                 UserName = "thangchung",
                 Email = "thangchung@blogcore.com",
                 NormalizedEmail = "thangchung@blogcore.com",

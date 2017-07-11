@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using BlogCore.Core;
 using MediatR;
 
-namespace BlogCore.Core.PostContext.ListOutPostByBlog
+namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {
     public class ListOutPostsByBlogRequest : IMesssage, IRequest<IEnumerable<ListOutPostByBlogResponse>>
     {

@@ -29,7 +29,7 @@ namespace BlogCore.Blog.UseCases.ListOutBlog
                     x.Title,
                     x.Description,
                     x.ImageFilePath,
-                    x.Theme
+                    (int)x.Theme
                 ));
 
             return responses;

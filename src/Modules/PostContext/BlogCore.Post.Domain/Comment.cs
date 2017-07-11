@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using BlogCore.Core;
 
-namespace BlogCore.Core.PostContext
+namespace BlogCore.Post.Domain
 {
     public class Comment : EntityBase
     {
@@ -35,6 +36,11 @@ namespace BlogCore.Core.PostContext
 
         public Comment UpdateComment(string body)
         {
+            if (string.IsNullOrEmpty(body))
+            {
+                throw new DomainValidationException("Body could not be null or empty.");
+            }
+
             Body = body;
             UpdatedAt = DateTimeHelper.GenerateDateTime();
             return this;

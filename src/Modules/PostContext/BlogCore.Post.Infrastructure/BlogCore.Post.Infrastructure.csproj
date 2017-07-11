@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Framework\BlogCore.Core\BlogCore.Core.csproj" />
+    <ProjectReference Include="..\..\..\Framework\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
+    <ProjectReference Include="..\..\..\Framework\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
+    <ProjectReference Include="..\BlogCore.Post.Domain\BlogCore.Post.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

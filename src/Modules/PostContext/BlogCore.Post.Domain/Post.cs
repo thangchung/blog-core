@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using BlogCore.Core;
 
-namespace BlogCore.Core.PostContext
+namespace BlogCore.Post.Domain
 {
     public class Post : EntityBase
     {
@@ -19,12 +20,12 @@ namespace BlogCore.Core.PostContext
         public Post(BlogId blogId, Guid postId, string title, string excerpt, string body, AuthorId authorId) 
             : base(postId)
         {
-            BlogId = blogId;
+            Blog = blogId;
             Title = title;
             Excerpt = excerpt;
             Slug = title.GenerateSlug();
             Body = body;
-            AuthorId = authorId;
+            Author = authorId;
             CreatedAt = DateTimeHelper.GenerateDateTime();
             Events.Add(new PostedCreated(postId));
         }
@@ -60,28 +61,68 @@ namespace BlogCore.Core.PostContext
         /// The blog that associates to the post
         /// </summary>
         [Required]
-        public BlogId BlogId { get; private set; }
+        public BlogId Blog { get; private set; }
 
         /// <summary>
         ///  The list of comments to attach to the post
         /// </summary>
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public ISet<Comment> Comments { get; private set; } = new HashSet<Comment>();
 
         /// <summary>
         /// The list of tags to attach to the post
         /// </summary>
-        public List<TagId> TagIds { get; private set; } = new List<TagId>();
+        public ISet<Tag> Tags { get; private set; } = new HashSet<Tag>();
 
         /// <summary>
         /// The author that associates to the post
         /// </summary>
         [Required]
-        public AuthorId AuthorId { get; private set; }
+        public AuthorId Author { get; private set; }
 
+        /// <summary>
+        /// The created date of the post
+        /// </summary>
         [Required]
         public DateTime CreatedAt { get; private set; }
 
+        /// <summary>
+        /// The Updated data of the post
+        /// </summary>
         public DateTime UpdatedAt { get; private set; }
+
+        public Post ChangeTitle(string title)
+        {
+            if (string.IsNullOrEmpty(title))
+            {
+                throw new DomainValidationException("Title could not be null or empty.");
+            }
+
+            Title = title;
+            Slug = title.GenerateSlug();
+            return this;
+        }
+
+        public Post ChangeExcerpt(string excerpt)
+        {
+            if (string.IsNullOrEmpty(excerpt))
+            {
+                throw new DomainValidationException("Excerpt could not be null or empty.");
+            }
+
+            Excerpt = excerpt;
+            return this;
+        }
+
+        public Post ChangeBody(string body)
+        {
+            if (string.IsNullOrEmpty(body))
+            {
+                throw new DomainValidationException("Body could not be null or empty.");
+            }
+
+            Excerpt = body;
+            return this;
+        }
 
         public bool HasComments()
         {
@@ -96,7 +137,7 @@ namespace BlogCore.Core.PostContext
 
         public Post UpdateComment(Guid commentId, string body)
         {
-            var comment = Comments.Find(x => x.Id == commentId);
+            var comment = Comments.FirstOrDefault(x => x.Id == commentId);
             if (comment == null)
             {
                 throw new NotFoundCommentException($"Could not find the comment with Id={commentId} for updating.");
@@ -108,7 +149,7 @@ namespace BlogCore.Core.PostContext
 
         public Post RemoveComment(Guid commentId)
         {
-            var comment = Comments.Find(x => x.Id == commentId);
+            var comment = Comments.FirstOrDefault(x => x.Id == commentId);
             if (comment == null)
             {
                 throw new NotFoundCommentException($"Could not find the comment with Id={commentId} for deleting.");
@@ -120,19 +161,36 @@ namespace BlogCore.Core.PostContext
 
         public bool HasTags()
         {
-            return TagIds?.Any() ?? false;
+            return Tags?.Any() ?? false;
         }
 
-        public Post AssignTag(TagId tagId)
+        #region "TODO: might consider how can we manage Tags"
+
+        public Post AssignTag(string name)
         {
-            TagIds.Add(tagId);
+            var tag = Tags.FirstOrDefault(x => x.Name == name);
+            if (tag == null)
+            {
+                Tags.Add(new Tag(IdHelper.GenerateId(), name, 1));
+            }
+            else
+            {
+                tag.IncreaseFrequency();
+            }
             return this;       
         }
 
-        public Post RemoveTag(TagId tagId)
+        public Post RemoveTag(string name)
         {
-            TagIds.Remove(tagId);
+            var tag = Tags.FirstOrDefault(x => x.Name == name);
+            if (tag != null)
+            {
+                tag.DecreaseFrequency();
+                Tags.Remove(tag);
+            }
             return this;    
         }
+
+        #endregion
     }
 }

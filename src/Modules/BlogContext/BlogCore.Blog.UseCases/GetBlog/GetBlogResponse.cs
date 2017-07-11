@@ -9,7 +9,7 @@ namespace BlogCore.Blog.UseCases.GetBlog
             Guid id, 
             string title, 
             string description, 
-            string theme, 
+            int theme, 
             string image)
         {
             Id = id;
@@ -22,7 +22,7 @@ namespace BlogCore.Blog.UseCases.GetBlog
         public Guid Id { get; }
         public string Title { get; }
         public string Description { get; }
-        public string Theme { get; }
+        public int Theme { get; }
         public string Image { get; }
     }
 }

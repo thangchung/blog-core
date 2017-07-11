@@ -1,6 +1,7 @@
 ﻿using System;
+using BlogCore.Core;
 
-namespace BlogCore.Core.PostContext
+namespace BlogCore.Post.Domain
 {
     public class PostedCreated : IDomainEvent
     {

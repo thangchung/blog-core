@@ -9,6 +9,6 @@ namespace BlogCore.Blog.UseCases.Shared
         public string Title { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
-        public string Theme { get; set; }
+        public int Theme { get; set; }
     }
 }

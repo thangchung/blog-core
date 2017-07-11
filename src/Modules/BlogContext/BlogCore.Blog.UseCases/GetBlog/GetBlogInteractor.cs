@@ -21,7 +21,7 @@ namespace BlogCore.Blog.UseCases.GetBlog
                 blog.Id,
                 blog.Title,
                 blog.Description,
-                blog.Theme,
+                (int)blog.Theme,
                 blog.ImageFilePath);
         }
     }

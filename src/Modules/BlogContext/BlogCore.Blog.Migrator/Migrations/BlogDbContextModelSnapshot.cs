@@ -34,8 +34,7 @@ namespace BlogCore.Blog.Migrator.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<string>("Theme")
-                        .IsRequired();
+                    b.Property<int>("Theme");
 
                     b.Property<string>("Title")
                         .IsRequired();
@@ -63,33 +62,12 @@ namespace BlogCore.Blog.Migrator.Migrations
                     b.ToTable("BlogSettings","blog");
                 });
 
-            modelBuilder.Entity("BlogCore.Blog.Domain.PostId", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("BlogId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
-
-                    b.ToTable("PostIds","blog");
-                });
-
             modelBuilder.Entity("BlogCore.Blog.Domain.Blog", b =>
                 {
                     b.HasOne("BlogCore.Blog.Domain.BlogSetting", "BlogSetting")
                         .WithMany()
                         .HasForeignKey("BlogSettingId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("BlogCore.Blog.Domain.PostId", b =>
-                {
-                    b.HasOne("BlogCore.Blog.Domain.Blog")
-                        .WithMany("Posts")
-                        .HasForeignKey("BlogId");
                 });
         }
     }

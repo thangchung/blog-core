@@ -59,6 +59,8 @@ namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("ProfilePhotoPath");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");

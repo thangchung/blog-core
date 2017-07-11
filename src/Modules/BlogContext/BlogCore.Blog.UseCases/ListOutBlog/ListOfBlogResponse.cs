@@ -10,7 +10,7 @@ namespace BlogCore.Blog.UseCases.ListOutBlog
             string title,
             string description,
             string image,
-            string theme)
+            int theme)
         {
             Id = id;
             Title = title;
@@ -24,6 +24,6 @@ namespace BlogCore.Blog.UseCases.ListOutBlog
         public string Title { get; }
         public string Description { get; }
         public string Image { get; }
-        public string Theme { get; }
+        public int Theme { get; }
     }
 }

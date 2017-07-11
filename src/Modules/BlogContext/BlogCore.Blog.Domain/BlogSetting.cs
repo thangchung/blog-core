@@ -4,7 +4,7 @@ using BlogCore.Core;
 
 namespace BlogCore.Blog.Domain
 {
-    public class BlogSetting: ValueObjectBase
+    public class BlogSetting : ValueObjectBase
     {
         public BlogSetting(Guid id, int postsPerPage, int daysToComment, bool moderateComments)
         {

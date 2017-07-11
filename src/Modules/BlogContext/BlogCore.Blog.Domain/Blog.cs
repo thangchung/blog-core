@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using BlogCore.Core;
 
 namespace BlogCore.Blog.Domain
@@ -21,7 +19,7 @@ namespace BlogCore.Blog.Domain
         {
             Title = title;
             OwnerEmail = ownerEmail;
-            Theme = "default";
+            Theme = Theme.Default;
             ImageFilePath = "/images/default-blog.png";
 
             Status = BlogStatus.Registered;
@@ -32,7 +30,7 @@ namespace BlogCore.Blog.Domain
         public string Title { get; private set; }
 
         [Required]
-        public string Theme { get; private set; }
+        public Theme Theme { get; private set; }
 
         [Required]
         public string ImageFilePath { get; private set; }
@@ -48,35 +46,60 @@ namespace BlogCore.Blog.Domain
         public BlogSetting BlogSetting { get; private set; }
 
         public string Description { get; private set; }
-        public List<PostId> Posts { get; private set; } = new List<PostId>();
 
-        public bool HasPost()
+        public Blog ChangeTitle(string title)
         {
-            return Posts?.Any() ?? false;
-        }
+            if (string.IsNullOrEmpty(title))
+            {
+                throw new DomainValidationException("Title could not be null or empty.");
+            }
 
-        public Blog AddBlogPost(PostId postId)
-        {
-            Posts.Add(postId);
+            Title = title;
             return this;
         }
 
-        public Blog RemoveBlogPost(PostId postId)
+        public Blog ChangeTheme(Theme theme)
         {
-            Posts.Remove(postId);
+            Theme = theme;
             return this;
         }
 
-        public Blog UpdateDescription(string description)
+        public Blog ChangeImageFilePath(string imageFilePath)
         {
-            Description = description;
+            if (string.IsNullOrEmpty(imageFilePath))
+            {
+                throw new DomainValidationException("The path of image could not be null or empty.");
+            }
+
+            ImageFilePath = imageFilePath;
             return this;
         }
 
-        public Blog UpdateBlogSetting(BlogSetting setting)
+        public Blog ChangeSetting(BlogSetting setting)
         {
+            if (setting == null)
+            {
+                throw new DomainValidationException("BlogSetting could not be null or empty.");
+            }
+
+            if (setting.PostsPerPage <= 0 || setting.PostsPerPage >= 20)
+            {
+                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 20 posts.");
+            }
+
+            if (setting.DaysToComment <= 0 || setting.DaysToComment >= 10)
+            {
+                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 10 days.");
+            }
+
             BlogSetting = setting;
             Events.Add(new BlogSettingChanged(setting.Id));
+            return this;
+        }
+
+        public Blog ChangeDescription(string description)
+        {
+            Description = description;
             return this;
         }
 

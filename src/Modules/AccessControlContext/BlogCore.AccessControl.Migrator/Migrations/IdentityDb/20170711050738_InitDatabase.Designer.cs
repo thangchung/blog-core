@@ -8,7 +8,7 @@ using BlogCore.AccessControl.Infrastructure;
 namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
 {
     [DbContext(typeof(IdentityServerDbContext))]
-    [Migration("20170710032941_InitDatabase")]
+    [Migration("20170711050738_InitDatabase")]
     partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,8 @@ namespace BlogCore.AccessControl.Migrator.Migrations.IdentityDb
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("ProfilePhotoPath");
 
                     b.Property<string>("SecurityStamp");
 

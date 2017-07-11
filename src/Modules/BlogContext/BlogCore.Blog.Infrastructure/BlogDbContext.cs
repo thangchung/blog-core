@@ -22,8 +22,7 @@ namespace BlogCore.Blog.Infrastructure
 
             var valueTypes = new List<Type>
             {
-                typeof(BlogSetting),
-                typeof(PostId)
+                typeof(BlogSetting)
             };
 
             base.OnModelCreating(modelBuilder.RegisterTypes(entityTypes, valueTypes, "blog", "blog"));

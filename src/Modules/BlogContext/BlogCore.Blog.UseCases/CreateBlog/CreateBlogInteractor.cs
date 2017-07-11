@@ -39,8 +39,8 @@ namespace BlogCore.Blog.UseCases.CreateBlog
                 return await Task.FromResult(new CreateBlogResponse(Guid.Empty, validationResult));
 
             var blog = new Domain.Blog(message.Title, _securityContext.GetCurrentEmail())
-                .UpdateDescription(message.Description)
-                .UpdateBlogSetting(
+                .ChangeDescription(message.Description)
+                .ChangeSetting(
                     new BlogSetting(
                         IdHelper.GenerateId(),
                         message.PostsPerPage,
