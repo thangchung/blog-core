@@ -1,7 +1,7 @@
 ﻿using System;
 using BlogCore.Core;
 
-namespace BlogCore.Blog.UseCases.CreateBlog
+namespace BlogCore.Blog.Presenters.CreateBlog
 {
     public class CategoryCreatedViewModel : IViewModel
     {

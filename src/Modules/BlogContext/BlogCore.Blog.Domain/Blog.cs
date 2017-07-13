@@ -17,6 +17,9 @@ namespace BlogCore.Blog.Domain
 
         public Blog(Guid id, string title, string ownerEmail) : base(id)
         {
+            AssertTitle(title);
+            AssertOwnerEmail(ownerEmail);
+
             Title = title;
             OwnerEmail = ownerEmail;
             Theme = Theme.Default;
@@ -49,11 +52,7 @@ namespace BlogCore.Blog.Domain
 
         public Blog ChangeTitle(string title)
         {
-            if (string.IsNullOrEmpty(title))
-            {
-                throw new DomainValidationException("Title could not be null or empty.");
-            }
-
+            AssertTitle(title);
             Title = title;
             return this;
         }
@@ -66,32 +65,14 @@ namespace BlogCore.Blog.Domain
 
         public Blog ChangeImageFilePath(string imageFilePath)
         {
-            if (string.IsNullOrEmpty(imageFilePath))
-            {
-                throw new DomainValidationException("The path of image could not be null or empty.");
-            }
-
+            AssertImageFilePath(imageFilePath);
             ImageFilePath = imageFilePath;
             return this;
         }
 
         public Blog ChangeSetting(BlogSetting setting)
         {
-            if (setting == null)
-            {
-                throw new DomainValidationException("BlogSetting could not be null or empty.");
-            }
-
-            if (setting.PostsPerPage <= 0 || setting.PostsPerPage >= 20)
-            {
-                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 20 posts.");
-            }
-
-            if (setting.DaysToComment <= 0 || setting.DaysToComment >= 10)
-            {
-                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 10 days.");
-            }
-
+            AssertSetting(setting);
             BlogSetting = setting;
             Events.Add(new BlogSettingChanged(setting.Id));
             return this;
@@ -129,6 +110,48 @@ namespace BlogCore.Blog.Domain
                 throw new BlogActivatedException("Blog has already activated.");
             }
             return this;
+        }
+
+        private static void AssertTitle(string title)
+        {
+            if (string.IsNullOrEmpty(title))
+            {
+                throw new DomainValidationException("Title could not be null or empty.");
+            }
+        }
+
+        private static void AssertImageFilePath(string imageFilePath)
+        {
+            if (string.IsNullOrEmpty(imageFilePath))
+            {
+                throw new DomainValidationException("The path of image could not be null or empty.");
+            }
+        }
+
+        private static void AssertOwnerEmail(string ownerEmail)
+        {
+            if (string.IsNullOrEmpty(ownerEmail))
+            {
+                throw new DomainValidationException("The email of owner could not be null or empty.");
+            }
+        }
+
+        private static void AssertSetting(BlogSetting setting)
+        {
+            if (setting == null)
+            {
+                throw new DomainValidationException("BlogSetting could not be null or empty.");
+            }
+
+            if (setting.PostsPerPage <= 0 || setting.PostsPerPage >= 20)
+            {
+                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 20 posts.");
+            }
+
+            if (setting.DaysToComment <= 0 || setting.DaysToComment >= 10)
+            {
+                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 10 days.");
+            }
         }
     }
 }

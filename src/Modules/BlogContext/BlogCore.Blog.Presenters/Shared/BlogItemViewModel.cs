@@ -1,7 +1,7 @@
 ﻿using System;
 using BlogCore.Core;
 
-namespace BlogCore.Blog.UseCases.Shared
+namespace BlogCore.Blog.Presenters.Shared
 {
     public class BlogItemViewModel : IViewModel
     {

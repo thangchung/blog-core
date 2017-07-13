@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
-using BlogCore.Blog.UseCases.Shared;
+using System.Threading.Tasks;
+using BlogCore.Blog.Presenters.Shared;
+using BlogCore.Blog.UseCases.ListOutBlog;
 using BlogCore.Core;
 
-namespace BlogCore.Blog.UseCases.ListOutBlog
+namespace BlogCore.Blog.Presenters.ListOutBlog
 {
     public class ListOfBlogPresenter : IEnumerableOutputBoundary<
         IEnumerable<ListOfBlogResponse>,
         IEnumerable<BlogItemViewModel>>
     {
-        public IEnumerable<BlogItemViewModel> Transform(IEnumerable<ListOfBlogResponse> input)
+        public Task<IEnumerable<BlogItemViewModel>> TransformAsync(IEnumerable<ListOfBlogResponse> input)
         {
-            return input.Select(x => new BlogItemViewModel
+            var result= input.Select(x => new BlogItemViewModel
             {
                 Id = x.Id,
                 Title = x.Title,
@@ -19,6 +21,7 @@ namespace BlogCore.Blog.UseCases.ListOutBlog
                 Image = x.Image,
                 Theme = x.Theme
             });
+            return Task.FromResult(result);
         }
     }
 }

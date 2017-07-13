@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlogCore.Blog.Presenters.CreateBlog;
+using BlogCore.Blog.Presenters.GetBlog;
+using BlogCore.Blog.Presenters.ListOutBlog;
+using BlogCore.Blog.Presenters.Shared;
 using BlogCore.Blog.UseCases.CreateBlog;
 using BlogCore.Blog.UseCases.GetBlog;
 using BlogCore.Blog.UseCases.ListOutBlog;
-using BlogCore.Blog.UseCases.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +40,7 @@ namespace BlogCore.Api
         public async Task<IEnumerable<BlogItemViewModel>> Get()
         {
             var blogResponses = await _eventAggregator.Send(new ListOfBlogRequest());
-            return _listOfBlogPresenter.Transform(blogResponses);
+            return await _listOfBlogPresenter.TransformAsync(blogResponses);
         }
 
         [HttpGet("{id}")]
@@ -45,7 +48,7 @@ namespace BlogCore.Api
         public async Task<BlogItemViewModel> Get(Guid id)
         {
             var blogResponse = await _eventAggregator.Send(new GetBlogRequest(id));
-            return _getBlogPresenter.Transform(blogResponse);
+            return await _getBlogPresenter.TransformAsync(blogResponse);
         }
 
         [HttpPost]
@@ -53,7 +56,7 @@ namespace BlogCore.Api
         public async Task<CategoryCreatedViewModel> Post([FromBody] CreateBlogRequestMsg blogRequest)
         {
             var blogCreated = await _eventAggregator.Send(blogRequest);
-            return _createBlogPresenter.Transform(blogCreated);
+            return await _createBlogPresenter.TransformAsync(blogCreated);
         }
 
         [HttpPut("{id}")]

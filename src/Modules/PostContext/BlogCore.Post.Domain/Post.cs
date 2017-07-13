@@ -66,12 +66,12 @@ namespace BlogCore.Post.Domain
         /// <summary>
         ///  The list of comments to attach to the post
         /// </summary>
-        public ISet<Comment> Comments { get; private set; } = new HashSet<Comment>();
+        public ICollection<Comment> Comments { get; private set; } = new HashSet<Comment>();
 
         /// <summary>
         /// The list of tags to attach to the post
         /// </summary>
-        public ISet<Tag> Tags { get; private set; } = new HashSet<Tag>();
+        public ICollection<Tag> Tags { get; private set; } = new HashSet<Tag>();
 
         /// <summary>
         /// The author that associates to the post

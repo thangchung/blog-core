@@ -21,7 +21,11 @@ using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.AccessControl.Infrastructure;
 using BlogCore.AccessControl.Infrastructure.SecurityContext;
 using BlogCore.Blog.Infrastructure;
+using BlogCore.Blog.Presenters;
 using BlogCore.Blog.UseCases;
+using BlogCore.Post.Infrastructure;
+using BlogCore.Post.Presenters;
+using BlogCore.Post.UseCases;
 
 namespace BlogCore.Api
 {
@@ -52,6 +56,9 @@ namespace BlogCore.Api
             services.AddDbContext<BlogDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
 
+            services.AddDbContext<PostDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
+
             services.AddDbContext<IdentityServerDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
 
@@ -64,6 +71,9 @@ namespace BlogCore.Api
             // core & infra register
             builder.RegisterGeneric(typeof(EfRepository<,>))
                 .As(typeof(IRepository<,>));
+            builder.RegisterType<UserRepository>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
 
             // scan modules in other assemblies
             builder.RegisterAssemblyModules(RegisteredAssemblies());
@@ -90,9 +100,15 @@ namespace BlogCore.Api
         {
             return new[]
             {
-                // typeof(EntityBase).GetTypeInfo().Assembly,
+                // Blog
                 typeof(BlogDbContext).GetTypeInfo().Assembly,
-                typeof(BlogModule).GetTypeInfo().Assembly,
+                typeof(BlogPresenterModule).GetTypeInfo().Assembly,
+                typeof(BlogUseCaseModule).GetTypeInfo().Assembly,
+                // Post
+                typeof(PostDbContext).GetTypeInfo().Assembly,
+                typeof(PostPresenterModule).GetTypeInfo().Assembly,
+                typeof(PostUseCaseModule).GetTypeInfo().Assembly,
+                // Access Control
                 typeof(IdentityServerDbContext).GetTypeInfo().Assembly,
                 typeof(Startup).GetTypeInfo().Assembly
             };

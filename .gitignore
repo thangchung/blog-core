@@ -270,3 +270,4 @@ yarn-debug.log*
 yarn-error.log*
 
 **/*log.txt
+/.vscode

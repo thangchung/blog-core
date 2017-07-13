@@ -1,11 +1,11 @@
 ﻿using Autofac;
-using BlogCore.Blog.UseCases.CreateBlog;
-using BlogCore.Blog.UseCases.GetBlog;
-using BlogCore.Blog.UseCases.ListOutBlog;
+using BlogCore.Blog.Presenters.CreateBlog;
+using BlogCore.Blog.Presenters.GetBlog;
+using BlogCore.Blog.Presenters.ListOutBlog;
 
-namespace BlogCore.Blog.UseCases
+namespace BlogCore.Blog.Presenters
 {
-    public class BlogModule : Module
+    public class BlogPresenterModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

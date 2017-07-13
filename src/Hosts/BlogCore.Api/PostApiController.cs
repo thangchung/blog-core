@@ -1,11 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using BlogCore.Post.Presenters.ListOutPostByBlog;
+using BlogCore.Post.UseCases.ListOutPostByBlog;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.Api.Posts
+namespace BlogCore.Api
 {
     [Route("api/posts")]
     public class PostApiController : Controller
     {
+        private readonly IMediator _eventAggregator;
+        private readonly ListOutPostByBlogPresenter _listOutPostByBlogPresenter;
+
+        public PostApiController(
+            IMediator eventAggregator, 
+            ListOutPostByBlogPresenter listOutPostByBlogPresenter)
+        {
+            _eventAggregator = eventAggregator;
+            _listOutPostByBlogPresenter = listOutPostByBlogPresenter;
+        }
+
         [HttpGet]
         public string[] Get()
         {
@@ -18,10 +34,11 @@ namespace BlogCore.Api.Posts
             return $"Get {id}";
         }
 
-        [HttpGet("user/{id}")]
-        public string GetForUser(Guid userId)
+        [HttpGet("blog/{blogId}/{page}")]
+        public async Task<IEnumerable<SimplePostViewModel>> GetForBlog(Guid blogId, int page)
         {
-            return $"GetForUser {userId}";
+            var responses = await _eventAggregator.Send(new ListOutPostByBlogRequest(blogId, page));
+            return await _listOutPostByBlogPresenter.TransformAsync(responses);
         }
 
         [HttpPost]
