@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlogCore.Post.Domain;
 
@@ -16,9 +17,12 @@ namespace BlogCore.Post.Infrastructure
 
         public async Task<IEnumerable<Domain.Post>> GetFullPostByBlogIdAsync(Guid blogId, int page)
         {
-            return await _dbContext
-                .Set<Domain.Post>()
-                .GetPostByPage(blogId, page);
+            return await _dbContext.Set<Domain.Post>().GetPostByPageAsync(blogId, page);
+        }
+
+        public int GetTotalPost(Guid blogId)
+        {
+            return _dbContext.Set<Domain.Post>().Count();
         }
     }
 }

@@ -7,5 +7,6 @@ namespace BlogCore.Post.Domain
     public interface IPostRepository
     {
         Task<IEnumerable<Post>> GetFullPostByBlogIdAsync(Guid blogId, int page);
+        int GetTotalPost(Guid blogId);
     }
 }

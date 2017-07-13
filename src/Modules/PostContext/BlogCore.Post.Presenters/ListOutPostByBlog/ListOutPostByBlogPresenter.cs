@@ -7,9 +7,9 @@ using BlogCore.Post.UseCases.ListOutPostByBlog;
 
 namespace BlogCore.Post.Presenters.ListOutPostByBlog
 {
-    public class ListOutPostByBlogPresenter : IEnumerableOutputBoundary<
-        IEnumerable<ListOutPostByBlogResponse>,
-        IEnumerable<SimplePostViewModel>>
+    public class ListOutPostByBlogPresenter : IObjectOutputBoundary<
+        ListOutPostByBlogResponse,
+        ListOfPostByBlogViewModel>
     {
         private readonly IUserRepository _userRepository;
 
@@ -18,10 +18,10 @@ namespace BlogCore.Post.Presenters.ListOutPostByBlog
             _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<SimplePostViewModel>> TransformAsync(IEnumerable<ListOutPostByBlogResponse> posts)
+        public async Task<ListOfPostByBlogViewModel> TransformAsync(ListOutPostByBlogResponse postWrapper)
         {
             var response = new List<SimplePostViewModel>();
-            foreach (var post in posts)
+            foreach (var post in postWrapper.Inners)
             {
                 var user = await _userRepository.GetByIdAsync(post.Author.Id);
 
@@ -40,7 +40,7 @@ namespace BlogCore.Post.Presenters.ListOutPostByBlog
                     }).ToList()
                 });
             }
-            return response;
+            return new ListOfPostByBlogViewModel(response, new Metadata(postWrapper.Page, postWrapper.Total));
         }
     }
 }

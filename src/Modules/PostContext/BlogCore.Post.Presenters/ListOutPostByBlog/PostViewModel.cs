@@ -4,7 +4,31 @@ using BlogCore.Core;
 
 namespace BlogCore.Post.Presenters.ListOutPostByBlog
 {
-    public class SimplePostViewModel : IViewModel
+    public class ListOfPostByBlogViewModel : IViewModel
+    {
+        public ListOfPostByBlogViewModel(List<SimplePostViewModel> postItems, Metadata metadata)
+        {
+            PostItems = postItems;
+            Metadata = metadata;
+        }
+
+        public List<SimplePostViewModel> PostItems { get; private set; }
+        public Metadata Metadata { get; private set; }
+    }
+
+    public class Metadata
+    {
+        public Metadata(int page, int total)
+        {
+            Page = page;
+            Total = total;
+        }
+
+        public int Page { get; private set; }
+        public int Total { get; private set; }
+    }
+
+    public class SimplePostViewModel
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -15,7 +39,7 @@ namespace BlogCore.Post.Presenters.ListOutPostByBlog
         public List<TagViewModel> Tags { get; set; }
     }
 
-    public class PostViewModel : IViewModel
+    public class PostViewModel
     {
         public string Title { get; set; }
         public string Excerpt { get; set; }

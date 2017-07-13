@@ -8,7 +8,7 @@ namespace BlogCore.Post.Infrastructure
 {
     public static class DbSetExtensions
     {
-        public static async Task<IEnumerable<Domain.Post>> GetPostByPage(
+        public static async Task<IEnumerable<Domain.Post>> GetPostByPageAsync(
             this DbSet<Domain.Post> postSet, 
             Guid blogId,
             int page)

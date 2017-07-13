@@ -8,7 +8,7 @@ using MediatR;
 namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {
     public class ListOutPostByBlogInteractor : IAsyncRequestHandler<ListOutPostByBlogRequest,
-        IEnumerable<ListOutPostByBlogResponse>>
+        ListOutPostByBlogResponse>
     {
         private readonly IPostRepository _postRepository;
 
@@ -17,14 +17,14 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
             _postRepository = postRepository;
         }
 
-        public async Task<IEnumerable<ListOutPostByBlogResponse>> Handle(ListOutPostByBlogRequest message)
+        public async Task<ListOutPostByBlogResponse> Handle(ListOutPostByBlogRequest message)
         {
-            var response = new List<ListOutPostByBlogResponse>();
+            var responses = new List<InnerListOutPostByBlogResponse>();
             var posts = await _postRepository.GetFullPostByBlogIdAsync(message.BlogId, message.Page);
             var postObservable = posts.ToObservable();
             await postObservable.ForEachAsync(post =>
             {
-                response.Add(new ListOutPostByBlogResponse
+                responses.Add(new InnerListOutPostByBlogResponse
                 {
                     Id = post.Id,
                     Title = post.Title,
@@ -35,7 +35,14 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
                     Tags = post.Tags.ToList()
                 });
             });
-            return response;
+
+            return new ListOutPostByBlogResponse
+            {
+                Inners = responses,
+                BlogId = message.BlogId,
+                Page = message.Page,
+                Total = _postRepository.GetTotalPost(message.BlogId)
+            };
         }
     }
 }

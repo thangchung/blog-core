@@ -35,7 +35,7 @@ namespace BlogCore.Api
         }
 
         [HttpGet("blog/{blogId}/{page}")]
-        public async Task<IEnumerable<SimplePostViewModel>> GetForBlog(Guid blogId, int page)
+        public async Task<ListOfPostByBlogViewModel> GetForBlog(Guid blogId, int page)
         {
             var responses = await _eventAggregator.Send(new ListOutPostByBlogRequest(blogId, page));
             return await _listOutPostByBlogPresenter.TransformAsync(responses);

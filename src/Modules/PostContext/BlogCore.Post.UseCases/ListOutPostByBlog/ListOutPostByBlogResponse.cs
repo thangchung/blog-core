@@ -7,6 +7,14 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {
     public class ListOutPostByBlogResponse : IMesssage
     {
+        public int Page { get; set; }
+        public int Total { get; set; }
+        public Guid BlogId { get; set; }
+        public List<InnerListOutPostByBlogResponse> Inners { get; set; }
+    }
+
+    public class InnerListOutPostByBlogResponse : IMesssage
+    {
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Excerpt { get; set; }
