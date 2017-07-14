@@ -32,6 +32,7 @@ export default store => {
         </Route>
         <Route name="BlogLayout" component={BlogLayout}>
           <IndexRoute component={Home} />
+          <Route path=":id" component={Home} />
         </Route>
       </Route>
     </Route>

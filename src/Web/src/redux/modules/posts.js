@@ -9,7 +9,8 @@ const initialState = {
   loaded: false,
   byIds: [],
   posts: {},
-  error: null
+  error: null,
+  page: 1
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -21,7 +22,6 @@ export default function reducer(state = initialState, action = {}) {
       };
 
     case LOAD_POSTS_SUCCESSED:
-      console.log(action);
       const posts = action.posts.postItems.reduce((obj, post) => {
         obj[post.id] = post;
         return obj;
@@ -31,7 +31,8 @@ export default function reducer(state = initialState, action = {}) {
         byIds: action.posts.postItems.map(post => post.id),
         posts: posts,
         loaded: true,
-        loading: false
+        loading: false,
+        page: action.page
       };
 
     case LOAD_POSTS_FAILED:
@@ -41,7 +42,8 @@ export default function reducer(state = initialState, action = {}) {
         posts: {},
         error: action.error,
         loaded: true,
-        loading: false
+        loading: false,
+        page: 1
       };
 
     default:
@@ -53,17 +55,17 @@ export function postsLoading() {
   return { type: LOAD_POSTS };
 }
 
-export function loadPosts(posts) {
-  return { type: LOAD_POSTS_SUCCESSED, posts };
+export function loadPosts(posts, page) {
+  return { type: LOAD_POSTS_SUCCESSED, posts, page };
 }
 
 export function getPosts(blogId, page) {
   return (dispatch, getState) => {
-    if (!getState()["postStore"]["loaded"]) {
+    //if (!getState()["postStore"]["loaded"]) {
       dispatch(postsLoading());
       return fetch(`${LOAD_POSTS_URL}/${blogId}/${page}`)
         .then(response => response.json())
-        .then(posts => dispatch(loadPosts(posts)));
-    }
+        .then(posts => dispatch(loadPosts(posts, page)));
+    //}
   };
 }

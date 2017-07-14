@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogCore.Post.Presenters.ListOutPostByBlog;
 using BlogCore.Post.UseCases.ListOutPostByBlog;

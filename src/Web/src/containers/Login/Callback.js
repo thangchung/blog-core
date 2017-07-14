@@ -10,7 +10,6 @@ class Callback extends React.Component {
   };
 
   render() {
-    // just redirect to '/' in both cases
     return (
       <CallbackComponent
         userManager={userManager}
