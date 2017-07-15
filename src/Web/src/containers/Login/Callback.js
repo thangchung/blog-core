@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { CallbackComponent } from "redux-oidc";
-import { browserHistory } from "react-router";
+import { browserHistory } from "react-router-dom";
 import userManager from "../../utils/userManager";
 
 class Callback extends React.Component {

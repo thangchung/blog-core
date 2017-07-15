@@ -3,15 +3,17 @@ import "babel-polyfill";
 // Libs
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router, browserHistory } from "react-router";
+import { Switch, Route, browserHistory } from "react-router-dom";
 import { Provider } from "react-redux";
 import { OidcProvider, loadUser } from "redux-oidc";
-import { syncHistoryWithStore } from "react-router-redux";
+import { ConnectedRouter } from "react-router-redux";
 
 // Our components
-import getRoutes from "./routes";
-import createStore from "./redux/configureStore";
+// import getRoutes from "./routes";
+import createStore, { routerHistory } from "./redux/configureStore";
 import userManager from "./utils/userManager";
+import BlogLayout from "./containers/App/BlogLayout";
+import AdminBlogLayout from "./containers/App/AdminBlogLayout";
 
 const store = createStore(browserHistory);
 
@@ -21,9 +23,14 @@ loadUser(store, userManager);
 ReactDOM.render(
   <Provider store={store} key="provider">
     <OidcProvider store={store} userManager={userManager} key="oidcProvider">
-      <Router history={syncHistoryWithStore(browserHistory, store)}>
-        {getRoutes(store)}
-      </Router>
+      <ConnectedRouter history={routerHistory}>
+        <div>
+          <Switch>
+            <Route path="/admin" component={AdminBlogLayout} />
+            <Route path="/" component={BlogLayout} />
+          </Switch>
+        </div>
+      </ConnectedRouter>
     </OidcProvider>
   </Provider>,
   document.getElementById("root")

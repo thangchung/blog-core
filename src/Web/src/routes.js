@@ -1,15 +1,13 @@
+// core libs
 import React from "react";
-import { IndexRoute, Route } from "react-router";
-import BlogLayout from "./containers/App/BlogLayout";
-import SimpleBlogLayout from "./containers/App/SimpleBlogLayout";
-import Home from "./containers/Home/Home";
-import Setting from "./containers/Setting/Setting";
-import Login from "./containers/Login/Login";
-import Callback from "./containers/Login/Callback";
-import NotFound from "./containers/NotFound/NotFound";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+// layout
+import BlogLayout from "./containers/App/BlogLayout";
+
+// TODO: work on it later
 export default store => {
-  const requireLogin = (nextState, replace, cb) => {
+  const authenticate = (nextState, replace, cb) => {
     function checkAuth() {
       const { oidc: { user } } = store.getState();
       if (!user) {
@@ -22,19 +20,8 @@ export default store => {
   };
 
   return (
-    <Route>
-      <Route path="/">
-        <Route name="SimpleBlogLayout" component={SimpleBlogLayout}>
-          <Route name="Login" path="login" component={Login} />
-          <Route path="callback" component={Callback} />
-          <Route path="setting" component={Setting} onEnter={requireLogin} />
-          <Route path="*" component={NotFound} status={404} />
-        </Route>
-        <Route name="BlogLayout" component={BlogLayout}>
-          <IndexRoute component={Home} />
-          <Route path=":id" component={Home} />
-        </Route>
-      </Route>
-    </Route>
+    <Switch>
+      <Route exact path="/" name="index" component={BlogLayout} />
+    </Switch>
   );
 };
