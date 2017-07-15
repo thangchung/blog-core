@@ -7,7 +7,7 @@ import posts from "./posts";
 const reducers = {
   routing: routerReducer,
   oidc: oidcReducer,
-  blogs,
+  blogStore: blogs,
   postStore: posts
 };
 

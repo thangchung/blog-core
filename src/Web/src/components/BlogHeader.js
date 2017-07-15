@@ -16,4 +16,10 @@ class BlogHeader extends Component {
   }
 }
 
-export default connect(null, null)(BlogHeader);
+function mapStateToProps(state, ownProps) {
+  return {
+    blogStore: state.blogStore
+  };
+}
+
+export default connect(mapStateToProps, null)(BlogHeader);

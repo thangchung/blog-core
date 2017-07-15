@@ -20,7 +20,7 @@ class Blog extends Component {
 
   handleOlderClick() {
     this.props.getPosts(
-      this.props.userStore.profile.blog_id,
+      this.props.match.params.blogId,
       this.props.postStore.page + 1
     );
   }
@@ -28,7 +28,7 @@ class Blog extends Component {
   handleNewerClick() {
     var page = this.props.postStore.page;
     this.props.getPosts(
-      this.props.userStore.profile.blog_id,
+      this.props.match.params.blogId,
       page > 1 ? page - 1 : 1
     );
   }
@@ -40,22 +40,31 @@ class Blog extends Component {
       return <div>Loading...</div>;
     }
 
+    if(byIds.length <= 0) {
+      return <div>No post.</div>;  
+    }
+
     return (
       <div>
         <BlogHeader />
         <PostList ids={byIds} posts={posts} />
-        <nav className="blog-pagination">
-          <a onClick={() => this.handleOlderClick()} href="#">
-            Older
-          </a>
-          <a
-            onClick={() => this.handleNewerClick()}
-            className="btn btn-outline-secondary"
-            href="#"
-          >
-            Newer
-          </a>
-        </nav>
+        {byIds.length > 0 &&
+          <nav className="blog-pagination">
+            <a
+              onClick={() => this.handleOlderClick()}
+              className="btn btn-outline-primary"
+              href="#"
+            >
+              Older
+            </a>&nbsp;
+            <a
+              onClick={() => this.handleNewerClick()}
+              className="btn btn-outline-secondary"
+              href="#"
+            >
+              Newer
+            </a>
+          </nav>}
       </div>
     );
   }

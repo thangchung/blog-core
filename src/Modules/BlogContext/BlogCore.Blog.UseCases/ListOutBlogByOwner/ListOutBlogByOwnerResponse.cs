@@ -1,11 +1,11 @@
 using System;
 using BlogCore.Core;
 
-namespace BlogCore.Blog.UseCases.ListOutBlog
+namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
 {
-    public class ListOfBlogResponse : IMesssage
+    public class ListOutBlogByOwnerResponse : IMesssage
     {
-        public ListOfBlogResponse(
+        public ListOutBlogByOwnerResponse(
             Guid id,
             string title,
             string description,

@@ -27,7 +27,25 @@ namespace BlogCore.Infrastructure.EfCore
 
         public async Task<IReadOnlyList<TEntity>> ListAsync()
         {
-            return await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+            return await DbContext.Set<TEntity>()
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<TEntity>> ListAsync(
+            PageInfo pageInfo,
+            Func<IIncludable<TEntity>, IIncludable> includes = null)
+        {
+            var dbSet = DbContext.Set<TEntity>();
+            IQueryable<TEntity> includeQueryable = dbSet;
+            if (includes != null)
+                includeQueryable = dbSet.IncludeMultiple(includes);
+
+            return await includeQueryable
+                .Skip(pageInfo.CurrentPage)
+                .Take(pageInfo.TotalPage)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> spec)

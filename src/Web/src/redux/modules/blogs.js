@@ -1,30 +1,52 @@
 // import apiRequest from "../../utils/request";
 
 // Actions
-const LOAD_BLOG_INFO = "blogcore/blog/LOAD_BLOG_INFO";
-const LOAD_BLOG_INFO_SUCCESS = "blogcore/blog/LOAD_BLOG_INFO_SUCCESS";
-// const LOAD_BLOG_INFO_FAIL = "blogcore/blog/LOAD_BLOG_INFO_FAIL";
+const LOAD_BLOGS = "bc/blog/LOAD_BLOGS";
+const LOAD_BLOGS_SUCCESS = "bc/blog/LOAD_BLOGS_SUCCESS";
+const LOAD_BLOGS_FAILED = "bc/blog/LOAD_BLOGS_FAILED";
+
+const LOAD_BLOGS_BY_PAGE_URL = `http://localhost:8484/api/blogs/paged`;
 
 const initialState = {
+  loading: true,
   loaded: false,
-  error: null
+  byIds: [],
+  blogs: {},
+  error: null,
+  page: 1
 };
 
 // Reducer
-export default function reducer(state = {}, action = {}) {
+export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case LOAD_BLOG_INFO:
+    case LOAD_BLOGS:
       return {
         ...state,
         loading: true
       };
 
-    case LOAD_BLOG_INFO_SUCCESS:
+    case LOAD_BLOGS_SUCCESS:
       return {
         ...state,
-        blog: action.blog,
+        byIds: action.blogs.map(blog => blog.id),
+        blogs: action.blogs.reduce((obj, blog) => {
+          obj[blog.id] = blog;
+          return obj;
+        }, {}),
         loaded: true,
-        loading: false
+        loading: false,
+        page: action.page || 1
+      };
+    
+    case LOAD_BLOGS_FAILED:
+      return {
+        ...state,
+        byIds: [],
+        blogs: {},
+        error: action.error,
+        loaded: true,
+        loading: false,
+        page: 1
       };
 
     default:
@@ -33,15 +55,13 @@ export default function reducer(state = {}, action = {}) {
 }
 
 // Action Creators
-export function loadBlogInfo(blog) {
-  return { type: LOAD_BLOG_INFO_SUCCESS, blog };
+export function loadBlogsByPage(blogs) {
+  return { type: LOAD_BLOGS_SUCCESS, blogs };
 }
 
-export function getBlogInfo(id) {
+export function getBlogsByPage(page) {
   return dispatch =>
-    fetch(`http://localhost:8484/api/blogs/${id}`)
-    .then(response => response.json())
-    .then(blog =>
-      dispatch(loadBlogInfo(blog))
-    );
+    fetch(`${LOAD_BLOGS_BY_PAGE_URL}/${page}`)
+      .then(response => response.json())
+      .then(blogs => dispatch(loadBlogsByPage(blogs)));
 }

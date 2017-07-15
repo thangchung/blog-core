@@ -2,21 +2,37 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import * as blogActions from "../../redux/modules/blogs";
 
 class Home extends Component {
-  render() {
-    const { match } = this.props;
+  componentDidMount() {
+    this.props.getBlogsByPage(this.props.blogStore.page);
+  }
 
+  render() {
+    const { match, blogStore: { loading, byIds, blogs } } = this.props;
     return (
-      <div>
-        <Link
-          to={`${match.url}blog/34C96712-2CDF-4E79-9E2F-768CB68DD552`}
-        >
-          Thang Chung's Blog
-        </Link>
-      </div>
+      <ul>
+        {byIds.map((id, index) =>
+          <li key={index}>
+            <Link to={`${match.url}blog/${id}`}>
+              {blogs[id].title}
+            </Link>
+          </li>
+        )}
+      </ul>
     );
   }
 }
 
-export default connect(null, null)(Home);
+function mapStateToProps(state, ownProps) {
+  return {
+    userStore: state.oidc.user,
+    blogStore: state.blogStore
+  };
+}
+
+export const mapDispatchToProps = dispatch =>
+  bindActionCreators(blogActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
