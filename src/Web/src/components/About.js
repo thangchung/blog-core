@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-class About extends Component {
+export default class About extends Component {
   render() {
     const { profile } = this.props;
+    if (!profile) {
+      return <div />;
+    }
+
     return (
       <div>
         {profile &&
@@ -18,18 +22,3 @@ class About extends Component {
     );
   }
 }
-
-function extractProfile(state) {
-  if (state.oidc.user) {
-    return state.oidc.user.profile;
-  }
-  return "";
-}
-
-function mapStateToProps(state, ownProps) {
-  return {
-    profile: extractProfile(state)
-  };
-}
-
-export default connect(mapStateToProps, null)(About);

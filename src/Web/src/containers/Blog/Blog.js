@@ -34,19 +34,23 @@ class Blog extends Component {
   }
 
   render() {
-    const { postStore: { loading, byIds, posts } } = this.props;
-
+    const { postStore: { loading, byIds, posts, blog } } = this.props;
     if (loading) {
       return <div>Loading...</div>;
     }
 
-    if(byIds.length <= 0) {
-      return <div>No post.</div>;  
+    if (byIds.length <= 0) {
+      return (
+        <div>
+          <BlogHeader blog={blog} />
+          <p>No post.</p>
+        </div>
+      );
     }
 
     return (
       <div>
-        <BlogHeader />
+        <BlogHeader blog={blog} />
         <PostList ids={byIds} posts={posts} />
         {byIds.length > 0 &&
           <nav className="blog-pagination">

@@ -9,6 +9,7 @@ import About from "../../components/About";
 // our containers
 import Home from "../Home/Home";
 import Blog from "../Blog/Blog";
+import PostDetail from "../Post/PostDetail";
 import Login from "../Login/Login";
 import Callback from "../Login/Callback";
 
@@ -38,6 +39,11 @@ export default class BlogLayout extends Component {
                   path={`${match.url}blog/:blogId`}
                   key="blogId"
                   component={Blog}
+                />
+                <Route
+                  path={`${match.url}post/:postId`}
+                  key="postDetail"
+                  component={PostDetail}
                 />
                 <Route
                   exact

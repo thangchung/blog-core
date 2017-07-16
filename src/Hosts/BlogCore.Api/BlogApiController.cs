@@ -10,6 +10,9 @@ using BlogCore.Blog.UseCases.CreateBlog;
 using BlogCore.Blog.UseCases.GetBlog;
 using BlogCore.Blog.UseCases.ListOutBlog;
 using BlogCore.Blog.UseCases.ListOutBlogByOwner;
+using BlogCore.Infrastructure.AspNetCore;
+using BlogCore.Post.Presenters.ListOutPostByBlog;
+using BlogCore.Post.UseCases.ListOutPostByBlog;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +20,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogCore.Api
 {
     [Route("api/blogs")]
-    public class BlogApiController : Controller
+    public class BlogApiController : AuthorizedController
     {
         private readonly ListOfBlogByOwnerPresenter _listOfBlogByOwnerPresenter;
         private readonly ListOfBlogPresenter _listOfBlogPresenter;
         private readonly GetBlogPresenter _getBlogPresenter;
         private readonly CreateBlogPresenter _createBlogPresenter;
+        private readonly ListOutPostByBlogPresenter _listOutPostByBlogPresenter;
 
         private readonly IMediator _eventAggregator;
 
@@ -31,13 +35,15 @@ namespace BlogCore.Api
             ListOfBlogByOwnerPresenter listOfBlogByOwnerPresenter,
             ListOfBlogPresenter listOfBlogPresenter,
             GetBlogPresenter getBlogPresenter,
-            CreateBlogPresenter createBlogPresenter)
+            CreateBlogPresenter createBlogPresenter, 
+            ListOutPostByBlogPresenter listOutPostByBlogPresenter)
         {
             _eventAggregator = eventAggregator;
             _listOfBlogByOwnerPresenter = listOfBlogByOwnerPresenter;
             _listOfBlogPresenter = listOfBlogPresenter;
             _getBlogPresenter = getBlogPresenter;
             _createBlogPresenter = createBlogPresenter;
+            _listOutPostByBlogPresenter = listOutPostByBlogPresenter;
         }
 
         [Authorize("Admin")]
@@ -62,6 +68,14 @@ namespace BlogCore.Api
         {
             var blogResponse = await _eventAggregator.Send(new GetBlogRequest(id));
             return await _getBlogPresenter.TransformAsync(blogResponse);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{blogId}/posts")]
+        public async Task<ListOfPostByBlogViewModel> GetForBlog(Guid blogId, [FromQuery] int page)
+        {
+            var responses = await _eventAggregator.Send(new ListOutPostByBlogRequest(blogId, page));
+            return await _listOutPostByBlogPresenter.TransformAsync(responses);
         }
 
         [Authorize("User")]

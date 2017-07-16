@@ -1,25 +1,19 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
-class BlogHeader extends Component {
+export default class BlogHeader extends Component {
   render() {
+    if (!this.props.blog) {
+      return <div>&nbsp;</div>;
+    }
     return (
       <div className="blog-header">
         <div className="container">
-          <h1 className="blog-title">The Bootstrap Blog</h1>
+          <h1 className="blog-title">{this.props.blog.title}</h1>
           <p className="lead blog-description">
-            An example blog template built with Bootstrap.
+            {this.props.blog.description}
           </p>
         </div>
       </div>
     );
   }
 }
-
-function mapStateToProps(state, ownProps) {
-  return {
-    blogStore: state.blogStore
-  };
-}
-
-export default connect(mapStateToProps, null)(BlogHeader);
