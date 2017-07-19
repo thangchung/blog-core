@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 // our containers
+import Restricted from "../../auth/Restricted";
 import Setting from "../Setting/Setting";
 
 export default class AdminBlogLayout extends Component {
@@ -23,7 +24,10 @@ export default class AdminBlogLayout extends Component {
                   exact
                   path={`${match.url}/setting`}
                   key="setting"
-                  component={Setting}
+                  render={routeProps =>
+                    <Restricted {...routeProps}>
+                      {React.createElement(Setting)}
+                    </Restricted>}
                 />
               </Switch>
             </div>

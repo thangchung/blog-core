@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BlogCore.Blog.UseCases.GetBlog
 {
-    public class GetBlogRequest : IMesssage, IRequest<GetBlogResponse>
+    public class GetBlogRequest : IMessage, IRequest<GetBlogResponse>
     {
         public GetBlogRequest(Guid id)
         {

@@ -1,6 +1,6 @@
 ﻿namespace BlogCore.Core
 {
-    public interface IMesssage
+    public interface IMessage
     {
     }
 }

@@ -1,4 +1,5 @@
 // import apiRequest from "../../utils/request";
+import axios from "axios";
 
 // Actions
 const LOAD_BLOGS = "bc/blog/LOAD_BLOGS";
@@ -6,6 +7,7 @@ const LOAD_BLOGS_SUCCESS = "bc/blog/LOAD_BLOGS_SUCCESS";
 const LOAD_BLOGS_FAILED = "bc/blog/LOAD_BLOGS_FAILED";
 
 const LOAD_BLOGS_BY_PAGE_URL = `http://localhost:8484/api/blogs/paged`;
+const UPDATE_SETTING_URL = `http://localhost:8484/api/blogs/setting`;
 
 const initialState = {
   loading: true,
@@ -37,7 +39,7 @@ export default function reducer(state = initialState, action = {}) {
         loading: false,
         page: action.page || 1
       };
-    
+
     case LOAD_BLOGS_FAILED:
       return {
         ...state,
@@ -64,4 +66,27 @@ export function getBlogsByPage(page) {
     fetch(`${LOAD_BLOGS_BY_PAGE_URL}/${page}`)
       .then(response => response.json())
       .then(blogs => dispatch(loadBlogsByPage(blogs)));
+}
+
+export function updateBlogSetting(settings) {
+  console.log(settings);
+  var dto = {
+    givenName: settings.given_name,
+    familyName: settings.family_name,
+    bio: settings.bio,
+    company: settings.company,
+    location: settings.location,
+    blogId: settings.blog_id,
+    postsPerPage: settings.postPerPage,
+    daysToComment: settings.dateToComment,
+    moderateComments: settings.moderateComment
+  };
+  axios
+    .put(`${UPDATE_SETTING_URL}/${settings.sub}`, dto)
+    .then(function(response) {
+      console.log(response);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 }

@@ -1,16 +1,68 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Field, FormSection, reduxForm } from "redux-form";
+import { Button, Form, FormGroup, Label, FormFeedback } from "reactstrap";
 
+import Editor from "react-medium-editor";
 require("medium-editor/dist/css/medium-editor.css");
 require("medium-editor/dist/css/themes/beagle.css");
 
-import Editor from "react-medium-editor";
+import * as blogActions from "../../redux/modules/blogs";
+import BcInput from "../../components/Form/BcInput";
+
+class BlogSetting extends React.Component {
+  render() {
+    return (
+      <div>
+        <FormGroup>
+          <Label for="dateToComment">Date to comment</Label>
+          <Field
+            id="dateToComment"
+            name="dateToComment"
+            type="number"
+            component={BcInput}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="moderateComment">Moderate comment</Label>
+          <Field
+            id="moderateComment"
+            name="moderateComment"
+            type="radio"
+            component={BcInput}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="postPerPage">Post per page</Label>
+          <Field
+            id="postPerPage"
+            name="postPerPage"
+            type="number"
+            component={BcInput}
+          />
+        </FormGroup>
+      </div>
+    );
+  }
+}
 
 class Setting extends React.Component {
+  handleUpdateSetting() {
+    var settings = {
+      ...this.props.initialValues.blogSetting,
+      ...this.props.initialValues.userSetting
+    };
+    this.props.updateBlogSetting(settings);
+  }
   render() {
     const { profile } = this.props;
     return (
-      <div>
+      <Form>
+        {profile &&
+          <FormSection name="blogSetting">
+            <BlogSetting />
+          </FormSection>}
         {profile &&
           <div>
             <p>UserID: {profile.sub}</p>
@@ -43,7 +95,8 @@ class Setting extends React.Component {
             }
           }}
         />
-      </div>
+        <Button onClick={() => this.handleUpdateSetting()}>Update</Button>
+      </Form>
     );
   }
 }
@@ -57,8 +110,24 @@ function extractProfile(state) {
 
 function mapStateToProps(state, ownProps) {
   return {
-    profile: extractProfile(state)
+    profile: extractProfile(state),
+    initialValues: {
+      blogSetting: {
+        dateToComment: 5,
+        moderateComment: true,
+        postPerPage: 5
+      },
+      userSetting: extractProfile(state) || {}
+    }
   };
 }
 
-export default connect(mapStateToProps, null)(Setting);
+export const mapDispatchToProps = dispatch =>
+  bindActionCreators(blogActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: "settingForm",
+    enableReinitialize: true
+  })(Setting)
+);

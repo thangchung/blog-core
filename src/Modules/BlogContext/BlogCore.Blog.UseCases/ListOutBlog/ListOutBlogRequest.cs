@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BlogCore.Blog.UseCases.ListOutBlog
 {
-    public class ListOutBlogRequest : IMesssage, IRequest<IEnumerable<ListOutBlogResponse>>
+    public class ListOutBlogRequest : IMessage, IRequest<IEnumerable<ListOutBlogResponse>>
     {
         public ListOutBlogRequest(int page)
         {

@@ -38,6 +38,8 @@
     <ProjectReference Include="..\..\Framework\BlogCore.Core\BlogCore.Core.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Presenters\BlogCore.AccessControl.Presenters.csproj" />
+    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.UseCases\BlogCore.AccessControl.UseCases.csproj" />
     <ProjectReference Include="..\..\Modules\BlogContext\BlogCore.Blog.Presenters\BlogCore.Blog.Presenters.csproj" />
     <ProjectReference Include="..\..\Modules\BlogContext\BlogCore.Blog.UseCases\BlogCore.Blog.UseCases.csproj" />
     <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />

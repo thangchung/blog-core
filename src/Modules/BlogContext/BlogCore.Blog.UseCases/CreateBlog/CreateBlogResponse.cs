@@ -4,7 +4,7 @@ using FluentValidation.Results;
 
 namespace BlogCore.Blog.UseCases.CreateBlog
 {
-    public class CreateBlogResponse : IMesssage
+    public class CreateBlogResponse : IMessage
     {
         public CreateBlogResponse(
             Guid blogId, 

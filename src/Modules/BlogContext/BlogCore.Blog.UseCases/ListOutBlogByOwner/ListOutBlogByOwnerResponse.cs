@@ -3,7 +3,7 @@ using BlogCore.Core;
 
 namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
 {
-    public class ListOutBlogByOwnerResponse : IMesssage
+    public class ListOutBlogByOwnerResponse : IMessage
     {
         public ListOutBlogByOwnerResponse(
             Guid id,

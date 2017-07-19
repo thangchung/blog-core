@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BlogCore.Blog.UseCases.CreateBlog
 {
-    public class CreateBlogRequestMsg : IMesssage, IRequest<CreateBlogResponse>
+    public class CreateBlogRequestMsg : IMessage, IRequest<CreateBlogResponse>
     {
         public CreateBlogRequestMsg(
             string title, 

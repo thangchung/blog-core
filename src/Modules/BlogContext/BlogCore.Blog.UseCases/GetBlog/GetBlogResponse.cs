@@ -3,7 +3,7 @@ using BlogCore.Core;
 
 namespace BlogCore.Blog.UseCases.GetBlog
 {
-    public class GetBlogResponse : IMesssage
+    public class GetBlogResponse : IMessage
     {
         public GetBlogResponse(
             Guid id, 

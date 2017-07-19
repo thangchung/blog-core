@@ -5,7 +5,7 @@ using BlogCore.Post.Domain;
 
 namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {
-    public class ListOutPostByBlogResponse : IMesssage
+    public class ListOutPostByBlogResponse : IMessage
     {
         public int Page { get; set; }
         public int Total { get; set; }
@@ -13,7 +13,7 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
         public List<InnerListOutPostByBlogResponse> Inners { get; set; }
     }
 
-    public class InnerListOutPostByBlogResponse : IMesssage
+    public class InnerListOutPostByBlogResponse : IMessage
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
