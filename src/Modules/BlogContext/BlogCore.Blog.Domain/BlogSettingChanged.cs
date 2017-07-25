@@ -5,13 +5,12 @@ namespace BlogCore.Blog.Domain
 {
     public class BlogSettingChanged : IDomainEvent
     {
-        public BlogSettingChanged(Guid blogSettingId)
+        public BlogSettingChanged(Guid oldBlogSettingId)
         {
-            BlogSettingId = blogSettingId;
+            OldBlogSettingId = oldBlogSettingId;
         }
 
-        public Guid BlogSettingId { get; private set; }
-
+        public Guid OldBlogSettingId { get; private set; }
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }
     }

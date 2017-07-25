@@ -8,16 +8,16 @@ namespace BlogCore.Post.Domain
 {
     public class Post : EntityBase
     {
-        private Post()
+        internal Post()
         {
         }
 
-        public Post(BlogId blogId, string title, string excerpt, string body, AuthorId authorId)
+        internal Post(BlogId blogId, string title, string excerpt, string body, AuthorId authorId)
             : this(blogId, IdHelper.GenerateId(), title, excerpt, body, authorId)
         {
         }
 
-        public Post(BlogId blogId, Guid postId, string title, string excerpt, string body, AuthorId authorId) 
+        internal Post(BlogId blogId, Guid postId, string title, string excerpt, string body, AuthorId authorId) 
             : base(postId)
         {
             Blog = blogId;
@@ -28,6 +28,16 @@ namespace BlogCore.Post.Domain
             Author = authorId;
             CreatedAt = DateTimeHelper.GenerateDateTime();
             Events.Add(new PostedCreated(postId));
+        }
+
+        public static Post CreateInstance(BlogId blogId, Guid postId, string title, string excerpt, string body, AuthorId authorId)
+        {
+            return new Post(blogId, postId, title, excerpt, body, authorId);
+        }
+
+        public static Post CreateInstance(BlogId blogId, string title, string excerpt, string body, AuthorId authorId)
+        {
+            return new Post(blogId, title, excerpt, body, authorId);
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 
 namespace BlogCore.AccessControl.Domain
 {
-    public class ViolateSecurityException : BlogCoreException
+    public class ViolateSecurityException : CoreException
     {
         public ViolateSecurityException(string message)
             : base(message, null)

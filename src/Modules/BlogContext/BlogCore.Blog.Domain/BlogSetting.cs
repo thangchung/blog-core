@@ -6,6 +6,10 @@ namespace BlogCore.Blog.Domain
 {
     public class BlogSetting : ValueObjectBase
     {
+        private BlogSetting()
+        {
+        }
+
         public BlogSetting(Guid id, int postsPerPage, int daysToComment, bool moderateComments)
         {
             Id = id;

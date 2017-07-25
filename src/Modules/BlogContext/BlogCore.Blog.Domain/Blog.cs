@@ -6,16 +6,16 @@ namespace BlogCore.Blog.Domain
 {
     public class Blog : EntityBase
     {
-        private Blog()
+        internal Blog()
         {
         }
 
-        public Blog(string title, string ownerEmail) 
+        internal Blog(string title, string ownerEmail) 
             : this(IdHelper.GenerateId(), title, ownerEmail)
         {
         }
 
-        public Blog(Guid id, string title, string ownerEmail) : base(id)
+        internal Blog(Guid id, string title, string ownerEmail) : base(id)
         {
             AssertTitle(title);
             AssertOwnerEmail(ownerEmail);
@@ -27,6 +27,21 @@ namespace BlogCore.Blog.Domain
 
             Status = BlogStatus.Registered;
             Events.Add(new BlogCreated());
+        }
+
+        public static Blog CreateInstance(Guid id, string title, string ownerEmail)
+        {
+            return new Blog(id, title, ownerEmail);    
+        }
+
+        public static Blog CreateInstance(string title, string ownerEmail)
+        {
+            return new Blog(title, ownerEmail);
+        }
+
+        public static BlogSetting CreateBlogSettingInstane(int postsPerPage, int daysToComment, bool moderateComments)
+        {
+            return new BlogSetting(IdHelper.GenerateId(), postsPerPage, daysToComment, moderateComments);
         }
 
         [Required]
@@ -72,9 +87,10 @@ namespace BlogCore.Blog.Domain
 
         public Blog ChangeSetting(BlogSetting setting)
         {
+            var oldBlogSettingId = BlogSetting.Id;
             AssertSetting(setting);
             BlogSetting = setting;
-            Events.Add(new BlogSettingChanged(setting.Id));
+            Events.Add(new BlogSettingChanged(oldBlogSettingId));
             return this;
         }
 

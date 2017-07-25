@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BlogCore.Blog.UseCases.CreateBlog
 {
-    public class BlogCreatedHandler : INotificationHandler<BlogCreated>
+    public class BlogSettingChangedHandler : INotificationHandler<BlogCreated>
     {
         public void Handle(BlogCreated notification)
         {

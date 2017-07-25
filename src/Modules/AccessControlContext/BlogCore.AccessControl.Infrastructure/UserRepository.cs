@@ -27,7 +27,7 @@ namespace BlogCore.AccessControl.Infrastructure
         {
             var user = await _dbContext.Set<AppUser>().SingleOrDefaultAsync(x => Guid.Parse(x.Id) == id);
             if (user == null)
-                throw new BlogCoreException($"Could not find out UserProfile with id={id}.");
+                throw new CoreException($"Could not find out UserProfile with id={id}.");
 
             user.GivenName = givenName;
             user.FamilyName = familyName;

@@ -14,7 +14,7 @@ namespace BlogCore.Post.Migrator
             var authorId = new AuthorId(IdHelper.GenerateId("4b5f26ce-df97-494c-b747-121d215847d8"));
             for (var i = 1; i <= 100; i++)
             {
-                var post = new Domain.Post(
+                var post = Domain.Post.CreateInstance(
                         blogId,
                         $"The title of post {i}",
                         $"The excerpt of post {i}",

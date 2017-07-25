@@ -1,29 +1,44 @@
 ﻿using System.Threading.Tasks;
-using BlogCore.Blog.Domain;
 using BlogCore.Blog.Infrastructure;
 using BlogCore.Core;
+using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 namespace BlogCore.Blog.UseCases.UpdateBlogSetting
 {
     public class UpdateBlogSettingInteractor : IInputBoundary<UpdateBlogSettingRequest, UpdateBlogSettingResponse>
     {
-        private readonly IRepository<BlogDbContext, Domain.Blog> _blogRepo;
+        private readonly BlogDbContext _dbContext;
+        private readonly IMediator _mediator;
 
-        public UpdateBlogSettingInteractor(IRepository<BlogDbContext, Domain.Blog> blogRepo)
+        public UpdateBlogSettingInteractor(BlogDbContext dbContext, IMediator mediator)
         {
-            _blogRepo = blogRepo;
+            _dbContext = dbContext;
+            _mediator = mediator;
         }
 
         public async Task<UpdateBlogSettingResponse> Handle(UpdateBlogSettingRequest request)
         {
-            var blog = await _blogRepo.GetByIdAsync(request.BlogId);
+            var dbSet = _dbContext.Set<Domain.Blog>().Include(x => x.BlogSetting);
+            var blog = await dbSet.FirstOrDefaultAsync(x => x.Id == request.BlogId);
+            if(blog == null)
+            {
+                throw new CoreException($"Blog #[{request.BlogId}] is null.");
+            }
+
             blog.ChangeSetting(
-                new BlogSetting(
-                    IdHelper.GenerateId(),
-                    request.PostsPerPage,
-                    request.DaysToComment,
+                Domain.Blog.CreateBlogSettingInstane(
+                    request.PostsPerPage, 
+                    request.DaysToComment, 
                     request.ModerateComments));
-            await _blogRepo.UpdateAsync(blog);
+
+            _dbContext.Entry(blog).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+
+            // raise events
+            foreach (var @event in blog.GetEvents())
+                await _mediator.Publish(@event);
+
             return new UpdateBlogSettingResponse();
         }
     }

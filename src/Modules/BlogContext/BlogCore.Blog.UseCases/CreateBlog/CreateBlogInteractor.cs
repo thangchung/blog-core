@@ -38,7 +38,7 @@ namespace BlogCore.Blog.UseCases.CreateBlog
             if (validationResult.IsValid == false)
                 return await Task.FromResult(new CreateBlogResponse(Guid.Empty, validationResult));
 
-            var blog = new Domain.Blog(message.Title, _securityContext.GetCurrentEmail())
+            var blog = Domain.Blog.CreateInstance(message.Title, _securityContext.GetCurrentEmail())
                 .ChangeDescription(message.Description)
                 .ChangeSetting(
                     new BlogSetting(

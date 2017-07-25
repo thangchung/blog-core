@@ -3,7 +3,7 @@ using BlogCore.Core;
 
 namespace BlogCore.Post.Domain
 {
-    public class NotFoundCommentException : BlogCoreException
+    public class NotFoundCommentException : CoreException
     {
         public NotFoundCommentException(string message)
             : this(message, null)

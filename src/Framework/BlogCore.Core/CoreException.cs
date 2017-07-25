@@ -2,20 +2,20 @@
 
 namespace BlogCore.Core
 {
-    public class BlogCoreException : Exception
+    public class CoreException : Exception
     {
-        public BlogCoreException(string message)
+        public CoreException(string message)
             : this(message, null)
         {
         }
 
-        public BlogCoreException(string message, Exception innerEx)
+        public CoreException(string message, Exception innerEx)
             : base(message, innerEx)
         {
         }
     }
 
-    public class BlogCoreDomainException : BlogCoreException
+    public class BlogCoreDomainException : CoreException
     {
         public BlogCoreDomainException(string message, Exception innerEx) 
             : base(message, innerEx)
@@ -23,7 +23,7 @@ namespace BlogCore.Core
         }
     }
 
-    public class DomainValidationException : BlogCoreException
+    public class DomainValidationException : CoreException
     {
         public DomainValidationException(string message) 
             : this(message, null)
