@@ -38,7 +38,7 @@ namespace BlogCore.Post.Domain
         {
             if (string.IsNullOrEmpty(body))
             {
-                throw new DomainValidationException("Body could not be null or empty.");
+                throw new Core.ValidationException("Body could not be null or empty.");
             }
 
             Body = body;

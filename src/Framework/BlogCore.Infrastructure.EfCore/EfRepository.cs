@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BlogCore.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogCore.Infrastructure.EfCore
 {
-    public class EfRepository<TDbContext, TEntity> : IRepository<TDbContext, TEntity>
+    public class EfRepository<TDbContext, TEntity> : IEfRepository<TDbContext, TEntity>
         where TDbContext : DbContext
         where TEntity : EntityBase
     {
-        protected readonly TDbContext DbContext;
+        public TDbContext DbContext { get; private set; }
 
         public EfRepository(TDbContext dbContext)
         {
@@ -29,31 +28,6 @@ namespace BlogCore.Infrastructure.EfCore
         {
             return await DbContext.Set<TEntity>()
                 .AsNoTracking()
-                .ToListAsync();
-        }
-
-        public async Task<IReadOnlyList<TEntity>> ListAsync(
-            PageInfo pageInfo,
-            Func<IIncludable<TEntity>, IIncludable> includes = null)
-        {
-            var dbSet = DbContext.Set<TEntity>();
-            IQueryable<TEntity> includeQueryable = dbSet;
-            if (includes != null)
-                includeQueryable = dbSet.IncludeMultiple(includes);
-
-            return await includeQueryable
-                .Skip(pageInfo.CurrentPage)
-                .Take(pageInfo.TotalPage)
-                .AsNoTracking()
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> spec)
-        {
-            return await DbContext.Set<TEntity>()
-                .AsNoTracking()
-                .Include(spec.Include)
-                .Where(spec.Criteria)
                 .ToListAsync();
         }
 

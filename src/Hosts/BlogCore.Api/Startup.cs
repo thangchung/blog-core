@@ -72,7 +72,7 @@ namespace BlogCore.Api
 
             // core & infra register
             builder.RegisterGeneric(typeof(EfRepository<,>))
-                .As(typeof(IRepository<,>));
+                .As(typeof(IEfRepository<,>));
             builder.RegisterType<UserRepository>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
@@ -138,7 +138,7 @@ namespace BlogCore.Api
                 throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
             securityContextPrincipal.Principal = principal;
 
-            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IRepository<BlogDbContext, Blog.Domain.Blog>>();
+            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IEfRepository<BlogDbContext, Blog.Domain.Blog>>();
             var email = securityContextInstance.GetCurrentEmail();
             var blogs = await blogRepoInstance.ListAsync();
             var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);

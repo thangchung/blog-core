@@ -132,7 +132,7 @@ namespace BlogCore.Blog.Domain
         {
             if (string.IsNullOrEmpty(title))
             {
-                throw new DomainValidationException("Title could not be null or empty.");
+                throw new Core.ValidationException("Title could not be null or empty.");
             }
         }
 
@@ -140,7 +140,7 @@ namespace BlogCore.Blog.Domain
         {
             if (string.IsNullOrEmpty(imageFilePath))
             {
-                throw new DomainValidationException("The path of image could not be null or empty.");
+                throw new Core.ValidationException("The path of image could not be null or empty.");
             }
         }
 
@@ -148,7 +148,7 @@ namespace BlogCore.Blog.Domain
         {
             if (string.IsNullOrEmpty(ownerEmail))
             {
-                throw new DomainValidationException("The email of owner could not be null or empty.");
+                throw new Core.ValidationException("The email of owner could not be null or empty.");
             }
         }
 
@@ -156,17 +156,17 @@ namespace BlogCore.Blog.Domain
         {
             if (setting == null)
             {
-                throw new DomainValidationException("BlogSetting could not be null or empty.");
+                throw new Core.ValidationException("BlogSetting could not be null or empty.");
             }
 
             if (setting.PostsPerPage <= 0 || setting.PostsPerPage >= 20)
             {
-                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 20 posts.");
+                throw new Core.ValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 20 posts.");
             }
 
             if (setting.DaysToComment <= 0 || setting.DaysToComment >= 10)
             {
-                throw new DomainValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 10 days.");
+                throw new Core.ValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 10 days.");
             }
         }
     }

@@ -7,18 +7,19 @@ using BlogCore.Blog.Infrastructure;
 using BlogCore.Core;
 using FluentValidation;
 using MediatR;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.CreateBlog
 {
     public class CreateBlogInteractor : IInputBoundary<CreateBlogRequestMsg, CreateBlogResponse>
     {
-        private readonly IRepository<BlogDbContext, Domain.Blog> _blogRepo;
+        private readonly IEfRepository<BlogDbContext, Domain.Blog> _blogRepo;
         private readonly IValidator<CreateBlogRequestMsg> _createBlogValidator;
         private readonly IMediator _mediator;
         private readonly ISecurityContext _securityContext;
 
         public CreateBlogInteractor(
-            IRepository<BlogDbContext, Domain.Blog> blogRepo,
+            IEfRepository<BlogDbContext, Domain.Blog> blogRepo,
             IValidator<CreateBlogRequestMsg> createBlogValidator,
             ISecurityContext securityContext,
             IMediator mediator)

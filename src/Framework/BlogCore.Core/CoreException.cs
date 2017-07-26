@@ -15,22 +15,14 @@ namespace BlogCore.Core
         }
     }
 
-    public class BlogCoreDomainException : CoreException
+    public class ValidationException : CoreException
     {
-        public BlogCoreDomainException(string message, Exception innerEx) 
-            : base(message, innerEx)
-        {
-        }
-    }
-
-    public class DomainValidationException : CoreException
-    {
-        public DomainValidationException(string message) 
+        public ValidationException(string message) 
             : this(message, null)
         {
         }
 
-        public DomainValidationException(string message, Exception innerEx) 
+        public ValidationException(string message, Exception innerEx) 
             : base(message, innerEx)
         {
         }

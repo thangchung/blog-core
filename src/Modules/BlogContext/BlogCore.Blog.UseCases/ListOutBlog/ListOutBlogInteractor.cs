@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using BlogCore.Blog.Infrastructure;
 using BlogCore.Core;
 using MediatR;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.ListOutBlog
 {
     public class ListOutBlogInteractor : IAsyncRequestHandler<ListOutBlogRequest, IEnumerable<ListOutBlogResponse>>
     {
-        private readonly IRepository<BlogDbContext, Domain.Blog> _blogRepo;
+        private readonly IEfRepository<BlogDbContext, Domain.Blog> _blogRepo;
 
-        public ListOutBlogInteractor(IRepository<BlogDbContext, Domain.Blog> blogRepo)
+        public ListOutBlogInteractor(IEfRepository<BlogDbContext, Domain.Blog> blogRepo)
         {
             _blogRepo = blogRepo;
         }

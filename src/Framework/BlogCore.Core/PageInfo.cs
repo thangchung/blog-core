@@ -7,10 +7,10 @@ namespace BlogCore.Core
         public PageInfo(int currentPage, int totalPage)
         {
             if (currentPage <= 0)
-                throw new DomainValidationException("CurrentPage could not be less than zero.");
+                throw new ValidationException("CurrentPage could not be less than zero.");
 
             if (totalPage <= 0)
-                throw new DomainValidationException("TotalPage could not be less than zero.");
+                throw new ValidationException("TotalPage could not be less than zero.");
 
             CurrentPage = currentPage - 1;
             TotalPage = totalPage;

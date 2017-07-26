@@ -3,17 +3,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.Blog.Infrastructure;
-using BlogCore.Core;
 using MediatR;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
 {
     public class ListOutBlogByOwnerInteractor : IAsyncRequestHandler<ListOutBlogByOwnerRequest, IEnumerable<ListOutBlogByOwnerResponse>>
     {
-        private readonly IRepository<BlogDbContext, Domain.Blog> _blogRepo;
+        private readonly IEfRepository<BlogDbContext, Domain.Blog> _blogRepo;
         private readonly ISecurityContext _securityContext;
 
-        public ListOutBlogByOwnerInteractor(IRepository<BlogDbContext, Domain.Blog> blogRepo, ISecurityContext securityContext)
+        public ListOutBlogByOwnerInteractor(IEfRepository<BlogDbContext, Domain.Blog> blogRepo, ISecurityContext securityContext)
         {
             _blogRepo = blogRepo;
             _securityContext = securityContext;

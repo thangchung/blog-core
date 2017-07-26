@@ -104,7 +104,7 @@ namespace BlogCore.Post.Domain
         {
             if (string.IsNullOrEmpty(title))
             {
-                throw new DomainValidationException("Title could not be null or empty.");
+                throw new Core.ValidationException("Title could not be null or empty.");
             }
 
             Title = title;
@@ -116,7 +116,7 @@ namespace BlogCore.Post.Domain
         {
             if (string.IsNullOrEmpty(excerpt))
             {
-                throw new DomainValidationException("Excerpt could not be null or empty.");
+                throw new Core.ValidationException("Excerpt could not be null or empty.");
             }
 
             Excerpt = excerpt;
@@ -127,7 +127,7 @@ namespace BlogCore.Post.Domain
         {
             if (string.IsNullOrEmpty(body))
             {
-                throw new DomainValidationException("Body could not be null or empty.");
+                throw new Core.ValidationException("Body could not be null or empty.");
             }
 
             Excerpt = body;

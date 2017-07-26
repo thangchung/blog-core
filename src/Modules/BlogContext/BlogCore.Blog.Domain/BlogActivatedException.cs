@@ -3,7 +3,7 @@ using BlogCore.Core;
 
 namespace BlogCore.Blog.Domain
 {
-    public class BlogActivatedException : BlogCoreDomainException
+    public class BlogActivatedException : CoreException
     {
         public BlogActivatedException(string message)
             : this(message, null)

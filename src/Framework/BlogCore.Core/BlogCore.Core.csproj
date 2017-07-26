@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="7.1.0" />
     <PackageReference Include="MediatR" Version="3.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
