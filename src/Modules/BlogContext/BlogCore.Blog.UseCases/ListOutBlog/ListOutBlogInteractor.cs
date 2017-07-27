@@ -19,7 +19,7 @@ namespace BlogCore.Blog.UseCases.ListOutBlog
 
         public async Task<IEnumerable<ListOutBlogResponse>> Handle(ListOutBlogRequest request)
         {
-            var blogs = await _blogRepo.ListAsync(new PageInfo(request.Page, 10));
+            var blogs = await _blogRepo.QueryAsync(new PageInfo(request.Page, 10));
             var responses = blogs
                 .Select(x => new ListOutBlogResponse(
                     x.Id,

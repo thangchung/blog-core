@@ -1,27 +1,29 @@
 ﻿using System.Threading.Tasks;
 using BlogCore.Blog.Infrastructure;
 using BlogCore.Core;
-using Microsoft.EntityFrameworkCore;
 using MediatR;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.UpdateBlogSetting
 {
     public class UpdateBlogSettingInteractor : IInputBoundary<UpdateBlogSettingRequest, UpdateBlogSettingResponse>
     {
-        private readonly BlogDbContext _dbContext;
+        private readonly IEfRepository<BlogDbContext, Domain.Blog> _blogRepository;
         private readonly IMediator _mediator;
 
-        public UpdateBlogSettingInteractor(BlogDbContext dbContext, IMediator mediator)
+        public UpdateBlogSettingInteractor(IEfRepository<BlogDbContext, Domain.Blog> blogRepository, IMediator mediator)
         {
-            _dbContext = dbContext;
+            _blogRepository = blogRepository;
             _mediator = mediator;
         }
 
         public async Task<UpdateBlogSettingResponse> Handle(UpdateBlogSettingRequest request)
         {
-            var dbSet = _dbContext.Set<Domain.Blog>().Include(x => x.BlogSetting);
-            var blog = await dbSet.FirstOrDefaultAsync(x => x.Id == request.BlogId);
-            if(blog == null)
+            var blog = await _blogRepository.FindOneAsync(
+                x => x.Id == request.BlogId,
+                x => x.BlogSetting);
+
+            if (blog == null)
             {
                 throw new CoreException($"Blog #[{request.BlogId}] is null.");
             }
@@ -32,8 +34,7 @@ namespace BlogCore.Blog.UseCases.UpdateBlogSetting
                     request.DaysToComment, 
                     request.ModerateComments));
 
-            _dbContext.Entry(blog).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            await _blogRepository.DbContext.SaveChangesAsync();
 
             // raise events
             foreach (var @event in blog.GetEvents())

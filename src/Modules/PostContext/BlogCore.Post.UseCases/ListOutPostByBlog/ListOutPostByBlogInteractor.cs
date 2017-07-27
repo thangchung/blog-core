@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BlogCore.Post.Domain;
@@ -19,12 +18,9 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
 
         public async Task<ListOutPostByBlogResponse> Handle(ListOutPostByBlogRequest message)
         {
-            var responses = new List<InnerListOutPostByBlogResponse>();
             var posts = await _postRepository.GetFullPostByBlogIdAsync(message.BlogId, message.Page);
-            var postObservable = posts.ToObservable();
-            await postObservable.ForEachAsync(post =>
-            {
-                responses.Add(new InnerListOutPostByBlogResponse
+            var responses = posts.Select(post =>
+                new InnerListOutPostByBlogResponse
                 {
                     Id = post.Id,
                     Title = post.Title,
@@ -34,11 +30,10 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
                     Author = post.Author,
                     Tags = post.Tags.ToList()
                 });
-            });
 
             return new ListOutPostByBlogResponse
             {
-                Inners = responses,
+                Inners = responses.ToList(),
                 BlogId = message.BlogId,
                 Page = message.Page,
                 Total = _postRepository.GetTotalPost(message.BlogId)

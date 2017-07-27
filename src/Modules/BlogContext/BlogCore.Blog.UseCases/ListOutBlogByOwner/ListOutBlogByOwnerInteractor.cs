@@ -21,10 +21,9 @@ namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
 
         public async Task<IEnumerable<ListOutBlogByOwnerResponse>> Handle(ListOutBlogByOwnerRequest request)
         {
-            var blogs = await _blogRepo.ListAsync();
-            var responses = blogs
-                .Where(x => x.OwnerEmail == _securityContext.GetCurrentEmail())
-                .Select(x => new ListOutBlogByOwnerResponse(
+            var blogs = await _blogRepo.FindAllAsync(x => x.OwnerEmail == _securityContext.GetCurrentEmail());
+            var responses = blogs.Select(
+                x => new ListOutBlogByOwnerResponse(
                     x.Id,
                     x.Title,
                     x.Description,
