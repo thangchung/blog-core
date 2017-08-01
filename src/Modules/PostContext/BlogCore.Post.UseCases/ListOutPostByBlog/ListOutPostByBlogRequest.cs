@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using BlogCore.Core;
 using MediatR;
 
 namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {
-    public class ListOutPostByBlogRequest : IMessage, IRequest<ListOutPostByBlogResponse>
+    public class ListOutPostByBlogRequest : IMessage, IRequest<PaginatedItem<ListOutPostByBlogResponse>>
     {
         public ListOutPostByBlogRequest(Guid blogId, int page)
         {

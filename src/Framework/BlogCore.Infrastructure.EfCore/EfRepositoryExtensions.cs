@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogCore.Core;
@@ -8,10 +7,6 @@ using System.Linq.Expressions;
 
 namespace BlogCore.Infrastructure.EfCore
 {
-    /// <summary>
-    /// Reference the way to include the relationship at https://stackoverflow.com/questions/38250040/passing-lambda-as-parameter-into-repository-method-in-efcore
-    /// TODO: add OrderBy as https://stackoverflow.com/questions/5047561/how-to-pass-an-array-of-orderby-expression-to-a-method
-    /// </summary>
     public static class EfRepositoryExtensions
     {
         public static async Task<PaginatedItem<TResponse>> QueryAsync<TDbContext, TEntity, TResponse>(
@@ -82,10 +77,6 @@ namespace BlogCore.Infrastructure.EfCore
                 var isDesc = string.Equals(criterion.SortOrder, "desc", StringComparison.OrdinalIgnoreCase) ? true : false;
                 queryable = queryable.OrderByPropertyName(criterion.SortBy, isDesc);
             }
-            else
-            {
-                queryable = queryable.OrderByPropertyName("Id", true);
-            }
 
             if (criterion.CurrentPage > totalPages)
             {
@@ -101,21 +92,5 @@ namespace BlogCore.Infrastructure.EfCore
 
             return new PaginatedItem<TResponse>(totalRecord, totalPages, results);
         }
-    }
-
-    public class PaginatedItem<TResponse> where TResponse : IMessage
-    {
-        public PaginatedItem(int totalItems, int totalPages, IReadOnlyList<TResponse> items)
-        {
-            TotalItems = totalItems;
-            TotalPages = totalPages;
-            Items = items;
-        }
-
-        public int TotalItems { get; private set; }
-
-        public long TotalPages { get; private set; }
-
-        public IReadOnlyList<TResponse> Items { get; private set; }
     }
 }

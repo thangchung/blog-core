@@ -6,7 +6,7 @@ const LOAD_BLOGS = "bc/blog/LOAD_BLOGS";
 const LOAD_BLOGS_SUCCESS = "bc/blog/LOAD_BLOGS_SUCCESS";
 const LOAD_BLOGS_FAILED = "bc/blog/LOAD_BLOGS_FAILED";
 
-const LOAD_BLOGS_BY_PAGE_URL = `http://localhost:8484/api/blogs/paged`;
+const LOAD_BLOGS_BY_PAGE_URL = `http://localhost:8484/api/blogs`;
 const UPDATE_SETTING_URL = `http://localhost:8484/api/blogs/setting`;
 
 const initialState = {
@@ -63,7 +63,7 @@ export function loadBlogsByPage(blogs) {
 
 export function getBlogsByPage(page) {
   return dispatch =>
-    fetch(`${LOAD_BLOGS_BY_PAGE_URL}/${page}`)
+    fetch(`${LOAD_BLOGS_BY_PAGE_URL}?page=${page}`)
       .then(response => response.json())
       .then(result => dispatch(loadBlogsByPage(result.items)));
 }

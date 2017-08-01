@@ -14,9 +14,9 @@ namespace BlogCore.Core
 
             CurrentPage = currentPage - 1;
 
-            if (pageSize < 1 || pageSize > 20)
+            if (pageSize < 1 || pageSize > 10)
             {
-                PageSize = 20;
+                PageSize = 10;
             }
             else
             {

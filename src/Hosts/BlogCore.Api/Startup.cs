@@ -19,13 +19,10 @@ using BlogCore.AccessControl.Domain;
 using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.AccessControl.Infrastructure;
 using BlogCore.AccessControl.Infrastructure.SecurityContext;
-using BlogCore.AccessControl.Presenters;
 using BlogCore.AccessControl.UseCases;
 using BlogCore.Blog.Infrastructure;
-using BlogCore.Blog.Presenters;
 using BlogCore.Blog.UseCases;
 using BlogCore.Post.Infrastructure;
-using BlogCore.Post.Presenters;
 using BlogCore.Post.UseCases;
 
 namespace BlogCore.Api
@@ -103,15 +100,12 @@ namespace BlogCore.Api
             {
                 // Blog
                 typeof(BlogDbContext).GetTypeInfo().Assembly,
-                typeof(BlogPresenterModule).GetTypeInfo().Assembly,
                 typeof(BlogUseCaseModule).GetTypeInfo().Assembly,
                 // Post
                 typeof(PostDbContext).GetTypeInfo().Assembly,
-                typeof(PostPresenterModule).GetTypeInfo().Assembly,
                 typeof(PostUseCaseModule).GetTypeInfo().Assembly,
                 // Access Control
                 typeof(IdentityServerDbContext).GetTypeInfo().Assembly,
-                typeof(AccessControlPresenterModule).GetTypeInfo().Assembly,
                 typeof(AccessControlUseCaseModule).GetTypeInfo().Assembly,
                 // Main
                 typeof(Startup).GetTypeInfo().Assembly

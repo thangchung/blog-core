@@ -26,8 +26,8 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD_POSTS_SUCCESSED:
       return {
         ...state,
-        byIds: action.posts.postItems.map(post => post.id),
-        posts: action.posts.postItems.reduce((obj, post) => {
+        byIds: action.result.items.map(post => post.id),
+        posts: action.result.items.reduce((obj, post) => {
           obj[post.id] = post;
           return obj;
         }, {}),
@@ -62,8 +62,8 @@ export function postsLoading() {
   return { type: LOAD_POSTS };
 }
 
-export function loadPosts(posts, page) {
-  return { type: LOAD_POSTS_SUCCESSED, posts, page };
+export function loadPosts(result, page) {
+  return { type: LOAD_POSTS_SUCCESSED, result, page };
 }
 
 export function getPosts(blogId, page) {
@@ -72,7 +72,7 @@ export function getPosts(blogId, page) {
     dispatch(postsLoading());
     return fetch(`${LOAD_POSTS_URL}/${blogId}/posts/?page=${page}`)
       .then(response => response.json())
-      .then(posts => dispatch(loadPosts(posts, page)));
+      .then(result => dispatch(loadPosts(result, page)));
     //}
   };
 }

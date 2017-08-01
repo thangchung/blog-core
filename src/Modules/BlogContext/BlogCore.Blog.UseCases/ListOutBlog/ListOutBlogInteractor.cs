@@ -4,6 +4,7 @@ using MediatR;
 using BlogCore.Infrastructure.EfCore;
 using System.Linq.Expressions;
 using System;
+using BlogCore.Core;
 
 namespace BlogCore.Blog.UseCases.ListOutBlog
 {
