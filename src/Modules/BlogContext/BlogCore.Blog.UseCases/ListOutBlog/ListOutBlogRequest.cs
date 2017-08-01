@@ -1,16 +1,16 @@
-using System.Collections.Generic;
 using BlogCore.Core;
 using MediatR;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.ListOutBlog
 {
-    public class ListOutBlogRequest : IMessage, IRequest<IEnumerable<ListOutBlogResponse>>
+    public class ListOutBlogRequest : IMessage, IRequest<PaginatedItem<ListOutBlogResponse>>
     {
-        public ListOutBlogRequest(int page)
+        public ListOutBlogRequest(Criterion criterion)
         {
-            Page = page;
+            Criterion = criterion;
         }
 
-        public int Page { get; private set; }
+        public Criterion Criterion { get; private set; }
     }
 }

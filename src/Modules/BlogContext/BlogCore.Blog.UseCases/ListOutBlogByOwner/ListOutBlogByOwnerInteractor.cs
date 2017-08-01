@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.Blog.Infrastructure;
 using MediatR;
 using BlogCore.Infrastructure.EfCore;
+using BlogCore.Core;
+using System.Linq.Expressions;
+using System;
 
 namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
 {
-    public class ListOutBlogByOwnerInteractor : IAsyncRequestHandler<ListOutBlogByOwnerRequest, IEnumerable<ListOutBlogByOwnerResponse>>
+    public class ListOutBlogByOwnerInteractor : IAsyncRequestHandler<ListOutBlogByOwnerRequest, PaginatedItem<ListOutBlogByOwnerResponse>>
     {
         private readonly IEfRepository<BlogDbContext, Domain.Blog> _blogRepo;
         private readonly ISecurityContext _securityContext;
@@ -19,19 +20,13 @@ namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
             _securityContext = securityContext;
         }
 
-        public async Task<IEnumerable<ListOutBlogByOwnerResponse>> Handle(ListOutBlogByOwnerRequest request)
+        public async Task<PaginatedItem<ListOutBlogByOwnerResponse>> Handle(ListOutBlogByOwnerRequest request)
         {
-            var blogs = await _blogRepo.FindAllAsync(x => x.OwnerEmail == _securityContext.GetCurrentEmail());
-            var responses = blogs.Select(
-                x => new ListOutBlogByOwnerResponse(
-                    x.Id,
-                    x.Title,
-                    x.Description,
-                    x.ImageFilePath,
-                    (int)x.Theme
-                ));
-
-            return responses;
+            var criterion = new Criterion(1, int.MaxValue);
+            Expression<Func<Domain.Blog, ListOutBlogByOwnerResponse>> selector =
+                b => new ListOutBlogByOwnerResponse(b.Id, b.Title, b.Description, b.ImageFilePath, (int)b.Theme);
+            Expression<Func<Domain.Blog, bool>> ownerEmailFilter = x => x.OwnerEmail == _securityContext.GetCurrentEmail();
+            return await _blogRepo.FindAllAsync(criterion, selector, ownerEmailFilter);
         }
     }
 }

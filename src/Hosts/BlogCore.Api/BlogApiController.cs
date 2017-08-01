@@ -18,6 +18,7 @@ using BlogCore.Post.UseCases.ListOutPostByBlog;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Api
 {
@@ -46,18 +47,17 @@ namespace BlogCore.Api
 
         [Authorize("Admin")]
         [HttpGet("owner")]
-        public async Task<IEnumerable<BlogItemViewModel>> GetOwner()
+        public async Task<PaginatedItem<ListOutBlogByOwnerResponse>> GetOwner()
         {
-            var blogResponses = await _eventAggregator.Send(new ListOutBlogByOwnerRequest());
-            return await _listOfBlogByOwnerPresenter.TransformAsync(blogResponses);
+            return await _eventAggregator.Send(new ListOutBlogByOwnerRequest());
         }
 
         [AllowAnonymous]
         [HttpGet("paged/{page}")]
-        public async Task<IEnumerable<BlogItemViewModel>> GetByPage(int page)
+        public async Task<PaginatedItem<ListOutBlogResponse>> GetByPage(int page)
         {
-            var blogResponses = await _eventAggregator.Send(new ListOutBlogRequest(page));
-            return await _listOfBlogPresenter.TransformAsync(blogResponses);
+            var criterion = new Criterion(page, 20);
+            return await _eventAggregator.Send(new ListOutBlogRequest(criterion));
         }
 
         [AllowAnonymous]

@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using BlogCore.Core;
 using MediatR;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
 {
-    public class ListOutBlogByOwnerRequest : IMessage, IRequest<IEnumerable<ListOutBlogByOwnerResponse>>
+    public class ListOutBlogByOwnerRequest : IMessage, IRequest<PaginatedItem<ListOutBlogByOwnerResponse>>
     {
-        // TODO: re-visit for paging info later         
     }
 }

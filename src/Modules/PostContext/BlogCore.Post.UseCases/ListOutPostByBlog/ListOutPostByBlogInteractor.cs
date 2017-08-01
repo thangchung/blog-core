@@ -34,7 +34,6 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
             return new ListOutPostByBlogResponse
             {
                 Inners = responses.ToList(),
-                BlogId = message.BlogId,
                 Page = message.Page,
                 Total = _postRepository.GetTotalPost(message.BlogId)
             };

@@ -9,7 +9,6 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
     {
         public int Page { get; set; }
         public int Total { get; set; }
-        public Guid BlogId { get; set; }
         public List<InnerListOutPostByBlogResponse> Inners { get; set; }
     }
 

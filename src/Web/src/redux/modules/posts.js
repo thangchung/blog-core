@@ -24,14 +24,13 @@ export default function reducer(state = initialState, action = {}) {
       };
 
     case LOAD_POSTS_SUCCESSED:
-      const posts = action.posts.postItems.reduce((obj, post) => {
-        obj[post.id] = post;
-        return obj;
-      }, {});
       return {
         ...state,
         byIds: action.posts.postItems.map(post => post.id),
-        posts: posts,
+        posts: action.posts.postItems.reduce((obj, post) => {
+          obj[post.id] = post;
+          return obj;
+        }, {}),
         loaded: true,
         loading: false,
         page: action.page

@@ -65,7 +65,7 @@ export function getBlogsByPage(page) {
   return dispatch =>
     fetch(`${LOAD_BLOGS_BY_PAGE_URL}/${page}`)
       .then(response => response.json())
-      .then(blogs => dispatch(loadBlogsByPage(blogs)));
+      .then(result => dispatch(loadBlogsByPage(result.items)));
 }
 
 export function updateBlogSetting(settings) {
