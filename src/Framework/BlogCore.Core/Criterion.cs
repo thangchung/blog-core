@@ -4,7 +4,7 @@ namespace BlogCore.Core
 {
     public class Criterion : ValueObjectBase
     {
-        public Criterion(int currentPage, int pageSize, string sortBy = "", string sortOrder = "")
+        public Criterion(int currentPage, int pageSize, PagingOption defaultPagingOption, string sortBy = "", string sortOrder = "")
         {
             if (currentPage <= 0)
                 throw new ValidationException("CurrentPage could not be less than zero.");
@@ -13,16 +13,7 @@ namespace BlogCore.Core
                 throw new ValidationException("PageSize could not be less than zero.");
 
             CurrentPage = currentPage - 1;
-
-            if (pageSize < 1 || pageSize > 10)
-            {
-                PageSize = 10;
-            }
-            else
-            {
-                PageSize = pageSize;
-            }
-
+            DefaultPagingOption = defaultPagingOption;
             SortBy = sortBy;
             SortOrder = sortOrder;
         }
@@ -31,6 +22,16 @@ namespace BlogCore.Core
         public int PageSize { get; private set; }
         public string SortBy { get; private set; }
         public string SortOrder { get; private set; }
+        public PagingOption DefaultPagingOption { get; private set; }
+
+        public Criterion SetPageSize(int pageSize)
+        {
+            if (pageSize <= 0)
+                throw new ValidationException("PageSize could not be less than zero.");
+
+            PageSize = pageSize;
+            return this;
+        }
 
         public Criterion SetCurrentPage(int currentPage)
         {
@@ -45,6 +46,7 @@ namespace BlogCore.Core
         {
             yield return CurrentPage;
             yield return PageSize;
+            yield return DefaultPagingOption;
             yield return SortBy;
             yield return SortOrder;
         }

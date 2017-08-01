@@ -24,6 +24,7 @@ using BlogCore.Blog.Infrastructure;
 using BlogCore.Blog.UseCases;
 using BlogCore.Post.Infrastructure;
 using BlogCore.Post.UseCases;
+using BlogCore.Core;
 
 namespace BlogCore.Api
 {
@@ -45,6 +46,9 @@ namespace BlogCore.Api
             services.AddCorsForBlog()
                 .AddAuthorizationForBlog()
                 .AddMvcForBlog(RegisteredAssemblies());
+
+            services.AddOptions();
+            services.Configure<PagingOption>(Configuration.GetSection("Paging"));
 
             if (Environment.IsDevelopment())
                 services.AddSwaggerForBlog();

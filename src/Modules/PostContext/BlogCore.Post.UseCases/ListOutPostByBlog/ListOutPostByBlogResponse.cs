@@ -1,45 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using BlogCore.Core;
-using BlogCore.AccessControl.Domain;
 
 namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {
-    /*public class ListOutPostByBlogResponse : IMessage
-    {
-        public int Page { get; set; }
-        public int Total { get; set; }
-        public List<InnerListOutPostByBlogResponse> Inners { get; set; }
-    } */
-
     public class ListOutPostByBlogResponse : IMessage
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string Excerpt { get; set; }
-        public string Slug { get; set; }
-        public ListOutPostByBlogUserResponse Author { get; set; }
-        public List<ListOutPostByBlogTagResponse> Tags { get; set; }
-        public DateTime CreatedAt { get; set; }
-    }
-
-    public class ListOutPostByBlogUserResponse
-    {
-        public ListOutPostByBlogUserResponse(AppUser user)
+        public ListOutPostByBlogResponse(
+            Guid id, 
+            string title, 
+            string excerpt, 
+            string slug, 
+            DateTime createdAt, 
+            ListOutPostByBlogUserResponse author, 
+            List<ListOutPostByBlogTagResponse> tags)
         {
-            Id = IdHelper.GenerateId(user.Id);
-            FamilyName = user.FamilyName;
-            GivenName = user.GivenName;
+            Id = id;
+            Title = title;
+            Excerpt = excerpt;
+            Slug = slug;
+            CreatedAt = createdAt;
+            Author = author;
+            Tags = tags;
         }
 
         public Guid Id { get; private set; }
-        public string FamilyName { get; private set; }
-        public string GivenName { get; private set; }
-    }
-
-    public class ListOutPostByBlogTagResponse
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; private set; }
+        public string Excerpt { get; private set; }
+        public string Slug { get; private set; }
+        public ListOutPostByBlogUserResponse Author { get; private set; }
+        public List<ListOutPostByBlogTagResponse> Tags { get; private set; }
+        public DateTime CreatedAt { get; private set; }
     }
 }

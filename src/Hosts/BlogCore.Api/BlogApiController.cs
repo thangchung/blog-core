@@ -36,8 +36,7 @@ namespace BlogCore.Api
         [HttpGet("")]
         public async Task<PaginatedItem<ListOutBlogResponse>> GetByPage([FromQuery] int page)
         {
-            var criterion = new Criterion(page, 10);
-            return await _eventAggregator.Send(new ListOutBlogRequest(criterion));
+            return await _eventAggregator.Send(new ListOutBlogRequest(page));
         }
 
         [AllowAnonymous]

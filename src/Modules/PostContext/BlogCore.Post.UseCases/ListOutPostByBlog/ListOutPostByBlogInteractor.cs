@@ -8,6 +8,7 @@ using BlogCore.Infrastructure.EfCore;
 using System.Linq.Expressions;
 using System;
 using BlogCore.AccessControl.Domain;
+using Microsoft.Extensions.Options;
 
 namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {
@@ -16,32 +17,32 @@ namespace BlogCore.Post.UseCases.ListOutPostByBlog
     {
         private readonly IEfRepository<PostDbContext, Domain.Post> _postRepository;
         private readonly IUserRepository _userRepository;
+        public IOptions<PagingOption> _pagingOption;
 
         public ListOutPostByBlogInteractor(
             IEfRepository<PostDbContext, Domain.Post> postRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IOptions<PagingOption> pagingOption)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
+            _pagingOption = pagingOption;
         }
 
         public async Task<PaginatedItem<ListOutPostByBlogResponse>> Handle(ListOutPostByBlogRequest request)
         {
-            var criterion = new Criterion(request.Page, 10, "CreatedAt");
+            var criterion = new Criterion(request.Page, _pagingOption.Value.PageSize, _pagingOption.Value, "CreatedAt");
+
             Expression<Func<Domain.Post, ListOutPostByBlogResponse>> selector = p => new ListOutPostByBlogResponse
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Slug = p.Slug,
-                Excerpt = p.Excerpt,
-                CreatedAt = p.CreatedAt,
-                Author = new ListOutPostByBlogUserResponse(_userRepository.GetByIdAsync(p.Author.Id).Result),
-                Tags = p.Tags.Select(t => new ListOutPostByBlogTagResponse
-                {
-                    Id = t.Id,
-                    Name = t.Name
-                }).ToList()
-            };
+            (
+                p.Id,
+                p.Title,
+                p.Excerpt,
+                p.Slug,
+                p.CreatedAt,
+                new ListOutPostByBlogUserResponse(_userRepository.GetByIdAsync(p.Author.Id).Result),
+                p.Tags.Select(t => new ListOutPostByBlogTagResponse(t.Id, t.Name)).ToList()
+            );
 
             return await _postRepository.FindAllAsync(
                 criterion,

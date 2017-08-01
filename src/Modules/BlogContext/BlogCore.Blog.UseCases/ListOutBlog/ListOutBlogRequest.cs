@@ -1,16 +1,15 @@
 using BlogCore.Core;
 using MediatR;
-using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.ListOutBlog
 {
     public class ListOutBlogRequest : IMessage, IRequest<PaginatedItem<ListOutBlogResponse>>
     {
-        public ListOutBlogRequest(Criterion criterion)
+        public ListOutBlogRequest(int currentPage)
         {
-            Criterion = criterion;
+            CurrentPage = currentPage;
         }
 
-        public Criterion Criterion { get; private set; }
+        public int CurrentPage { get; private set; }
     }
 }

@@ -60,6 +60,11 @@ namespace BlogCore.Infrastructure.EfCore
             where TEntity : EntityBase
             where TResponse : IMessage
         {
+            if (criterion.PageSize < 1 || criterion.PageSize > criterion.DefaultPagingOption.PageSize)
+            {
+                criterion.SetPageSize(criterion.DefaultPagingOption.PageSize);
+            }
+
             var queryable = repo.DbContext.Set<TEntity>() as IQueryable<TEntity>;
             var totalRecord = await queryable.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalRecord / criterion.PageSize);
