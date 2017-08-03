@@ -10,8 +10,24 @@ import * as postActions from "../../redux/modules/posts";
 import BlogHeader from "../../components/BlogHeader.js";
 
 class PostDetail extends Component {
-  render(){
-    return (<div>Blog Detail.</div>)
+  componentDidMount() {
+    this.props.loadPostById(this.props.match.params.postId);
+  }
+
+  render() {
+    if (this.props.postStore.loading) {
+      return <div>Loading...</div>;
+    }
+
+    const { post } = this.props.postStore;
+    return (
+      <div key={post.id} className="blog-post">
+        <h2 className="blog-post-title">
+          {post.title}<span className="small">- {post.excerpt}</span>
+        </h2>
+        <p>{post.body}</p>
+      </div>
+    );
   }
 }
 

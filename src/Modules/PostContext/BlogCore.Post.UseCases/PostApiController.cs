@@ -1,8 +1,15 @@
-﻿using BlogCore.Infrastructure.AspNetCore;
+﻿using BlogCore.Core;
+using BlogCore.Core.Helpers;
+using BlogCore.Infrastructure.AspNetCore;
+using BlogCore.Post.Domain;
+using BlogCore.Post.UseCases.ListOutPostByBlog;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
-namespace BlogCore.Api
+namespace BlogCore.Post.UseCases
 {
     [Route("api/posts")]
     public class PostApiController : AuthorizedController
@@ -14,16 +21,30 @@ namespace BlogCore.Api
             _eventAggregator = eventAggregator;
         }
 
+        [AllowAnonymous]
+        [HttpGet("blog/{blogId}")]
+        public async Task<PaginatedItem<ListOutPostByBlogResponse>> GetForBlog(Guid blogId, [FromQuery] int page)
+        {
+            if (page <= 0) page = 1;
+            return await _eventAggregator.Send(new ListOutPostByBlogRequest(blogId, page));
+        }
+
         [HttpGet]
         public string[] Get()
         {
             return new[] {"All"};
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Post.Domain.Post Get(int id)
         {
-            return $"Get {id}";
+            return BlogCore.Post.Domain.Post.CreateInstance(
+                new BlogId(IdHelper.GenerateId("34C96712-2CDF-4E79-9E2F-768CB68DD552")), 
+                "sample title", 
+                "sample excerpt", 
+                "sample body", 
+                new AuthorId(IdHelper.GenerateId("4B5F26CE-DF97-494C-B747-121D215847D8")));
         }
 
         [HttpPost]

@@ -25,6 +25,7 @@ using BlogCore.Blog.UseCases;
 using BlogCore.Post.Infrastructure;
 using BlogCore.Post.UseCases;
 using BlogCore.Core;
+using System.Text;
 
 namespace BlogCore.Api
 {
@@ -34,6 +35,9 @@ namespace BlogCore.Api
         {
             Configuration = env.BuildConfiguration();
             Environment = env;
+
+            // https://github.com/dotnet/corefx/issues/9158
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         public IConfigurationRoot Configuration { get; }

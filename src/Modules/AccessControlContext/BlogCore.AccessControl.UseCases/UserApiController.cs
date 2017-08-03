@@ -2,18 +2,22 @@
 using BlogCore.AccessControl.Domain.SecurityContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MediatR;
+using System.Threading.Tasks;
 
-namespace BlogCore.Api.Users
+namespace BlogCore.AccessControl.UseCases
 {
     [Authorize]
     [Route("api/users")]
     public class UserApiController : Controller
     {
         private readonly ISecurityContext _securityContext;
+        private readonly IMediator _eventAggregator;
 
-        public UserApiController(ISecurityContext securityContext)
+        public UserApiController(ISecurityContext securityContext, IMediator eventAggregator)
         {
             _securityContext = securityContext;
+            _eventAggregator = eventAggregator;
         }
 
         [HttpGet("settings"), AllowAnonymous]
@@ -27,9 +31,19 @@ namespace BlogCore.Api.Users
         }
 
         [HttpPut("settings")]
-        public string Put(int id)
+        public Task<bool> Put(int id)
         {
-            return "Update settings.";
+            /*await _eventAggregator.Send(new UpdateUserProfileSettingRequest
+            {
+                UserId = userId,
+                GivenName = inputModel.GivenName,
+                FamilyName = inputModel.FamilyName,
+                Bio = inputModel.Bio,
+                Company = inputModel.Company,
+                Location = inputModel.Location
+            });*/
+
+            return Task.FromResult(true);
         }
 
         [HttpPut("{id}/disable")]

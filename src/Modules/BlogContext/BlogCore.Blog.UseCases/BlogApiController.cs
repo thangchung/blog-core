@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlogCore.AccessControl.UseCases.UpdateUserProfileSetting;
 using BlogCore.Blog.UseCases.CreateBlog;
 using BlogCore.Blog.UseCases.GetBlog;
 using BlogCore.Blog.UseCases.ListOutBlog;
@@ -8,12 +7,11 @@ using BlogCore.Blog.UseCases.ListOutBlogByOwner;
 using BlogCore.Blog.UseCases.UpdateBlogSetting;
 using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
-using BlogCore.Post.UseCases.ListOutPostByBlog;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.Api
+namespace BlogCore.Blog.UseCases
 {
     [Route("api/blogs")]
     public class BlogApiController : AuthorizedController
@@ -46,14 +44,6 @@ namespace BlogCore.Api
             return await _eventAggregator.Send(new GetBlogRequest(id));
         }
 
-        [AllowAnonymous]
-        [HttpGet("{blogId}/posts")]
-        public async Task<PaginatedItem<ListOutPostByBlogResponse>> GetForBlog(Guid blogId, [FromQuery] int page)
-        {
-            if (page <= 0) page = 1;
-            return await _eventAggregator.Send(new ListOutPostByBlogRequest(blogId, page));
-        }
-
         [Authorize("User")]
         [HttpPost]
         public async Task<CreateBlogResponse> Post([FromBody] CreateBlogRequestMsg blogRequest)
@@ -62,18 +52,9 @@ namespace BlogCore.Api
         }
 
         [AllowAnonymous]
-        [HttpPut("setting/{userId}")]
+        [HttpPut("user/{userId}/setting")]
         public async Task UpdateSetting(Guid userId, [FromBody] BlogSettingInputModel inputModel)
         {
-            await _eventAggregator.Send(new UpdateUserProfileSettingRequest
-            {
-                UserId = userId,
-                GivenName = inputModel.GivenName,
-                FamilyName = inputModel.FamilyName,
-                Bio = inputModel.Bio,
-                Company = inputModel.Company,
-                Location = inputModel.Location
-            });
             await _eventAggregator.Send(new UpdateBlogSettingRequest
             {
                 BlogId = inputModel.BlogId,

@@ -13,7 +13,7 @@ const initialState = {
   loading: true,
   loaded: false,
   byIds: [],
-  blogs: {},
+  blogs: [],
   error: null,
   page: 1
 };

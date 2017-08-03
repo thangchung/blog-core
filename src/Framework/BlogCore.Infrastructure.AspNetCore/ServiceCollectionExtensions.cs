@@ -33,11 +33,17 @@ namespace BlogCore.Infrastructure.AspNetCore
 
         public static IMvcBuilder AddMvcForBlog(this IServiceCollection services, Assembly[] assemblies)
         {
-            var serviceCollection = services.AddMvc();
+            var mvcBuilder = services.AddMvc();
             foreach (var assembly in assemblies)
-                serviceCollection.AddFluentValidation(
+            {
+                // register controllers
+                mvcBuilder.AddApplicationPart(assembly);
+
+                // register validations
+                mvcBuilder.AddFluentValidation(
                     fv => fv.RegisterValidatorsFromAssembly(assembly));
-            return serviceCollection;
+            }
+            return mvcBuilder;
         }
 
         public static IServiceCollection AddSwaggerForBlog(this IServiceCollection services)
