@@ -4,6 +4,7 @@ using BlogCore.AccessControl.Infrastructure;
 using BlogCore.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using BlogCore.Core.Helpers;
 
 namespace BlogCore.AccessControl.Migrator.DataSeeder
 {

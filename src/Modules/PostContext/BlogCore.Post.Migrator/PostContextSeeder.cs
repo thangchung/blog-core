@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using BlogCore.Core;
 using BlogCore.Post.Domain;
 using BlogCore.Post.Infrastructure;
+using BlogCore.Core.Helpers;
 
 namespace BlogCore.Post.Migrator
 {

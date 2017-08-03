@@ -50,6 +50,7 @@ namespace BlogCore.Api
         [HttpGet("{blogId}/posts")]
         public async Task<PaginatedItem<ListOutPostByBlogResponse>> GetForBlog(Guid blogId, [FromQuery] int page)
         {
+            if (page <= 0) page = 1;
             return await _eventAggregator.Send(new ListOutPostByBlogRequest(blogId, page));
         }
 
@@ -62,23 +63,23 @@ namespace BlogCore.Api
 
         [AllowAnonymous]
         [HttpPut("setting/{userId}")]
-        public async Task UpdateSetting(Guid userId, [FromBody] BlogSettingViewModel viewModel)
+        public async Task UpdateSetting(Guid userId, [FromBody] BlogSettingInputModel inputModel)
         {
             await _eventAggregator.Send(new UpdateUserProfileSettingRequest
             {
                 UserId = userId,
-                GivenName = viewModel.GivenName,
-                FamilyName = viewModel.FamilyName,
-                Bio = viewModel.Bio,
-                Company = viewModel.Company,
-                Location = viewModel.Location
+                GivenName = inputModel.GivenName,
+                FamilyName = inputModel.FamilyName,
+                Bio = inputModel.Bio,
+                Company = inputModel.Company,
+                Location = inputModel.Location
             });
             await _eventAggregator.Send(new UpdateBlogSettingRequest
             {
-                BlogId = viewModel.BlogId,
-                DaysToComment = viewModel.DaysToComment,
-                ModerateComments = viewModel.ModerateComments,
-                PostsPerPage = viewModel.PostsPerPage
+                BlogId = inputModel.BlogId,
+                DaysToComment = inputModel.DaysToComment,
+                ModerateComments = inputModel.ModerateComments,
+                PostsPerPage = inputModel.PostsPerPage
             });
         }
 
@@ -95,7 +96,7 @@ namespace BlogCore.Api
         }
     }
 
-    public class BlogSettingViewModel : IViewModel
+    public class BlogSettingInputModel
     {
         public string GivenName { get; set; }
         public string FamilyName { get; set; }

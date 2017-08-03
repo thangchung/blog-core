@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogCore.Core.Helpers;
+using System;
 
 namespace BlogCore.Core
 {

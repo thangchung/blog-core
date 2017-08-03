@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlogCore.Core
+namespace BlogCore.Core.Helpers
 {
     public static class DateTimeHelper
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BlogCore.Core
+namespace BlogCore.Core.Extensions
 {
     public static class HashCodeExtensions
     {

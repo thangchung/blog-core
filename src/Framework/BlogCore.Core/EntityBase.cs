@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogCore.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,8 +10,7 @@ namespace BlogCore.Core
         protected List<IDomainEvent> Events = new List<IDomainEvent>();
 
         protected EntityBase() : this(IdHelper.GenerateId())
-        {
-            
+        {            
         }
 
         protected EntityBase(Guid id)

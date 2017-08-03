@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using BlogCore.Core;
+using BlogCore.Core.Helpers;
 
 namespace BlogCore.Blog.Domain
 {

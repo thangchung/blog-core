@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using BlogCore.Core;
+using BlogCore.Core.Helpers;
+using BlogCore.Core.Extensions;
 
 namespace BlogCore.Post.Domain
 {

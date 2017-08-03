@@ -8,10 +8,11 @@ using BlogCore.Core;
 using FluentValidation;
 using MediatR;
 using BlogCore.Infrastructure.EfCore;
+using BlogCore.Core.Helpers;
 
 namespace BlogCore.Blog.UseCases.CreateBlog
 {
-    public class CreateBlogInteractor : IInputBoundary<CreateBlogRequestMsg, CreateBlogResponse>
+    public class CreateBlogInteractor : IAsyncRequestHandler<CreateBlogRequestMsg, CreateBlogResponse>
     {
         private readonly IEfRepository<BlogDbContext, Domain.Blog> _blogRepo;
         private readonly IValidator<CreateBlogRequestMsg> _createBlogValidator;

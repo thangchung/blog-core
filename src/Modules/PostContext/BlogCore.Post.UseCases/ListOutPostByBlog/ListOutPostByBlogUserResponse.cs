@@ -1,6 +1,7 @@
 ﻿using System;
 using BlogCore.Core;
 using BlogCore.AccessControl.Domain;
+using BlogCore.Core.Helpers;
 
 namespace BlogCore.Post.UseCases.ListOutPostByBlog
 {

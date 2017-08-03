@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using BlogCore.AccessControl.Domain;
-using BlogCore.Core;
+using MediatR;
 
 namespace BlogCore.AccessControl.UseCases.UpdateUserProfileSetting
 {
     public class UpdateUserProfileSettingInteractor 
-        : IInputBoundary<UpdateUserProfileSettingRequest, UpdateUserProfileSettingResponse>
+        : IAsyncRequestHandler<UpdateUserProfileSettingRequest, UpdateUserProfileSettingResponse>
     {
         private readonly IUserRepository _userRepository;
 

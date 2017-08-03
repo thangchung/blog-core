@@ -6,7 +6,7 @@ using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.Blog.UseCases.UpdateBlogSetting
 {
-    public class UpdateBlogSettingInteractor : IInputBoundary<UpdateBlogSettingRequest, UpdateBlogSettingResponse>
+    public class UpdateBlogSettingInteractor : IAsyncRequestHandler<UpdateBlogSettingRequest, UpdateBlogSettingResponse>
     {
         private readonly IEfRepository<BlogDbContext, Domain.Blog> _blogRepository;
         private readonly IMediator _mediator;

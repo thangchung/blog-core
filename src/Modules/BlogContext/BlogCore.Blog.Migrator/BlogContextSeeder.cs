@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BlogCore.Blog.Domain;
 using BlogCore.Blog.Infrastructure;
 using BlogCore.Core;
+using BlogCore.Core.Helpers;
 
 namespace BlogCore.Blog.Migrator
 {
