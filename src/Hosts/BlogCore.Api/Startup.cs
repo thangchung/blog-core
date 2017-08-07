@@ -10,19 +10,16 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using BlogCore.AccessControl.Domain;
 using BlogCore.AccessControl.Domain.SecurityContext;
-using BlogCore.AccessControl.Infrastructure;
 using BlogCore.AccessControl.Infrastructure.SecurityContext;
 using BlogCore.AccessControl.UseCases;
 using BlogCore.Blog.Infrastructure;
 using BlogCore.Blog.UseCases;
-using BlogCore.Post.Infrastructure;
 using BlogCore.Post.UseCases;
 using BlogCore.Core;
 using System.Text;
@@ -59,27 +56,13 @@ namespace BlogCore.Api
 
             services.AddMediatR(RegisteredAssemblies());
 
-            services.AddDbContext<BlogDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
-
-            services.AddDbContext<PostDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
-
-            services.AddDbContext<IdentityServerDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
-
-            // security context
-            builder.RegisterType<SecurityContextProvider>()
-                .As<ISecurityContext>()
-                .As<ISecurityContextPrincipal>()
-                .InstancePerLifetimeScope();
+            // register the global maindb's connection string
+            builder.RegisterInstance(Configuration.GetConnectionString("MainDb"))
+                .Named<string>("MainDbConnectionString");
 
             // core & infra register
             builder.RegisterGeneric(typeof(EfRepository<,>))
                 .As(typeof(IEfRepository<,>));
-            builder.RegisterType<UserRepository>()
-                .AsImplementedInterfaces()
-                .SingleInstance();
 
             // scan modules in other assemblies
             builder.RegisterAssemblyModules(RegisteredAssemblies());
@@ -106,16 +89,9 @@ namespace BlogCore.Api
         {
             return new[]
             {
-                // Blog
-                typeof(BlogDbContext).GetTypeInfo().Assembly,
                 typeof(BlogUseCaseModule).GetTypeInfo().Assembly,
-                // Post
-                typeof(PostDbContext).GetTypeInfo().Assembly,
                 typeof(PostUseCaseModule).GetTypeInfo().Assembly,
-                // Access Control
-                typeof(IdentityServerDbContext).GetTypeInfo().Assembly,
                 typeof(AccessControlUseCaseModule).GetTypeInfo().Assembly,
-                // Main
                 typeof(Startup).GetTypeInfo().Assembly
             };
         }

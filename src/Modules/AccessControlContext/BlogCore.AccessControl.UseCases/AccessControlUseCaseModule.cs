@@ -1,5 +1,8 @@
 ﻿using Autofac;
+using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.AccessControl.Infrastructure;
+using BlogCore.AccessControl.Infrastructure.SecurityContext;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.AccessControl.UseCases
 {
@@ -8,8 +11,21 @@ namespace BlogCore.AccessControl.UseCases
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
+
+            // security context
+            builder.RegisterType<SecurityContextProvider>()
+                .As<ISecurityContext>()
+                .As<ISecurityContextPrincipal>()
+                .InstancePerLifetimeScope();
+
+            builder.Register(x =>
+                DbContextHelper.BuildDbContext<IdentityServerDbContext>(
+                    x.ResolveKeyed<string>("MainDbConnectionString")))
+                .SingleInstance();
+
             builder.RegisterType<UserRepository>()
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .SingleInstance();
         }
     }
 }

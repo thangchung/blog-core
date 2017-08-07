@@ -1,10 +1,8 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Configuration;
+using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.AccessControl.Migrator
 {
@@ -12,26 +10,15 @@ namespace BlogCore.AccessControl.Migrator
     {
         public PersistedGrantDbContext Create(DbContextFactoryOptions options)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(options.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{options.EnvironmentName}.json", true)
-                .AddEnvironmentVariables();
+            var connString = ConfigurationHelper.GetConnectionString(
+                options.ContentRootPath,
+                options.EnvironmentName);
 
-            var config = builder.Build();
-            var connstr = config.GetConnectionString("DefaultConnection");
+            var migrationAssembly = typeof(PersistedGrantDbContext).GetTypeInfo().Assembly;
 
-            if (string.IsNullOrWhiteSpace(connstr))
-                throw new InvalidOperationException("Could not find a connection string named '(DefaultConnection)'.");
-
-            if (string.IsNullOrEmpty(connstr))
-                throw new InvalidOperationException($"{nameof(connstr)} is null or empty.");
-
-            var migrationsAssembly = typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name;
-            var optionsBuilder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
-            optionsBuilder.UseSqlServer(connstr, b => b.MigrationsAssembly(migrationsAssembly));
-
-            return new PersistedGrantDbContext(optionsBuilder.Options, new OperationalStoreOptions());
+            return new PersistedGrantDbContext(
+                DbContextHelper.BuildDbContextOption<PersistedGrantDbContext>(connString, migrationAssembly),
+                new OperationalStoreOptions());
         }
     }
 }
