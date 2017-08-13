@@ -4,12 +4,67 @@ import { connect } from "react-redux";
 import { Field, FormSection, reduxForm } from "redux-form";
 import { Button, Form, FormGroup, Label, FormFeedback } from "reactstrap";
 
-import Editor from "react-medium-editor";
-require("medium-editor/dist/css/medium-editor.css");
-require("medium-editor/dist/css/themes/beagle.css");
+// import Editor from "react-medium-editor";
+// require("medium-editor/dist/css/medium-editor.css");
+// require("medium-editor/dist/css/themes/beagle.css");
 
 import * as blogActions from "../../redux/modules/blogs";
 import BcInput from "../../components/Form/BcInput";
+
+class ProfileSetting extends React.Component {
+  handleUpdateSetting() {
+    console.log(this.props);
+    var settings = {
+      ...this.props.profileSetting
+    };
+    this.props.updateProfileSetting(settings);
+  }
+
+  render() {
+    return (
+      <div>
+        <FormGroup>
+          <Label for="given_name">Given name</Label>
+          <Field
+            id="given_name"
+            name="given_name"
+            type="text"
+            component={BcInput}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="family_name">Family name</Label>
+          <Field
+            id="family_name"
+            name="family_name"
+            type="text"
+            component={BcInput}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="bio">Bio</Label>
+          <Field id="bio" name="bio" type="text" component={BcInput} />
+        </FormGroup>
+        <FormGroup>
+          <Label for="company">Company</Label>
+          <Field id="company" name="company" type="text" component={BcInput} />
+        </FormGroup>
+        <FormGroup>
+          <Label for="location">Location</Label>
+          <Field
+            id="location"
+            name="location"
+            type="text"
+            component={BcInput}
+          />
+        </FormGroup>
+        <Button onClick={() => this.handleUpdateSetting()}>
+          Update Profile
+        </Button>
+      </div>
+    );
+  }
+}
 
 class BlogSetting extends React.Component {
   render() {
@@ -48,23 +103,32 @@ class BlogSetting extends React.Component {
 }
 
 class Setting extends React.Component {
-  handleUpdateSetting() {
+  /*handleUpdateSetting() {
     var settings = {
       ...this.props.initialValues.blogSetting,
-      ...this.props.initialValues.userSetting
+      ...this.props.initialValues.profileSetting
     };
     this.props.updateBlogSetting(settings);
-  }
+  }*/
+
   render() {
     const { profile } = this.props;
     return (
       <Form>
-        {profile &&
+        {/*profile &&
           <FormSection name="blogSetting">
             <BlogSetting />
-          </FormSection>}
+          </FormSection>*/}
+
         {profile &&
-          <div>
+          <FormSection name="profileSetting">
+            <ProfileSetting
+              profileSetting={this.props.initialValues.profileSetting}
+              updateProfileSetting={this.props.updateProfileSetting}
+            />
+          </FormSection>}
+
+        {/*<div>
             <p>UserID: {profile.sub}</p>
             <p>User name: {profile.name}</p>
             <p>Family name: {profile.family_name}</p>
@@ -74,9 +138,9 @@ class Setting extends React.Component {
             <p>Company: {profile.company}</p>
             <p>Location: {profile.location}</p>
             <p>BlogID: {profile.blog_id}</p>
-          </div>}
+          </div>*/}
 
-        <Editor
+        {/*<Editor
           tag="pre"
           text="test editor"
           options={{
@@ -94,8 +158,8 @@ class Setting extends React.Component {
               ]
             }
           }}
-        />
-        <Button onClick={() => this.handleUpdateSetting()}>Update</Button>
+        />*/}
+
       </Form>
     );
   }
@@ -117,7 +181,7 @@ function mapStateToProps(state, ownProps) {
         moderateComment: true,
         postPerPage: 5
       },
-      userSetting: extractProfile(state) || {}
+      profileSetting: extractProfile(state) || {}
     }
   };
 }

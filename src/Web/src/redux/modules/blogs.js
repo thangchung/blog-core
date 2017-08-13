@@ -68,6 +68,10 @@ export function getBlogsByPage(page) {
       .then(result => dispatch(loadBlogsByPage(result.items)));
 }
 
+export function updateProfileSetting(settings) {
+  console.log(settings);
+}
+
 export function updateBlogSetting(settings) {
   console.log(settings);
   var dto = {

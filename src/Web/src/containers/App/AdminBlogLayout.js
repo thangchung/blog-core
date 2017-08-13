@@ -8,7 +8,7 @@ import Footer from "../../components/Footer";
 
 // our containers
 import Restricted from "../../auth/Restricted";
-import Setting from "../Setting/Setting";
+import ProfileSetting from "../Setting/ProfileSetting";
 
 export default class AdminBlogLayout extends Component {
   render() {
@@ -22,11 +22,11 @@ export default class AdminBlogLayout extends Component {
               <Switch>
                 <Route
                   exact
-                  path={`${match.url}/setting`}
-                  key="setting"
+                  path={`${match.url}/profile-setting`}
+                  key="profile-setting"
                   render={routeProps =>
                     <Restricted {...routeProps}>
-                      {React.createElement(Setting)}
+                      {React.createElement(ProfileSetting)}
                     </Restricted>}
                 />
               </Switch>

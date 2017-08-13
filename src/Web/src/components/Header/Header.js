@@ -15,7 +15,7 @@ class Header extends Component {
             {isAuth &&
               <Link to={"/admin/dashboard"} className="nav-link">Dashboard</Link>}
             {isAuth &&
-              <Link to={"/admin/setting"} className="nav-link">Setting</Link>}
+              <Link to={"/admin/profile-setting"} className="nav-link">Profile Setting</Link>}
             {isAuth &&
               <Link to={"/admin/posts"} className="nav-link">Posts</Link>}
             {isAuth &&

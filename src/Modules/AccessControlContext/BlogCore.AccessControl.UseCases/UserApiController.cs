@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using System.Threading.Tasks;
+using System;
+using BlogCore.AccessControl.UseCases.UpdateUserProfileSetting;
 
 namespace BlogCore.AccessControl.UseCases
 {
@@ -30,10 +32,10 @@ namespace BlogCore.AccessControl.UseCases
             };
         }
 
-        [HttpPut("settings")]
-        public Task<bool> Put(int id)
+        [HttpPut("{userId}/settings")]
+        public async Task<UpdateUserProfileSettingResponse> Put(Guid userId, [FromBody] UserProfileSettingInputModel inputModel)
         {
-            /*await _eventAggregator.Send(new UpdateUserProfileSettingRequest
+            var response = await _eventAggregator.Send(new UpdateUserProfileSettingRequest
             {
                 UserId = userId,
                 GivenName = inputModel.GivenName,
@@ -41,9 +43,9 @@ namespace BlogCore.AccessControl.UseCases
                 Bio = inputModel.Bio,
                 Company = inputModel.Company,
                 Location = inputModel.Location
-            });*/
+            });
 
-            return Task.FromResult(true);
+            return response;
         }
 
         [HttpPut("{id}/disable")]
@@ -69,5 +71,14 @@ namespace BlogCore.AccessControl.UseCases
         {
             return "Register";
         }
+    }
+
+    public class UserProfileSettingInputModel
+    {
+        public string GivenName { get; set; }
+        public string FamilyName { get; set; }
+        public string Bio { get; set; }
+        public string Company { get; set; }
+        public string Location { get; set; }
     }
 }
