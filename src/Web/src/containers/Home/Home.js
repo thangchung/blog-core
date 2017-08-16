@@ -10,19 +10,15 @@ class Home extends Component {
     this.props.getBlogsByPage(this.props.blogStore.page);
   }
 
-  handleRedirectToBlog(blog)
-  {
-    this.props.redirectToSpecificBlog(blog);
-    this.props.history.push(`${this.props.match.url}blog/${blog.id}`);
-  }
-
   render() {
     const { match, blogStore: { loading, byIds, blogs } } = this.props;
     return (
       <ul>
         {byIds.map((id, index) =>
           <li key={index}>
-            <a href="#" onClick={()=>this.handleRedirectToBlog(blogs[id])}>{blogs[id].title}</a>
+            <a href={`${this.props.match.url}blog/${id}`}>
+              {blogs[id].title}
+            </a>
           </li>
         )}
       </ul>
@@ -32,12 +28,11 @@ class Home extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    userStore: state.oidc.user,
     blogStore: state.blogStore
   };
 }
 
 export const mapDispatchToProps = dispatch =>
-  bindActionCreators({...blogActions, ...postActions}, dispatch);
+  bindActionCreators({ ...blogActions, ...postActions }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

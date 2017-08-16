@@ -4,23 +4,31 @@ import { Link } from "react-router-dom";
 
 class Header extends Component {
   render() {
-    var { isAuth } = this.props;
+    var { isAuth, profile } = this.props;
     return (
       <div className="blog-masthead">
         <div className="container">
           <nav className="nav blog-nav">
-            <Link to={"/"} className="nav-link">
+            <Link to={`/`} className="nav-link">
               Home
             </Link>
             {isAuth &&
-              <Link to={"/admin/dashboard"} className="nav-link">Dashboard</Link>}
+              <Link to={`/admin/dashboard`} className="nav-link">
+                Dashboard
+              </Link>}
             {isAuth &&
-              <Link to={"/admin/profile-setting"} className="nav-link">Profile Setting</Link>}
+              <Link to={`/admin/posts`} className="nav-link">
+                Posts
+              </Link>}
             {isAuth &&
-              <Link to={"/admin/posts"} className="nav-link">Posts</Link>}
+              <Link to={`/admin/tags`} className="nav-link">
+                Tags
+              </Link>}
             {isAuth &&
-              <Link to={"/admin/tags"} className="nav-link">Tags</Link>}
-            <Link to={"/login"} className="nav-link">Authentication</Link>
+              <Link to={`/admin/profile-setting`} className="nav-link">
+                Profile Settings
+              </Link>}
+            <Link to={"/login"} className="nav-link">Auth</Link>
           </nav>
         </div>
       </div>
@@ -37,6 +45,7 @@ function isAuth(state) {
 
 function mapStateToProps(state, ownProps) {
   return {
+    ...state.oidc.user,
     isAuth: isAuth(state)
   };
 }

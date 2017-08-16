@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Framework\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\..\Framework\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
     <ProjectReference Include="..\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj" />

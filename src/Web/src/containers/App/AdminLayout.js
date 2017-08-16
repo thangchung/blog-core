@@ -10,7 +10,7 @@ import Footer from "../../components/Footer";
 import Restricted from "../../auth/Restricted";
 import ProfileSetting from "../Setting/ProfileSetting";
 
-export default class AdminBlogLayout extends Component {
+export default class AdminLayout extends Component {
   render() {
     const { match } = this.props;
     return (

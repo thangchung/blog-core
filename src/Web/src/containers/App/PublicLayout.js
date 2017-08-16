@@ -10,10 +10,8 @@ import About from "../../components/About";
 import Home from "../Home/Home";
 import Blog from "../Blog/Blog";
 import PostDetail from "../Post/PostDetail";
-import Login from "../Login/Login";
-import Callback from "../Login/Callback";
 
-export default class BlogLayout extends Component {
+export default class PublicLayout extends Component {
   render() {
     const { match } = this.props;
     return (
@@ -25,31 +23,21 @@ export default class BlogLayout extends Component {
               <Switch>
                 <Route
                   exact
-                  path={`${match.url}login`}
-                  key="login"
-                  component={Login}
+                  path={`${match.url}`}
+                  key="index"
+                  component={Home}
                 />
                 <Route
                   exact
-                  path={`${match.url}callback`}
-                  key="callback"
-                  component={Callback}
-                />
-                <Route
                   path={`${match.url}blog/:blogId`}
                   key="blogId"
                   component={Blog}
                 />
                 <Route
+                  exact
                   path={`${match.url}post/:postId`}
                   key="postDetail"
                   component={PostDetail}
-                />
-                <Route
-                  exact
-                  path={`${match.url}`}
-                  key="index"
-                  component={Home}
                 />
               </Switch>
             </div>

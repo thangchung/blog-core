@@ -8,7 +8,6 @@ import * as blogActions from "../../redux/modules/blogs";
 
 class ProfileSetting extends React.Component {
   handleUpdateSetting(values) {
-    console.log(values);
     this.props.updateProfileSetting(values);
   }
 
@@ -16,7 +15,7 @@ class ProfileSetting extends React.Component {
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
       <div>
-        <Form onSubmit={handleSubmit(this.handleUpdateSetting)}>
+        <Form onSubmit={handleSubmit(this.handleUpdateSetting.bind(this))}>
           <FormGroup>
             <Label for="given_name">Given name</Label>
             <Field
@@ -58,7 +57,11 @@ class ProfileSetting extends React.Component {
             />
           </FormGroup>
           <FormGroup>
-            <Button color="primary" type="submit" disabled={pristine || submitting}>
+            <Button
+              color="primary"
+              type="submit"
+              disabled={pristine || submitting}
+            >
               Update Profile
             </Button>
             <Button

@@ -12,8 +12,11 @@ import { ConnectedRouter } from "react-router-redux";
 // import getRoutes from "./routes";
 import createStore, { routerHistory } from "./redux/configureStore";
 import userManager from "./utils/userManager";
-import BlogLayout from "./containers/App/BlogLayout";
-import AdminBlogLayout from "./containers/App/AdminBlogLayout";
+import PublicLayout from "./containers/App/PublicLayout";
+import AdminLayout from "./containers/App/AdminLayout";
+
+import Login from "./containers/Login/Login";
+import Callback from "./containers/Login/Callback";
 
 const store = createStore(browserHistory);
 
@@ -26,8 +29,20 @@ ReactDOM.render(
       <ConnectedRouter history={routerHistory}>
         <div>
           <Switch>
-            <Route path="/admin" component={AdminBlogLayout} />
-            <Route path="/" component={BlogLayout} />
+            <Route
+              exact
+              path={`/login`}
+              key="login"
+              component={Login}
+            />
+            <Route
+              exact
+              path={`/callback`}
+              key="callback"
+              component={Callback}
+            />
+            <Route path="/admin" component={AdminLayout} />
+            <Route path="/" component={PublicLayout} />
           </Switch>
         </div>
       </ConnectedRouter>

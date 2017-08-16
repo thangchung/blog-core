@@ -6,12 +6,12 @@ using MediatR;
 using System.Threading.Tasks;
 using System;
 using BlogCore.AccessControl.UseCases.UpdateUserProfileSetting;
+using BlogCore.Infrastructure.AspNetCore;
 
 namespace BlogCore.AccessControl.UseCases
 {
-    [Authorize]
     [Route("api/users")]
-    public class UserApiController : Controller
+    public class UserApiController : AuthorizedController
     {
         private readonly ISecurityContext _securityContext;
         private readonly IMediator _eventAggregator;
