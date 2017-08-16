@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Field, FormSection, reduxForm } from "redux-form";
 import { Button, Form, FormGroup, Label, FormFeedback } from "reactstrap";
 import BcInput from "../../components/Form/BcInput";
-import * as blogActions from "../../redux/modules/blogs";
+import * as settingActions from "../../redux/modules/settings";
 
 class ProfileSetting extends React.Component {
   handleUpdateSetting(values) {
@@ -92,7 +92,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 export const mapDispatchToProps = dispatch =>
-  bindActionCreators(blogActions, dispatch);
+  bindActionCreators(settingActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({

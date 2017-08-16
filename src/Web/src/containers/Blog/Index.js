@@ -34,12 +34,12 @@ class Blog extends Component {
   }
 
   render() {
-    const { postStore: { loading, byIds, posts, blog } } = this.props;
+    const { postStore: { loading, bySlugs, posts, blog } } = this.props;
     if (loading) {
       return <div>Loading...</div>;
     }
 
-    if (byIds.length <= 0) {
+    if (bySlugs.length <= 0) {
       return (
         <div>
           <BlogHeader blog={blog} />
@@ -51,8 +51,8 @@ class Blog extends Component {
     return (
       <div>
         <BlogHeader blog={blog} />
-        <PostList ids={byIds} posts={posts} />
-        {byIds.length > 0 &&
+        <PostList ids={bySlugs} posts={posts} />
+        {bySlugs.length > 0 &&
           <nav className="blog-pagination">
             <a
               onClick={() => this.handleOlderClick()}

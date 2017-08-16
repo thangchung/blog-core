@@ -13,7 +13,6 @@ import BcInput from "../../components/Form/BcInput";
 
 class ProfileSetting extends React.Component {
   handleUpdateSetting() {
-    console.log(this.props);
     var settings = {
       ...this.props.profileSetting
     };

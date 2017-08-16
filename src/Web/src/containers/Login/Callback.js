@@ -5,7 +5,6 @@ import userManager from "../../utils/userManager";
 
 class Callback extends React.Component {
   successCallback = (user) => {
-    console.log(user);
     this.props.dispatch(this.props.history.push(`/admin/dashboard`));
   };
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { camelizeKeys } from 'humps';
 import { globalConfig } from "../../utils/config";
 
 export default store => next => action => {
@@ -27,7 +28,7 @@ export default store => next => action => {
   const actionPromise = promise(client);
   actionPromise
     .then(
-      result => next({ ...rest, result, type: SUCCESS }),
+      result => next({ ...rest, ...camelizeKeys(result), type: SUCCESS }),
       error => next({ ...rest, error, type: FAILURE })
     )
     .catch(error => {

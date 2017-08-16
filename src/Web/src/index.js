@@ -15,7 +15,7 @@ import userManager from "./utils/userManager";
 import PublicLayout from "./containers/App/PublicLayout";
 import AdminLayout from "./containers/App/AdminLayout";
 
-import Login from "./containers/Login/Login";
+import Login from "./containers/Login/Index";
 import Callback from "./containers/Login/Callback";
 
 const store = createStore(browserHistory);

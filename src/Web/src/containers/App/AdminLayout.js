@@ -8,7 +8,9 @@ import Footer from "../../components/Footer";
 
 // our containers
 import Restricted from "../../auth/Restricted";
-import ProfileSetting from "../Setting/ProfileSetting";
+import DashboardPage from "../Dashboard/Index";
+import PostManagementPage from "../Post/PostManagement";
+import ProfileSettingPage from "../Setting/ProfileSetting";
 
 export default class AdminLayout extends Component {
   render() {
@@ -22,11 +24,29 @@ export default class AdminLayout extends Component {
               <Switch>
                 <Route
                   exact
+                  path={`${match.url}/dashboard`}
+                  key="dashboard"
+                  render={routeProps =>
+                    <Restricted {...routeProps}>
+                      {React.createElement(DashboardPage)}
+                    </Restricted>}
+                />
+                <Route
+                  exact
+                  path={`${match.url}/posts`}
+                  key="post-management"
+                  render={routeProps =>
+                    <Restricted {...routeProps}>
+                      {React.createElement(PostManagementPage)}
+                    </Restricted>}
+                />
+                <Route
+                  exact
                   path={`${match.url}/profile-setting`}
                   key="profile-setting"
                   render={routeProps =>
                     <Restricted {...routeProps}>
-                      {React.createElement(ProfileSetting)}
+                      {React.createElement(ProfileSettingPage)}
                     </Restricted>}
                 />
               </Switch>

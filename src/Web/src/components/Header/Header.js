@@ -21,10 +21,6 @@ class Header extends Component {
                 Posts
               </Link>}
             {isAuth &&
-              <Link to={`/admin/tags`} className="nav-link">
-                Tags
-              </Link>}
-            {isAuth &&
               <Link to={`/admin/profile-setting`} className="nav-link">
                 Profile Settings
               </Link>}
