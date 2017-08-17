@@ -37,9 +37,9 @@ namespace BlogCore.Post.UseCases
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public Post.Domain.Post Get(int id)
+        public Domain.Post Get(int id)
         {
-            return BlogCore.Post.Domain.Post.CreateInstance(
+            return Domain.Post.CreateInstance(
                 new BlogId(IdHelper.GenerateId("34C96712-2CDF-4E79-9E2F-768CB68DD552")), 
                 "sample title", 
                 "sample excerpt", 

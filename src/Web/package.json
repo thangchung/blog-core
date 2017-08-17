@@ -17,6 +17,7 @@
     "react-addons-css-transition-group": "^15.5.2",
     "react-addons-transition-group": "^15.5.2",
     "react-breadcrumbs": "^1.6.6",
+    "react-d3-basic": "^1.6.11",
     "react-dom": "^15.5.4",
     "react-medium-editor": "^1.8.1",
     "react-redux": "^5.0.5",

@@ -1,8 +1,8 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Field, FormSection, reduxForm } from "redux-form";
-import { Button, Form, FormGroup, Label, FormFeedback } from "reactstrap";
+import { Field, reduxForm } from "redux-form";
+import { Button, Form, FormGroup, Label } from "reactstrap";
 import BcInput from "../../components/Form/BcInput";
 import * as settingActions from "../../redux/modules/settings";
 

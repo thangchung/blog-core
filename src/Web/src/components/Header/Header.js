@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 class Header extends Component {
   render() {
-    var { isAuth, profile } = this.props;
+    var { isAuth } = this.props;
     return (
       <div className="blog-masthead">
         <div className="container">

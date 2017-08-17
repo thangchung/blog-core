@@ -2,12 +2,9 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button } from "reactstrap";
 
 // components
-import userManager from "../../utils/userManager";
 import * as postActions from "../../redux/modules/posts";
-import BlogHeader from "../../components/BlogHeader.js";
 
 class PostDetail extends Component {
   componentDidMount() {
