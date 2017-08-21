@@ -1,13 +1,37 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using BlogCore.Infrastructure.EfCore;
 using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace BlogCore.Infrastructure.AspNetCore
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceProvider InitServices(this IServiceCollection services, Assembly[] registeredAssemlies, IConfigurationRoot configuration)
+        {
+            var builder = new ContainerBuilder();
+
+            // register the global maindb's connection string
+            builder.RegisterInstance(configuration.GetConnectionString("MainDb"))
+                .Named<string>("MainDbConnectionString");
+
+            // core & infra register
+            builder.RegisterGeneric(typeof(EfRepository<,>))
+                .As(typeof(IEfRepository<,>));
+
+            // scan modules in other assemblies
+            builder.RegisterAssemblyModules(registeredAssemlies);
+
+            builder.Populate(services);
+            return builder.Build().Resolve<IServiceProvider>();
+        }
+
         public static IServiceCollection AddCorsForBlog(this IServiceCollection services)
         {
             return services.AddCors(options =>

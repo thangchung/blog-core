@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using BlogCore.AccessControl.Domain.SecurityContext;
-using Microsoft.AspNetCore.Authorization;
+﻿using BlogCore.AccessControl.Domain.SecurityContext;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using System.Threading.Tasks;
@@ -22,20 +20,10 @@ namespace BlogCore.AccessControl.UseCases
             _eventAggregator = eventAggregator;
         }
 
-        [HttpGet("settings"), AllowAnonymous]
-        public List<string> Get()
-        {
-            return new List<string>
-            {
-                $"Username: {_securityContext.GetCurrentUserName()}",
-                $"Email: {_securityContext.GetCurrentEmail()}"
-            };
-        }
-
         [HttpPut("{userId}/settings")]
-        public async Task<UpdateUserProfileSettingResponse> Put(Guid userId, [FromBody] UserProfileSettingInputModel inputModel)
+        public async Task<UpdateUserProfileSettingResponse> Put(Guid userId, [FromBody] UpdateUserProfileSettingRequest inputModel)
         {
-            var response = await _eventAggregator.Send(new UpdateUserProfileSettingRequest
+            return await _eventAggregator.Send(new UpdateUserProfileSettingRequest
             {
                 UserId = userId,
                 GivenName = inputModel.GivenName,
@@ -44,8 +32,6 @@ namespace BlogCore.AccessControl.UseCases
                 Company = inputModel.Company,
                 Location = inputModel.Location
             });
-
-            return response;
         }
 
         [HttpPut("{id}/disable")]
@@ -71,14 +57,5 @@ namespace BlogCore.AccessControl.UseCases
         {
             return "Register";
         }
-    }
-
-    public class UserProfileSettingInputModel
-    {
-        public string GivenName { get; set; }
-        public string FamilyName { get; set; }
-        public string Bio { get; set; }
-        public string Company { get; set; }
-        public string Location { get; set; }
     }
 }

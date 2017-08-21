@@ -1,11 +1,15 @@
-﻿using System;
-using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+﻿#region libs
+
+using BlogCore.AccessControl.Domain;
+using BlogCore.AccessControl.Domain.SecurityContext;
+using BlogCore.AccessControl.Infrastructure.SecurityContext;
+using BlogCore.AccessControl.UseCases;
+using BlogCore.Blog.Infrastructure;
+using BlogCore.Blog.UseCases;
+using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
+using BlogCore.Post.UseCases;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,16 +17,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
+using System;
 using System.Linq;
-using BlogCore.AccessControl.Domain;
-using BlogCore.AccessControl.Domain.SecurityContext;
-using BlogCore.AccessControl.Infrastructure.SecurityContext;
-using BlogCore.AccessControl.UseCases;
-using BlogCore.Blog.Infrastructure;
-using BlogCore.Blog.UseCases;
-using BlogCore.Post.UseCases;
-using BlogCore.Core;
+using System.Reflection;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+
+#endregion
 
 namespace BlogCore.Api
 {
@@ -42,42 +45,35 @@ namespace BlogCore.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var builder = new ContainerBuilder();
-
             services.AddCorsForBlog()
                 .AddAuthorizationForBlog()
                 .AddMvcForBlog(RegisteredAssemblies());
 
-            services.AddOptions();
-            services.Configure<PagingOption>(Configuration.GetSection("Paging"));
+            services.AddOptions()
+                .Configure<PagingOption>(Configuration.GetSection("Paging"));
 
             if (Environment.IsDevelopment())
                 services.AddSwaggerForBlog();
 
             services.AddMediatR(RegisteredAssemblies());
-
-            // register the global maindb's connection string
-            builder.RegisterInstance(Configuration.GetConnectionString("MainDb"))
-                .Named<string>("MainDbConnectionString");
-
-            // core & infra register
-            builder.RegisterGeneric(typeof(EfRepository<,>))
-                .As(typeof(IEfRepository<,>));
-
-            // scan modules in other assemblies
-            builder.RegisterAssemblyModules(RegisteredAssemblies());
-
-            builder.Populate(services);
-            return builder.Build().Resolve<IServiceProvider>();
+            return services.InitServices(RegisteredAssemblies(), Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"))
+                .AddDebug();
 
             app.UseIdentityServerForBlog(OnTokenValidated)
-                .UseStaticFiles()
+                .UseStaticFiles(new StaticFileOptions
+                {
+                    OnPrepareResponse = ctx =>
+                    {
+                        var maxAge = new TimeSpan(7, 0, 0, 0);
+                        ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+                            "public,max-age=" + maxAge.TotalSeconds.ToString("0");
+                    }
+                })
                 .UseCors("CorsPolicy")
                 .UseMvc();
 

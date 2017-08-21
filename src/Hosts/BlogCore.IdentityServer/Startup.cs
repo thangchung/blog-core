@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
+using System;
 
 namespace BlogCore.IdentityServer
 {
@@ -71,7 +73,15 @@ namespace BlogCore.IdentityServer
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    var maxAge = new TimeSpan(7, 0, 0, 0);
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+                        "public,max-age=" + maxAge.TotalSeconds.ToString("0");
+                }
+            });
             
             app.UseIdentity();
             app.UseIdentityServer();
