@@ -2,7 +2,7 @@ const LOAD_BLOGS = "bc/blog/LOAD_BLOGS";
 const LOAD_BLOGS_SUCCESS = "bc/blog/LOAD_BLOGS_SUCCESS";
 const LOAD_BLOGS_FAILED = "bc/blog/LOAD_BLOGS_FAILED";
 
-const BLOGS_RESOURCE = "blogs";
+const BLOGS_PUBLIC_RESOURCE = "public/blogs";
 
 const initialState = {
   loading: true,
@@ -54,7 +54,7 @@ export default function reducer(state = initialState, action = {}) {
 export function getBlogsByPage(page) {
   return {
     types: [LOAD_BLOGS, LOAD_BLOGS_SUCCESS, LOAD_BLOGS_FAILED],
-    promise: client => client.get(`${BLOGS_RESOURCE}?page=${page}`),
+    promise: client => client.get(`${BLOGS_PUBLIC_RESOURCE}?page=${page}`),
     page
   };
 }

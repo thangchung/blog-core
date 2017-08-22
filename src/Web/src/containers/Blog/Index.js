@@ -49,7 +49,7 @@ class Blog extends Component {
     return (
       <div>
         <BlogHeader blog={blog} />
-        <PostList ids={bySlugs} posts={posts} />
+        <PostList blogId={this.props.match.params.blogId} slugs={bySlugs} posts={posts} />
         {bySlugs.length > 0 &&
           <nav className="blog-pagination">
             <a

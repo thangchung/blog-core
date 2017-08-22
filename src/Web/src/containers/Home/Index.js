@@ -15,7 +15,7 @@ class Home extends Component {
       <ul>
         {blogByIds.map((id, index) =>
           <li key={index}>
-            <a href={`${match.url}blog/${id}`}>
+            <a href={`${match.url}blogs/${id}`}>
               {blogs[id].title}
             </a>
           </li>

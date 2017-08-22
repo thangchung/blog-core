@@ -29,13 +29,13 @@ export default class PublicLayout extends Component {
                 />
                 <Route
                   exact
-                  path={`${match.url}blog/:blogId`}
+                  path={`${match.url}blogs/:blogId`}
                   key="blogId"
                   component={BlogPage}
                 />
                 <Route
                   exact
-                  path={`${match.url}post/:postId`}
+                  path={`${match.url}blogs/:blogId/posts/:postId`}
                   key="postDetail"
                   component={PostDetailPage}
                 />

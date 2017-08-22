@@ -8,7 +8,7 @@ import * as postActions from "../../redux/modules/posts";
 
 class PostDetail extends Component {
   componentDidMount() {
-    this.props.loadPostById(this.props.match.params.postId);
+    this.props.loadBlogPostById(this.props.match.params.blogId, this.props.match.params.postId);
   }
 
   render() {

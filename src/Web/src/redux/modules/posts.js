@@ -82,14 +82,21 @@ export function getPosts(blogId, page) {
   return {
     types: [LOAD_POSTS, LOAD_POSTS_SUCCESSED, LOAD_POSTS_FAILED],
     promise: client =>
-      client.get(`${POSTS_RESOURCE}/blog/${blogId}?page=${page}`),
+      client.get(`public/blog/${blogId}/posts?page=${page}`),
     page
   };
 }
 
-export function loadPostById(postId) {
+export function loadPostById(blogId, postId) {
   return {
     types: [LOAD_POST, LOAD_POST_SUCCESSED, LOAD_POST_FAILED],
-    promise: client => client.get(`${POSTS_RESOURCE}/${postId}`)
+    promise: client => client.get(`public/blog/${blogId}/posts/${postId}`)
   };
+}
+
+// Reference at https://github.com/reactjs/redux/issues/723
+export function loadBlogPostById(blogId, postId) {
+  return dispatch => Promise.all([
+    dispatch(loadPostById(blogId, postId))
+  ]);
 }
