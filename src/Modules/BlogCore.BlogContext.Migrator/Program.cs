@@ -1,13 +1,13 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using BlogCore.Blog.Infrastructure;
+﻿using BlogCore.BlogContext.Infrastructure;
+using BlogCore.Infrastructure.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BlogCore.Infrastructure.AspNetCore;
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 
-namespace BlogCore.Blog.Migrator
+namespace BlogCore.BlogContext.Migrator
 {
     class Program
     {

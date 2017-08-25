@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace BlogCore.Infrastructure.AspNetCore
@@ -30,6 +31,23 @@ namespace BlogCore.Infrastructure.AspNetCore
 
             builder.Populate(services);
             return builder.Build().Resolve<IServiceProvider>();
+        }
+
+        public static IServiceProvider InitMigrationServices(this IServiceCollection services,
+            Action<IServiceCollection, IConfigurationRoot> additionalWorks = null,
+            string envName = "ASPNETCORE_ENVIRONMENT")
+        {
+            var environmentName = envName ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ;
+            var configuration = Directory.GetCurrentDirectory().BuildConfiguration(environmentName);
+            var connString = configuration.GetConnectionString("DefaultConnection");
+
+            var containerBuilder = new ContainerBuilder();
+
+            additionalWorks?.Invoke(services, configuration);
+
+            containerBuilder.Populate(services);
+            var serviceProvider = containerBuilder.Build().Resolve<IServiceProvider>();
+            return serviceProvider;
         }
 
         public static IServiceCollection AddCorsForBlog(this IServiceCollection services)

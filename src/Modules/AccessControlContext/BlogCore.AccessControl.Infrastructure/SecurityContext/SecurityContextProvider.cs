@@ -3,6 +3,7 @@ using System.Security.Claims;
 using BlogCore.AccessControl.Domain;
 using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.Infrastructure.Extensions;
+using BlogCore.Core;
 
 namespace BlogCore.AccessControl.Infrastructure.SecurityContext
 {
@@ -13,7 +14,7 @@ namespace BlogCore.AccessControl.Infrastructure.SecurityContext
         private const string UserName = "name";
         private const string IdentityProvider = "idp";
         private const string Role = "role";
-        private Blog.Domain.Blog _blog;
+        private EntityBase _blog;
 
         public bool HasPrincipal()
         {
@@ -52,7 +53,7 @@ namespace BlogCore.AccessControl.Infrastructure.SecurityContext
 
         public ClaimsPrincipal Principal { get; set; }
 
-        public void SetBlog(Blog.Domain.Blog blog)
+        public void SetBlog(EntityBase blog)
         {
             _blog = blog;
         }

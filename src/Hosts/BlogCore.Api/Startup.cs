@@ -4,8 +4,8 @@ using BlogCore.AccessControl.Domain;
 using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.AccessControl.Infrastructure.SecurityContext;
 using BlogCore.AccessControl.UseCases;
-using BlogCore.Blog.Infrastructure;
-using BlogCore.Blog.UseCases;
+using BlogCore.BlogContext;
+using BlogCore.BlogContext.Infrastructure;
 using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
@@ -111,7 +111,7 @@ namespace BlogCore.Api
                 throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
             securityContextPrincipal.Principal = principal;
 
-            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IEfRepository<BlogDbContext, Blog.Domain.Blog>>();
+            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IEfRepository<BlogDbContext, BlogContext.Domain.Blog>>();
             var email = securityContextInstance.GetCurrentEmail();
             var blogs = await blogRepoInstance.ListAsync();
             var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);
