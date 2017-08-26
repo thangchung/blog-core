@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Security.Claims;
 using BlogCore.AccessControl.Domain;
-using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.Infrastructure.Extensions;
 using BlogCore.Core;
 
-namespace BlogCore.AccessControl.Infrastructure.SecurityContext
+namespace BlogCore.AccessControl.Infrastructure
 {
     public class SecurityContextProvider : ISecurityContext, ISecurityContextPrincipal
     {

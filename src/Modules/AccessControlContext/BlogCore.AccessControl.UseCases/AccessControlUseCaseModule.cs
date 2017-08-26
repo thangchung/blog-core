@@ -1,7 +1,6 @@
 ﻿using Autofac;
-using BlogCore.AccessControl.Domain.SecurityContext;
 using BlogCore.AccessControl.Infrastructure;
-using BlogCore.AccessControl.Infrastructure.SecurityContext;
+using BlogCore.Core;
 using BlogCore.Infrastructure.EfCore;
 
 namespace BlogCore.AccessControl.UseCases

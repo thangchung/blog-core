@@ -1,10 +1,10 @@
-﻿using BlogCore.AccessControl.Domain.SecurityContext;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using System.Threading.Tasks;
 using System;
 using BlogCore.AccessControl.UseCases.UpdateUserProfileSetting;
 using BlogCore.Infrastructure.AspNetCore;
+using BlogCore.Core;
 
 namespace BlogCore.AccessControl.UseCases
 {

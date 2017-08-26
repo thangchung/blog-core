@@ -22,7 +22,6 @@
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
-    <ProjectReference Include="..\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using BlogCore.AccessControl.Domain.SecurityContext;
+﻿using BlogCore.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

@@ -1,8 +1,7 @@
-﻿using BlogCore.AccessControl.Domain;
-using BlogCore.AccessControl.Domain.SecurityContext;
-using BlogCore.BlogContext.Domain;
+﻿using BlogCore.BlogContext.Domain;
 using BlogCore.BlogContext.Infrastructure;
 using BlogCore.BlogContext.UseCases.CreateBlog;
+using BlogCore.Core;
 using BlogCore.Core.Helpers;
 using BlogCore.Infrastructure.EfCore;
 using FluentValidation;

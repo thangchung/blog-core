@@ -1,7 +1,6 @@
-﻿using BlogCore.Core;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
-namespace BlogCore.AccessControl.Infrastructure.SecurityContext
+namespace BlogCore.Core
 {
     public interface ISecurityContextPrincipal
     {

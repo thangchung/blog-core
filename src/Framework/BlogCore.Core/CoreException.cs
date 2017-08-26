@@ -27,4 +27,12 @@ namespace BlogCore.Core
         {
         }
     }
+
+    public class ViolateSecurityException : CoreException
+    {
+        public ViolateSecurityException(string message)
+            : base(message, null)
+        {
+        }
+    }
 }
