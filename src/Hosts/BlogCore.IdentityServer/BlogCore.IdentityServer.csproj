@@ -46,8 +46,7 @@
     <ProjectReference Include="..\..\Framework\BlogCore.Core\BlogCore.Core.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
-    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\BlogCore.AccessControlContext\BlogCore.AccessControlContext.csproj" />
   </ItemGroup>
 
 </Project>

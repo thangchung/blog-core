@@ -36,14 +36,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\BlogCore.Core\BlogCore.Core.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.UseCases\BlogCore.AccessControl.UseCases.csproj" />
-    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Domain\BlogCore.AccessControl.Domain.csproj" />
-    <ProjectReference Include="..\..\Modules\AccessControlContext\BlogCore.AccessControl.Infrastructure\BlogCore.AccessControl.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\BlogCore.AccessControlContext\BlogCore.AccessControlContext.csproj" />
     <ProjectReference Include="..\..\Modules\BlogCore.BlogContext\BlogCore.BlogContext.csproj" />
-    <ProjectReference Include="..\..\Modules\PostContext\BlogCore.Post.Domain\BlogCore.Post.Domain.csproj" />
-    <ProjectReference Include="..\..\Modules\PostContext\BlogCore.Post.Infrastructure\BlogCore.Post.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Modules\PostContext\BlogCore.Post.UseCases\BlogCore.Post.UseCases.csproj" />
+    <ProjectReference Include="..\..\Modules\BlogCore.PostContext\BlogCore.PostContext.csproj" />
   </ItemGroup>
 
 </Project>

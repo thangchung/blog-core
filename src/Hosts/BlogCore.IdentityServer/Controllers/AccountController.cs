@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BlogCore.AccessControl.Domain;
+using BlogCore.AccessControlContext.Domain;
 using BlogCore.IdentityServer.Models.AccountViewModels;
 using BlogCore.IdentityServer.Quickstart;
 using BlogCore.IdentityServer.Quickstart.Account;

@@ -1,13 +1,12 @@
 ﻿#region libs
 
-using BlogCore.AccessControl.Domain;
-using BlogCore.AccessControl.UseCases;
+using BlogCore.AccessControl;
 using BlogCore.BlogContext;
 using BlogCore.BlogContext.Infrastructure;
 using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
-using BlogCore.Post.UseCases;
+using BlogCore.PostContext;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

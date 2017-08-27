@@ -1,5 +1,5 @@
-﻿using BlogCore.AccessControl.Domain;
-using BlogCore.AccessControl.Infrastructure;
+﻿using BlogCore.AccessControlContext.Domain;
+using BlogCore.AccessControlContext.Infrastructure;
 using BlogCore.IdentityServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
