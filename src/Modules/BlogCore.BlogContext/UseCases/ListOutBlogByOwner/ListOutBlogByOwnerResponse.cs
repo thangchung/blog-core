@@ -1,9 +1,8 @@
 using System;
-using BlogCore.Core;
 
 namespace BlogCore.BlogContext.UseCases.ListOutBlogByOwner
 {
-    public class ListOutBlogByOwnerResponse : IMessage
+    public class ListOutBlogByOwnerResponse
     {
         public ListOutBlogByOwnerResponse(
             Guid id,

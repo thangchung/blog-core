@@ -1,11 +1,10 @@
-﻿using BlogCore.Core;
-using MediatR;
+﻿using MediatR;
 
-namespace BlogCore.BlogContext.UseCases.CreateBlog
+namespace BlogCore.BlogContext.UseCases.Crud
 {
-    public class CreateBlogRequestMsg : IMessage, IRequest<CreateBlogResponse>
+    public class CreateBlogRequest : IRequest<CreateBlogResponse>
     {
-        public CreateBlogRequestMsg(
+        public CreateBlogRequest(
             string title, 
             string description,
             string theme, 

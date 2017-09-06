@@ -1,4 +1,4 @@
-﻿using BlogCore.BlogContext.UseCases.CreateBlog;
+﻿using BlogCore.BlogContext.UseCases.Crud;
 using BlogCore.BlogContext.UseCases.ListOutBlogByOwner;
 using BlogCore.BlogContext.UseCases.UpdateBlogSetting;
 using BlogCore.Core;
@@ -30,7 +30,7 @@ namespace BlogCore.BlogContext
 
         [Authorize("User")]
         [HttpPost]
-        public async Task<CreateBlogResponse> Post([FromBody] CreateBlogRequestMsg blogRequest)
+        public async Task<CreateBlogResponse> Post([FromBody] CreateBlogRequest blogRequest)
         {
             return await _eventAggregator.Send(blogRequest);
         }

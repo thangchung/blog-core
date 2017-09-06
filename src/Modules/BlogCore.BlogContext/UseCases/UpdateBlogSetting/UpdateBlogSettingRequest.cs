@@ -1,10 +1,9 @@
-﻿using BlogCore.Core;
-using MediatR;
+﻿using MediatR;
 using System;
 
 namespace BlogCore.BlogContext.UseCases.UpdateBlogSetting
 {
-    public class UpdateBlogSettingRequest : IMessage, IRequest<UpdateBlogSettingResponse>
+    public class UpdateBlogSettingRequest : IRequest<UpdateBlogSettingResponse>
     {
         public Guid BlogId { get; set; }
         public int PostsPerPage { get; set; }

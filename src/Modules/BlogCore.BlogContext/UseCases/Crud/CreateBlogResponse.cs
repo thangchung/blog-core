@@ -1,10 +1,9 @@
 ﻿using System;
-using BlogCore.Core;
 using FluentValidation.Results;
 
-namespace BlogCore.BlogContext.UseCases.CreateBlog
+namespace BlogCore.BlogContext.UseCases.Crud
 {
-    public class CreateBlogResponse : IMessage
+    public class CreateBlogResponse
     {
         public CreateBlogResponse(
             Guid blogId, 

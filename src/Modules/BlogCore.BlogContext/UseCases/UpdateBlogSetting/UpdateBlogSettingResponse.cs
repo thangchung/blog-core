@@ -1,8 +1,6 @@
-﻿using BlogCore.Core;
-
-namespace BlogCore.BlogContext.UseCases.UpdateBlogSetting
+﻿namespace BlogCore.BlogContext.UseCases.UpdateBlogSetting
 {
-    public class UpdateBlogSettingResponse : IMessage
+    public class UpdateBlogSettingResponse
     {
     }
 }

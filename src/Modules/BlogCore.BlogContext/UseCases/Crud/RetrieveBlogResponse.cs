@@ -1,11 +1,10 @@
 ﻿using System;
-using BlogCore.Core;
 
-namespace BlogCore.BlogContext.UseCases.GetBlog
+namespace BlogCore.BlogContext.UseCases.Crud
 {
-    public class GetBlogResponse : IMessage
+    public class RetrieveBlogResponse
     {
-        public GetBlogResponse(
+        public RetrieveBlogResponse(
             Guid id, 
             string title, 
             string description, 

@@ -1,5 +1,4 @@
-﻿using BlogCore.BlogContext.UseCases.GetBlog;
-using BlogCore.BlogContext.UseCases.ListOutBlog;
+﻿using BlogCore.BlogContext.UseCases.Crud;
 using BlogCore.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,15 +18,15 @@ namespace BlogCore.BlogContext
         }
 
         [HttpGet("")]
-        public async Task<PaginatedItem<ListOutBlogResponse>> GetByPage([FromQuery] int page)
+        public async Task<PaginatedItem<RetrieveBlogsResponse>> GetByPage([FromQuery] int page)
         {
-            return await _eventAggregator.Send(new ListOutBlogRequest(page));
+            return await _eventAggregator.Send(new RetrieveBlogsRequest(page));
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<GetBlogResponse> Get(Guid id)
+        public async Task<RetrieveBlogResponse> Get(Guid id)
         {
-            return await _eventAggregator.Send(new GetBlogRequest(id));
+            return await _eventAggregator.Send(new RetrieveBlogRequest(id));
         }
     }
 }

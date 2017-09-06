@@ -1,7 +1,7 @@
 ﻿using BlogCore.BlogContext.Domain;
 using MediatR;
 
-namespace BlogCore.BlogContext.UseCases.CreateBlog
+namespace BlogCore.BlogContext.UseCases.Crud
 {
     public class BlogSettingChangedHandler : INotificationHandler<BlogCreated>
     {

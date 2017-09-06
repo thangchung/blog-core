@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-namespace BlogCore.BlogContext.UseCases.CreateBlog
+namespace BlogCore.BlogContext.UseCases.Crud
 {
-    public class CreateBlogRequestValidator : AbstractValidator<CreateBlogRequestMsg>
+    public class CreateBlogRequestValidator : AbstractValidator<CreateBlogRequest>
     {
         public CreateBlogRequestValidator()
         {

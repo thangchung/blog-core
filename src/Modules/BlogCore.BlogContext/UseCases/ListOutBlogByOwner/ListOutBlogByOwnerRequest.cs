@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BlogCore.BlogContext.UseCases.ListOutBlogByOwner
 {
-    public class ListOutBlogByOwnerRequest : IMessage, IRequest<PaginatedItem<ListOutBlogByOwnerResponse>>
+    public class ListOutBlogByOwnerRequest : IRequest<PaginatedItem<ListOutBlogByOwnerResponse>>
     {
     }
 }

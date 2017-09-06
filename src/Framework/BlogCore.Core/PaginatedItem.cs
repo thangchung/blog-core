@@ -3,7 +3,6 @@
 namespace BlogCore.Core
 {
     public class PaginatedItem<TResponse> : ValueObjectBase
-        where TResponse : IMessage
     {
         public PaginatedItem(int totalItems, int totalPages, IReadOnlyList<TResponse> items)
         {

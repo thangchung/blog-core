@@ -16,7 +16,6 @@ namespace BlogCore.Infrastructure.EfCore
             params Expression<Func<TEntity, object>>[] includeProperties)
             where TDbContext : DbContext
             where TEntity : EntityBase
-            where TResponse : IMessage
         {
             return await GetDataAsync(repo, criterion, selector, null, includeProperties);
         }
@@ -29,7 +28,6 @@ namespace BlogCore.Infrastructure.EfCore
             params Expression<Func<TEntity, object>>[] includeProperties)
             where TDbContext : DbContext
             where TEntity : EntityBase
-            where TResponse : IMessage
         {
             return await GetDataAsync(repo, criterion, selector, filter, includeProperties);
         }
@@ -58,7 +56,6 @@ namespace BlogCore.Infrastructure.EfCore
             params Expression<Func<TEntity, object>>[] includeProperties)
             where TDbContext : DbContext
             where TEntity : EntityBase
-            where TResponse : IMessage
         {
             if (criterion.PageSize < 1 || criterion.PageSize > criterion.DefaultPagingOption.PageSize)
             {
