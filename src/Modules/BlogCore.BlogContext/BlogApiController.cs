@@ -21,14 +21,14 @@ namespace BlogCore.BlogContext
             _eventAggregator = eventAggregator;
         }
 
-        [Authorize("Admin")]
+        // [Authorize("Admin")]
         [HttpGet("owner")]
         public async Task<PaginatedItem<ListOutBlogByOwnerResponse>> GetOwner()
         {
             return await _eventAggregator.Send(new ListOutBlogByOwnerRequest());
         }
 
-        [Authorize("User")]
+        // [Authorize("User")]
         [HttpPost]
         public async Task<CreateBlogResponse> Post([FromBody] CreateBlogRequest blogRequest)
         {
@@ -42,13 +42,13 @@ namespace BlogCore.BlogContext
             await _eventAggregator.Send(inputModel);
         }
 
-        [Authorize("User")]
+        // [Authorize("User")]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        [Authorize("User")]
+        // [Authorize("User")]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

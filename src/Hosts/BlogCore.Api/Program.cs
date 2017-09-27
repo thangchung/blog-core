@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace BlogCore.Api
 {
@@ -7,16 +10,22 @@ namespace BlogCore.Api
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+            Console.Title = "ApiServer";
+            BuildWebHost(args).Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(builder =>
+                {
+                    builder.SetMinimumLevel(LogLevel.Warning);
+                    builder.AddFilter("ApiServer", LogLevel.Debug);
+                })
                 .UseKestrel()
                 .UseUrls("http://localhost:8484")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .Build();
-
-            host.Run();
-        }
     }
 }

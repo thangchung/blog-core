@@ -1,19 +1,21 @@
-﻿using System;
+﻿using IdentityServer4.Models;
+using Microsoft.AspNetCore.Builder;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
-using IdentityServer4.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 
 namespace BlogCore.Infrastructure.AspNetCore
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseIdentityServerForBlog(this IApplicationBuilder app,
-            Func<TokenValidatedContext, Task> onTokenValidated)
+        public static IApplicationBuilder UseIdentityServerForBlog(this IApplicationBuilder app)
+            // Func<TokenValidatedContext, Task> onTokenValidated)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimFilter.Clear();
-            return app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            return app.UseIdentityServer();
+
+            //TODO: refactoring consideration
+            /*return app.UseIdentityServer(new IdentityServerAuthenticationOptions
             {
                 AuthenticationScheme = "Bearer",
                 AutomaticAuthenticate = true,
@@ -26,7 +28,7 @@ namespace BlogCore.Infrastructure.AspNetCore
                 {
                     OnTokenValidated = onTokenValidated
                 }
-            });
+            });*/
         }
 
         public static IApplicationBuilder UseSwaggerUiForBlog(this IApplicationBuilder app)

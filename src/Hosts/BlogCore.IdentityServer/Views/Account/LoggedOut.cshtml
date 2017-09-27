@@ -1,9 +1,8 @@
-﻿@using BlogCore.IdentityServer.Quickstart.Account
-@model BlogCore.IdentityServer.Quickstart.Account.LoggedOutViewModel
+﻿@model LoggedOutViewModel
 
 @{ 
-    // set this so UI rendering sees an anonymous user
-    Context.User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity());
+    // set this so the layout rendering sees an anonymous user
+    ViewData["signed-out"] = true;
 }
 
 <div class="page-header logged-out">

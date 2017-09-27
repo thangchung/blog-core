@@ -4,7 +4,7 @@
 
 using System;
 
-namespace BlogCore.IdentityServer.Quickstart.Account
+namespace IdentityServer4.Quickstart.UI
 {
     public class AccountOptions
     {
@@ -15,10 +15,12 @@ namespace BlogCore.IdentityServer.Quickstart.Account
         public static bool ShowLogoutPrompt = true;
         public static bool AutomaticRedirectAfterSignOut = false;
 
-        public static bool WindowsAuthenticationEnabled = false;
-        // specify the Windows authentication schemes you want to use for authentication
-        public static readonly string[] WindowsAuthenticationSchemes = new string[] { "Negotiate", "NTLM" };
-        public static readonly string WindowsAuthenticationDisplayName = "Windows";
+        // to enable windows authentication, the host (IIS or IIS Express) also must have 
+        // windows auth enabled.
+        public static bool WindowsAuthenticationEnabled = true;
+        public static bool IncludeWindowsGroups = false;
+        // specify the Windows authentication scheme and display name
+        public static readonly string WindowsAuthenticationSchemeName = "Windows";
 
         public static string InvalidCredentialsErrorMessage = "Invalid username or password";
     }

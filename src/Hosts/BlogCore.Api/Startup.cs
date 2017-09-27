@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
@@ -35,6 +36,8 @@ namespace BlogCore.Api
 
             // https://github.com/dotnet/corefx/issues/9158
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -43,7 +46,7 @@ namespace BlogCore.Api
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddCorsForBlog()
-                .AddAuthorizationForBlog()
+                //.AddAuthorizationForBlog()
                 .AddMvcForBlog(RegisteredAssemblies());
 
             services.AddOptions()
@@ -53,6 +56,23 @@ namespace BlogCore.Api
                 services.AddSwaggerForBlog();
 
             services.AddMediatR(RegisteredAssemblies());
+
+            services.AddAuthentication(o =>
+            {
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+                {
+                    options.Authority = "http://localhost:8483";
+                    options.Audience = "blogcore_api_resource";
+                    options.RequireHttpsMetadata = false;
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = OnTokenValidated
+                    };
+                });
+
             return services.InitServices(RegisteredAssemblies(), Configuration);
         }
 
@@ -61,7 +81,8 @@ namespace BlogCore.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"))
                 .AddDebug();
 
-            app.UseIdentityServerForBlog(OnTokenValidated)
+            // app.UseIdentityServerForBlog(OnTokenValidated)
+            app.UseAuthentication()
                 .UseStaticFiles(new StaticFileOptions
                 {
                     OnPrepareResponse = ctx =>
@@ -92,14 +113,14 @@ namespace BlogCore.Api
         private static async Task OnTokenValidated(TokenValidatedContext context)
         {
             // get current principal
-            var principal = context.Ticket.Principal;
+            var principal = context.Principal;
 
             // get current claim identity
-            var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
+            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
 
             // build up the id_token and put it into current claim identity
             var headerToken =
-                context.Request.Headers["Authorization"][0].Substring(context.Ticket.AuthenticationScheme.Length + 1);
+                context.Request.Headers["Authorization"][0].Substring(context.Scheme.Name.Length + 1);
             claimsIdentity?.AddClaim(new Claim("id_token", headerToken));
 
             var securityContextInstance = context.HttpContext.RequestServices.GetService<ISecurityContext>();

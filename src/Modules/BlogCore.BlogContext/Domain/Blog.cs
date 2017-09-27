@@ -88,10 +88,19 @@ namespace BlogCore.BlogContext.Domain
 
         public Blog ChangeSetting(BlogSetting setting)
         {
-            var oldBlogSettingId = BlogSetting.Id;
+            Guid oldBlogSettingId;
+            if (BlogSetting != null)
+            {
+                oldBlogSettingId = BlogSetting.Id;
+            }
+
             AssertSetting(setting);
             BlogSetting = setting;
-            Events.Add(new BlogSettingChanged(oldBlogSettingId));
+            if (BlogSetting != null)
+            {
+                Events.Add(new BlogSettingChanged(oldBlogSettingId));
+            }
+
             return this;
         }
 

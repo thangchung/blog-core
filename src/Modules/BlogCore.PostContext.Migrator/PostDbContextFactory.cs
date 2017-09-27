@@ -1,16 +1,17 @@
 ﻿using BlogCore.Infrastructure.EfCore;
 using BlogCore.PostContext.Infrastructure;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System.Reflection;
 
 namespace BlogCore.PostContext.Migrator
 {
-    public class PostDbContextFactory : IDbContextFactory<PostDbContext>
+    public class PostDbContextFactory : IDesignTimeDbContextFactory<PostDbContext>
     {
-        public PostDbContext Create(DbContextFactoryOptions options)
+        public PostDbContext CreateDbContext(string[] args)
         {
             return new PostDbContext(
-                options.BuildDbContext<PostDbContext>(
+                new DbContextOptionsBuilder<PostDbContext>().BuildSqlServerDbContext(
                     typeof(PostDbContextFactory).GetTypeInfo().Assembly).Options);
         }
     }

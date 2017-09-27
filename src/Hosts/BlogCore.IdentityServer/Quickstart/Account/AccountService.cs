@@ -2,30 +2,33 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Linq;
-using System.Threading.Tasks;
 using IdentityModel;
-using IdentityServer4;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BlogCore.IdentityServer.Quickstart.Account
+namespace IdentityServer4.Quickstart.UI
 {
     public class AccountService
     {
         private readonly IClientStore _clientStore;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private IAuthenticationSchemeProvider _schemeProvider;
 
         public AccountService(
             IIdentityServerInteractionService interaction,
             IHttpContextAccessor httpContextAccessor,
+            IAuthenticationSchemeProvider schemeProvider,
             IClientStore clientStore)
         {
             _interaction = interaction;
             _httpContextAccessor = httpContextAccessor;
+            _schemeProvider = schemeProvider;
             _clientStore = clientStore;
         }
 
@@ -39,34 +42,20 @@ namespace BlogCore.IdentityServer.Quickstart.Account
                 {
                     EnableLocalLogin = false,
                     ReturnUrl = returnUrl,
-                    Email = context?.LoginHint,
+                    Username = context?.LoginHint,
                     ExternalProviders = new ExternalProvider[] {new ExternalProvider { AuthenticationScheme = context.IdP } }
                 };
             }
 
-            var schemes = _httpContextAccessor.HttpContext.Authentication.GetAuthenticationSchemes();
+            var schemes = await _schemeProvider.GetAllSchemesAsync();
 
             var providers = schemes
-                .Where(x => x.DisplayName != null && !AccountOptions.WindowsAuthenticationSchemes.Contains(x.AuthenticationScheme))
+                .Where(x => x.DisplayName != null)
                 .Select(x => new ExternalProvider
                 {
                     DisplayName = x.DisplayName,
-                    AuthenticationScheme = x.AuthenticationScheme
+                    AuthenticationScheme = x.Name
                 }).ToList();
-
-            if (AccountOptions.WindowsAuthenticationEnabled)
-            {
-                // this is needed to handle windows auth schemes
-                var windowsSchemes = schemes.Where(s => AccountOptions.WindowsAuthenticationSchemes.Contains(s.AuthenticationScheme));
-                if (windowsSchemes.Any())
-                {
-                    providers.Add(new ExternalProvider
-                    {
-                        AuthenticationScheme = AccountOptions.WindowsAuthenticationSchemes.First(),
-                        DisplayName = AccountOptions.WindowsAuthenticationDisplayName
-                    });
-                }
-            }
 
             var allowLocal = true;
             if (context?.ClientId != null)
@@ -88,7 +77,7 @@ namespace BlogCore.IdentityServer.Quickstart.Account
                 AllowRememberLogin = AccountOptions.AllowRememberLogin,
                 EnableLocalLogin = allowLocal && AccountOptions.AllowLocalLogin,
                 ReturnUrl = returnUrl,
-                Email = context?.LoginHint,
+                Username = context?.LoginHint,
                 ExternalProviders = providers.ToArray()
             };
         }
@@ -96,7 +85,7 @@ namespace BlogCore.IdentityServer.Quickstart.Account
         public async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
         {
             var vm = await BuildLoginViewModelAsync(model.ReturnUrl);
-            vm.Email = model.Email;
+            vm.Username = model.Username;
             vm.RememberLogin = model.RememberLogin;
             return vm;
         }
@@ -105,8 +94,8 @@ namespace BlogCore.IdentityServer.Quickstart.Account
         {
             var vm = new LogoutViewModel { LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt };
 
-            var user = await _httpContextAccessor.HttpContext.GetIdentityServerUserAsync();
-            if (user == null || user.Identity.IsAuthenticated == false)
+            var user = _httpContextAccessor.HttpContext.User;
+            if (user?.Identity.IsAuthenticated != true)
             {
                 // if the user is not authenticated, then just show logged out page
                 vm.ShowLogoutPrompt = false;
@@ -140,21 +129,25 @@ namespace BlogCore.IdentityServer.Quickstart.Account
                 LogoutId = logoutId
             };
 
-            var user = await _httpContextAccessor.HttpContext.GetIdentityServerUserAsync();
-            if (user != null)
+            var user = _httpContextAccessor.HttpContext.User;
+            if (user?.Identity.IsAuthenticated == true)
             {
                 var idp = user.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
-                if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
+                if (idp != null && idp != IdentityServer4.IdentityServerConstants.LocalIdentityProvider)
                 {
-                    if (vm.LogoutId == null)
+                    var providerSupportsSignout = await _httpContextAccessor.HttpContext.GetSchemeSupportsSignOutAsync(idp);
+                    if (providerSupportsSignout)
                     {
-                        // if there's no current logout context, we need to create one
-                        // this captures necessary info from the current logged in user
-                        // before we signout and redirect away to the external IdP for signout
-                        vm.LogoutId = await _interaction.CreateLogoutContextAsync();
-                    }
+                        if (vm.LogoutId == null)
+                        {
+                            // if there's no current logout context, we need to create one
+                            // this captures necessary info from the current logged in user
+                            // before we signout and redirect away to the external IdP for signout
+                            vm.LogoutId = await _interaction.CreateLogoutContextAsync();
+                        }
 
-                    vm.ExternalAuthenticationScheme = idp;
+                        vm.ExternalAuthenticationScheme = idp;
+                    }
                 }
             }
 

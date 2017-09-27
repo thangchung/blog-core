@@ -45,8 +45,18 @@ namespace BlogCore.AccessControlContext.Migrator
                 services.AddDbContext<IdentityServerDbContext>(
                 options => options.UseSqlServer(connString, b => b.MigrationsAssembly(migrationsAssembly)));
                 services.AddIdentityServer()
-                    .AddConfigurationStore(x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)))
-                    .AddOperationalStore(x => x.UseSqlServer(connString, options => options.MigrationsAssembly(migrationsAssembly)));
+                    .AddConfigurationStore(options =>
+                    {
+                        options.ConfigureDbContext = builder =>
+                            builder.UseSqlServer(connString,
+                                sql => sql.MigrationsAssembly(migrationsAssembly));
+                    })
+                    .AddOperationalStore(options =>
+                    {
+                        options.ConfigureDbContext = builder =>
+                            builder.UseSqlServer(connString,
+                                sql => sql.MigrationsAssembly(migrationsAssembly));
+                    });
             });
         }
 
