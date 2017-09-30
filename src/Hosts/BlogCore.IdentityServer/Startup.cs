@@ -61,6 +61,7 @@ namespace IdentityServer4.Quickstart.UI
                     options.ConfigureDbContext = builder =>
                         builder.UseSqlServer(connString,
                             sql => sql.MigrationsAssembly(migrationsAssembly));
+
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;

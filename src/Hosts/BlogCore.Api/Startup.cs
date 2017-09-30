@@ -37,6 +37,7 @@ namespace BlogCore.Api
             // https://github.com/dotnet/corefx/issues/9158
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            // clear any handler for JWT
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
@@ -46,7 +47,7 @@ namespace BlogCore.Api
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddCorsForBlog()
-                //.AddAuthorizationForBlog()
+                // .AddAuthorizationForBlog()
                 .AddMvcForBlog(RegisteredAssemblies());
 
             services.AddOptions()
@@ -57,21 +58,7 @@ namespace BlogCore.Api
 
             services.AddMediatR(RegisteredAssemblies());
 
-            services.AddAuthentication(o =>
-            {
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-                {
-                    options.Authority = "http://localhost:8483";
-                    options.Audience = "blogcore_api_resource";
-                    options.RequireHttpsMetadata = false;
-
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnTokenValidated = OnTokenValidated
-                    };
-                });
+            services.AddIdentityServerForBlog(OnTokenValidated);
 
             return services.InitServices(RegisteredAssemblies(), Configuration);
         }
@@ -81,7 +68,6 @@ namespace BlogCore.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"))
                 .AddDebug();
 
-            // app.UseIdentityServerForBlog(OnTokenValidated)
             app.UseAuthentication()
                 .UseStaticFiles(new StaticFileOptions
                 {

@@ -2,6 +2,8 @@
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Infrastructure.EfCore;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -9,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace BlogCore.Infrastructure.AspNetCore
 {
@@ -59,6 +62,25 @@ namespace BlogCore.Infrastructure.AspNetCore
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
+            });
+        }
+
+        public static void AddIdentityServerForBlog(this IServiceCollection services, Func<TokenValidatedContext, Task> onTokenValidated)
+        {
+            services.AddAuthentication(o =>
+            {
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "http://localhost:8483";
+                options.Audience = "blogcore_api_resource";
+                options.RequireHttpsMetadata = false;
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = onTokenValidated
+                };
             });
         }
 

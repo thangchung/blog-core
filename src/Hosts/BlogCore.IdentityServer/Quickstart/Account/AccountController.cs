@@ -105,15 +105,10 @@ namespace IdentityServer4.Quickstart.UI
 
             if (ModelState.IsValid)
             {
-                // validate username/password against in-memory store
-
-                // TODO: refactoring considerations
-                // if (_users.ValidateCredentials(model.Username, model.Password))
-
+                // validate username/password against store
                 var signinResult = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: false);
                 if (signinResult.Succeeded)
                 {
-                    // var user = _users.FindByUsername(model.Username);
                     var user = await _userManager.FindByNameAsync(model.Username);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 
