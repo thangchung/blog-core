@@ -2,13 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Threading.Tasks;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
-namespace BlogCore.IdentityServer.Quickstart.Consent
+namespace IdentityServer4.Quickstart.UI
 {
     /// <summary>
     /// This controller processes the consent UI

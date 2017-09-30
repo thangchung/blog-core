@@ -2,15 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BlogCore.IdentityServer.Quickstart.Consent
+namespace IdentityServer4.Quickstart.UI
 {
     public class ConsentService
     {
@@ -51,7 +50,7 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
                     var scopes = model.ScopesConsented;
                     if (ConsentOptions.EnableOfflineAccess == false)
                     {
-                        scopes = scopes.Where(x => x != IdentityServerConstants.StandardScopes.OfflineAccess);
+                        scopes = scopes.Where(x => x != IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess);
                     }
 
                     grantedConsent = new ConsentResponse
@@ -62,7 +61,7 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
                 }
                 else
                 {
-                    result.ValidationError = ConsentOptions.MuchChooseOneErrorMessage;
+                    result.ValidationError = ConsentOptions.MustChooseOneErrorMessage;
                 }
             }
             else
@@ -74,12 +73,12 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
             {
                 // validate return url is still valid
                 var request = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-                if (result == null) return result;
+                if (request == null) return result;
 
                 // communicate outcome of consent back to identityserver
                 await _interaction.GrantConsentAsync(request, grantedConsent);
 
-                // indiate that's it ok to redirect back to authorization endpoint
+                // indicate that's it ok to redirect back to authorization endpoint
                 result.RedirectUri = model.ReturnUrl;
             }
             else
@@ -133,7 +132,7 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
 
             vm.ReturnUrl = returnUrl;
 
-            vm.ClientName = client.ClientName;
+            vm.ClientName = client.ClientName ?? client.ClientId;
             vm.ClientUrl = client.ClientUri;
             vm.ClientLogoUrl = client.LogoUri;
             vm.AllowRememberConsent = client.AllowRememberConsent;
@@ -143,7 +142,7 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
             if (ConsentOptions.EnableOfflineAccess && resources.OfflineAccess)
             {
                 vm.ResourceScopes = vm.ResourceScopes.Union(new ScopeViewModel[] {
-                    GetOfflineAccessScope(vm.ScopesConsented.Contains(IdentityServerConstants.StandardScopes.OfflineAccess) || model == null)
+                    GetOfflineAccessScope(vm.ScopesConsented.Contains(IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess) || model == null)
                 });
             }
 
@@ -159,7 +158,7 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
                 Description = identity.Description,
                 Emphasize = identity.Emphasize,
                 Required = identity.Required,
-                Checked = check || identity.Required,
+                Checked = check || identity.Required
             };
         }
 
@@ -172,7 +171,7 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
                 Description = scope.Description,
                 Emphasize = scope.Emphasize,
                 Required = scope.Required,
-                Checked = check || scope.Required,
+                Checked = check || scope.Required
             };
         }
 
@@ -180,7 +179,7 @@ namespace BlogCore.IdentityServer.Quickstart.Consent
         {
             return new ScopeViewModel
             {
-                Name = IdentityServerConstants.StandardScopes.OfflineAccess,
+                Name = IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess,
                 DisplayName = ConsentOptions.OfflineAccessDisplayName,
                 Description = ConsentOptions.OfflineAccessDescription,
                 Emphasize = true,

@@ -5,9 +5,9 @@ namespace BlogCore.Infrastructure.EfCore
 {
     public class ConfigurationHelper
     {
-        public static string GetConnectionString(string basePath, string environmentName)
+        public static string GetConnectionString(string basePath)
         {
-            var config = GetConfiguration(basePath, environmentName);
+            var config = GetConfiguration(basePath);
             var connstr = config.GetConnectionString("DefaultConnection");
 
             if (string.IsNullOrWhiteSpace(connstr))
@@ -19,12 +19,12 @@ namespace BlogCore.Infrastructure.EfCore
             return connstr;
         }
 
-        private static IConfigurationRoot GetConfiguration(string basePath, string environmentName)
+        private static IConfigurationRoot GetConfiguration(string basePath)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{environmentName}.json", true)
+                .AddJsonFile($"appsettings.{ Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true)
                 .AddEnvironmentVariables();
 
             return builder.Build();

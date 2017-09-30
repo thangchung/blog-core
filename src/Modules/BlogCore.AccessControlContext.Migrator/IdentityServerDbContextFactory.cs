@@ -1,18 +1,16 @@
 ﻿using BlogCore.AccessControlContext.Infrastructure;
 using BlogCore.Infrastructure.EfCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Design;
+using System.IO;
 using System.Reflection;
 
 namespace BlogCore.AccessControlContext.Migrator
 {
-    public class IdentityServerDbContextFactory : IDbContextFactory<IdentityServerDbContext>
+    public class IdentityServerDbContextFactory : IDesignTimeDbContextFactory<IdentityServerDbContext>
     {
-        public IdentityServerDbContext Create(DbContextFactoryOptions options)
+        public IdentityServerDbContext CreateDbContext(string[] args)
         {
-            var connString = ConfigurationHelper.GetConnectionString(
-                options.ContentRootPath, 
-                options.EnvironmentName);
-
+            var connString = ConfigurationHelper.GetConnectionString(Directory.GetCurrentDirectory());
             var migrationAssembly = typeof(IdentityServerDbContextFactory).GetTypeInfo().Assembly;
 
             return new IdentityServerDbContext(

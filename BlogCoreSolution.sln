@@ -1,11 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5CD78C25-100E-41EA-BCA5-698FAEBCAC31}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		global.json = global.json
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
@@ -46,9 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Shared", "src\Modu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.AccessControlContext.Migrator", "src\Modules\BlogCore.AccessControlContext.Migrator\BlogCore.AccessControlContext.Migrator.csproj", "{A9A1F1E4-28F7-43F2-B186-F953717F40BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCore.PostContext", "src\Modules\BlogCore.PostContext\BlogCore.PostContext.csproj", "{1DA02980-0B63-4DC1-BC1E-5D46143463FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.PostContext", "src\Modules\BlogCore.PostContext\BlogCore.PostContext.csproj", "{1DA02980-0B63-4DC1-BC1E-5D46143463FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCore.PostContext.Migrator", "src\Modules\BlogCore.PostContext.Migrator\BlogCore.PostContext.Migrator.csproj", "{AFB17FB6-5A0B-4CB6-ACA9-E3EF10833335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.PostContext.Migrator", "src\Modules\BlogCore.PostContext.Migrator\BlogCore.PostContext.Migrator.csproj", "{AFB17FB6-5A0B-4CB6-ACA9-E3EF10833335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,5 +127,8 @@ Global
 		{A9A1F1E4-28F7-43F2-B186-F953717F40BE} = {035F4A54-ADE7-4E35-AA21-B8E3F2D75633}
 		{1DA02980-0B63-4DC1-BC1E-5D46143463FC} = {035F4A54-ADE7-4E35-AA21-B8E3F2D75633}
 		{AFB17FB6-5A0B-4CB6-ACA9-E3EF10833335} = {035F4A54-ADE7-4E35-AA21-B8E3F2D75633}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E58AA11F-C019-4C7A-93A4-90A50837B764}
 	EndGlobalSection
 EndGlobal

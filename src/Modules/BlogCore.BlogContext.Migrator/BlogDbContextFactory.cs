@@ -1,16 +1,17 @@
-﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using BlogCore.BlogContext.Infrastructure;
+﻿using BlogCore.BlogContext.Infrastructure;
 using BlogCore.Infrastructure.EfCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using System.Reflection;
 
 namespace BlogCore.BlogContext.Migrator
 {
-    public class BlogDbContextFactory : IDbContextFactory<BlogDbContext>
+    public class BlogDbContextFactory : IDesignTimeDbContextFactory<BlogDbContext>
     {
-        public BlogDbContext Create(DbContextFactoryOptions options)
+        public BlogDbContext CreateDbContext(string[] args)
         {
             return new BlogDbContext(
-                options.BuildDbContext<BlogDbContext>(
+                new DbContextOptionsBuilder<BlogDbContext>().BuildSqlServerDbContext(
                     typeof(BlogDbContextFactory).GetTypeInfo().Assembly).Options);
         }
     }
