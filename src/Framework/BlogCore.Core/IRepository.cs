@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BlogCore.Core
@@ -11,5 +12,6 @@ namespace BlogCore.Core
         Task<TEntity> AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
+        IObservable<IReadOnlyList<TEntity>> ListStream(params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

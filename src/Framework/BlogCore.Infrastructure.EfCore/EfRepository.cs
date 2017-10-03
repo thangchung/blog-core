@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using BlogCore.Core;
+﻿using BlogCore.Core;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace BlogCore.Infrastructure.EfCore
 {
@@ -49,6 +53,16 @@ namespace BlogCore.Infrastructure.EfCore
         {
             DbContext.Entry(entity).State = EntityState.Modified;
             await DbContext.SaveChangesAsync();
+        }
+
+        public IObservable<IReadOnlyList<TEntity>> ListStream(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            var queryable = DbContext.Set<TEntity>().AsNoTracking() as IQueryable<TEntity>;
+            foreach (var includeProperty in includeProperties)
+            {
+                queryable = queryable.Include(includeProperty);
+            }
+            return queryable.ToListAsync().ToObservable();
         }
     }
 }

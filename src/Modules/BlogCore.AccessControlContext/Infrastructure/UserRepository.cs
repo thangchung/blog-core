@@ -2,6 +2,9 @@
 using BlogCore.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 
 namespace BlogCore.AccessControlContext.Infrastructure
@@ -20,6 +23,15 @@ namespace BlogCore.AccessControlContext.Infrastructure
             var userSet = _dbContext.Set<AppUser>();
             var user = await userSet.SingleOrDefaultAsync(x => Guid.Parse(x.Id) == id);
             return user;
+        }
+
+        public IObservable<AppUser> GetByIdStream(Guid id)
+        {
+            return _dbContext.Set<AppUser>()
+                .AsNoTracking()
+                .ToListAsync()
+                .ToObservable()
+                .Select(x => x.FirstOrDefault(y => y.Id == id.ToString()));
         }
 
         public async Task UpdateUserProfile(Guid id, string givenName, string familyName, string bio, string company,
