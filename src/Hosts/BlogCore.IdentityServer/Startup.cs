@@ -1,17 +1,17 @@
 ﻿using BlogCore.AccessControlContext.Domain;
 using BlogCore.AccessControlContext.Infrastructure;
-using BlogCore.IdentityServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using System;
+using System.Reflection;
 
-namespace BlogCore.IdentityServer
+namespace IdentityServer4.Quickstart.UI
 {
     public class Startup
     {
@@ -29,9 +29,10 @@ namespace BlogCore.IdentityServer
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var connString = Configuration.GetConnectionString("DefaultConnection");
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // Add framework services.
             services.AddDbContext<IdentityServerDbContext>(options =>
@@ -39,21 +40,37 @@ namespace BlogCore.IdentityServer
 
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityServerDbContext>()
-                .AddDefaultTokenProviders()
-                .AddIdentityServerUserClaimsPrincipalFactory();
+                .AddDefaultTokenProviders();
 
             services.AddMvc();
 
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            // services.AddTransient<IEmailSender, AuthMessageSender>();
+            // services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddIdentityServer()
-                .AddTemporarySigningCredential()
-                .AddConfigurationStore(x => x.UseSqlServer(connString))
-                .AddOperationalStore(x => x.UseSqlServer(connString))
+                .AddDeveloperSigningCredential()
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(connString,
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(connString,
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30;
+                })
+                .AddConfigurationStoreCache()
                 .AddAspNetIdentity<AppUser>()
                 .AddProfileService<IdentityWithAdditionalClaimsProfileService>();
+
+            return services.BuildServiceProvider(validateScopes: true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,18 +99,8 @@ namespace BlogCore.IdentityServer
                         "public,max-age=" + maxAge.TotalSeconds.ToString("0");
                 }
             });
-            
-            app.UseIdentity();
-            app.UseIdentityServer();
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
-            app.UseGoogleAuthentication(new GoogleOptions
-            {
-                AuthenticationScheme = "Google",
-                SignInScheme = "Identity.External", // this is the name of the cookie middleware registered by UseIdentity()
-                ClientId = "998042782978-s07498t8i8jas7npj4crve1skpromf37.apps.googleusercontent.com",
-                ClientSecret = "HsnwJri_53zn7VcO1Fm7THBb",
-            });
+            app.UseIdentityServer();
 
             app.UseMvc(routes =>
             {

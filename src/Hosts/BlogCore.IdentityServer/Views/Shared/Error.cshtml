@@ -1,8 +1,10 @@
-﻿@using BlogCore.IdentityServer.Quickstart.Home
-@model BlogCore.IdentityServer.Quickstart.Home.ErrorViewModel
+﻿@using Microsoft.AspNetCore.Hosting
+@model ErrorViewModel
+@inject IHostingEnvironment host
 
 @{
     var error = Model?.Error?.Error;
+    var errorDescription = host.IsDevelopment() ? Model?.Error?.ErrorDescription : null;
     var request_id = Model?.Error?.RequestId;
 }
 
@@ -23,6 +25,11 @@
                             : @error
                         </em>
                     </strong>
+
+                    if (errorDescription != null)
+                    {
+                        <div>@errorDescription</div>
+                    }
                 }
             </div>
 

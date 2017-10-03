@@ -1,6 +1,5 @@
 ﻿using BlogCore.AccessControlContext.Domain;
 using IdentityModel;
-using IdentityServer4;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace BlogCore.IdentityServer.Services
+namespace IdentityServer4.Quickstart.UI
 {
     public class IdentityWithAdditionalClaimsProfileService : IProfileService
     {

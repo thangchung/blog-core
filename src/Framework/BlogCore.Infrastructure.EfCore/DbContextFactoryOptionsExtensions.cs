@@ -1,20 +1,20 @@
-﻿using System;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace BlogCore.Infrastructure.EfCore
 {
     public static class DbContextFactoryOptionsExtensions
     {
-        public static DbContextOptionsBuilder<TDbContext> BuildDbContext<TDbContext>(this DbContextFactoryOptions options, Assembly migrateAssembly)
+        public static DbContextOptionsBuilder<TDbContext> BuildSqlServerDbContext<TDbContext>(this DbContextOptionsBuilder<TDbContext> dbContextOptionsBuilder, Assembly migrateAssembly)
             where TDbContext : DbContext
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(options.ContentRootPath)
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{options.EnvironmentName}.json", true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true)
                 .AddEnvironmentVariables();
 
             var config = builder.Build();
@@ -27,9 +27,8 @@ namespace BlogCore.Infrastructure.EfCore
                 throw new InvalidOperationException($"{nameof(connstr)} is null or empty.");
 
             var migrationsAssembly = migrateAssembly.GetName().Name;
-            var optionsBuilder = new DbContextOptionsBuilder<TDbContext>();
-            optionsBuilder.UseSqlServer(connstr, b => b.MigrationsAssembly(migrationsAssembly));
-            return optionsBuilder;
+            dbContextOptionsBuilder.UseSqlServer(connstr, b => b.MigrationsAssembly(migrationsAssembly));
+            return dbContextOptionsBuilder;
         }
     }
 }
