@@ -13,6 +13,7 @@ namespace BlogCore.Core
                 throw new ValidationException("PageSize could not be less than zero.");
 
             CurrentPage = currentPage - 1;
+            PageSize = pageSize;
             DefaultPagingOption = defaultPagingOption;
             SortBy = sortBy;
             SortOrder = sortOrder;

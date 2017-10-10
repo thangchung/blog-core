@@ -1,6 +1,7 @@
 ﻿using BlogCore.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Linq;
@@ -94,6 +95,17 @@ namespace BlogCore.Infrastructure.EfCore
                 .ToListAsync();
 
             return new PaginatedItem<TResponse>(totalRecord, totalPages, results);
+        }
+
+        public static IEnumerable<TResponse> GetPagingDataWithConditionStream<TEntity, TResponse>(
+            this IReadOnlyList<TEntity> source,
+            Criterion criterion,
+            Func<TEntity, TResponse> selector)
+            where TEntity : EntityBase
+        {
+            return source.Skip(criterion.CurrentPage * criterion.PageSize)
+                .Take(criterion.PageSize)
+                .Select(selector);
         }
     }
 }

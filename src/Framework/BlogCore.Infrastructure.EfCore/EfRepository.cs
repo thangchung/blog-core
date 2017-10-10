@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 
 namespace BlogCore.Infrastructure.EfCore
@@ -55,14 +54,47 @@ namespace BlogCore.Infrastructure.EfCore
             await DbContext.SaveChangesAsync();
         }
 
-        public IObservable<IReadOnlyList<TEntity>> ListStream(params Expression<Func<TEntity, object>>[] includeProperties)
+        public IObservable<PaginatedItem<TEntity>> ListStream(
+            Expression<Func<TEntity, bool>> filter = null, 
+            Criterion criterion = null, 
+            params Expression<Func<TEntity, object>>[] includeProperties)
         {
+            if (criterion.PageSize < 1 || criterion.PageSize > criterion.DefaultPagingOption.PageSize)
+            {
+                criterion.SetPageSize(criterion.DefaultPagingOption.PageSize);
+            }
+
             var queryable = DbContext.Set<TEntity>().AsNoTracking() as IQueryable<TEntity>;
+            var totalRecord = queryable.Count();
+            var totalPages = (int)Math.Ceiling((double)totalRecord / criterion.PageSize);
+
             foreach (var includeProperty in includeProperties)
             {
                 queryable = queryable.Include(includeProperty);
             }
-            return queryable.ToListAsync().ToObservable();
+
+            IQueryable<TEntity> criterionQueryable = null;
+            if (criterion != null && filter != null)
+            {
+                criterionQueryable = queryable.Skip(criterion.CurrentPage * criterion.PageSize)
+                    .Take(criterion.PageSize)
+                    .Where(filter);
+            }
+            else if (criterion == null)
+            {
+                criterionQueryable = queryable.Skip(criterion.CurrentPage * criterion.PageSize)
+                    .Take(criterion.PageSize);
+            }
+            else if (filter == null)
+            {
+                criterionQueryable = queryable.Where(filter);
+            }
+
+            return Observable.FromAsync(async () =>
+                new PaginatedItem<TEntity>(
+                    totalRecord,
+                    totalPages,
+                    await criterionQueryable.ToListAsync()));
         }
     }
 }

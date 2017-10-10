@@ -12,6 +12,9 @@ namespace BlogCore.Core
         Task<TEntity> AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
-        IObservable<IReadOnlyList<TEntity>> ListStream(params Expression<Func<TEntity, object>>[] includeProperties);
+        IObservable<PaginatedItem<TEntity>> ListStream(
+            Expression<Func<TEntity, bool>> filter = null, 
+            Criterion criterion = null, 
+            params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

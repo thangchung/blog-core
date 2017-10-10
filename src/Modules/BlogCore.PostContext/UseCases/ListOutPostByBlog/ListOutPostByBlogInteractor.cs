@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
@@ -30,20 +31,18 @@ namespace BlogCore.PostContext.UseCases.ListOutPostByBlog
 
         public async Task<PaginatedItem<ListOutPostByBlogResponse>> Handle(ListOutPostByBlogRequest request)
         {
-            return await _postRepository.ListStream(p => p.Comments, p => p.Author, p => p.Blog, p => p.Tags)
-                .Select(list => {
-                    var authors = list.Select(p => p.Author.Id)
-                        .Distinct()
-                        .Select(id => _userRepository.GetByIdStream(id).Wait())
-                        .ToList();
+            var criterion = new Criterion(request.Page, _pagingOption.Value.PageSize, _pagingOption.Value);
+            var includes = new Expression<Func<Domain.Post, object>>[] { p => p.Comments, p => p.Author, p => p.Blog, p => p.Tags };
+            Expression<Func<Domain.Post, bool>> filterFunc = x => x.Blog.Id == request.BlogId;
 
-                    return list.Where(x => x.Blog.Id == request.BlogId)
-                            .Skip(request.Page * _pagingOption.Value.PageSize)
-                            .Take(_pagingOption.Value.PageSize)
-                            .Select(x =>
+            return await _postRepository.ListStream(filterFunc, criterion, includes)
+                .Select(y =>
+                {
+                    return new PaginatedItem<ListOutPostByBlogResponse>(
+                            y.TotalItems,
+                            (int)y.TotalPages,
+                            y.Items.Select(x =>
                             {
-                                var author = authors.FirstOrDefault(y => y.Id == x.Author.Id.ToString());
-
                                 return new ListOutPostByBlogResponse(
                                     x.Id,
                                     x.Title,
@@ -51,24 +50,18 @@ namespace BlogCore.PostContext.UseCases.ListOutPostByBlog
                                     x.Slug,
                                     x.CreatedAt,
                                     new ListOutPostByBlogUserResponse(
-                                            author.Id,
-                                            author.FamilyName,
-                                            author.GivenName
+                                            x.Author.Id.ToString(),
+                                            string.Empty,
+                                            string.Empty
                                         ),
                                     x.Tags.Select(
-                                            tag => new ListOutPostByBlogTagResponse(
-                                                tag.Id,
-                                                tag.Name))
+                                        tag => new ListOutPostByBlogTagResponse(
+                                            tag.Id,
+                                            tag.Name))
                                         .ToList()
                                 );
-                            });
-                })
-                .Select(results =>
-                {
-                    return new PaginatedItem<ListOutPostByBlogResponse>(
-                        results.Count(),
-                        (int)Math.Ceiling((double)results.Count() / _pagingOption.Value.PageSize),
-                        results.ToList());
+                            }).ToList()
+                        );
                 });
         }
     }
