@@ -31,5 +31,11 @@ namespace BlogCore.PostContext.UseCases.ListOutPostByBlog
         public ListOutPostByBlogUserResponse Author { get; private set; }
         public List<ListOutPostByBlogTagResponse> Tags { get; private set; }
         public DateTime CreatedAt { get; private set; }
+
+        public ListOutPostByBlogResponse SetAuthor(ListOutPostByBlogUserResponse author)
+        {
+            Author = author;
+            return this;
+        }
     }
 }

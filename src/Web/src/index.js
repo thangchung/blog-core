@@ -12,8 +12,8 @@ import { ConnectedRouter } from "react-router-redux";
 // import getRoutes from "./routes";
 import createStore, { routerHistory } from "./redux/configureStore";
 import userManager from "./utils/userManager";
-import PublicLayout from "./containers/App/PublicLayout";
-import AdminLayout from "./containers/App/AdminLayout";
+import PublicLayout from "./components/Layout/PublicLayout";
+import AdminLayout from "./components/Layout/AdminLayout";
 
 import Login from "./containers/Login/Index";
 import Callback from "./containers/Login/Callback";

@@ -1,6 +1,8 @@
 ﻿#region libs
 
 using BlogCore.AccessControl;
+using BlogCore.Api.Posts;
+using BlogCore.Api.Posts.ListOutPostByBlog;
 using BlogCore.BlogContext;
 using BlogCore.BlogContext.Infrastructure;
 using BlogCore.Core;
@@ -59,6 +61,9 @@ namespace BlogCore.Api
             services.AddMediatR(RegisteredAssemblies());
 
             services.AddIdentityServerForBlog(OnTokenValidated);
+
+            // register presenters
+            services.AddScoped<ListOutPostByBlogPresenter>();
 
             return services.InitServices(RegisteredAssemblies(), Configuration);
         }

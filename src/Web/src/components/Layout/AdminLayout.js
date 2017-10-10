@@ -7,10 +7,10 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 // our containers
-import Restricted from "../../auth/Restricted";
-import DashboardPage from "../Dashboard/Index";
-import PostManagementPage from "../Post/PostManagement";
-import ProfileSettingPage from "../Setting/ProfileSetting";
+import Restricted from "../Restricted";
+import DashboardContainer from "../../containers/Dashboard/Index";
+import PostManagementContainer from "../../containers/Post/PostManagement";
+import ProfileSettingContainer from "../../containers/Setting/ProfileSetting";
 
 export default class AdminLayout extends Component {
   render() {
@@ -26,28 +26,31 @@ export default class AdminLayout extends Component {
                   exact
                   path={`${match.url}/dashboard`}
                   key="dashboard"
-                  render={routeProps =>
+                  render={routeProps => (
                     <Restricted {...routeProps}>
-                      {React.createElement(DashboardPage)}
-                    </Restricted>}
+                      {React.createElement(DashboardContainer)}
+                    </Restricted>
+                  )}
                 />
                 <Route
                   exact
                   path={`${match.url}/posts`}
                   key="post-management"
-                  render={routeProps =>
+                  render={routeProps => (
                     <Restricted {...routeProps}>
-                      {React.createElement(PostManagementPage)}
-                    </Restricted>}
+                      {React.createElement(PostManagementContainer)}
+                    </Restricted>
+                  )}
                 />
                 <Route
                   exact
                   path={`${match.url}/profile-setting`}
                   key="profile-setting"
-                  render={routeProps =>
+                  render={routeProps => (
                     <Restricted {...routeProps}>
-                      {React.createElement(ProfileSettingPage)}
-                    </Restricted>}
+                      {React.createElement(ProfileSettingContainer)}
+                    </Restricted>
+                  )}
                 />
               </Switch>
             </div>

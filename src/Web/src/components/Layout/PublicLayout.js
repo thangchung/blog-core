@@ -7,9 +7,12 @@ import Footer from "../../components/Footer";
 import About from "../../components/About";
 
 // our containers
-import HomePage from "../Home/Index";
-import BlogPage from "../Blog/Index";
-import PostDetailPage from "../Post/PostDetail";
+import HomeContainer from "../../containers/Home/Index";
+import BlogContainer from "../../containers/Blog/Index";
+import PostDetailContainer from "../../containers/Post/PostDetail";
+
+// style
+import "./blog.css";
 
 export default class PublicLayout extends Component {
   render() {
@@ -25,19 +28,19 @@ export default class PublicLayout extends Component {
                   exact
                   path={`${match.url}`}
                   key="index"
-                  component={HomePage}
+                  component={HomeContainer}
                 />
                 <Route
                   exact
                   path={`${match.url}blogs/:blogId`}
                   key="blogId"
-                  component={BlogPage}
+                  component={BlogContainer}
                 />
                 <Route
                   exact
                   path={`${match.url}blogs/:blogId/posts/:postId`}
                   key="postDetail"
-                  component={PostDetailPage}
+                  component={PostDetailContainer}
                 />
               </Switch>
             </div>
