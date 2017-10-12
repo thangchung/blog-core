@@ -1,18 +1,27 @@
 ﻿#region libs
 
 using BlogCore.AccessControl;
-using BlogCore.Api.Posts;
-using BlogCore.Api.Posts.ListOutPostByBlog;
+using BlogCore.AccessControlContext.Domain;
+using BlogCore.AccessControlContext.Infrastructure;
+using BlogCore.Api.Features.Posts.ListOutPostByBlog;
 using BlogCore.BlogContext;
 using BlogCore.BlogContext.Infrastructure;
 using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
 using BlogCore.PostContext;
+using IdentityModel;
+using IdentityServer4;
+using IdentityServer4.Extensions;
+using IdentityServer4.Models;
+using IdentityServer4.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -48,6 +57,38 @@ namespace BlogCore.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
+            // Add framework services.
+            services.AddDbContext<IdentityServerDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MainDb")));
+
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityServerDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(Configuration.GetConnectionString("MainDb"),
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(Configuration.GetConnectionString("MainDb"),
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30;
+                })
+                .AddConfigurationStoreCache()
+                .AddAspNetIdentity<AppUser>()
+                .AddProfileService<IdentityWithAdditionalClaimsProfileService>();
+
             services.AddCorsForBlog()
                 // .AddAuthorizationForBlog()
                 .AddMvcForBlog(RegisteredAssemblies());
@@ -82,9 +123,20 @@ namespace BlogCore.Api
                         ctx.Context.Response.Headers[HeaderNames.CacheControl] =
                             "public,max-age=" + maxAge.TotalSeconds.ToString("0");
                     }
-                })
-                .UseCors("CorsPolicy")
-                .UseMvc();
+                });
+
+            var fordwardedHeaderOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            fordwardedHeaderOptions.KnownNetworks.Clear();
+            fordwardedHeaderOptions.KnownProxies.Clear();
+
+            app.UseForwardedHeaders(fordwardedHeaderOptions);
+            app.UseIdentityServer();
+
+            app.UseCors("CorsPolicy")
+                .UseMvcWithDefaultRoute();
 
             if (env.IsDevelopment())
                 app.UseSwaggerUiForBlog();
@@ -127,6 +179,65 @@ namespace BlogCore.Api
             securityContextPrincipal.SetBlog(blog);
 
             await Task.FromResult(0);
+        }
+    }
+
+    public class IdentityWithAdditionalClaimsProfileService : IProfileService
+    {
+        private readonly IUserClaimsPrincipalFactory<AppUser> _claimsFactory;
+        private readonly UserManager<AppUser> _userManager;
+
+        public IdentityWithAdditionalClaimsProfileService(UserManager<AppUser> userManager,
+            IUserClaimsPrincipalFactory<AppUser> claimsFactory)
+        {
+            _userManager = userManager;
+            _claimsFactory = claimsFactory;
+        }
+
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+        {
+            var sub = context.Subject.GetSubjectId();
+
+            var user = await _userManager.FindByIdAsync(sub);
+            var principal = await _claimsFactory.CreateAsync(user);
+
+            var claims = principal.Claims.ToList();
+
+            claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
+
+            claims.Add(new Claim(JwtClaimTypes.Name, user.UserName));
+            claims.Add(new Claim(JwtClaimTypes.FamilyName, user.FamilyName));
+            claims.Add(new Claim(JwtClaimTypes.GivenName, user.GivenName));
+            claims.Add(new Claim("bio", user.Bio));
+            claims.Add(new Claim("company", user.Company));
+            claims.Add(new Claim("location", user.Location));
+            claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs"));
+
+            var isAdmin = claims.Any(claim => claim.Type == "role" && claim.Value == "admin");
+            if (isAdmin)
+            {
+                claims.Add(new Claim(JwtClaimTypes.Role, "admin"));
+            }
+            else
+            {
+                claims.Add(new Claim(JwtClaimTypes.Role, "user"));
+            }
+
+            if (user.BlogId.HasValue)
+            {
+                claims.Add(new Claim("blog_id", user.BlogId.Value.ToString()));
+            }
+
+            claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
+
+            context.IssuedClaims = claims;
+        }
+
+        public async Task IsActiveAsync(IsActiveContext context)
+        {
+            var sub = context.Subject.GetSubjectId();
+            var user = await _userManager.FindByIdAsync(sub);
+            context.IsActive = user != null;
         }
     }
 }

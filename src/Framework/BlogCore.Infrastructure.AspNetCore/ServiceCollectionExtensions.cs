@@ -2,7 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using BlogCore.Infrastructure.EfCore;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +72,7 @@ namespace BlogCore.Infrastructure.AspNetCore
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = "http://localhost:8483";
+                options.Authority = "http://localhost:8484";
                 options.Audience = "blogcore_api_resource";
                 options.RequireHttpsMetadata = false;
 
@@ -121,12 +120,13 @@ namespace BlogCore.Infrastructure.AspNetCore
                     Version = "v1",
                     Description = "Blog Core APIs"
                 });
+
                 options.AddSecurityDefinition("oauth2", new OAuth2Scheme
                 {
                     Type = "oauth2",
-                    Flow = "implicit",
-                    TokenUrl = "http://localhost:8483/connect/token",
-                    AuthorizationUrl = "http://localhost:8483/connect/authorize",
+                    Flow = "password", // "implicit",
+                    TokenUrl = "http://localhost:8484/connect/token",
+                    AuthorizationUrl = "http://localhost:8484/connect/authorize",
                     Scopes = new Dictionary<string, string>
                     {
                         {"blogcore_api_scope", "The Blog APIs"}

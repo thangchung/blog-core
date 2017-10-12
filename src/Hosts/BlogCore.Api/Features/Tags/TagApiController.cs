@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace BlogCore.Api.Tags
+namespace BlogCore.Api.Features.Tags
 {
     [Route("api/tags")]
     public class TagApiController : Controller

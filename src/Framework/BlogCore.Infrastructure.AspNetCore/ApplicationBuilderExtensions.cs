@@ -11,7 +11,8 @@ namespace BlogCore.Infrastructure.AspNetCore
                 c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog Core APIs");
-                    c.ConfigureOAuth2("swagger", "secret".Sha256(), "swagger", "swagger");
+                    c.ConfigureOAuth2("local_swagger", "secret".Sha256(), "local_swagger", "local_swagger");
+                    // c.ConfigureOAuth2("swagger", "secret".Sha256(), "swagger", "swagger");
                 });
         }
     }

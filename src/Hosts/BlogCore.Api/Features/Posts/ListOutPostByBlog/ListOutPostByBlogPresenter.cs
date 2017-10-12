@@ -4,7 +4,7 @@ using BlogCore.PostContext.UseCases.ListOutPostByBlog;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BlogCore.Api.Posts.ListOutPostByBlog
+namespace BlogCore.Api.Features.Posts.ListOutPostByBlog
 {
     public class ListOutPostByBlogPresenter
     {

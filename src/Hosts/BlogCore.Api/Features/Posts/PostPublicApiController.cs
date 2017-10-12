@@ -1,4 +1,4 @@
-﻿using BlogCore.Api.Posts.ListOutPostByBlog;
+﻿using BlogCore.Api.Features.Posts.ListOutPostByBlog;
 using BlogCore.Core;
 using BlogCore.Core.Helpers;
 using BlogCore.PostContext.Domain;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace BlogCore.Api.Posts
+namespace BlogCore.Api.Features.Posts
 {
     [Route("api/public/blogs")]
     public class PostPublicApiController : Controller

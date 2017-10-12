@@ -112,6 +112,26 @@ namespace BlogCore.AccessControlContext.Migrator.DataSeeder
                         "blogcore_identity_scope",
                         "blogcore_api_scope"
                     }
+                },
+
+                // swagger UI
+                new Client
+                {
+                    ClientId = "local_swagger",
+                    ClientName = "local_swagger",
+                    ClientSecrets = new List<Secret> {new Secret("secret".Sha256())},
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AccessTokenType = AccessTokenType.Jwt,
+                    AllowedScopes =
+                    {
+                        "openid",
+                        "profile",
+                        "role",
+                        "user",
+                        "admin",
+                        "blogcore_identity_scope",
+                        "blogcore_api_scope"
+                    }
                 }
             };
         }
