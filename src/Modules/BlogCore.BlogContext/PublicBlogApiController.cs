@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BlogCore.BlogContext
 {
-    [Route("api/public/blogs")]
-    public class BlogPublicApiController : Controller
+    [Route("public/api/blogs")]
+    public class PublicBlogApiController : Controller
     {
         private readonly IMediator _eventAggregator;
 
-        public BlogPublicApiController(IMediator eventAggregator)
+        public PublicBlogApiController(IMediator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }

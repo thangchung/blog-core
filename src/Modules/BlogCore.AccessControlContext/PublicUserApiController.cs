@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace BlogCore.AccessControlContext.UseCases
 {
-    [Route("api/public/users")]
-    public class UserPublicApiController : Controller
+    [Route("public/api/users")]
+    public class PublicUserApiController : Controller
     {
         private readonly ISecurityContext _securityContext;
         private readonly IMediator _eventAggregator;
 
-        public UserPublicApiController(ISecurityContext securityContext, IMediator eventAggregator)
+        public PublicUserApiController(ISecurityContext securityContext, IMediator eventAggregator)
         {
             _securityContext = securityContext;
             _eventAggregator = eventAggregator;

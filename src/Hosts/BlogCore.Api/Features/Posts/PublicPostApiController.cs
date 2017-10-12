@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Api.Features.Posts
 {
-    [Route("api/public/blogs")]
-    public class PostPublicApiController : Controller
+    [Route("public/api/blogs")]
+    public class PublicPostApiController : Controller
     {
         private readonly IMediator _eventAggregator;
         private readonly ListOutPostByBlogPresenter _listOutPostByBlogPresenter;
 
-        public PostPublicApiController(IMediator eventAggregator, ListOutPostByBlogPresenter listOutPostByBlogPresenter)
+        public PublicPostApiController(IMediator eventAggregator, ListOutPostByBlogPresenter listOutPostByBlogPresenter)
         {
             _eventAggregator = eventAggregator;
             _listOutPostByBlogPresenter = listOutPostByBlogPresenter;
