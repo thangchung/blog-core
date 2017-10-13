@@ -5,6 +5,7 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,7 +17,9 @@ namespace BlogCore.AccessControlContext.Infrastructure
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsFactory;
         private readonly UserManager<AppUser> _userManager;
 
-        public IdentityWithAdditionalClaimsProfileService(UserManager<AppUser> userManager,
+        public IdentityWithAdditionalClaimsProfileService(
+            IdentityServerDbContext dbContext,
+            UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsFactory)
         {
             _userManager = userManager;
@@ -31,9 +34,7 @@ namespace BlogCore.AccessControlContext.Infrastructure
             var principal = await _claimsFactory.CreateAsync(user);
 
             var claims = principal.Claims.ToList();
-
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
-
             claims.Add(new Claim(JwtClaimTypes.Name, user.UserName));
             claims.Add(new Claim(JwtClaimTypes.FamilyName, user.FamilyName));
             claims.Add(new Claim(JwtClaimTypes.GivenName, user.GivenName));
@@ -42,7 +43,8 @@ namespace BlogCore.AccessControlContext.Infrastructure
             claims.Add(new Claim("location", user.Location));
             claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs"));
 
-            var isAdmin = claims.Any(claim => claim.Type == "role" && claim.Value == "admin");
+            var roleNames = await _userManager.GetRolesAsync(user);
+            var isAdmin = roleNames.Any(r => r.ToLowerInvariant() == "admin");
             if (isAdmin)
             {
                 claims.Add(new Claim(JwtClaimTypes.Role, "admin"));
@@ -58,7 +60,6 @@ namespace BlogCore.AccessControlContext.Infrastructure
             }
 
             claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
-
             context.IssuedClaims = claims;
         }
 

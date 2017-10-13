@@ -1,6 +1,6 @@
 import axios from "axios";
 import { camelizeKeys } from 'humps';
-import { globalConfig } from "../../utils/config";
+import { globalConfig } from "../../configs";
 
 export default store => next => action => {
   if (typeof action === "function") {

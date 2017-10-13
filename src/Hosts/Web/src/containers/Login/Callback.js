@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { CallbackComponent } from "redux-oidc";
-import userManager from "../../utils/userManager";
+import { userManager } from "../../configs";
 
 class Callback extends React.Component {
   successCallback = (user) => {

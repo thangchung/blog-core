@@ -15,9 +15,11 @@ using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
 using IdentityServerWithAspNetIdentity.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +27,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -79,13 +82,13 @@ namespace BlogCore.Api
                         .AllowCredentials());
             });
 
-            /*services.AddAuthorization(options =>
+            services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin",
                     policyAdmin => { policyAdmin.RequireClaim("role", "admin"); });
                 options.AddPolicy("User",
                     policyUser => { policyUser.RequireClaim("role", "user"); });
-            });*/
+            });
 
             var mvcBuilder = services.AddMvc();
             foreach (var assembly in RegisteredAssemblies())
@@ -134,7 +137,7 @@ namespace BlogCore.Api
                         Version = "v1",
                         Description = "Blog Core APIs"
                     });
-
+                    options.OperationFilter<AuthorizeCheckOperationFilter>();
                     options.AddSecurityDefinition("oauth2", new OAuth2Scheme
                     {
                         Type = "oauth2",
@@ -142,26 +145,28 @@ namespace BlogCore.Api
                         TokenUrl = "http://localhost:8484/connect/token",
                         AuthorizationUrl = "http://localhost:8484/connect/authorize",
                         Scopes = new Dictionary<string, string>
-                    {
-                        {"blogcore_api_scope", "The Blog APIs"}
-                    }
+                        {
+                            {"blogcore_api_scope", "The Blog APIs"}
+                        }
                     });
                 });
             }
 
             services.AddMediatR(RegisteredAssemblies());
 
-            services.AddAuthentication()
-             .AddIdentityServerAuthentication(o =>
-             {
-                 o.Authority = "http://localhost:8484";
-                 o.RequireHttpsMetadata = !Environment.IsDevelopment();
-                 o.ApiName = "blogcore_api_resource";
-                 o.SupportedTokens = SupportedTokens.Both;
-                 o.RequireHttpsMetadata = false;
-                 o.EnableCaching = true;
-                 o.CacheDuration = TimeSpan.FromMinutes(10); //default
-             });
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                
+                .AddIdentityServerAuthentication(
+                o =>
+                {
+                    o.Authority = "http://localhost:8484";
+                    o.RequireHttpsMetadata = !Environment.IsDevelopment();
+                    o.ApiName = "blogcore_api_resource";
+                    o.SupportedTokens = SupportedTokens.Both;
+                    o.RequireHttpsMetadata = false;
+                    o.EnableCaching = true;
+                    o.CacheDuration = TimeSpan.FromMinutes(10); //default
+                });
 
             // register presenters
             services.AddScoped<ListOutPostByBlogPresenter>();
@@ -215,7 +220,7 @@ namespace BlogCore.Api
         }
     }
 
-    public class BlogAuthenticationMiddleware
+    internal class BlogAuthenticationMiddleware
     {
         private readonly RequestDelegate _next;
 
@@ -226,7 +231,20 @@ namespace BlogCore.Api
 
         public async Task Invoke(HttpContext context)
         {
-            if(context.User != null && context.User.Identity.IsAuthenticated)
+            var displayUrl = context.Request.GetDisplayUrl().ToLower();
+            if (displayUrl.Contains("swagger/ui") ||
+                displayUrl.Contains("swagger") ||
+                displayUrl.Contains("public"))
+            {
+                if (!context.User.Identity.IsAuthenticated)
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await _next.Invoke(context);
+                    return;
+                }
+            }
+
+            if (context.User != null && context.User.Identity.IsAuthenticated)
             {
                 // get current claim identity
                 var claimsIdentity = context.User.Identity as ClaimsIdentity;
@@ -246,6 +264,28 @@ namespace BlogCore.Api
 
             // Call the next delegate/middleware in the pipeline
             await _next.Invoke(context);
+        }
+    }
+
+    internal class AuthorizeCheckOperationFilter : IOperationFilter
+    {
+        public void Apply(Operation operation, OperationFilterContext context)
+        {
+            // Check for authorize attribute
+            var hasAuthorize = context.ApiDescription.ControllerAttributes().OfType<AuthorizeAttribute>().Any() ||
+                               context.ApiDescription.ActionAttributes().OfType<AuthorizeAttribute>().Any();
+
+            if (hasAuthorize)
+            {
+                operation.Responses.Add("401", new Response { Description = "Unauthorized" });
+                operation.Responses.Add("403", new Response { Description = "Forbidden" });
+
+                operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
+                operation.Security.Add(new Dictionary<string, IEnumerable<string>>
+            {
+                { "oauth2", new [] { "blogcore_api_scope" } }
+            });
+            }
         }
     }
 }

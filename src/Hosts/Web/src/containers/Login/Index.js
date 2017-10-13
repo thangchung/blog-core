@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "reactstrap";
-import userManager from "../../utils/userManager";
+import { userManager } from "../../configs";
 
 class Login extends React.Component {
   onLogoutButtonClicked = e => {
