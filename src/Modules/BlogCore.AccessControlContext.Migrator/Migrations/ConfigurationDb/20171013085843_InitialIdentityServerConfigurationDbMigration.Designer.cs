@@ -11,7 +11,7 @@ using System;
 namespace BlogCore.AccessControlContext.Migrator.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20170927082326_InitialIdentityServerConfigurationDbMigration")]
+    [Migration("20171013085843_InitialIdentityServerConfigurationDbMigration")]
     partial class InitialIdentityServerConfigurationDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,7 +171,11 @@ namespace BlogCore.AccessControlContext.Migrator.Migrations.ConfigurationDb
 
                     b.Property<bool>("BackChannelLogoutSessionRequired");
 
-                    b.Property<string>("BackChannelLogoutUri");
+                    b.Property<string>("BackChannelLogoutUri")
+                        .HasMaxLength(2000);
+
+                    b.Property<string>("ClientClaimsPrefix")
+                        .HasMaxLength(200);
 
                     b.Property<string>("ClientId")
                         .IsRequired()
@@ -194,17 +198,18 @@ namespace BlogCore.AccessControlContext.Migrator.Migrations.ConfigurationDb
 
                     b.Property<bool>("FrontChannelLogoutSessionRequired");
 
-                    b.Property<string>("FrontChannelLogoutUri");
+                    b.Property<string>("FrontChannelLogoutUri")
+                        .HasMaxLength(2000);
 
                     b.Property<int>("IdentityTokenLifetime");
 
                     b.Property<bool>("IncludeJwtId");
 
-                    b.Property<string>("LogoUri");
+                    b.Property<string>("LogoUri")
+                        .HasMaxLength(2000);
 
-                    b.Property<string>("NormalizedClientId");
-
-                    b.Property<bool>("PrefixClientClaims");
+                    b.Property<string>("PairWiseSubjectSalt")
+                        .HasMaxLength(200);
 
                     b.Property<string>("ProtocolType")
                         .IsRequired()

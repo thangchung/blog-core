@@ -4,7 +4,7 @@ namespace BlogCore.Core
 {
     public interface ISecurityContext
     {
-        bool HasPrincipal();
+        bool HasClaims();
         bool IsAdmin();
         Guid GetCurrentUserId();
         string GetCurrentUserName();

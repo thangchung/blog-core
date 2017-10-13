@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Api.Features.Posts
 {
+    [Produces("application/json")]
     [Route("public/api/blogs")]
     public class PublicPostApiController : Controller
     {

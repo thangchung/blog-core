@@ -14,29 +14,29 @@ namespace BlogCore.AccessControlContext.Infrastructure
         private const string Role = "role";
         private EntityBase _blog;
 
-        public bool HasPrincipal()
+        public bool HasClaims()
         {
-            return Principal != null;
+            return Claims != null;
         }
 
         public Guid GetCurrentUserId()
         {
-            return FindFirstValue(UserId).ConvertTo<Guid>();
+            return Claims.FindFirst(UserId).Value.ConvertTo<Guid>();
         }
 
         public string GetCurrentUserName()
         {
-            return FindFirstValue(UserName);
+            return Claims.FindFirst(UserName).Value;
         }
 
         public string GetCurrentEmail()
         {
-            return FindFirstValue(Email);
+            return Claims.FindFirst(Email).Value;
         }
 
         public string GetIndentityProvider()
         {
-            return FindFirstValue(IdentityProvider);
+            return Claims.FindFirst(IdentityProvider).Value;
         }
 
         public Guid GetBlogId()
@@ -46,26 +46,14 @@ namespace BlogCore.AccessControlContext.Infrastructure
 
         public bool IsAdmin()
         {
-            return FindFirstValue(Role).ToLowerInvariant() == "admin";
+            return Claims.FindFirst(Role).Value == "admin";
         }
 
-        public ClaimsPrincipal Principal { get; set; }
+        public ClaimsIdentity Claims { get; set; }
 
         public void SetBlog(EntityBase blog)
         {
             _blog = blog;
-        }
-
-        private string FindFirstValue(string claimType)
-        {
-            if (Principal == null)
-                throw new ViolateSecurityException("Principal has not been initialized.");
-
-            var claim = Principal.FindFirst(claimType);
-            if (claim == null)
-                throw new ViolateSecurityException($"Claim '{claimType}' was not found.");
-
-            return claim.Value;
         }
     }
 }

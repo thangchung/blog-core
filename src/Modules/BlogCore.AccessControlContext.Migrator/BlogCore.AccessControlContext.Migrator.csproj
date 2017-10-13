@@ -9,9 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Autofac" Version="4.6.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
-    <PackageReference Include="IdentityServer4" Version="2.0.0-rc1-update1" />
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.0.0-rc1-update1" />
-    <PackageReference Include="IdentityServer4.EntityFramework" Version="2.0.0-rc1" />
+    <PackageReference Include="IdentityServer4" Version="2.0.1" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.0.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,10 +24,6 @@
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
     <ProjectReference Include="..\BlogCore.AccessControlContext\BlogCore.AccessControlContext.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

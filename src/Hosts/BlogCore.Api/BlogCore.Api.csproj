@@ -11,10 +11,11 @@
     <None Remove="wwwroot\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="FluentValidation" Version="7.1.1" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.1" />
+    <PackageReference Include="FluentValidation" Version="7.2.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.2.0" />
     <PackageReference Include="MediatR" Version="3.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
@@ -22,10 +23,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="1.0.0" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
-    <PackageReference Include="IdentityServer4" Version="2.0.0-rc1-update1" />
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.0.0-rc1-update1" />
-    <PackageReference Include="IdentityServer4.EntityFramework" Version="2.0.0-rc1" />
-    <PackageReference Include="BundlerMinifier.Core" Version="2.4.337" />
+    <PackageReference Include="IdentityServer4" Version="2.0.1" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.0.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="2.0.0" />
+    <PackageReference Include="BundlerMinifier.Core" Version="2.6.362" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />

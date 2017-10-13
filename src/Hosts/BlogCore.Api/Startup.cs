@@ -11,11 +11,13 @@ using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
 using BlogCore.PostContext;
 using FluentValidation.AspNetCore;
+using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
+using IdentityServerWithAspNetIdentity.Services;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -45,9 +47,6 @@ namespace BlogCore.Api
 
             // https://github.com/dotnet/corefx/issues/9158
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            // clear any handler for JWT
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -55,6 +54,9 @@ namespace BlogCore.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            // clear any handler for JWT
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // Add framework services.
@@ -65,27 +67,8 @@ namespace BlogCore.Api
                 .AddEntityFrameworkStores<IdentityServerDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                        builder.UseSqlServer(Configuration.GetConnectionString("MainDb"),
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
-                        builder.UseSqlServer(Configuration.GetConnectionString("MainDb"),
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
-
-                    // this enables automatic token cleanup. this is optional.
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 30;
-                })
-                .AddConfigurationStoreCache()
-                .AddAspNetIdentity<AppUser>()
-                .AddProfileService<IdentityWithAdditionalClaimsProfileService>();
+            // Add application services.
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddCors(options =>
             {
@@ -115,6 +98,28 @@ namespace BlogCore.Api
                     fv => fv.RegisterValidatorsFromAssembly(assembly));
             }
 
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddAspNetIdentity<AppUser>()
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(Configuration.GetConnectionString("MainDb"),
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(Configuration.GetConnectionString("MainDb"),
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30;
+                })
+                .AddConfigurationStoreCache()
+                .AddProfileService<IdentityWithAdditionalClaimsProfileService>();
+
             services.AddOptions()
                 .Configure<PagingOption>(Configuration.GetSection("Paging"));
 
@@ -133,7 +138,7 @@ namespace BlogCore.Api
                     options.AddSecurityDefinition("oauth2", new OAuth2Scheme
                     {
                         Type = "oauth2",
-                        Flow = "password", // "implicit",
+                        Flow = "implicit", // "password",
                         TokenUrl = "http://localhost:8484/connect/token",
                         AuthorizationUrl = "http://localhost:8484/connect/authorize",
                         Scopes = new Dictionary<string, string>
@@ -146,20 +151,16 @@ namespace BlogCore.Api
 
             services.AddMediatR(RegisteredAssemblies());
 
-            services.AddAuthentication(o =>
+            services.AddAuthentication()
+             .AddIdentityServerAuthentication(o =>
              {
-                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-             }).AddJwtBearer(options =>
-             {
-                 options.Authority = "http://localhost:8484";
-                 options.Audience = "blogcore_api_resource";
-                 options.RequireHttpsMetadata = false;
-
-                 options.Events = new JwtBearerEvents
-                 {
-                     OnTokenValidated = OnTokenValidated
-                 };
+                 o.Authority = "http://localhost:8484";
+                 o.RequireHttpsMetadata = !Environment.IsDevelopment();
+                 o.ApiName = "blogcore_api_resource";
+                 o.SupportedTokens = SupportedTokens.Both;
+                 o.RequireHttpsMetadata = false;
+                 o.EnableCaching = true;
+                 o.CacheDuration = TimeSpan.FromMinutes(10); //default
              });
 
             // register presenters
@@ -186,6 +187,8 @@ namespace BlogCore.Api
 
             app.UseIdentityServer();
 
+            app.UseMiddleware<BlogAuthenticationMiddleware>();
+
             app.UseCors("CorsPolicy")
                 .UseMvcWithDefaultRoute();
 
@@ -195,8 +198,7 @@ namespace BlogCore.Api
                     c =>
                     {
                         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog Core APIs");
-                        c.ConfigureOAuth2("local_swagger", "secret".Sha256(), "local_swagger", "local_swagger");
-                        // c.ConfigureOAuth2("swagger", "secret".Sha256(), "swagger", "swagger");
+                        c.ConfigureOAuth2("swagger", "secret".Sha256(), "swagger", "swagger");
                     });
             }
         }
@@ -211,33 +213,39 @@ namespace BlogCore.Api
                 typeof(Startup).GetTypeInfo().Assembly
             };
         }
+    }
 
-        private static async Task OnTokenValidated(TokenValidatedContext context)
+    public class BlogAuthenticationMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public BlogAuthenticationMiddleware(RequestDelegate next)
         {
-            // get current principal
-            var principal = context.Principal;
+            _next = next;
+        }
 
-            // get current claim identity
-            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+        public async Task Invoke(HttpContext context)
+        {
+            if(context.User != null && context.User.Identity.IsAuthenticated)
+            {
+                // get current claim identity
+                var claimsIdentity = context.User.Identity as ClaimsIdentity;
 
-            // build up the id_token and put it into current claim identity
-            var headerToken =
-                context.Request.Headers["Authorization"][0].Substring(context.Scheme.Name.Length + 1);
-            claimsIdentity?.AddClaim(new Claim("id_token", headerToken));
+                var securityContextInstance = context.RequestServices.GetService<ISecurityContext>();
+                var securityContextPrincipal = securityContextInstance as ISecurityContextPrincipal;
+                if (securityContextPrincipal == null)
+                    throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
+                securityContextPrincipal.Claims = claimsIdentity;
 
-            var securityContextInstance = context.HttpContext.RequestServices.GetService<ISecurityContext>();
-            var securityContextPrincipal = securityContextInstance as ISecurityContextPrincipal;
-            if (securityContextPrincipal == null)
-                throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
-            securityContextPrincipal.Principal = principal;
+                var blogRepoInstance = context.RequestServices.GetService<IEfRepository<BlogDbContext, BlogContext.Domain.Blog>>();
+                var email = securityContextInstance.GetCurrentEmail();
+                var blogs = await blogRepoInstance.ListAsync();
+                var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);
+                securityContextPrincipal.SetBlog(blog);
+            }
 
-            var blogRepoInstance = context.HttpContext.RequestServices.GetService<IEfRepository<BlogDbContext, BlogContext.Domain.Blog>>();
-            var email = securityContextInstance.GetCurrentEmail();
-            var blogs = await blogRepoInstance.ListAsync();
-            var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);
-            securityContextPrincipal.SetBlog(blog);
-
-            await Task.FromResult(0);
+            // Call the next delegate/middleware in the pipeline
+            await _next.Invoke(context);
         }
     }
 }

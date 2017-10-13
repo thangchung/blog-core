@@ -2,7 +2,7 @@ const LOAD_BLOGS = "bc/blog/LOAD_BLOGS";
 const LOAD_BLOGS_SUCCESS = "bc/blog/LOAD_BLOGS_SUCCESS";
 const LOAD_BLOGS_FAILED = "bc/blog/LOAD_BLOGS_FAILED";
 
-const BLOGS_PUBLIC_RESOURCE = "public/blogs";
+const BLOGS_PUBLIC_RESOURCE = "/public/api/blogs";
 
 const initialState = {
   loading: true,

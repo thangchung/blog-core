@@ -5,7 +5,7 @@ const LOAD_POST = "bc/post/LOAD_POST";
 const LOAD_POST_SUCCESSED = "bc/post/LOAD_POST_SUCCESSED";
 const LOAD_POST_FAILED = "bc/post/LOAD_POST_FAILED";
 
-const POSTS_RESOURCE = "posts";
+const POSTS_RESOURCE = "public/api/posts";
 
 const initialState = {
   loading: true,
@@ -82,7 +82,7 @@ export function getPosts(blogId, page) {
   return {
     types: [LOAD_POSTS, LOAD_POSTS_SUCCESSED, LOAD_POSTS_FAILED],
     promise: client =>
-      client.get(`public/blog/${blogId}/posts?page=${page}`),
+      client.get(`public/api/blogs/${blogId}/posts?page=${page}`),
     page
   };
 }
@@ -90,7 +90,7 @@ export function getPosts(blogId, page) {
 export function loadPostById(blogId, postId) {
   return {
     types: [LOAD_POST, LOAD_POST_SUCCESSED, LOAD_POST_FAILED],
-    promise: client => client.get(`public/blog/${blogId}/posts/${postId}`)
+    promise: client => client.get(`public/api/blogs/${blogId}/posts/${postId}`)
   };
 }
 

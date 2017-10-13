@@ -4,7 +4,7 @@ namespace BlogCore.Core
 {
     public interface ISecurityContextPrincipal
     {
-        ClaimsPrincipal Principal { set; }
+        ClaimsIdentity Claims { set; }
         void SetBlog(EntityBase blog);
     }
 }

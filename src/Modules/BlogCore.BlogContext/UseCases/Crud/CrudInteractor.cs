@@ -42,7 +42,7 @@ namespace BlogCore.BlogContext.UseCases.Crud
 
         public async Task<CreateBlogResponse> Handle(CreateBlogRequest message)
         {
-            if (_securityContext.HasPrincipal() == false)
+            if (_securityContext.HasClaims() == false)
                 throw new ViolateSecurityException("Invalid Access.");
 
             var validationResult = _createBlogValidator.Validate(message);

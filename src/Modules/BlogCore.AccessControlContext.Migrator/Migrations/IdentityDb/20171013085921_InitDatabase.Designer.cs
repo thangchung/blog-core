@@ -11,7 +11,7 @@ using System;
 namespace BlogCore.AccessControlContext.Migrator.Migrations.IdentityDb
 {
     [DbContext(typeof(IdentityServerDbContext))]
-    [Migration("20170927082357_InitDatabase")]
+    [Migration("20171013085921_InitDatabase")]
     partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -10,7 +10,7 @@ using System;
 namespace BlogCore.AccessControlContext.Migrator.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20170927082242_InitialIdentityServerPersistedGrantDbMigration")]
+    [Migration("20171013085809_InitialIdentityServerPersistedGrantDbMigration")]
     partial class InitialIdentityServerPersistedGrantDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
