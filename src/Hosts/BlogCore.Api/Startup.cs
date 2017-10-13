@@ -10,23 +10,21 @@ using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
 using BlogCore.PostContext;
-using IdentityModel;
-using IdentityServer4;
-using IdentityServer4.Extensions;
+using FluentValidation.AspNetCore;
 using IdentityServer4.Models;
-using IdentityServer4.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
@@ -89,19 +87,80 @@ namespace BlogCore.Api
                 .AddAspNetIdentity<AppUser>()
                 .AddProfileService<IdentityWithAdditionalClaimsProfileService>();
 
-            services.AddCorsForBlog()
-                // .AddAuthorizationForBlog()
-                .AddMvcForBlog(RegisteredAssemblies());
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
+            /*services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin",
+                    policyAdmin => { policyAdmin.RequireClaim("role", "admin"); });
+                options.AddPolicy("User",
+                    policyUser => { policyUser.RequireClaim("role", "user"); });
+            });*/
+
+            var mvcBuilder = services.AddMvc();
+            foreach (var assembly in RegisteredAssemblies())
+            {
+                // register controllers
+                mvcBuilder.AddApplicationPart(assembly);
+
+                // register validations
+                mvcBuilder.AddFluentValidation(
+                    fv => fv.RegisterValidatorsFromAssembly(assembly));
+            }
 
             services.AddOptions()
                 .Configure<PagingOption>(Configuration.GetSection("Paging"));
 
             if (Environment.IsDevelopment())
-                services.AddSwaggerForBlog();
+            {
+                services.AddSwaggerGen(options =>
+                {
+                    options.DescribeAllEnumsAsStrings();
+                    options.SwaggerDoc("v1", new Info
+                    {
+                        Title = "Blog Core",
+                        Version = "v1",
+                        Description = "Blog Core APIs"
+                    });
+
+                    options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                    {
+                        Type = "oauth2",
+                        Flow = "password", // "implicit",
+                        TokenUrl = "http://localhost:8484/connect/token",
+                        AuthorizationUrl = "http://localhost:8484/connect/authorize",
+                        Scopes = new Dictionary<string, string>
+                    {
+                        {"blogcore_api_scope", "The Blog APIs"}
+                    }
+                    });
+                });
+            }
 
             services.AddMediatR(RegisteredAssemblies());
 
-            services.AddIdentityServerForBlog(OnTokenValidated);
+            services.AddAuthentication(o =>
+             {
+                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+             }).AddJwtBearer(options =>
+             {
+                 options.Authority = "http://localhost:8484";
+                 options.Audience = "blogcore_api_resource";
+                 options.RequireHttpsMetadata = false;
+
+                 options.Events = new JwtBearerEvents
+                 {
+                     OnTokenValidated = OnTokenValidated
+                 };
+             });
 
             // register presenters
             services.AddScoped<ListOutPostByBlogPresenter>();
@@ -125,21 +184,21 @@ namespace BlogCore.Api
                     }
                 });
 
-            var fordwardedHeaderOptions = new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            };
-            fordwardedHeaderOptions.KnownNetworks.Clear();
-            fordwardedHeaderOptions.KnownProxies.Clear();
-
-            app.UseForwardedHeaders(fordwardedHeaderOptions);
             app.UseIdentityServer();
 
             app.UseCors("CorsPolicy")
                 .UseMvcWithDefaultRoute();
 
             if (env.IsDevelopment())
-                app.UseSwaggerUiForBlog();
+            {
+                app.UseSwagger().UseSwaggerUI(
+                    c =>
+                    {
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog Core APIs");
+                        c.ConfigureOAuth2("local_swagger", "secret".Sha256(), "local_swagger", "local_swagger");
+                        // c.ConfigureOAuth2("swagger", "secret".Sha256(), "swagger", "swagger");
+                    });
+            }
         }
 
         private static Assembly[] RegisteredAssemblies()
@@ -179,65 +238,6 @@ namespace BlogCore.Api
             securityContextPrincipal.SetBlog(blog);
 
             await Task.FromResult(0);
-        }
-    }
-
-    public class IdentityWithAdditionalClaimsProfileService : IProfileService
-    {
-        private readonly IUserClaimsPrincipalFactory<AppUser> _claimsFactory;
-        private readonly UserManager<AppUser> _userManager;
-
-        public IdentityWithAdditionalClaimsProfileService(UserManager<AppUser> userManager,
-            IUserClaimsPrincipalFactory<AppUser> claimsFactory)
-        {
-            _userManager = userManager;
-            _claimsFactory = claimsFactory;
-        }
-
-        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
-        {
-            var sub = context.Subject.GetSubjectId();
-
-            var user = await _userManager.FindByIdAsync(sub);
-            var principal = await _claimsFactory.CreateAsync(user);
-
-            var claims = principal.Claims.ToList();
-
-            claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
-
-            claims.Add(new Claim(JwtClaimTypes.Name, user.UserName));
-            claims.Add(new Claim(JwtClaimTypes.FamilyName, user.FamilyName));
-            claims.Add(new Claim(JwtClaimTypes.GivenName, user.GivenName));
-            claims.Add(new Claim("bio", user.Bio));
-            claims.Add(new Claim("company", user.Company));
-            claims.Add(new Claim("location", user.Location));
-            claims.Add(new Claim(JwtClaimTypes.Role, "blogcore_blogs"));
-
-            var isAdmin = claims.Any(claim => claim.Type == "role" && claim.Value == "admin");
-            if (isAdmin)
-            {
-                claims.Add(new Claim(JwtClaimTypes.Role, "admin"));
-            }
-            else
-            {
-                claims.Add(new Claim(JwtClaimTypes.Role, "user"));
-            }
-
-            if (user.BlogId.HasValue)
-            {
-                claims.Add(new Claim("blog_id", user.BlogId.Value.ToString()));
-            }
-
-            claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
-
-            context.IssuedClaims = claims;
-        }
-
-        public async Task IsActiveAsync(IsActiveContext context)
-        {
-            var sub = context.Subject.GetSubjectId();
-            var user = await _userManager.FindByIdAsync(sub);
-            context.IsActive = user != null;
         }
     }
 }
