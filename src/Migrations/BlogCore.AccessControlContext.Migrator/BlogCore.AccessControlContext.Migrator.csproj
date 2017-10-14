@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityServer4" Version="2.0.1" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.0.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\BlogCore.Core\BlogCore.Core.csproj" />
+    <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
+    <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\BlogCore.AccessControlContext\BlogCore.AccessControlContext.csproj" />
+  </ItemGroup>
+
+</Project>
