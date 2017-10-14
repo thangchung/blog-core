@@ -15,19 +15,24 @@ namespace BlogCore.Api.Features.Posts
     public class PublicPostApiController : Controller
     {
         private readonly IMediator _eventAggregator;
+        private readonly ListOutPostByBlogInteractor _listOutPostByBlogInteractor;
         private readonly ListOutPostByBlogPresenter _listOutPostByBlogPresenter;
 
-        public PublicPostApiController(IMediator eventAggregator, ListOutPostByBlogPresenter listOutPostByBlogPresenter)
+        public PublicPostApiController(
+            IMediator eventAggregator,
+            ListOutPostByBlogInteractor listOutPostByBlogInteractor,
+            ListOutPostByBlogPresenter listOutPostByBlogPresenter)
         {
             _eventAggregator = eventAggregator;
+            _listOutPostByBlogInteractor = listOutPostByBlogInteractor;
             _listOutPostByBlogPresenter = listOutPostByBlogPresenter;
         }
 
         [HttpGet("{blogId:guid}/posts")]
         public async Task<PaginatedItem<ListOutPostByBlogResponse>> GetForBlog(Guid blogId, [FromQuery] int page)
         {
-            var postResult = await _eventAggregator.Send(new ListOutPostByBlogRequest(blogId, page <= 0 ? 1 : page));
-            return _listOutPostByBlogPresenter.Transform(postResult);
+            var result = _listOutPostByBlogInteractor.Process(new ListOutPostByBlogRequest(blogId, page <= 0 ? 1 : page));
+            return await _listOutPostByBlogPresenter.Transform(result);
         }
 
         [HttpGet("{blogId:guid}/posts/{postId:guid}")]

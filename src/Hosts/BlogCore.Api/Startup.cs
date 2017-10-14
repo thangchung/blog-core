@@ -10,6 +10,7 @@ using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
 using BlogCore.PostContext;
+using BlogCore.PostContext.UseCases.ListOutPostByBlog;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
@@ -167,7 +168,8 @@ namespace BlogCore.Api
                     o.CacheDuration = TimeSpan.FromMinutes(10); //default
                 });
 
-            // register presenters
+            // register interactors & presenters
+            services.AddScoped<ListOutPostByBlogInteractor>();
             services.AddScoped<ListOutPostByBlogPresenter>();
 
             return services.InitServices(RegisteredAssemblies(), Configuration);

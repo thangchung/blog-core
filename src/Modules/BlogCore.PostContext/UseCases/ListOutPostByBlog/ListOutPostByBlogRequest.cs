@@ -4,7 +4,8 @@ using System;
 
 namespace BlogCore.PostContext.UseCases.ListOutPostByBlog
 {
-    public class ListOutPostByBlogRequest : IMessage, IRequest<PaginatedItem<ListOutPostByBlogResponse>>
+    public class ListOutPostByBlogRequest : BlogCore.Infrastructure.UseCase.IRequest<PaginatedItem<ListOutPostByBlogResponse>>
+    // : IMessage, IRequest<PaginatedItem<ListOutPostByBlogResponse>>
     {
         public ListOutPostByBlogRequest(Guid blogId, int page)
         {
