@@ -155,7 +155,6 @@ namespace BlogCore.Api
             services.AddMediatR(RegisteredAssemblies());
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                
                 .AddIdentityServerAuthentication(
                 o =>
                 {
@@ -236,12 +235,13 @@ namespace BlogCore.Api
                 displayUrl.Contains("swagger") ||
                 displayUrl.Contains("public"))
             {
-                if (!context.User.Identity.IsAuthenticated)
+                /* if (!context.User.Identity.IsAuthenticated)
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    // await context.ChallengeAsync();
                     await _next.Invoke(context);
                     return;
-                }
+                } */
             }
 
             if (context.User != null && context.User.Identity.IsAuthenticated)

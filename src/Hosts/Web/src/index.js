@@ -9,7 +9,6 @@ import { OidcProvider, loadUser } from "redux-oidc";
 import { ConnectedRouter } from "react-router-redux";
 
 // Our components
-// import getRoutes from "./routes";
 import createStore, { routerHistory } from "./redux/configureStore";
 import { userManager } from "./configs";
 import PublicLayout from "./components/Layout/PublicLayout";
