@@ -30,9 +30,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builds", "Builds", "{A36BE10F-48B4-4398-8464-489C97C41641}"
 	ProjectSection(SolutionItems) = preProject
 		builds\start.ps1 = builds\start.ps1
-		builds\start_access_control_host.ps1 = builds\start_access_control_host.ps1
-		builds\start_api_gateway_host.ps1 = builds\start_api_gateway_host.ps1
 		builds\start_web.ps1 = builds\start_web.ps1
+		builds\start_webapp_host.ps1 = builds\start_webapp_host.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Migrator", "src\Migrations\BlogCore.Migrator\BlogCore.Migrator.csproj", "{DA755108-266C-4E35-A97D-2CDD18F41F65}"
