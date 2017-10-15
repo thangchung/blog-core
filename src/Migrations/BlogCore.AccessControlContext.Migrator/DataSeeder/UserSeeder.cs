@@ -1,4 +1,4 @@
-﻿using BlogCore.AccessControlContext.Domain;
+﻿using BlogCore.AccessControlContext.Core.Domain;
 using BlogCore.AccessControlContext.Infrastructure;
 using BlogCore.Core.Helpers;
 using Microsoft.AspNetCore.Identity;

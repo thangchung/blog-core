@@ -7,7 +7,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.AspNetCore\BlogCore.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Framework\BlogCore.Infrastructure.EfCore\BlogCore.Infrastructure.EfCore.csproj" />
-    <ProjectReference Include="..\..\Modules\BlogCore.PostContext\BlogCore.PostContext.csproj" />
+    <ProjectReference Include="..\..\Modules\PostContext\BlogCore.PostContext.Core\BlogCore.PostContext.Core.csproj" />
+    <ProjectReference Include="..\..\Modules\PostContext\BlogCore.PostContext\BlogCore.PostContext.csproj" />
   </ItemGroup>
 
 </Project>

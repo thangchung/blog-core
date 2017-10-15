@@ -1,16 +1,14 @@
 ﻿#region libs
 
 using BlogCore.AccessControl;
-using BlogCore.AccessControlContext.Domain;
+using BlogCore.AccessControlContext.Core.Domain;
 using BlogCore.AccessControlContext.Infrastructure;
-using BlogCore.Api.Features.Posts.ListOutPostByBlog;
 using BlogCore.BlogContext;
 using BlogCore.BlogContext.Infrastructure;
 using BlogCore.Core;
 using BlogCore.Infrastructure.AspNetCore;
 using BlogCore.Infrastructure.EfCore;
 using BlogCore.PostContext;
-using BlogCore.PostContext.UseCases.ListOutPostByBlog;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
@@ -168,10 +166,6 @@ namespace BlogCore.Api
                     o.CacheDuration = TimeSpan.FromMinutes(10); //default
                 });
 
-            // register interactors & presenters
-            services.AddScoped<ListOutPostByBlogInteractor>();
-            services.AddScoped<ListOutPostByBlogPresenter>();
-
             return services.InitServices(RegisteredAssemblies(), Configuration);
         }
 
@@ -257,7 +251,7 @@ namespace BlogCore.Api
                     throw new ViolateSecurityException("Could not initiate the MasterSecurityContextPrincipal object.");
                 securityContextPrincipal.Claims = claimsIdentity;
 
-                var blogRepoInstance = context.RequestServices.GetService<IEfRepository<BlogDbContext, BlogContext.Domain.Blog>>();
+                var blogRepoInstance = context.RequestServices.GetService<IEfRepository<BlogDbContext, BlogContext.Core.Domain.Blog>>();
                 var email = securityContextInstance.GetCurrentEmail();
                 var blogs = await blogRepoInstance.ListAsync();
                 var blog = blogs.FirstOrDefault(x => x.OwnerEmail == email);
