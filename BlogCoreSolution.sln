@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.BlogContext.Migrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.PostContext.Migrator", "src\Migrations\BlogCore.PostContext.Migrator\BlogCore.PostContext.Migrator.csproj", "{70F061AE-9ECD-42DE-A631-025BAFC91CF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCore.App", "src\Hosts\BlogCore.App\BlogCore.App.csproj", "{9489131F-27A3-4728-8DDF-E453A94B77C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{70F061AE-9ECD-42DE-A631-025BAFC91CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70F061AE-9ECD-42DE-A631-025BAFC91CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70F061AE-9ECD-42DE-A631-025BAFC91CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9489131F-27A3-4728-8DDF-E453A94B77C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9489131F-27A3-4728-8DDF-E453A94B77C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9489131F-27A3-4728-8DDF-E453A94B77C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9489131F-27A3-4728-8DDF-E453A94B77C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +135,7 @@ Global
 		{E0EA2119-E302-4C0F-B5DB-1E671252FB29} = {8822B07C-A30F-42F1-AD65-50375F8789CE}
 		{15CE9E19-FCCB-4F96-8064-2F5CEFB3E5EA} = {8822B07C-A30F-42F1-AD65-50375F8789CE}
 		{70F061AE-9ECD-42DE-A631-025BAFC91CF2} = {8822B07C-A30F-42F1-AD65-50375F8789CE}
+		{9489131F-27A3-4728-8DDF-E453A94B77C7} = {0E593F42-52D6-444D-ABBA-445A3AB2ACDF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E58AA11F-C019-4C7A-93A4-90A50837B764}
