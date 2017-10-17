@@ -5,10 +5,6 @@ import * as StoreModule from './store';
 import { ApplicationState, reducers } from './store';
 import { History } from 'history';
 
-declare global {
-    interface Window { MyNamespace: any; }
-}
-
 export default function configureStore(history: History, initialState?: ApplicationState) {
     // Build middleware. These are functions that can process the actions before they reach the store.
     const windowIfDefined = typeof window === 'undefined' ? null : window as any;
