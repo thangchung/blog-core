@@ -1,13 +1,12 @@
 ﻿using BlogCore.AccessControlContext.Core.Domain;
 using BlogCore.Core;
-using BlogCore.PostContext.UseCases.ListOutPostByBlog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace BlogCore.Api.Features.Posts.ListOutPostByBlog
+namespace BlogCore.PostContext.UseCases.ListOutPostByBlog
 {
     public class ListOutPostByBlogPresenter
     {

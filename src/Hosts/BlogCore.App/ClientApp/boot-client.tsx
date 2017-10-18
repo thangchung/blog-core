@@ -1,5 +1,6 @@
-import './css/site.css';
-import 'bootstrap';
+import "babel-polyfill";
+
+import './scss/style.scss';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';

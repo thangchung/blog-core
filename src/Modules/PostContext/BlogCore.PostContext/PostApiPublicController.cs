@@ -1,5 +1,4 @@
-﻿using BlogCore.Api.Features.Posts.ListOutPostByBlog;
-using BlogCore.Core;
+﻿using BlogCore.Core;
 using BlogCore.Core.Helpers;
 using BlogCore.PostContext.Core.Domain;
 using BlogCore.PostContext.UseCases.ListOutPostByBlog;
