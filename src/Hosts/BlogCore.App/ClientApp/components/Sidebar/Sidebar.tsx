@@ -2,11 +2,11 @@ import * as React from "react";
 import { NavLink } from "react-router-dom";
 import { Badge, Nav, NavItem, NavLink as RsNavLink } from "reactstrap";
 import * as classNames from "classnames";
-import { SidebarFooter } from "./../SidebarFooter";
-import { SidebarForm } from "./../SidebarForm";
-import { SidebarHeader } from "./../SidebarHeader";
-import { SidebarMinimizer } from "./../SidebarMinimizer";
-import nav from './_nav';
+import SidebarFooter from "./../SidebarFooter/SidebarFooter";
+import SidebarForm from "./../SidebarForm/SidebarForm";
+import SidebarHeader from "./../SidebarHeader/SidebarHeader";
+import SidebarMinimizer from "./../SidebarMinimizer/SidebarMinimizer";
+import nav from "./_nav";
 
 export default class Sidebar extends React.Component<any, any> {
   public handleClick(e: any): void {
@@ -64,10 +64,12 @@ export default class Sidebar extends React.Component<any, any> {
     };
 
     // nav list divider
-    const divider = (divider: any, key : number) => <li key={key} className="divider" />;
+    const divider = (divider: any, key: number) => (
+      <li key={key} className="divider" />
+    );
 
     // nav item with nav link
-    const navItem = (item : any, key : number) => {
+    const navItem = (item: any, key: number) => {
       const classes = classNames(item.class);
       const variant = classNames(
         "nav-link",
@@ -76,10 +78,7 @@ export default class Sidebar extends React.Component<any, any> {
       return (
         <NavItem key={key} className={classes}>
           {/*isExternal(item.url)*/ false ? (
-            <RsNavLink
-              href={item.url}
-              className={variant}
-            >
+            <RsNavLink href={item.url} className={variant}>
               <i className={item.icon} />
               {item.name}
               {badge(item.badge)}
@@ -96,7 +95,7 @@ export default class Sidebar extends React.Component<any, any> {
     };
 
     // nav dropdown
-    const navDropdown = (item : any, key : number) => {
+    const navDropdown = (item: any, key: number) => {
       return (
         <li key={key} className={activeRoute(item.url, props)}>
           <a
@@ -113,7 +112,7 @@ export default class Sidebar extends React.Component<any, any> {
     };
 
     // nav link
-    const navLink = (item : any, idx: number) =>
+    const navLink = (item: any, idx: number) =>
       item.title
         ? title(item, idx)
         : item.divider
@@ -122,7 +121,7 @@ export default class Sidebar extends React.Component<any, any> {
 
     // nav list
     const navList = (items: any) => {
-      return items.map((item : any, index : number) => navLink(item, index));
+      return items.map((item: any, index: number) => navLink(item, index));
     };
 
     // sidebar-nav root

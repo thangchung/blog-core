@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using BlogCore.Api.Features.Posts.ListOutPostByBlog;
 using BlogCore.Infrastructure.EfCore;
 using BlogCore.PostContext.Infrastructure;
 using BlogCore.PostContext.UseCases.ListOutPostByBlog;

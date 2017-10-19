@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Link, RouteProps } from "react-router-dom";
 import { connect } from "react-redux";
-import { ApplicationState } from "../store";
-import * as CounterStore from "../store/Counter";
-import * as WeatherForecasts from "../store/WeatherForecasts";
+import { ApplicationState } from "../redux/modules";
+import * as CounterStore from "../redux/modules/Counter";
+import * as WeatherForecasts from "../redux/modules/WeatherForecasts";
 
 type CounterProps = CounterStore.CounterState &
   typeof CounterStore.actionCreators &

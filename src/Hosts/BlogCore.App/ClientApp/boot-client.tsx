@@ -2,13 +2,13 @@ import "babel-polyfill";
 
 // Styles
 // Import Font Awesome Icons Set
-import 'font-awesome/css/font-awesome.min.css';
+import "font-awesome/css/font-awesome.min.css";
 // Import Simple Line Icons Set
-import 'simple-line-icons/css/simple-line-icons.css';
+import "simple-line-icons/css/simple-line-icons.css";
 // Import Main styles for this application
 import "./scss/style.scss";
 // Temp fix for reactstrap
-import './scss/core/_dropdown-menu-right.scss';
+import "./scss/core/_dropdown-menu-right.scss";
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -16,8 +16,8 @@ import { AppContainer } from "react-hot-loader";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import { createBrowserHistory } from "history";
-import configureStore from "./configureStore";
-import { ApplicationState } from "./store";
+import configureStore from "./redux/configureStore";
+import { ApplicationState } from "./redux/modules";
 import * as RoutesModule from "./routes";
 let routes = RoutesModule.routes;
 

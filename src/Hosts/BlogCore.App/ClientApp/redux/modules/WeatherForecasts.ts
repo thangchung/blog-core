@@ -4,7 +4,6 @@ import { AppThunkAction } from "./";
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
-
 export interface WeatherForecastsState {
   isLoading: boolean;
   startDateIndex?: number;
@@ -21,7 +20,6 @@ export interface WeatherForecast {
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
-
 interface RequestWeatherForecastsAction {
   type: "REQUEST_WEATHER_FORECASTS";
   startDateIndex: number;
@@ -42,7 +40,6 @@ type KnownAction =
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
-
 export const actionCreators = {
   requestWeatherForecasts: (
     startDateIndex: number

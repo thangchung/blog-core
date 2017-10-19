@@ -9,9 +9,10 @@ import {
   ReducersMapObject
 } from "redux";
 import thunk from "redux-thunk";
+import client from "./middleware/clientMiddleware";
 import { routerReducer, routerMiddleware } from "react-router-redux";
-import * as StoreModule from "./store";
-import { ApplicationState, reducers } from "./store";
+import * as StoreModule from "./modules";
+import { ApplicationState, reducers } from "./modules";
 import { History } from "history";
 
 export default function configureStore(
@@ -26,7 +27,7 @@ export default function configureStore(
     windowIfDefined &&
     (windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__ as () => GenericStoreEnhancer);
   const createStoreWithMiddleware = compose(
-    applyMiddleware(thunk, routerMiddleware(history)),
+    applyMiddleware(thunk, client, routerMiddleware(history)),
     devToolsExtension
       ? devToolsExtension()
       : <S>(next: StoreEnhancerStoreCreator<S>) => next
@@ -40,8 +41,8 @@ export default function configureStore(
 
   // Enable Webpack hot module replacement for reducers
   if (module.hot) {
-    module.hot.accept("./store", () => {
-      const nextRootReducer = require<typeof StoreModule>("./store");
+    module.hot.accept("./modules", () => {
+      const nextRootReducer = require<typeof StoreModule>("./modules");
       store.replaceReducer(buildRootReducer(nextRootReducer.reducers));
     });
   }

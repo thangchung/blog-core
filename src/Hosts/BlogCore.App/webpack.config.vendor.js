@@ -41,7 +41,6 @@ module.exports = env => {
       library: "[name]_[hash]"
     },
     plugins: [
-      // new webpack.ProvidePlugin({ $: 'jquery', jQuery: 'jquery' }), // Maps these identifiers to the jQuery package (because Bootstrap expects it to be a global variable)
       new webpack.NormalModuleReplacementPlugin(
         /\/iconv-loader$/,
         require.resolve("node-noop")

@@ -1,14 +1,12 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
-import { Layout } from "./components/Layout";
-import FetchData from "./components/FetchData";
-import Counter from "./components/Counter";
-import { FullLayout } from "./components/Layout/Full";
-import { Dashboard } from "./containers/Dashboard";
+import { FullLayout } from "./components";
+import { Dashboard, Counter, FetchData, BlogList } from "./containers";
 
-export const routes = (
+export const routes: any = (
   <FullLayout>
     <Route exact path="/" component={Dashboard} />
+    <Route path="/blogs" component={BlogList} />
     <Route path="/counter" component={Counter} />
     <Route path="/fetchdata/:startDateIndex?" component={FetchData} />
   </FullLayout>

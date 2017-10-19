@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CheckerPlugin = require("awesome-typescript-loader").CheckerPlugin;
 const merge = require("webpack-merge");
 
@@ -29,7 +30,13 @@ module.exports = env => {
         }
       ]
     },
-    plugins: [new CheckerPlugin()]
+    plugins: [
+      new CheckerPlugin(),
+      /*new BundleAnalyzerPlugin({
+        analyzerHost: '127.0.0.1',
+        analyzerPort: 1234,
+      })*/
+    ]
   });
 
   // Configuration for client-side bundle suitable for running in browsers
