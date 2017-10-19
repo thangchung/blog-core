@@ -32,7 +32,6 @@ module.exports = env => {
         "redux",
         "redux-thunk",
         "react-router-redux",
-        "is-url-external",
         "chart.js"
       ]
     },
@@ -60,6 +59,7 @@ module.exports = env => {
         {
           test: /\.css(\?|$)/,
           use: extractCSS.extract({
+            fallback: 'style-loader',
             use: isDevBuild ? "css-loader" : "css-loader?minimize"
           })
         }

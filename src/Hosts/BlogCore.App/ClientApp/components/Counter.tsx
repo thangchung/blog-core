@@ -12,7 +12,7 @@ type CounterProps = CounterStore.CounterState &
 class Counter extends React.Component<CounterProps, {}> {
   public render() {
     return (
-      <div>
+      <div className="animated fadeIn">
         <h1>Counter</h1>
 
         <p>This is a simple example of a React component.</p>

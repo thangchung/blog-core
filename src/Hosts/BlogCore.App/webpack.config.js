@@ -24,7 +24,7 @@ module.exports = env => {
         },
         { test: /\.(png|jpg|jpeg|gif|svg)$/, use: "url-loader?limit=25000" },
         {
-          test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/,
+          test: /\.(woff|woff2|eot|ttf)(\?|$)/,
           use: "url-loader?limit=100000"
         }
       ]

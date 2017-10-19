@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "dependencies": {
+    "@types/classnames": "^2.2.3",
     "@types/history": "^4.6.1",
     "@types/react": "^16.0.13",
     "@types/react-dom": "^16.0.1",

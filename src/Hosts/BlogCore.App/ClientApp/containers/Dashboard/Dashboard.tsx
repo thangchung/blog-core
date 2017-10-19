@@ -1,10 +1,13 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 
-export default class Home extends React.Component<RouteComponentProps<{}>, {}> {
+export default class Dashboard extends React.Component<
+  RouteComponentProps<{}>,
+  any
+> {
   public render() {
     return (
-      <div>
+      <div className="animated fadeIn">
         <h1>Hello, world!</h1>
         <p>Welcome to your new single-page application, built with:</p>
         <ul>

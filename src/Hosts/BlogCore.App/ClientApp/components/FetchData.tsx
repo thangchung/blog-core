@@ -24,7 +24,7 @@ class FetchData extends React.Component<WeatherForecastProps, {}> {
 
   public render() {
     return (
-      <div>
+      <div className="animated fadeIn">
         <h1>Weather forecast</h1>
         <p>
           This component demonstrates fetching data from the server and working
