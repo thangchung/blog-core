@@ -19,7 +19,7 @@ export default class Full extends React.Component<any, any> {
           <Sidebar {...this.props} />
           <main className="main">
             <Breadcrumb />
-            <Container>
+            <Container fluid>
               <Row>
                 <Col xs="12" sm="12" md="12">
                   <Card>

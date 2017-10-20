@@ -80,93 +80,95 @@ class BlogList extends React.Component<BlogProps, any> {
     // reference at https://codepen.io/aaronschwartz/pen/WOOPRw?editors=0010
     const columns: any = [
       {
-        Header: "Blog List",
-        columns: [
-          {
-            id: "checkbox",
-            accessor: "",
-            Header: (x: any) => {
-              return (
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  checked={this.state.selectAll === 1}
-                  ref={input => {
-                    if (input) {
-                      input.indeterminate = this.state.selectAll === 2;
-                    }
-                  }}
-                  onChange={() => this.toggleSelectAll()}
-                />
-              );
-            },
-            Cell: ({ original }: any) => {
-              return (
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  checked={this.state.selected[original.id] === true}
-                  onChange={() => this.toggleRow(original.id)}
-                />
-              );
-            },
-            sortable: false,
-            width: 45
-          },
-          {
-            Header: "Id",
-            accessor: "id"
-          },
-          {
-            Header: "Title",
-            accessor: "title"
-          },
-          {
-            Header: "Description",
-            accessor: "description"
-          },
-          {
-            Header: "Actions",
-            Cell: ({ original }: any) => {
-              return (
-                <div>
-                  <ButtonGroup>
-                    <Button
-                      color="warning"
-                      size="lg"
-                      onClick={() => this.editRow(original)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      color="danger"
-                      size="lg"
-                      onClick={() => this.deleteRow(original.id)}
-                    >
-                      Delete
-                    </Button>
-                  </ButtonGroup>
-                </div>
-              );
-            },
-            sortable: false,
-            width: 120
-          }
-        ]
+        id: "checkbox",
+        accessor: "",
+        Header: (x: any) => {
+          return (
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={this.state.selectAll === 1}
+              ref={input => {
+                if (input) {
+                  input.indeterminate = this.state.selectAll === 2;
+                }
+              }}
+              onChange={() => this.toggleSelectAll()}
+            />
+          );
+        },
+        Cell: ({ original }: any) => {
+          return (
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={this.state.selected[original.id] === true}
+              onChange={() => this.toggleRow(original.id)}
+            />
+          );
+        },
+        sortable: false,
+        width: 45
+      },
+      {
+        Header: "Id",
+        accessor: "id"
+      },
+      {
+        Header: "Title",
+        accessor: "title"
+      },
+      {
+        Header: "Description",
+        accessor: "description"
+      },
+      {
+        Header: "Actions",
+        Cell: ({ original }: any) => {
+          return (
+            <div>
+              <ButtonGroup>
+                <Button
+                  color="warning"
+                  size="lg"
+                  onClick={() => this.editRow(original)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  color="danger"
+                  size="lg"
+                  onClick={() => this.deleteRow(original.id)}
+                >
+                  Delete
+                </Button>
+              </ButtonGroup>
+            </div>
+          );
+        },
+        sortable: false,
+        width: 120
       }
     ];
 
     return (
       <div className="animated fadeIn">
-        <Button color="success" size="lg">
-          Add
-        </Button>
-        <ReactTable
-          defaultPageSize={5}
-          className="-striped -highlight"
-          data={this.props.blogs}
-          columns={columns}
-        />
+        <Card>
+          <CardHeader>
+            <b>Blog Management</b>
+            <Button color="success" size="lg" className="pull-right">
+              Add
+            </Button>
+          </CardHeader>
+          <CardBlock className="card-body">
+            <ReactTable
+              defaultPageSize={5}
+              className="-striped -highlight"
+              data={this.props.blogs}
+              columns={columns}
+            />
+          </CardBlock>
+        </Card>
       </div>
     );
   }
