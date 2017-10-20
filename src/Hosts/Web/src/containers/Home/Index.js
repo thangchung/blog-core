@@ -13,13 +13,11 @@ class Home extends Component {
     const { match, blogByIds, blogs } = this.props;
     return (
       <ul>
-        {blogByIds.map((id, index) =>
+        {blogByIds.map((id, index) => (
           <li key={index}>
-            <a href={`${match.url}blogs/${id}`}>
-              {blogs[id].title}
-            </a>
+            <a href={`${match.url}blogs/${id}`}>{blogs[id].title}</a>
           </li>
-        )}
+        ))}
       </ul>
     );
   }

@@ -6,7 +6,7 @@ import { Dashboard, Counter, FetchData, BlogList } from "./containers";
 export const routes: any = (
   <FullLayout>
     <Route exact path="/" component={Dashboard} />
-    <Route path="/blogs" component={BlogList} />
+    <Route path="/blogs/:page?" component={BlogList} />
     <Route path="/counter" component={Counter} />
     <Route path="/fetchdata/:startDateIndex?" component={FetchData} />
   </FullLayout>

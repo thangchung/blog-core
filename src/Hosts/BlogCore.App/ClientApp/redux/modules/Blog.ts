@@ -3,10 +3,19 @@ import { AxiosInstance } from "axios";
 
 const BLOGS_PUBLIC_RESOURCE = "/public/api/blogs";
 
+export type Blog = {
+  id: string;
+  title: string;
+  description: string;
+  theme: number;
+  image: string;
+};
+
 export interface BlogState {
   loading: boolean;
   loaded: boolean;
-  byIds: any;
+  ids: any;
+  blogByIds: any;
   blogs: any;
   error: any;
   page: number;
@@ -27,16 +36,16 @@ interface LoadBlogFailedAction {
   error: any;
 }
 
-type KnownAction =
-  | LoadBlogAction
-  | LoadBlogSuccessAction
-  | LoadBlogFailedAction;
-
 interface LoadBlogWrapperAction {
   types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESS", "LOAD_BLOGS_FAILED"];
   promise: any;
   page: number;
 }
+
+type KnownAction =
+  | LoadBlogAction
+  | LoadBlogSuccessAction
+  | LoadBlogFailedAction;
 
 export const actionCreators = {
   getBlogsByPage: (pageNumber: number) =>
@@ -62,11 +71,12 @@ export const reducer: Reducer<BlogState> = (
       const blogs = action.data.items;
       return {
         ...state,
-        byIds: blogs.map((blog: any) => blog.id),
-        blogs: blogs.reduce((obj: any, blog: any) => {
+        ids: blogs.map((blog: Blog) => blog.id),
+        blogByIdss: blogs.reduce((obj: any, blog: Blog) => {
           obj[blog.id] = blog;
           return obj;
         }, {}),
+        blogs: blogs.map((blog: Blog) => blog),
         loaded: true,
         loading: false,
         page: action.page || 1
@@ -74,8 +84,9 @@ export const reducer: Reducer<BlogState> = (
     case "LOAD_BLOGS_FAILED":
       return {
         ...state,
-        byIds: [],
+        ids: [],
         blogs: {},
+        blogByIds: {},
         error: action.error,
         loaded: true,
         loading: false,
@@ -89,8 +100,9 @@ export const reducer: Reducer<BlogState> = (
     state || {
       loading: true,
       loaded: false,
-      byIds: [],
+      ids: [],
       blogs: [],
+      blogByIds: [],
       error: null,
       page: 1
     }

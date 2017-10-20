@@ -3,9 +3,9 @@ using System;
 
 namespace BlogCore.PostContext.Core.Domain
 {
-    public class PostedCreated : IDomainEvent
+    public class PostCreated : IDomainEvent
     {
-        public PostedCreated(Guid id)
+        public PostCreated(Guid id)
         {
             PostId = id;
         }

@@ -9,6 +9,7 @@ import "simple-line-icons/css/simple-line-icons.css";
 import "./scss/style.scss";
 // Temp fix for reactstrap
 import "./scss/core/_dropdown-menu-right.scss";
+import "react-table/react-table.css";
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";

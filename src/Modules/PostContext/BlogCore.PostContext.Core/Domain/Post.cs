@@ -29,7 +29,7 @@ namespace BlogCore.PostContext.Core.Domain
             Body = body;
             Author = authorId;
             CreatedAt = DateTimeHelper.GenerateDateTime();
-            Events.Add(new PostedCreated(postId));
+            Events.Add(new PostCreated(postId));
         }
 
         public static Post CreateInstance(BlogId blogId, Guid postId, string title, string excerpt, string body, AuthorId authorId)
