@@ -1,3 +1,4 @@
+import { reducer as formReducer } from 'redux-form';
 import * as WeatherForecasts from "./WeatherForecasts";
 import * as Counter from "./Counter";
 import * as Blog from "./Blog";
@@ -13,6 +14,7 @@ export interface ApplicationState {
 // the reducer with the matching name. It's important that the names match exactly, and that the reducer
 // acts on the corresponding ApplicationState property type.
 export const reducers = {
+  form: formReducer,
   counter: Counter.reducer,
   weatherForecasts: WeatherForecasts.reducer,
   blog: Blog.reducer

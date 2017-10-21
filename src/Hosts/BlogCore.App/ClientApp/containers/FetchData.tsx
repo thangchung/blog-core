@@ -22,7 +22,7 @@ class FetchData extends React.Component<WeatherForecastProps, {}> {
     this.props.requestWeatherForecasts(startDateIndex);
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <div className="animated fadeIn">
         <h1>Weather forecast</h1>

@@ -1,10 +1,8 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { Link, RouteProps } from "react-router-dom";
+import { Link, RouteProps, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import ReactTable, { Column } from "react-table";
-import { ApplicationState } from "../../redux/modules";
-import * as BlogStore from "../../redux/modules/Blog";
 import {
   Row,
   Col,
@@ -17,19 +15,27 @@ import {
   Button
 } from "reactstrap";
 
+import { ApplicationState } from "../../redux/modules";
+import * as BlogStore from "../../redux/modules/Blog";
+
 type BlogProps = BlogStore.BlogState &
   typeof BlogStore.actionCreators &
-  RouteProps;
+  RouteComponentProps<{ page: number }>;
 
 class BlogList extends React.Component<BlogProps, any> {
   constructor(props: BlogProps) {
     super(props);
     this.state = {
       selected: {},
-      selectAll: 0,
-      data: []
+      selectAll: 0
     };
+
+    // event for paging
+    this.onPageChange = this.onPageChange.bind(this);
+
+    // event for checkbox in the table
     this.toggleRow = this.toggleRow.bind(this);
+    this.addRow = this.addRow.bind(this);
     this.editRow = this.editRow.bind(this);
     this.deleteRow = this.deleteRow.bind(this);
   }
@@ -38,10 +44,12 @@ class BlogList extends React.Component<BlogProps, any> {
     this.props.getBlogsByPage(this.props.page);
   }
 
-  componentDidMount() {
-    this.setState({
-      data: this.props.blogs
-    });
+  onSortedChange(column: any, additive: boolean): void {
+    console.log(column);
+  }
+
+  onPageChange(page: number): void {
+    this.props.getBlogsByPage(page);
   }
 
   public toggleRow(id: string): void {
@@ -57,7 +65,7 @@ class BlogList extends React.Component<BlogProps, any> {
     let newSelected: any = {};
 
     if (this.state.selectAll === 0) {
-      this.state.data.map((x: any) => {
+      this.props.blogs.map((x: any) => {
         newSelected[x.id] = true;
       });
     }
@@ -68,6 +76,10 @@ class BlogList extends React.Component<BlogProps, any> {
     });
   }
 
+  public addRow(): any {
+    this.props.history.replace("/new-blog");
+  }
+
   public editRow(blog: any): void {
     console.log(blog);
   }
@@ -76,7 +88,7 @@ class BlogList extends React.Component<BlogProps, any> {
     console.log(id);
   }
 
-  render() {
+  render(): JSX.Element {
     // reference at https://codepen.io/aaronschwartz/pen/WOOPRw?editors=0010
     const columns: any = [
       {
@@ -123,51 +135,59 @@ class BlogList extends React.Component<BlogProps, any> {
         accessor: "description"
       },
       {
-        Header: "Actions",
         Cell: ({ original }: any) => {
           return (
             <div>
               <ButtonGroup>
-                <Button
-                  color="warning"
-                  size="lg"
-                  onClick={() => this.editRow(original)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  color="danger"
-                  size="lg"
-                  onClick={() => this.deleteRow(original.id)}
-                >
-                  Delete
-                </Button>
+                <a onClick={() => this.editRow(original)}>
+                  <i className="icon-notebook" />
+                </a>
+                <a onClick={() => this.deleteRow(original.id)}>
+                  <i className="icon-trash" />
+                </a>
               </ButtonGroup>
             </div>
           );
         },
         sortable: false,
-        width: 120
+        width: 50
       }
     ];
 
+    const { data, pages, loading } = this.state;
+    const table = (
+      <ReactTable
+        columns={columns}
+        data={this.props.blogs}
+        className="-striped -highlight"
+        defaultPageSize={5}
+        showPageSizeOptions={false}
+        showFilters={false}
+        page={this.props.page}
+        loading={this.props.loading}
+        onPageChange={this.onPageChange}
+      />
+    );
+
     return (
       <div className="animated fadeIn">
-        <Card>
+        <Card className="b-panel">
           <CardHeader>
-            <b>Blog Management</b>
-            <Button color="success" size="lg" className="pull-right">
-              Add
-            </Button>
+            <h3 className="b-panel-title">
+              <i className="icon-notebook b-icon" />
+              Blog Management
+            </h3>
+            <span className="b-panel-actions">
+              <Button
+                color="success"
+                className="pull-right"
+                onClick={this.addRow}
+              >
+                <i className="icon-plus b-icon" />Add
+              </Button>
+            </span>
           </CardHeader>
-          <CardBlock className="card-body">
-            <ReactTable
-              defaultPageSize={5}
-              className="-striped -highlight"
-              data={this.props.blogs}
-              columns={columns}
-            />
-          </CardBlock>
+          <CardBlock className="card-body">{table}</CardBlock>
         </Card>
       </div>
     );

@@ -5,7 +5,7 @@ export default class Dashboard extends React.Component<
   RouteComponentProps<{}>,
   any
 > {
-  public render() {
+  render(): JSX.Element {
     return (
       <div className="animated fadeIn">
         <h1>Hello, world!</h1>

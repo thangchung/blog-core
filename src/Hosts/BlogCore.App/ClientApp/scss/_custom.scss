@@ -1,2 +1,32 @@
 // Here you can add other styles
 
+.b-panel {
+  position: relative;
+
+  .b-panel-title {
+    font-size: 1.5em;
+    margin-top: 15px;
+    height: 35px;
+  }
+
+  .b-icon {
+    margin: 10px 7px;
+  }
+
+  .b-panel-actions {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    margin: 12px;
+  }
+}
+
+.b-form {
+  position: relative !important;
+  .b-form-feedback {
+    display: inline-block !important;
+    position: relative !important;
+    width: auto;
+    color: #f00;
+  }
+}
