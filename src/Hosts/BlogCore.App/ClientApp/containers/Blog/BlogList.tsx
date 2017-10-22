@@ -77,7 +77,7 @@ class BlogList extends React.Component<BlogProps, any> {
   }
 
   public addRow(): any {
-    this.props.history.replace("/new-blog");
+    this.props.history.replace("/admin/new-blog");
   }
 
   public editRow(blog: any): void {

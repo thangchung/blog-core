@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Switch, Route } from "react-router-dom";
 import {
   Container,
   Row,
@@ -9,32 +10,36 @@ import {
   CardBlock
 } from "reactstrap";
 
-import { Aside, Breadcrumb, Sidebar, Header, Footer } from "./../../components";
+import { PublicBlog, Counter, FetchData } from "./../";
 
 export default class Full extends React.Component<any, any> {
   public render(): JSX.Element {
+    const { match } = this.props;
+    const routes: JSX.Element = (
+      <Switch>
+        <Route exact path={`${match.url}:username`} component={PublicBlog} />
+        <Route path={`${match.url}public/counter`} component={Counter} />
+        <Route
+          path={`${match.url}public/fetchdata/:startDateIndex?`}
+          component={FetchData}
+        />
+      </Switch>
+    );
     return (
       <div className="app">
-        <Header />
         <div className="app-body">
-          <Sidebar {...this.props} />
           <main className="main">
-            <Breadcrumb />
             <Container fluid>
               <Row>
                 <Col xs="12" sm="12" md="12">
                   <Card>
-                    <CardBlock className="card-body">
-                      <div>{this.props.children}</div>
-                    </CardBlock>
+                    <CardBlock className="card-body">{routes}</CardBlock>
                   </Card>
                 </Col>
               </Row>
             </Container>
           </main>
-          <Aside />
         </div>
-        <Footer />
       </div>
     );
   }

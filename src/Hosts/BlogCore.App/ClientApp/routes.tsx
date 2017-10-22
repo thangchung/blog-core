@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
-import { FullLayout } from "./components";
+import { PublicLayout, FullLayout } from "./containers";
 import {
+  PublicBlog,
   Dashboard,
   Counter,
   FetchData,
@@ -19,11 +20,8 @@ export const routeNames: any = {
 };
 
 export const routes: any = (
-  <FullLayout>
-    <Route exact path="/" component={Dashboard} />
-    <Route path="/blogs/:page?" component={BlogList} />
-    <Route path="/new-blog" component={AddNewBlog} />
-    <Route path="/counter" component={Counter} />
-    <Route path="/fetchdata/:startDateIndex?" component={FetchData} />
-  </FullLayout>
+  <Switch>
+    <Route path="/admin" component={FullLayout} />
+    <Route path="/" component={PublicLayout} />
+  </Switch>
 );

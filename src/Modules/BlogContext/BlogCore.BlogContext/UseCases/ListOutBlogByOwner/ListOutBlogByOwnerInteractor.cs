@@ -29,9 +29,12 @@ namespace BlogCore.Blog.UseCases.ListOutBlogByOwner
         public async Task<PaginatedItem<ListOutBlogByOwnerResponse>> Handle(ListOutBlogByOwnerRequest request)
         {
             var criterion = new Criterion(1, int.MaxValue, _pagingOption.Value);
+
             Expression<Func<BlogContext.Core.Domain.Blog, ListOutBlogByOwnerResponse>> selector =
                 b => new ListOutBlogByOwnerResponse(b.Id, b.Title, b.Description, b.ImageFilePath, (int)b.Theme);
+
             Expression<Func<BlogContext.Core.Domain.Blog, bool>> ownerEmailFilter = x => x.OwnerEmail == _securityContext.GetCurrentEmail();
+
             return await _blogRepo.FindAllAsync(criterion, selector, ownerEmailFilter);
         }
     }

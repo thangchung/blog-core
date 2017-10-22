@@ -25,13 +25,22 @@ namespace BlogCore.AccessControlContext.Infrastructure
             return user;
         }
 
-        public IObservable<AppUser> GetByIdStream(Guid id)
+        public IObservable<AppUser> GetByIdObs(Guid id)
         {
             return _dbContext.Set<AppUser>()
                 .AsNoTracking()
                 .ToListAsync()
                 .ToObservable()
                 .Select(x => x.FirstOrDefault(y => y.Id == id.ToString()));
+        }
+
+        public IObservable<AppUser> GetByUserNameObs(string username)
+        {
+            return _dbContext.Set<AppUser>()
+                .AsNoTracking()
+                .ToListAsync()
+                .ToObservable()
+                .Select(x => x.FirstOrDefault(y => y.UserName == username));
         }
 
         public async Task UpdateUserProfile(Guid id, string givenName, string familyName, string bio, string company,

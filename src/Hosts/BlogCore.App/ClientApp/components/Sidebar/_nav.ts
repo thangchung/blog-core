@@ -2,12 +2,12 @@ export default {
   items: [
     {
       name: "Home",
-      url: "/",
+      url: "/admin",
       icon: "icon-speedometer"
     },
     {
       name: "Blogs",
-      url: "/blogs",
+      url: "/admin/blogs",
       icon: "icon-notebook",
       badge: {
         variant: "info",
@@ -16,13 +16,19 @@ export default {
     },
     {
       name: "Counter",
-      url: "/counter",
+      url: "/public/counter",
       icon: "icon-layers"
     },
     {
       name: "FetchData",
-      url: "/fetchdata/1",
+      url: "/public/fetchdata/1",
       icon: "icon-list"
+    },
+    ,
+    {
+      name: "My Blog",
+      url: "/thangchung",
+      icon: "icon-user"
     }
   ]
 };

@@ -7,6 +7,7 @@ namespace BlogCore.AccessControlContext.Core.Domain
     {
         Task<AppUser> GetByIdAsync(Guid id);
         Task UpdateUserProfile(Guid id, string givenName, string familyName, string bio, string company, string location);
-        IObservable<AppUser> GetByIdStream(Guid id);
+        IObservable<AppUser> GetByIdObs(Guid id);
+        IObservable<AppUser> GetByUserNameObs(string username);
     }
 }

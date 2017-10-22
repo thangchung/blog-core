@@ -67,7 +67,7 @@ class AddNewBlogForm extends React.Component<AddNewBlogFormProps, {}> {
                 color="warning"
                 disabled={!pristine}
                 onClick={() => {
-                  this.props.history.replace("/blogs");
+                  this.props.history.replace("/admin/blogs");
                 }}
               >
                 <i className="icon-arrow-left b-icon" />Back
