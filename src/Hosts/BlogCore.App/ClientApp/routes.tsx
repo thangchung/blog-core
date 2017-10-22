@@ -2,21 +2,11 @@ import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import { PublicLayout, FullLayout } from "./containers";
-import {
-  PublicBlog,
-  Dashboard,
-  Counter,
-  FetchData,
-  BlogList,
-  AddNewBlog
-} from "./containers";
 
 export const routeNames: any = {
-  "/": "Home",
-  "/blogs": "Blogs",
-  "/new-blog": "New blog",
-  "/counter": "Counter",
-  "/fetchdata": "Fetch data"
+  "/admin": "Dashboard",
+  "/admin/blogs": "Blogs",
+  "/admin/new-blog": "New blog"
 };
 
 export const routes: any = (
