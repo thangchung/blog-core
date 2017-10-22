@@ -25,7 +25,7 @@ export default class Sidebar extends React.Component<any, any> {
   //   return this.props.location.pathname.indexOf(routeName) > -1 ? "nav nav-second-level collapse in" : "nav nav-second-level collapse";
   // }
 
-  public render() {
+  public render(): JSX.Element {
     const props = this.props;
     const activeRoute = this.activeRoute;
     const handleClick = this.handleClick;

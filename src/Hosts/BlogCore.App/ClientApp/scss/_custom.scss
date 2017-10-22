@@ -10,7 +10,7 @@
   }
 
   .b-icon {
-    margin: 10px 7px;
+    margin: .2rem 0.5rem;
   }
 
   .b-panel-actions {
@@ -29,4 +29,8 @@
     width: auto;
     color: #f00;
   }
+}
+
+.b-panel-margin-down {
+  margin-top: 1rem
 }

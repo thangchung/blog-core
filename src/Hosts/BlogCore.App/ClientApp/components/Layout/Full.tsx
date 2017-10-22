@@ -8,10 +8,11 @@ import {
   CardFooter,
   CardBlock
 } from "reactstrap";
+
 import { Aside, Breadcrumb, Sidebar, Header, Footer } from "./../../components";
 
 export default class Full extends React.Component<any, any> {
-  public render() {
+  public render(): JSX.Element {
     return (
       <div className="app">
         <Header />
@@ -31,7 +32,9 @@ export default class Full extends React.Component<any, any> {
               </Row>
             </Container>
           </main>
+          <Aside />
         </div>
+        <Footer />
       </div>
     );
   }

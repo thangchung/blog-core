@@ -18,20 +18,6 @@ import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
 import { FormInput } from "../../components";
 
-const validate = (
-  values: Readonly<BlogStore.Blog>
-): FormErrors<BlogStore.Blog> => {
-  const errors: FormErrors<BlogStore.Blog> = {};
-  console.log(values);
-  if (!values.title) {
-    errors.title = "Required.";
-  } else if (values.title.length > 10) {
-    errors.title = "Too long.";
-  }
-
-  return errors;
-};
-
 type AddNewBlogFormProps = FormProps<BlogStore.Blog, any, any> &
   typeof BlogStore.actionCreators &
   RouteComponentProps<any>;
@@ -94,12 +80,24 @@ class AddNewBlogForm extends React.Component<AddNewBlogFormProps, {}> {
   }
 }
 
+const validate = (
+  values: Readonly<BlogStore.Blog>
+): FormErrors<BlogStore.Blog> => {
+  const errors: FormErrors<BlogStore.Blog> = {};
+  if (!values.title) {
+    errors.title = "Required.";
+  } else if (values.title.length > 10) {
+    errors.title = "Too long.";
+  }
+
+  return errors;
+};
+
 export default connect(null, BlogStore.actionCreators)(
   reduxForm<Readonly<BlogStore.Blog>, AddNewBlogFormProps>({
     form: "addNewBlogForm",
     validate,
     onSubmit: (values, dispatch, props) => {
-      console.log(props);
       props.addNewBlog(values);
     }
   })(AddNewBlogForm)

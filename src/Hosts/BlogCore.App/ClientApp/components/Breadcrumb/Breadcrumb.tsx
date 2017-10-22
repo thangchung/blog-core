@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Route, Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
-import { routes } from "../../routes";
+import { routeNames as routes } from "../../routes";
 
-const findRouteName: any = (url: string) => routes[url];
+const findRouteName: any = (url: string): string => routes[url];
 
-const getPaths: any = (pathname: any) => {
-  const paths = ["/"];
+const getPaths: any = (pathname: any): string[] => {
+  const paths: string[] = ["/"];
 
   if (pathname === "/") return paths;
 
@@ -18,7 +18,7 @@ const getPaths: any = (pathname: any) => {
   return paths;
 };
 
-const BreadcrumbsItem = ({ match, ...rest }: any) => {
+const BreadcrumbsItem = ({ match, ...rest }: any): JSX.Element => {
   const routeName: string = findRouteName(match.url);
   if (routeName) {
     return match.isExact ? (
@@ -29,18 +29,23 @@ const BreadcrumbsItem = ({ match, ...rest }: any) => {
       </BreadcrumbItem>
     );
   }
-  return null;
+  return <div />;
 };
 
-const Breadcrumbs = ({ location: { pathname }, match, ...rest }: any) => {
+const Breadcrumbs = ({
+  location: { pathname },
+  match,
+  ...rest
+}: any): JSX.Element => {
   const paths = getPaths(pathname);
   const items = paths.map((path: string, i: number) => (
     <Route key={i++} path={path} component={BreadcrumbsItem} />
   ));
+
   return <Breadcrumb>{items}</Breadcrumb>;
 };
 
-export default (props: any) => (
+export default (props: any): JSX.Element => (
   <div>
     <Route path="/:path" component={Breadcrumbs} {...props} />
   </div>

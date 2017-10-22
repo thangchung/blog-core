@@ -1,15 +1,15 @@
 import * as React from "react";
 
 export default class SidebarMinimizer extends React.Component<any, any> {
-  public sidebarMinimize() {
+  public sidebarMinimize(): void {
     document.body.classList.toggle("sidebar-minimized");
   }
 
-  public brandMinimize() {
+  public brandMinimize(): void {
     document.body.classList.toggle("brand-minimized");
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <button
         className="sidebar-minimizer"

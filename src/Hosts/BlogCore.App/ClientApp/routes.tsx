@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
+
 import { FullLayout } from "./components";
 import {
   Dashboard,
@@ -8,6 +9,14 @@ import {
   BlogList,
   AddNewBlog
 } from "./containers";
+
+export const routeNames: any = {
+  "/": "Home",
+  "/blogs": "Blogs",
+  "/new-blog": "New blog",
+  "/counter": "Counter",
+  "/fetchdata": "Fetch data"
+};
 
 export const routes: any = (
   <FullLayout>

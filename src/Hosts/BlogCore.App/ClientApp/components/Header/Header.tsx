@@ -35,7 +35,7 @@ export default class Header extends React.Component<any, any> {
     document.body.classList.toggle("aside-menu-hidden");
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <header className="app-header navbar">
         <NavbarToggler className="d-lg-none" onClick={this.mobileSidebarToggle}>

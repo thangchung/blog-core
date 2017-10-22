@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link, RouteProps } from "react-router-dom";
 import { connect } from "react-redux";
+import { Button } from "reactstrap";
+
 import { ApplicationState } from "../redux/modules";
 import * as CounterStore from "../redux/modules/Counter";
 import * as WeatherForecasts from "../redux/modules/WeatherForecasts";
@@ -21,13 +23,14 @@ class Counter extends React.Component<CounterProps, {}> {
           Current count: <strong>{this.props.count}</strong>
         </p>
 
-        <button
+        <Button
+          color="primary"
           onClick={() => {
             this.props.increment();
           }}
         >
           Increment
-        </button>
+        </Button>
       </div>
     );
   }

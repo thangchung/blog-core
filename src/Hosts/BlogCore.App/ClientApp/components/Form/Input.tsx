@@ -4,7 +4,6 @@ import { Input as ReactStrapInput, FormFeedback } from "reactstrap";
 export default class Input extends React.Component<any, any> {
   render(): JSX.Element {
     const { touched, error, warning, valid } = this.props.meta;
-    console.log(valid);
     return (
       <div>
         <ReactStrapInput

@@ -7,7 +7,7 @@ export default class Dashboard extends React.Component<
 > {
   render(): JSX.Element {
     return (
-      <div className="animated fadeIn">
+      <div className="animated fadeIn b-panel-margin-down">
         <h1>Hello, world!</h1>
         <p>Welcome to your new single-page application, built with:</p>
         <ul>

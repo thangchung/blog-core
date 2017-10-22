@@ -28,7 +28,7 @@ export default class Header extends React.Component<any, HeaderState> {
     });
   }
 
-  public dropAccnt() {
+  public dropAccnt(): JSX.Element {
     return (
       <NavDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav caret={this.state.caretVisible}>
@@ -67,7 +67,7 @@ export default class Header extends React.Component<any, HeaderState> {
     );
   }
 
-  public render() {
+  public render(): JSX.Element {
     const { ...attributes } = this.props;
     return this.dropAccnt();
   }
