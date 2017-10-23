@@ -1,4 +1,4 @@
-﻿using BlogCore.BlogContext.UseCases.Crud;
+﻿using BlogCore.BlogContext.UseCases.BasicCrud;
 using BlogCore.BlogContext.UseCases.ListOutBlogByOwner;
 using BlogCore.BlogContext.UseCases.UpdateBlogSetting;
 using BlogCore.Core;
@@ -45,7 +45,7 @@ namespace BlogCore.BlogContext
         [HttpPost]
         public async Task<CreateBlogResponse> Post([FromBody] CreateBlogRequest request)
         {
-            return await _createItemHandler.Process(request);
+            return await _createItemHandler.ProcessAsync(request);
         }
 
         [Authorize(Roles = "Admin, User")]
@@ -61,7 +61,7 @@ namespace BlogCore.BlogContext
         [HttpPut]
         public async Task<UpdateBlogResponse> Put([FromBody] UpdateBlogRequest request)
         {
-            return await _updateItemHandler.Process(request);
+            return await _updateItemHandler.ProcessAsync(request);
         }
 
         // [Authorize(Roles = "Admin")]
@@ -69,7 +69,7 @@ namespace BlogCore.BlogContext
         [HttpDelete]
         public async Task<DeleteBlogResponse> Delete([FromBody] DeleteBlogRequest request)
         {
-            return await _deleteItemHandler.Process(request);
+            return await _deleteItemHandler.ProcessAsync(request);
         }
     }
 }

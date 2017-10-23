@@ -6,16 +6,13 @@ using BlogCore.Infrastructure.EfCore;
 using BlogCore.Infrastructure.UseCase;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading.Tasks;
+using static BlogCore.BlogContext.UseCases.BasicCrud.CrudHelpers;
 
-namespace BlogCore.BlogContext.UseCases.Crud
+namespace BlogCore.BlogContext.UseCases.BasicCrud
 {
-    public class CrudInteractor : 
+    public class BasicCrudInteractor : 
         IAsyncUseCaseRequestHandler<CreateBlogRequest, CreateBlogResponse>,
         IAsyncUseCaseRequestHandler<RetrieveBlogsRequest, PaginatedItem<RetrieveBlogsResponse>>,
         IAsyncUseCaseRequestHandler<RetrieveBlogRequest, RetrieveBlogResponse>,
@@ -26,23 +23,29 @@ namespace BlogCore.BlogContext.UseCases.Crud
         protected readonly IMediator _mediator;
         protected readonly IOptions<PagingOption> _pagingOption;
         protected readonly IValidator<CreateBlogRequest> _createItemValidator;
+        protected readonly IValidator<UpdateBlogRequest> _updateItemValidator;
+        protected readonly IValidator<DeleteBlogRequest> _deleteItemValidator;
 
-        public CrudInteractor(
-            IValidator<CreateBlogRequest> createItemValidator,
-            IEfRepository<BlogDbContext, Core.Domain.Blog> blogRepository,
+        public BasicCrudInteractor(
             IMediator mediator,
-            IOptions<PagingOption> pagingOption
+            IOptions<PagingOption> pagingOption,
+            IEfRepository<BlogDbContext, Core.Domain.Blog> blogRepository,
+            IValidator<CreateBlogRequest> createItemValidator,
+            IValidator<UpdateBlogRequest> updateItemValidator,
+            IValidator<DeleteBlogRequest> deleteItemValidator
             )
         {
             _blogRepository = blogRepository;
             _mediator = mediator;
             _pagingOption = pagingOption;
             _createItemValidator = createItemValidator;
+            _updateItemValidator = updateItemValidator;
+            _deleteItemValidator = deleteItemValidator;
         }
 
-        public async Task<CreateBlogResponse> Process(CreateBlogRequest request)
+        public async Task<CreateBlogResponse> ProcessAsync(CreateBlogRequest request)
         {
-            return await CrudHelpers.CreateItemHandler<
+            return await CreateItemHandler<
                 Core.Domain.Blog,
                 CreateBlogRequest, CreateBlogResponse>(
                     _mediator,
@@ -63,13 +66,12 @@ namespace BlogCore.BlogContext.UseCases.Crud
                     }));
         }
 
-        public async Task<PaginatedItem<RetrieveBlogsResponse>> Process(RetrieveBlogsRequest request)
+        public async Task<PaginatedItem<RetrieveBlogsResponse>> ProcessAsync(RetrieveBlogsRequest request)
         {
-            return await CrudHelpers.RetrieveItemsHandler<
-                BlogDbContext, Core.Domain.Blog,
-                RetrieveBlogsRequest, RetrieveBlogsResponse>(
+            return await RetrieveItemsHandler(
                     _blogRepository,
                     _pagingOption,
+                    request,
                     b => new RetrieveBlogsResponse(
                         b.Id,
                         b.Title,
@@ -79,7 +81,7 @@ namespace BlogCore.BlogContext.UseCases.Crud
                 );
         }
 
-        public async Task<RetrieveBlogResponse> Process(RetrieveBlogRequest request)
+        public async Task<RetrieveBlogResponse> ProcessAsync(RetrieveBlogRequest request)
         {
             var blog = await _blogRepository.GetByIdAsync(request.Id);
             return new RetrieveBlogResponse(
@@ -90,13 +92,12 @@ namespace BlogCore.BlogContext.UseCases.Crud
                 blog.ImageFilePath);
         }
 
-        public async Task<UpdateBlogResponse> Process(UpdateBlogRequest request)
+        public async Task<UpdateBlogResponse> ProcessAsync(UpdateBlogRequest request)
         {
             var blog = await _blogRepository.GetByIdAsync(request.Id);
             var blogUpdated = blog.ChangeTitle(request.Title)
                 .ChangeDescription(request.Description)
                 .ChangeTheme((Theme)request.Theme);
-
 
             return await _blogRepository.UpdateAsync(blogUpdated)
                 .ContinueWith((a) =>
@@ -105,55 +106,11 @@ namespace BlogCore.BlogContext.UseCases.Crud
                 });
         }
 
-        public async Task<DeleteBlogResponse> Process(DeleteBlogRequest request)
+        public async Task<DeleteBlogResponse> ProcessAsync(DeleteBlogRequest request)
         {
             var blog = await _blogRepository.GetByIdAsync(request.Id);
             await _blogRepository.DeleteAsync(blog);
             return new DeleteBlogResponse();
-        }
-    }
-
-
-    public static class CrudHelpers
-    {
-        public static async Task<TCreateItemResponse> CreateItemHandler<TEntity, TCreateItemRequest, TCreateItemResponse>(
-            IMediator mediator,
-            TCreateItemRequest request,
-            IValidator<TCreateItemRequest> createItemValidator,
-            Func<TCreateItemRequest, Task<TEntity>> extendCreatingItemFunc)
-            where TEntity : EntityBase
-            where TCreateItemRequest : BlogCore.Infrastructure.UseCase.IRequest<TCreateItemResponse>
-        {
-            // validate request
-            var validationResult = createItemValidator.Validate(request);
-            if (validationResult.IsValid == false)
-            {
-                return await Task.FromResult((TCreateItemResponse)Activator.CreateInstance(typeof(TCreateItemResponse), Guid.Empty, validationResult));
-            }
-
-            var entity = await extendCreatingItemFunc(request);
-
-            // raise events
-            foreach (var @event in entity.GetEvents())
-                await mediator.Publish(@event);
-
-            // compose and return values
-            return await Task.FromResult(
-                (TCreateItemResponse)Activator.CreateInstance(
-                    typeof(TCreateItemResponse).GetTypeInfo(),
-                    entity.Id,
-                    validationResult));
-        }
-
-        public static async Task<PaginatedItem<TRetrieveItemsResponse>> RetrieveItemsHandler<TDbContext, TEntity, TCreateItemRequest, TRetrieveItemsResponse>(
-            IEfRepository<TDbContext, TEntity> repo,
-            IOptions<PagingOption> pagingOption,
-            Expression<Func<TEntity, TRetrieveItemsResponse>> expr)
-                where TEntity : EntityBase
-                where TDbContext : DbContext
-        {
-            var criterion = new Criterion(1, pagingOption.Value.PageSize, pagingOption.Value);
-            return await repo.QueryAsync(criterion, expr);
         }
     }
 }

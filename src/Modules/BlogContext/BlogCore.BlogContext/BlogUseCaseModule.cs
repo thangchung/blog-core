@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using BlogCore.BlogContext.Infrastructure;
-using BlogCore.BlogContext.UseCases.Crud;
+using BlogCore.BlogContext.UseCases.BasicCrud;
 using BlogCore.BlogContext.UseCases.GetBlogsByUserName;
 using BlogCore.Core;
 using BlogCore.Infrastructure.EfCore;
@@ -22,8 +22,12 @@ namespace BlogCore.BlogContext
 
             builder.RegisterType<CreateBlogRequestValidator>()
                 .As<IValidator<CreateBlogRequest>>();
+            builder.RegisterType<UpdateBlogRequestValidator>()
+                .As<IValidator<UpdateBlogRequest>>();
+            builder.RegisterType<DeleteBlogRequestValidator>()
+                .As<IValidator<DeleteBlogRequest>>();
 
-            builder.RegisterType<CrudInteractor>()
+            builder.RegisterType<BasicCrudInteractor>()
                 .As<IAsyncUseCaseRequestHandler<CreateBlogRequest, CreateBlogResponse>>()
                 .As<IAsyncUseCaseRequestHandler<RetrieveBlogsRequest, PaginatedItem<RetrieveBlogsResponse>>>()
                 .As<IAsyncUseCaseRequestHandler<RetrieveBlogRequest, RetrieveBlogResponse>>()

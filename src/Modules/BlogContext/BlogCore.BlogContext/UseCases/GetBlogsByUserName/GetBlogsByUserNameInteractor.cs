@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace BlogCore.BlogContext.UseCases.GetBlogsByUserName
 {
     public class GetBlogsByUserNameInteractor
-        : IUseCaseRequestHandlerAsync<GetBlogsByUserNameRequest, PaginatedItem<GetBlogsByUserNameResponse>>
+        : IAsyncUseCaseRequestHandler<GetBlogsByUserNameRequest, PaginatedItem<GetBlogsByUserNameResponse>>
     {
         private readonly IEfRepository<BlogDbContext, Core.Domain.Blog> _blogRepo;
         private readonly IUserRepository _userRepostory;
@@ -30,7 +30,7 @@ namespace BlogCore.BlogContext.UseCases.GetBlogsByUserName
             _pagingOption = pagingOption;
         }
 
-        public async Task<PaginatedItem<GetBlogsByUserNameResponse>> Process(GetBlogsByUserNameRequest request)
+        public async Task<PaginatedItem<GetBlogsByUserNameResponse>> ProcessAsync(GetBlogsByUserNameRequest request)
         {
             var user = await _userRepostory.GetByUserNameAsync(request.UserName);
             var criterion = new Criterion(request.Page, _pagingOption.Value.PageSize, _pagingOption.Value);

@@ -1,14 +1,25 @@
-﻿using System;
+﻿using BlogCore.Infrastructure.UseCase;
+using System;
 
-namespace BlogCore.BlogContext.UseCases.Crud
+namespace BlogCore.BlogContext.UseCases.BasicCrud
 {
+    public class RetrieveBlogRequest : IRequest<RetrieveBlogResponse>
+    {
+        public RetrieveBlogRequest(Guid id)
+        {
+            Id = id;            
+        }
+
+        public Guid Id { get; }
+    }
+
     public class RetrieveBlogResponse
     {
         public RetrieveBlogResponse(
-            Guid id, 
-            string title, 
-            string description, 
-            int theme, 
+            Guid id,
+            string title,
+            string description,
+            int theme,
             string image)
         {
             Id = id;

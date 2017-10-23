@@ -1,7 +1,24 @@
+using BlogCore.Core;
+using BlogCore.Infrastructure.UseCase;
 using System;
 
-namespace BlogCore.BlogContext.UseCases.Crud
+namespace BlogCore.BlogContext.UseCases.BasicCrud
 {
+    public interface IRetrieveItemWithPage
+    {
+        int CurrentPage { get; }
+    }
+
+    public class RetrieveBlogsRequest : IRequest<PaginatedItem<RetrieveBlogsResponse>>, IRetrieveItemWithPage
+    {
+        public RetrieveBlogsRequest(int currentPage)
+        {
+            CurrentPage = currentPage;
+        }
+
+        public int CurrentPage { get; private set; }
+    }
+
     public class RetrieveBlogsResponse
     {
         public RetrieveBlogsResponse(
