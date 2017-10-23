@@ -13,7 +13,7 @@ namespace BlogCore.BlogContext.UseCases.Crud
             ValidationResult = validationResult;
         }
 
-        public ValidationResult ValidationResult { get; }
-        public Guid BlogId { get; }
+        public ValidationResult ValidationResult { get; set; }
+        public Guid BlogId { get; set; }
     }
 }

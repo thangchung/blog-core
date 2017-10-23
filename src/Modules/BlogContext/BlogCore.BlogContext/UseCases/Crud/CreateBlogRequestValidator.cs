@@ -18,8 +18,8 @@ namespace BlogCore.BlogContext.UseCases.Crud
                 .WithMessage("Description should be between 1 and 50 chars.");
 
             RuleFor(x => x.Theme)
-                .Must(x => !string.IsNullOrEmpty(x) && x.Length <= 10)
-                .WithMessage("Theme should be between 1 and 10.");
+                .Must(x => x != 1)
+                .WithMessage("Theme should be 1.");
 
             RuleFor(x => x.PostsPerPage)
                 .Must(x => x > 0 && x < int.MaxValue)

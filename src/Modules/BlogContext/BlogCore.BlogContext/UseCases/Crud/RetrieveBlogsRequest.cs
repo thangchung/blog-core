@@ -1,5 +1,5 @@
 using BlogCore.Core;
-using MediatR;
+using BlogCore.Infrastructure.UseCase;
 
 namespace BlogCore.BlogContext.UseCases.Crud
 {

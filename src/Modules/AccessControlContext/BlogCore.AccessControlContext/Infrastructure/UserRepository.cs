@@ -34,6 +34,13 @@ namespace BlogCore.AccessControlContext.Infrastructure
                 .Select(x => x.FirstOrDefault(y => y.Id == id.ToString()));
         }
 
+        public Task<AppUser> GetByUserNameAsync(string username)
+        {
+            return _dbContext.Set<AppUser>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.UserName == username);
+        }
+
         public IObservable<AppUser> GetByUserNameObs(string username)
         {
             return _dbContext.Set<AppUser>()

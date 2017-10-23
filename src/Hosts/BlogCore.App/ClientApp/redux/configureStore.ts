@@ -26,7 +26,7 @@ export default function configureStore(
   const devToolsExtension =
     windowIfDefined &&
     (windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__ as () => GenericStoreEnhancer);
-  const createStoreWithMiddleware = compose(
+  const createStoreWithMiddleware: any = compose(
     applyMiddleware(thunk, client, routerMiddleware(history)),
     devToolsExtension
       ? devToolsExtension()

@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using BlogCore.Infrastructure.UseCase;
 
 namespace BlogCore.BlogContext.UseCases.Crud
 {
@@ -7,14 +7,14 @@ namespace BlogCore.BlogContext.UseCases.Crud
         public CreateBlogRequest(
             string title, 
             string description,
-            string theme, 
+            int? theme, 
             int? postsPerPage, 
             int? daysToComment, 
             bool? moderateComments)
         {
             Title = title;
             Description = description;
-            Theme = theme ?? "default";
+            Theme = theme ?? 1;
             PostsPerPage = postsPerPage ?? 10;
             DaysToComment = daysToComment ?? 5;
             ModerateComments = moderateComments ?? true;
@@ -22,7 +22,7 @@ namespace BlogCore.BlogContext.UseCases.Crud
 
         public string Title { get; }
         public string Description { get; }
-        public string Theme { get; }
+        public int Theme { get; } 
         public int PostsPerPage { get; }
         public int DaysToComment { get; }
         public bool ModerateComments { get; }

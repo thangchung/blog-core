@@ -8,12 +8,12 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace BlogCore.BlogContext.UseCases.GetBlogsByUserName
 {
     public class GetBlogsByUserNameInteractor
-        : IUseCaseRequestHandler<GetBlogsByUserNameRequest, PaginatedItem<GetBlogsByUserNameResponse>>
+        : IUseCaseRequestHandlerAsync<GetBlogsByUserNameRequest, PaginatedItem<GetBlogsByUserNameResponse>>
     {
         private readonly IEfRepository<BlogDbContext, Core.Domain.Blog> _blogRepo;
         private readonly IUserRepository _userRepostory;
@@ -30,13 +30,13 @@ namespace BlogCore.BlogContext.UseCases.GetBlogsByUserName
             _pagingOption = pagingOption;
         }
 
-        public IObservable<PaginatedItem<GetBlogsByUserNameResponse>> Process(GetBlogsByUserNameRequest request)
+        public async Task<PaginatedItem<GetBlogsByUserNameResponse>> Process(GetBlogsByUserNameRequest request)
         {
-            var user = _userRepostory.GetByUserNameObs(request.UserName).ToTask().Result;
+            var user = await _userRepostory.GetByUserNameAsync(request.UserName);
             var criterion = new Criterion(request.Page, _pagingOption.Value.PageSize, _pagingOption.Value);
             Expression<Func<Core.Domain.Blog, bool>> filterFunc = x => x.OwnerEmail == user.Email;
 
-            return _blogRepo.ListStream(filterFunc, criterion)
+            return await _blogRepo.ListStream(filterFunc, criterion)
                 .Select(x =>
                 {
                     return new PaginatedItem<GetBlogsByUserNameResponse>(

@@ -96,7 +96,7 @@ namespace BlogCore.BlogContext.Core.Domain
 
             AssertSetting(setting);
             BlogSetting = setting;
-            if (BlogSetting != null)
+            if (BlogSetting != null && Guid.Empty != oldBlogSettingId)
             {
                 Events.Add(new BlogSettingChanged(oldBlogSettingId));
             }
