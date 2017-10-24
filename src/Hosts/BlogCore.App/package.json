@@ -14,7 +14,6 @@
     "@types/react-router": "^4.0.16",
     "@types/react-router-dom": "^4.0.8",
     "@types/react-router-redux": "^5.0.8",
-    "@types/react-table": "^6.6.0",
     "@types/reactstrap": "^4.6.4",
     "@types/redux-form": "6.6.12",
     "@types/webpack": "^3.0.13",

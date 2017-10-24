@@ -1,56 +1,32 @@
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
-import { Link, RouteProps, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import ReactTable, { Column } from "react-table";
 import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardFooter,
-  CardBlock,
-  Container,
   ButtonGroup,
   Button
 } from "reactstrap";
 
-import { ApplicationState } from "../../redux/modules";
-import * as BlogStore from "../../redux/modules/Blog";
+// ignore TS because react-table doesn't support TS correctly
+const ReactTable: any = require("react-table").default;
 
-type BlogProps = BlogStore.BlogState &
-  typeof BlogStore.actionCreators &
-  RouteComponentProps<{ page: number }>;
-
-class BlogList extends React.Component<BlogProps, any> {
-  constructor(props: BlogProps) {
+export default class BlogTable extends React.Component<any, any> {
+  constructor(props: any) {
     super(props);
+
     this.state = {
       selected: {},
       selectAll: 0
     };
 
-    // event for paging
-    this.onPageChange = this.onPageChange.bind(this);
+    // fetch data on every changes on table
+    this.fetchData = this.fetchData.bind(this);
 
     // event for checkbox in the table
     this.toggleRow = this.toggleRow.bind(this);
-    this.addRow = this.addRow.bind(this);
     this.editRow = this.editRow.bind(this);
     this.deleteRow = this.deleteRow.bind(this);
   }
 
-  componentWillMount() {
-    this.props.getBlogsByPage(this.props.page);
-  }
-
-  onSortedChange(column: any, additive: boolean): void {
-    console.log(column);
-  }
-
-  onPageChange(page: number): void {
-    console.log(page);
-    this.props.getBlogsByPage(page);
+  fetchData(state: any, instance: any): void {
+    this.props.getBlogsByPage(state.page);
   }
 
   public toggleRow(id: string): void {
@@ -64,10 +40,9 @@ class BlogList extends React.Component<BlogProps, any> {
 
   public toggleSelectAll(): void {
     let newSelected: any = {};
-
     if (this.state.selectAll === 0) {
-      this.props.blogs.map((x: any) => {
-        newSelected[x.id] = true;
+      this.props.ids.map((id: any) => {
+        newSelected[id] = true;
       });
     }
 
@@ -75,10 +50,6 @@ class BlogList extends React.Component<BlogProps, any> {
       selected: newSelected,
       selectAll: this.state.selectAll === 0 ? 1 : 0
     });
-  }
-
-  public addRow(): any {
-    this.props.history.replace("/admin/new-blog");
   }
 
   public editRow(blog: any): void {
@@ -89,7 +60,7 @@ class BlogList extends React.Component<BlogProps, any> {
     console.log(id);
   }
 
-  render(): JSX.Element {
+  public render(): JSX.Element {
     // reference at https://codepen.io/aaronschwartz/pen/WOOPRw?editors=0010
     const columns: any = [
       {
@@ -120,6 +91,7 @@ class BlogList extends React.Component<BlogProps, any> {
             />
           );
         },
+        filterable: false,
         sortable: false,
         width: 45
       },
@@ -150,52 +122,31 @@ class BlogList extends React.Component<BlogProps, any> {
             </div>
           );
         },
+        filterable: false,
         sortable: false,
         width: 50
       }
     ];
 
-    const { data, pages, loading } = this.state;
+    const data = this.props.ids.map((id: string, idx: number) => {
+      return this.props.blogByIds[id];
+    });
+
     const table = (
       <ReactTable
         columns={columns}
-        data={this.props.blogs}
+        manual
+        data={data}
         className="-striped -highlight"
         defaultPageSize={5}
         showPageSizeOptions={false}
-        showFilters={false}
-        page={this.props.page}
+        filterable
+        pages={this.props.totalPages}
         loading={this.props.loading}
-        onPageChange={this.onPageChange}
+        onFetchData={this.fetchData}
       />
     );
 
-    return (
-      <div className="animated fadeIn">
-        <Card className="b-panel">
-          <CardHeader>
-            <h3 className="b-panel-title">
-              <i className="icon-notebook b-icon" />
-              Blog Management
-            </h3>
-            <span className="b-panel-actions">
-              <Button
-                color="success"
-                className="pull-right"
-                onClick={this.addRow}
-              >
-                <i className="icon-plus b-icon" />Add
-              </Button>
-            </span>
-          </CardHeader>
-          <CardBlock className="card-body">{table}</CardBlock>
-        </Card>
-      </div>
-    );
+    return table;
   }
 }
-
-export default connect(
-  (state: ApplicationState) => state.blog,
-  BlogStore.actionCreators
-)(BlogList);

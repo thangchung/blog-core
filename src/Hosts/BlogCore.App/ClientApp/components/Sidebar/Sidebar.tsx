@@ -9,6 +9,10 @@ import SidebarMinimizer from "./../SidebarMinimizer/SidebarMinimizer";
 import nav from "./_nav";
 
 export default class Sidebar extends React.Component<any, any> {
+  shouldComponentUpdate(){
+    return false;
+  }
+
   public handleClick(e: any): void {
     e.preventDefault();
     e.target.parentElement.classList.toggle("open");

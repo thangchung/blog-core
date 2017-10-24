@@ -15,6 +15,10 @@ export default class Header extends React.Component<any, any> {
     super(props);
   }
 
+  shouldComponentUpdate(){
+    return false;
+  }
+
   sidebarToggle(e: any): void {
     e.preventDefault();
     document.body.classList.toggle("sidebar-hidden");

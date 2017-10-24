@@ -16,10 +16,10 @@ export interface BlogState {
   loaded: boolean;
   ids: any;
   blogByIds: any;
-  blogs: any;
   newBlog: Blog;
   error: any;
   page: number;
+  totalPages: number;
 }
 
 interface LoadBlogAction {
@@ -102,20 +102,19 @@ export const reducer: Reducer<BlogState> = (
       return {
         ...state,
         ids: blogs.map((blog: Blog) => blog.id),
-        blogByIdss: blogs.reduce((obj: any, blog: Blog) => {
+        blogByIds: blogs.reduce((obj: any, blog: Blog) => {
           obj[blog.id] = blog;
           return obj;
         }, {}),
-        blogs: blogs.map((blog: Blog) => blog),
         loaded: true,
         loading: false,
-        page: action.page || 0
+        page: action.page || 0,
+        totalPages: action.data.totalPages
       };
     case "LOAD_BLOGS_FAILED":
       return {
         ...state,
         ids: [],
-        blogs: {},
         blogByIds: {},
         error: action.error,
         loaded: true,
@@ -130,10 +129,11 @@ export const reducer: Reducer<BlogState> = (
       };
 
     case "ADD_NEW_BLOG_SUCCESS":
-      const newBlog = action.data.item;
+      const newBlog = action.data.item as Blog;
       return {
         ...state,
-        blogs: { ...state.blogs, newBlog },
+        ids: state.ids.push(newBlog.id),
+        // TODO: blogByIds: state.blogByIds.push({ newBlog.id:  })
         loading: false,
         loaded: true
       };
@@ -155,11 +155,11 @@ export const reducer: Reducer<BlogState> = (
       loading: true,
       loaded: false,
       ids: [],
-      blogs: [],
       blogByIds: [],
       newBlog: null,
       error: null,
-      page: 0
+      page: 0,
+      totalPages: 0
     }
   );
 };
