@@ -13,7 +13,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
     {
         public RetrieveBlogsRequest(int currentPage)
         {
-            CurrentPage = currentPage;
+            CurrentPage = currentPage < 1 ? 1 : currentPage;
         }
 
         public int CurrentPage { get; private set; }

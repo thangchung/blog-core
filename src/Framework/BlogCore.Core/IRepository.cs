@@ -10,8 +10,8 @@ namespace BlogCore.Core
         Task<TEntity> GetByIdAsync(Guid id);
         Task<IReadOnlyList<TEntity>> ListAsync();
         Task<TEntity> AddAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
-        Task DeleteAsync(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
+        Task<Guid> DeleteAsync(TEntity entity);
         IObservable<PaginatedItem<TEntity>> ListStream(
             Expression<Func<TEntity, bool>> filter = null, 
             Criterion criterion = null, 

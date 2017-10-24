@@ -4,18 +4,19 @@ using System;
 
 namespace BlogCore.BlogContext.UseCases.BasicCrud
 {
-    public interface IDeleteItemWithIdentity
-    {
-        Guid Id { get; set; }
-    }
-
-    public class DeleteBlogRequest : IRequest<DeleteBlogResponse>, IDeleteItemWithIdentity
+    public class DeleteBlogRequest : IRequest<DeleteBlogResponse>
     {
         public Guid Id { get; set; }
     }
 
     public class DeleteBlogResponse
     {
+        public DeleteBlogResponse(Guid id)
+        {
+            Id = id;
+        }
+
+        public Guid Id { get; }
     }
 
     public class DeleteBlogRequestValidator : AbstractValidator<DeleteBlogRequest>

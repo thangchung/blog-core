@@ -76,7 +76,7 @@ export const actionCreators = {
     <LoadBlogWrapperAction>{
       types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESS", "LOAD_BLOGS_FAILED"],
       promise: (client: AxiosInstance) =>
-        client.get(`${BLOGS_PUBLIC_RESOURCE}?page=${pageNumber}`),
+        client.get(`${BLOGS_PUBLIC_RESOURCE}?page=${pageNumber + 1}`),
       page: pageNumber
     },
   addNewBlog: (blog: any) =>

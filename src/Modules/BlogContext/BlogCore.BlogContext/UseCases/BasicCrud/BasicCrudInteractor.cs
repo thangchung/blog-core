@@ -32,8 +32,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
             IEfRepository<BlogDbContext, Core.Domain.Blog> blogRepository,
             IValidator<CreateBlogRequest> createItemValidator,
             IValidator<UpdateBlogRequest> updateItemValidator,
-            IValidator<DeleteBlogRequest> deleteItemValidator
-            )
+            IValidator<DeleteBlogRequest> deleteItemValidator)
         {
             _blogRepository = blogRepository;
             _mediator = mediator;
@@ -45,9 +44,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
         public async Task<CreateBlogResponse> ProcessAsync(CreateBlogRequest request)
         {
-            return await CreateItemHandler<
-                Core.Domain.Blog,
-                CreateBlogRequest, CreateBlogResponse>(
+            return await CreateItemProcessAsync<Core.Domain.Blog, CreateBlogRequest, CreateBlogResponse>(
                     _mediator,
                     request,
                     _createItemValidator,
@@ -68,7 +65,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
         public async Task<PaginatedItem<RetrieveBlogsResponse>> ProcessAsync(RetrieveBlogsRequest request)
         {
-            return await RetrieveItemsHandler(
+            return await RetrieveItemsProcessAsync(
                     _blogRepository,
                     _pagingOption,
                     request,
@@ -83,34 +80,41 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
         public async Task<RetrieveBlogResponse> ProcessAsync(RetrieveBlogRequest request)
         {
-            var blog = await _blogRepository.GetByIdAsync(request.Id);
-            return new RetrieveBlogResponse(
+            return await RetrieveItemProcessAsync(_blogRepository, request.Id, blog =>
+                new RetrieveBlogResponse(
                 blog.Id,
                 blog.Title,
                 blog.Description,
                 (int)blog.Theme,
-                blog.ImageFilePath);
+                blog.ImageFilePath)
+            );
         }
 
         public async Task<UpdateBlogResponse> ProcessAsync(UpdateBlogRequest request)
         {
-            var blog = await _blogRepository.GetByIdAsync(request.Id);
-            var blogUpdated = blog.ChangeTitle(request.Title)
-                .ChangeDescription(request.Description)
-                .ChangeTheme((Theme)request.Theme);
-
-            return await _blogRepository.UpdateAsync(blogUpdated)
-                .ContinueWith((a) =>
+            return await UpdateItemProcessAsync(_blogRepository, request.Id,
+                (blog) =>
                 {
-                    return new UpdateBlogResponse();
+                    return blog.ChangeTitle(request.Title)
+                        .ChangeDescription(request.Description)
+                        .ChangeTheme((Theme)request.Theme);
+                },
+                (blog) =>
+                {
+                    return new UpdateBlogResponse
+                    {
+                        Id = blog.Id,
+                        Title = blog.Title,
+                        Description = blog.Description,
+                        Theme = (int)blog.Theme
+                    };
                 });
         }
 
         public async Task<DeleteBlogResponse> ProcessAsync(DeleteBlogRequest request)
         {
-            var blog = await _blogRepository.GetByIdAsync(request.Id);
-            await _blogRepository.DeleteAsync(blog);
-            return new DeleteBlogResponse();
+            return await DeleteItemProcessAsync<BlogDbContext, Core.Domain.Blog, DeleteBlogResponse>(
+                _blogRepository, request.Id);
         }
     }
 }

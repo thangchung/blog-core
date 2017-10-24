@@ -33,16 +33,13 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
     public class CreateBlogResponse
     {
-        public CreateBlogResponse(
-            Guid blogId,
-            ValidationResult validationResult)
+        public CreateBlogResponse(Guid blogId)
         {
             BlogId = blogId;
-            ValidationResult = validationResult;
         }
 
-        public ValidationResult ValidationResult { get; set; }
-        public Guid BlogId { get; set; }
+        public ValidationResult ValidationResult { get; }
+        public Guid BlogId { get; }
     }
 
     public class CreateBlogRequestValidator : AbstractValidator<CreateBlogRequest>
@@ -61,7 +58,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
                 .WithMessage("Description should be between 1 and 50 chars.");
 
             RuleFor(x => x.Theme)
-                .Must(x => x != 1)
+                .Must(x => x == 1)
                 .WithMessage("Theme should be 1.");
 
             RuleFor(x => x.PostsPerPage)

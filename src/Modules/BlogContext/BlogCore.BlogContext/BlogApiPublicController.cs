@@ -27,7 +27,7 @@ namespace BlogCore.BlogContext
         }
 
         [HttpGet("")]
-        public async Task<PaginatedItem<RetrieveBlogsResponse>> GetByPage([FromQuery] int page)
+        public async Task<PaginatedItem<RetrieveBlogsResponse>> GetByPage([FromQuery] int page = 1)
         {
             return await _retrieveItemsHandler.ProcessAsync(new RetrieveBlogsRequest(page));
         }

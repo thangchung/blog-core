@@ -49,6 +49,7 @@ class BlogList extends React.Component<BlogProps, any> {
   }
 
   onPageChange(page: number): void {
+    console.log(page);
     this.props.getBlogsByPage(page);
   }
 

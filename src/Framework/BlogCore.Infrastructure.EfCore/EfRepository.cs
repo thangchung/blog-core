@@ -42,16 +42,18 @@ namespace BlogCore.Infrastructure.EfCore
             return entity;
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public async Task<Guid> DeleteAsync(TEntity entity)
         {
             DbContext.Set<TEntity>().Remove(entity);
             await DbContext.SaveChangesAsync();
+            return await Task.FromResult(entity.Id);
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             DbContext.Entry(entity).State = EntityState.Modified;
             await DbContext.SaveChangesAsync();
+            return await Task.FromResult(entity);
         }
 
         public IObservable<PaginatedItem<TEntity>> ListStream(

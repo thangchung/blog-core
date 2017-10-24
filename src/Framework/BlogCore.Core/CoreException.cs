@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FluentValidation.Results;
+using System;
+using System.Collections.Generic;
 
 namespace BlogCore.Core
 {
@@ -17,14 +19,23 @@ namespace BlogCore.Core
 
     public class ValidationException : CoreException
     {
+        private readonly List<ValidationFailure> _failures;
+
         public ValidationException(string message) 
             : this(message, null)
         {
         }
 
-        public ValidationException(string message, Exception innerEx) 
+        public ValidationException(string message, List<ValidationFailure> failures)
+            : this(message, failures, null)
+        {
+
+        }
+
+        public ValidationException(string message, List<ValidationFailure> failures, Exception innerEx) 
             : base(message, innerEx)
         {
+            _failures = failures;
         }
     }
 
