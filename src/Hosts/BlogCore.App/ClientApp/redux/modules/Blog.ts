@@ -1,7 +1,8 @@
 import { Action, Reducer } from "redux";
 import { AxiosInstance } from "axios";
 
-const BLOGS_PUBLIC_RESOURCE = "/public/api/blogs";
+const BLOGS_PUBLIC_URL = `/public/api/blogs`;
+const BLOGS_URL = `/api/blogs`;
 
 export type Blog = {
   id: string;
@@ -9,6 +10,9 @@ export type Blog = {
   description?: string;
   theme?: number;
   image?: string;
+  postsPerPage: number;
+  daysToComment: number;
+  moderateComments: boolean;
 };
 
 export interface BlogState {
@@ -27,7 +31,7 @@ interface LoadBlogAction {
 }
 
 interface LoadBlogSuccessAction {
-  type: "LOAD_BLOGS_SUCCESS";
+  type: "LOAD_BLOGS_SUCCESSED";
   data: any;
   page: number;
 }
@@ -37,29 +41,47 @@ interface LoadBlogFailedAction {
   error: any;
 }
 
-interface AddNewBlogAction {
-  type: "ADD_NEW_BLOG";
+interface AddBlogAction {
+  type: "ADD_BLOG";
 }
 
-interface AddNewBlogSuccessAction {
-  type: "ADD_NEW_BLOG_SUCCESS";
+interface AddBlogSuccessAction {
+  type: "ADD_BLOG_SUCCESSED";
   data: any;
-  page: number;
 }
 
-interface AddNewBlogFailedAction {
-  type: "ADD_NEW_BLOG_FAILED";
+interface AddBlogFailedAction {
+  type: "ADD_BLOG_FAILED";
+  error: any;
+}
+
+interface DeleteBlogAction {
+  type: "DELETE_BLOG";
+}
+
+interface DeleteBlogSuccessAction {
+  type: "DELETE_BLOG_SUCCESSED";
+  id: string;
+}
+
+interface DeleteBlogFailedAction {
+  type: "DELETE_BLOG_FAILED";
   error: any;
 }
 
 interface LoadBlogWrapperAction {
-  types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESS", "LOAD_BLOGS_FAILED"];
+  types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"];
   promise: any;
   page: number;
 }
 
-interface AddNewBlogWrapperAction {
-  types: ["ADD_NEW_BLOG", "ADD_NEW_BLOG_SUCCESS", "ADD_NEW_BLOG_FAILED"];
+interface AddBlogWrapperAction {
+  types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"];
+  promise: any;
+}
+
+interface DeleteBlogWrapperAction {
+  types: ["DELETE_BLOG", "DELETE_BLOG_SUCCESSED", "DELETE_BLOG_FAILED"];
   promise: any;
 }
 
@@ -67,23 +89,31 @@ type KnownAction =
   | LoadBlogAction
   | LoadBlogSuccessAction
   | LoadBlogFailedAction
-  | AddNewBlogAction
-  | AddNewBlogSuccessAction
-  | AddNewBlogFailedAction;
+  | AddBlogAction
+  | AddBlogSuccessAction
+  | AddBlogFailedAction
+  | DeleteBlogAction
+  | DeleteBlogSuccessAction
+  | DeleteBlogFailedAction;
 
 export const actionCreators = {
   getBlogsByPage: (pageNumber: number) =>
     <LoadBlogWrapperAction>{
-      types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESS", "LOAD_BLOGS_FAILED"],
+      types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"],
       promise: (client: AxiosInstance) =>
-        client.get(`${BLOGS_PUBLIC_RESOURCE}?page=${pageNumber + 1}`),
+        client.get(`${BLOGS_PUBLIC_URL}?page=${pageNumber + 1}`),
       page: pageNumber
     },
-  addNewBlog: (blog: any) =>
-    <AddNewBlogWrapperAction>{
-      types: ["ADD_NEW_BLOG", "ADD_NEW_BLOG_SUCCESS", "ADD_NEW_BLOG_FAILED"],
+  addBlog: (blog: any) =>
+    <AddBlogWrapperAction>{
+      types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"],
+      promise: (client: AxiosInstance) => client.post(BLOGS_URL, blog)
+    },
+  deleteBlog: (blogId: string) =>
+    <DeleteBlogWrapperAction>{
+      types: ["DELETE_BLOG", "DELETE_BLOG_SUCCESSED", "DELETE_BLOG_FAILED"],
       promise: (client: AxiosInstance) =>
-        client.post(`${BLOGS_PUBLIC_RESOURCE}`, blog)
+        client.delete(`${BLOGS_URL}/${blogId}`)
     }
 };
 
@@ -97,7 +127,8 @@ export const reducer: Reducer<BlogState> = (
         ...state,
         loading: true
       };
-    case "LOAD_BLOGS_SUCCESS":
+
+    case "LOAD_BLOGS_SUCCESSED":
       const blogs = action.data.items;
       return {
         ...state,
@@ -111,6 +142,7 @@ export const reducer: Reducer<BlogState> = (
         page: action.page || 0,
         totalPages: action.data.totalPages
       };
+
     case "LOAD_BLOGS_FAILED":
       return {
         ...state,
@@ -122,23 +154,43 @@ export const reducer: Reducer<BlogState> = (
         page: 0
       };
 
-    case "ADD_NEW_BLOG":
+    case "ADD_BLOG":
       return {
         ...state,
         loading: true
       };
 
-    case "ADD_NEW_BLOG_SUCCESS":
+    case "ADD_BLOG_SUCCESSED":
       const newBlog = action.data.item as Blog;
+      console.info(newBlog);
       return {
         ...state,
-        ids: state.ids.push(newBlog.id),
-        // TODO: blogByIds: state.blogByIds.push({ newBlog.id:  })
         loading: false,
         loaded: true
       };
 
-    case "ADD_NEW_BLOG_FAILED":
+    case "ADD_BLOG_FAILED":
+      return {
+        ...state,
+        error: action.error,
+        loaded: true,
+        loading: false
+      };
+
+    case "DELETE_BLOG":
+      return {
+        ...state,
+        loading: true
+      };
+
+    case "DELETE_BLOG_SUCCESSED":
+      return {
+        ...state,
+        loading: false,
+        loaded: true
+      };
+
+    case "DELETE_BLOG_FAILED":
       return {
         ...state,
         error: action.error,

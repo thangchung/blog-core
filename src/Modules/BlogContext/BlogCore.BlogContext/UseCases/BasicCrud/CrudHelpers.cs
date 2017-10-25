@@ -41,7 +41,9 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
             // create new instance using reflection
             var createType = typeof(TCreateItemResponse).GetTypeInfo();
-            var createInstance = Activator.CreateInstance(createType, new object[] { entity.Id });
+
+            //TODO: should use automapper here to projection data
+            var createInstance = Activator.CreateInstance(createType, new object[] { entity });
             var instanceCreated = (TCreateItemResponse)createInstance;
 
             return await Task.FromResult(instanceCreated);

@@ -28,8 +28,10 @@ export default (store: any) => (next: any) => (action: any) => {
   const actionPromise: any = promise(client);
   actionPromise
     .then(
-      (result: any) =>
-        next({ ...rest, ...camelizeKeys(result), type: SUCCESS }),
+      (result: any) => {
+        console.log({ ...rest, ...camelizeKeys(result), type: SUCCESS });
+        return next({ ...rest, ...camelizeKeys(result), type: SUCCESS })
+      },
       (error: any) => next({ ...rest, error, type: FAILURE })
     )
     .catch((error: any) => {

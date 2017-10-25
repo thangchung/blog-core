@@ -2,13 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Link, RouteProps, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardBlock,
-  Button
-} from "reactstrap";
+import { Card, CardHeader, CardFooter, CardBlock, Button } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
@@ -21,11 +15,25 @@ type BlogProps = BlogStore.BlogState &
 class BlogManagement extends React.Component<BlogProps, any> {
   constructor(props: BlogProps) {
     super(props);
+
     this.addRow = this.addRow.bind(this);
+    this.editBlog = this.editBlog.bind(this);
+    this.deleteBlog = this.deleteBlog.bind(this);
   }
 
   public addRow(): any {
     this.props.history.replace("/admin/new-blog");
+  }
+
+  public editBlog(blog: any): void {
+    console.log(blog);
+  }
+
+  public deleteBlog(id: string): void {
+    console.info(`DELETE ITEM #${id}`);
+    this.props.deleteBlog(id);
+    this.props.getBlogsByPage(this.props.page);
+    this.props.history.replace("/admin/blogs");
   }
 
   render(): JSX.Element {
@@ -36,8 +44,11 @@ class BlogManagement extends React.Component<BlogProps, any> {
         ids={this.props.ids}
         blogByIds={this.props.blogByIds}
         getBlogsByPage={this.props.getBlogsByPage}
+        deleteBlog={this.deleteBlog}
+        editBlog={this.editBlog}
       />
     );
+
     return (
       <div className="animated fadeIn">
         <Card className="b-panel">

@@ -1,14 +1,115 @@
 import * as React from "react";
-import {
-  ButtonGroup,
-  Button
-} from "reactstrap";
+import { ButtonGroup, Button } from "reactstrap";
 
 // ignore TS because react-table doesn't support TS correctly
 const ReactTable: any = require("react-table").default;
 
-export default class BlogTable extends React.Component<any, any> {
-  constructor(props: any) {
+export interface BlogTableProps {
+  totalPages: number;
+  loading: boolean;
+  ids: any;
+  blogByIds: any;
+  getBlogsByPage(page: number): void;
+  deleteBlog(id: string): void;
+  editBlog(blog: any): void;
+}
+
+const columnsRender = (
+  selectAll: number,
+  selected: any = {},
+  toggleSelectAll: () => void,
+  toggleRow: (id: string) => void,
+  editBlog: (original: any) => void,
+  deleteBlog: (id: string) => void
+): any => {
+  return [
+    {
+      id: "checkbox",
+      accessor: "",
+      Header: (x: any) => {
+        return (
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={selectAll === 1}
+            ref={input => {
+              if (input) {
+                input.indeterminate = selectAll === 2;
+              }
+            }}
+            onChange={() => toggleSelectAll()}
+          />
+        );
+      },
+      Cell: ({ original }: any) => {
+        return (
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={selected[original.id] === true}
+            onChange={() => toggleRow(original.id)}
+          />
+        );
+      },
+      filterable: false,
+      sortable: false,
+      width: 45
+    },
+    {
+      Header: "Id",
+      accessor: "id",
+      show: false
+    },
+    {
+      Header: "Title",
+      accessor: "title"
+    },
+    {
+      Header: "Description",
+      accessor: "description"
+    },
+    {
+      Header: "Theme",
+      accessor: "theme",
+      Cell: (row: any) => (
+        <span>
+          <span
+            style={{
+              color: row.value == 1 ? "#57d500" : "#ff2e00",
+              transition: "all .3s ease"
+            }}
+          >
+            &#x25cf;
+          </span>{" "}
+          {row.value == 1 ? "Default" : "Any"}
+        </span>
+      )
+    },
+    {
+      Cell: ({ original }: any) => {
+        return (
+          <div>
+            <ButtonGroup>
+              <a onClick={() => editBlog(original)}>
+                <i className="icon-notebook" />
+              </a>
+              <a onClick={() => deleteBlog(original.id)}>
+                <i className="icon-trash" />
+              </a>
+            </ButtonGroup>
+          </div>
+        );
+      },
+      filterable: false,
+      sortable: false,
+      width: 50
+    }
+  ];
+};
+
+// reference at https://codepen.io/aaronschwartz/pen/WOOPRw?editors=0010
+export default class BlogTable extends React.Component<BlogTableProps, any> {
+  constructor(props: BlogTableProps) {
     super(props);
 
     this.state = {
@@ -21,8 +122,7 @@ export default class BlogTable extends React.Component<any, any> {
 
     // event for checkbox in the table
     this.toggleRow = this.toggleRow.bind(this);
-    this.editRow = this.editRow.bind(this);
-    this.deleteRow = this.deleteRow.bind(this);
+    this.toggleSelectAll = this.toggleSelectAll.bind(this);
   }
 
   fetchData(state: any, instance: any): void {
@@ -52,81 +152,15 @@ export default class BlogTable extends React.Component<any, any> {
     });
   }
 
-  public editRow(blog: any): void {
-    console.log(blog);
-  }
-
-  public deleteRow(id: string): void {
-    console.log(id);
-  }
-
   public render(): JSX.Element {
-    // reference at https://codepen.io/aaronschwartz/pen/WOOPRw?editors=0010
-    const columns: any = [
-      {
-        id: "checkbox",
-        accessor: "",
-        Header: (x: any) => {
-          return (
-            <input
-              type="checkbox"
-              className="checkbox"
-              checked={this.state.selectAll === 1}
-              ref={input => {
-                if (input) {
-                  input.indeterminate = this.state.selectAll === 2;
-                }
-              }}
-              onChange={() => this.toggleSelectAll()}
-            />
-          );
-        },
-        Cell: ({ original }: any) => {
-          return (
-            <input
-              type="checkbox"
-              className="checkbox"
-              checked={this.state.selected[original.id] === true}
-              onChange={() => this.toggleRow(original.id)}
-            />
-          );
-        },
-        filterable: false,
-        sortable: false,
-        width: 45
-      },
-      {
-        Header: "Id",
-        accessor: "id"
-      },
-      {
-        Header: "Title",
-        accessor: "title"
-      },
-      {
-        Header: "Description",
-        accessor: "description"
-      },
-      {
-        Cell: ({ original }: any) => {
-          return (
-            <div>
-              <ButtonGroup>
-                <a onClick={() => this.editRow(original)}>
-                  <i className="icon-notebook" />
-                </a>
-                <a onClick={() => this.deleteRow(original.id)}>
-                  <i className="icon-trash" />
-                </a>
-              </ButtonGroup>
-            </div>
-          );
-        },
-        filterable: false,
-        sortable: false,
-        width: 50
-      }
-    ];
+    const columns: any = columnsRender(
+      this.state.selectAll,
+      this.state.selected,
+      this.toggleSelectAll,
+      this.toggleRow,
+      this.props.editBlog,
+      this.props.deleteBlog
+    );
 
     const data = this.props.ids.map((id: string, idx: number) => {
       return this.props.blogByIds[id];
@@ -141,6 +175,12 @@ export default class BlogTable extends React.Component<any, any> {
         defaultPageSize={5}
         showPageSizeOptions={false}
         filterable
+        defaultSorted={[
+          {
+            id: "title",
+            desc: true
+          }
+        ]}
         pages={this.props.totalPages}
         loading={this.props.loading}
         onFetchData={this.fetchData}

@@ -22,7 +22,7 @@ type AddNewBlogFormProps = FormProps<BlogStore.Blog, any, any> &
   typeof BlogStore.actionCreators &
   RouteComponentProps<any>;
 
-class AddNewBlogForm extends React.Component<AddNewBlogFormProps, {}> {
+class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
   render(): JSX.Element {
     const { error, handleSubmit, pristine, reset, submitting } = this.props;
     return (
@@ -46,6 +46,34 @@ class AddNewBlogForm extends React.Component<AddNewBlogFormProps, {}> {
                 <Field
                   placeholder="Description"
                   name="description"
+                  component={FormInput}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="theme">Theme</Label>
+                <Field placeholder="Theme" name="theme" component={FormInput} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="postsPerPage">Posts per page</Label>
+                <Field
+                  placeholder="Posts per page"
+                  name="postsPerPage"
+                  component={FormInput}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="daysToComment">Days to comment</Label>
+                <Field
+                  placeholder="Days to comment"
+                  name="daysToComment"
+                  component={FormInput}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="moderateComments">Moderate comments</Label>
+                <Field
+                  placeholder="Moderate comments"
+                  name="moderateComments"
                   component={FormInput}
                 />
               </FormGroup>
@@ -86,19 +114,49 @@ const validate = (
   const errors: FormErrors<BlogStore.Blog> = {};
   if (!values.title) {
     errors.title = "Required.";
-  } else if (values.title.length > 10) {
+  } else if (values.title.length > 30) {
     errors.title = "Too long.";
+  }
+
+  if (!values.theme) {
+    errors.theme = "Required.";
+  } else if (values.theme != 1) {
+    errors.theme = "Only supports default theme (1).";
+  }
+
+  if (!values.postsPerPage) {
+    errors.postsPerPage = "Required.";
+  }
+
+  if (!values.daysToComment) {
+    errors.daysToComment = "Required.";
+  }
+
+  if (!values.moderateComments) {
+    errors.moderateComments = "Required.";
   }
 
   return errors;
 };
 
-export default connect(null, BlogStore.actionCreators)(
+const initData: any = (state: any) => ({
+  initialValues: {
+    title: "sample title",
+    description: "sample description",
+    theme: 1,
+    postsPerPage: 10,
+    daysToComment: 5,
+    moderateComments: true
+  }
+});
+
+export default connect(initData, BlogStore.actionCreators)(
   reduxForm<Readonly<BlogStore.Blog>, AddNewBlogFormProps>({
     form: "addNewBlogForm",
     validate,
-    onSubmit: (values, dispatch, props) => {
-      props.addNewBlog(values);
+    onSubmit: (values: any, dispatch: any, props: any) => {
+      props.addBlog(values);
+      props.history.replace("/admin/blogs");
     }
   })(AddNewBlogForm)
 );

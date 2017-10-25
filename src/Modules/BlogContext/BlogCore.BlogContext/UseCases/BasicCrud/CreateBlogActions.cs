@@ -33,13 +33,13 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
     public class CreateBlogResponse
     {
-        public CreateBlogResponse(Guid blogId)
+        public CreateBlogResponse(Core.Domain.Blog blog)
         {
-            BlogId = blogId;
+            Item = blog;
         }
 
         public ValidationResult ValidationResult { get; }
-        public Guid BlogId { get; }
+        public Core.Domain.Blog Item { get; }
     }
 
     public class CreateBlogRequestValidator : AbstractValidator<CreateBlogRequest>

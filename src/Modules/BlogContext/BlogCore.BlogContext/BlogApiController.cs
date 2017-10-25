@@ -66,10 +66,10 @@ namespace BlogCore.BlogContext
 
         // [Authorize(Roles = "Admin")]
         [AllowAnonymous]
-        [HttpDelete]
-        public async Task<DeleteBlogResponse> Delete([FromBody] DeleteBlogRequest request)
+        [HttpDelete("{id:guid}")]
+        public async Task<DeleteBlogResponse> Delete(Guid id)
         {
-            return await _deleteItemHandler.ProcessAsync(request);
+            return await _deleteItemHandler.ProcessAsync(new DeleteBlogRequest { Id = id });
         }
     }
 }
