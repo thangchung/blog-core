@@ -16,14 +16,14 @@ namespace BlogCore.Migrator.Migrations.BlogContextDb
                 schema: "blog",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BlogSettingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DaysToComment = table.Column<int>(type: "int", nullable: false),
                     ModerateComments = table.Column<bool>(type: "bit", nullable: false),
                     PostsPerPage = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BlogSettings", x => x.Id);
+                    table.PrimaryKey("PK_BlogSettings", x => x.BlogSettingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,7 +48,7 @@ namespace BlogCore.Migrator.Migrations.BlogContextDb
                         column: x => x.BlogSettingId,
                         principalSchema: "blog",
                         principalTable: "BlogSettings",
-                        principalColumn: "Id",
+                        principalColumn: "BlogSettingId",
                         onDelete: ReferentialAction.Cascade);
                 });
 

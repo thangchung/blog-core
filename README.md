@@ -2,9 +2,9 @@
 
 > The project is under implementation phrase so that there are a lot of changes.
 
-### Clean Architecture with modular pattern
+### How to start
 
-The article is on Code Project, you can see more at [Applying clean architecture on web application with modular pattern](https://www.codeproject.com/Articles/1210984/Applying-clean-architecture-on-web-application-wit)
+The article is on Code Project, you can see more at [How to Organize CLEAN ARCHITECTURE to Modular Patterns in 10 Minutes](https://weblogs.asp.net/thangchung/how-to-organize-clean-architecture-to-modular-patterns-in-10-minutes)
 
 ### Bootstrap the application
 

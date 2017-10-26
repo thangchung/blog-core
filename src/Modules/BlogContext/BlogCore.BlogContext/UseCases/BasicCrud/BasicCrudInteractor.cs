@@ -8,7 +8,6 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using static BlogCore.BlogContext.UseCases.BasicCrud.CrudHelpers;
 
 namespace BlogCore.BlogContext.UseCases.BasicCrud
 {
@@ -44,77 +43,102 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
         public async Task<CreateBlogResponse> ProcessAsync(CreateBlogRequest request)
         {
-            return await CreateItemProcessAsync<Core.Domain.Blog, CreateBlogRequest, CreateBlogResponse>(
-                    _mediator,
-                    request,
-                    _createItemValidator,
-                    (async r =>
-                    {
-                        var blog = Core.Domain.Blog.CreateInstance(r.Title, "dummyAuthor")
-                            .ChangeDescription(r.Description)
-                            .ChangeSetting(
-                                new BlogSetting(
-                                    IdHelper.GenerateId(),
-                                    r.PostsPerPage,
-                                    r.DaysToComment,
-                                    r.ModerateComments));
-                        var blogCreated = await _blogRepository.AddAsync(blog);
-                        return await Task.FromResult(blogCreated);
-                    }));
+            await _createItemValidator.ValidateRequestAsync(request);
+
+            return await _blogRepository.CreateItemProcessAsync(
+                request,
+                (requested =>
+                {
+                    return Core.Domain.Blog.CreateInstance(requested.Title, "dummyAuthor")
+                        .ChangeDescription(requested.Description)
+                        .ChangeSetting(
+                            new BlogSetting(
+                                IdHelper.GenerateId(),
+                                requested.PostsPerPage,
+                                requested.DaysToComment,
+                                requested.ModerateComments));
+                }),
+                (blogCreated) =>
+                {
+                    return new CreateBlogResponse(blogCreated);
+                },
+                async (blogCreated) =>
+                {
+                    await _mediator.RaiseEventAsync(blogCreated);
+                });
         }
 
         public async Task<PaginatedItem<RetrieveBlogsResponse>> ProcessAsync(RetrieveBlogsRequest request)
         {
-            return await RetrieveItemsProcessAsync(
-                    _blogRepository,
-                    _pagingOption,
-                    request,
-                    b => new RetrieveBlogsResponse(
-                        b.Id,
-                        b.Title,
-                        b.Description,
-                        b.ImageFilePath,
-                        (int)b.Theme)
-                );
+            return await _blogRepository.RetrieveItemsProcessAsync(
+                _pagingOption,
+                request,
+                b => new RetrieveBlogsResponse(
+                    b.Id,
+                    b.Title,
+                    b.Description,
+                    b.ImageFilePath,
+                    (int)b.Theme)
+            );
         }
 
         public async Task<RetrieveBlogResponse> ProcessAsync(RetrieveBlogRequest request)
         {
-            return await RetrieveItemProcessAsync(_blogRepository, request.Id, blog =>
-                new RetrieveBlogResponse(
-                blog.Id,
-                blog.Title,
-                blog.Description,
-                (int)blog.Theme,
-                blog.ImageFilePath)
+            return await _blogRepository.RetrieveItemProcessAsync(
+                request.Id,
+                blog =>
+                    new RetrieveBlogResponse(
+                    blog.Id,
+                    blog.Title,
+                    blog.Description,
+                    (int)blog.Theme,
+                    blog.ImageFilePath)
             );
         }
 
         public async Task<UpdateBlogResponse> ProcessAsync(UpdateBlogRequest request)
         {
-            return await UpdateItemProcessAsync(_blogRepository, request.Id,
-                (blog) =>
+            await _updateItemValidator.ValidateRequestAsync(request);
+
+            return await _blogRepository.UpdateItemProcessAsync(
+                request.Id,
+                (updateBlog) =>
                 {
-                    return blog.ChangeTitle(request.Title)
+                    return updateBlog.ChangeTitle(request.Title)
                         .ChangeDescription(request.Description)
                         .ChangeTheme((Theme)request.Theme);
                 },
-                (blog) =>
+                (blogUpdated) =>
                 {
                     return new UpdateBlogResponse
                     {
-                        Id = blog.Id,
-                        Title = blog.Title,
-                        Description = blog.Description,
-                        Theme = (int)blog.Theme
+                        Id = blogUpdated.Id,
+                        Title = blogUpdated.Title,
+                        Description = blogUpdated.Description,
+                        Theme = (int)blogUpdated.Theme
                     };
-                });
+                },
+                async (blogUpdated) =>
+                {
+                    await _mediator.RaiseEventAsync(blogUpdated);
+                },
+                x => x.BlogSetting);
         }
 
         public async Task<DeleteBlogResponse> ProcessAsync(DeleteBlogRequest request)
         {
-            return await DeleteItemProcessAsync<BlogDbContext, Core.Domain.Blog, DeleteBlogResponse>(
-                _blogRepository, request.Id);
+            await _deleteItemValidator.ValidateRequestAsync(request);
+
+            return await _blogRepository.DeleteItemProcessAsync(
+                request.Id,
+                (blog) =>
+                {
+                    return new DeleteBlogResponse(blog.Id);
+                },
+                async (blogDeleted) =>
+                {
+                    await _mediator.RaiseEventAsync(blogDeleted);
+                });
         }
     }
 }

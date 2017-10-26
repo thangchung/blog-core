@@ -18,7 +18,7 @@ namespace BlogCore.BlogContext.UseCases.UpdateBlogSetting
 
         public async Task Handle(BlogSettingChanged notification)
         {
-            var blodSetting = await _dbContext.Set<BlogSetting>().FirstOrDefaultAsync(x => x.Id == notification.OldBlogSettingId);
+            var blodSetting = await _dbContext.Set<BlogSetting>().FirstOrDefaultAsync(x => x.BlogSettingId == notification.OldBlogSettingId);
             if (blodSetting == null)
             {
                 throw new CoreException($"Could not found the BlogSetting #{notification.OldBlogSettingId}");

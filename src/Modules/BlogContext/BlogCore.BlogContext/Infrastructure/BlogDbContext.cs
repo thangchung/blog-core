@@ -13,7 +13,7 @@ namespace BlogCore.BlogContext.Infrastructure
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
             var entityTypes = new List<Type>
             {
@@ -25,7 +25,7 @@ namespace BlogCore.BlogContext.Infrastructure
                 typeof(BlogSetting)
             };
 
-            base.OnModelCreating(modelBuilder.RegisterTypes(entityTypes, valueTypes, "blog", "blog"));
+            base.OnModelCreating(builder.RegisterTypes(entityTypes, valueTypes, "blog", "blog"));
         }
     }
 }

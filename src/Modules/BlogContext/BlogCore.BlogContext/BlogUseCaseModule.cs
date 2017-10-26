@@ -17,8 +17,8 @@ namespace BlogCore.BlogContext
 
             builder.Register(x =>
                 DbContextHelper.BuildDbContext<BlogDbContext>(
-                    x.ResolveKeyed<string>("MainDbConnectionString")))
-                .SingleInstance();
+                    x.ResolveKeyed<string>("MainDbConnectionString")));
+                // .SingleInstance();
 
             builder.RegisterType<CreateBlogRequestValidator>()
                 .As<IValidator<CreateBlogRequest>>();

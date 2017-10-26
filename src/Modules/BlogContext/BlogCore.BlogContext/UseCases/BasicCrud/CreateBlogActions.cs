@@ -1,10 +1,9 @@
 ﻿using BlogCore.Infrastructure.UseCase;
 using FluentValidation;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlogCore.BlogContext.UseCases.BasicCrud
-{  
+{
     public class CreateBlogRequest : IRequest<CreateBlogResponse>
     {
         public CreateBlogRequest(

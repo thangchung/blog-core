@@ -36,7 +36,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
                 .WithMessage("Description should be between 1 and 50 chars.");
 
             RuleFor(x => x.Theme)
-                .Must(x => x != 1)
+                .Must(x => x == 1)
                 .WithMessage("Theme should be 1.");
         }
     }

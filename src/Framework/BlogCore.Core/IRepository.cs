@@ -7,14 +7,10 @@ namespace BlogCore.Core
 {
     public interface IRepository<TEntity> where TEntity : EntityBase
     {
-        Task<TEntity> GetByIdAsync(Guid id);
-        Task<IReadOnlyList<TEntity>> ListAsync();
+        Task<TEntity> GetByIdAsync(Guid id, params Expression<Func<TEntity, object>>[] includeProperties);
+        Task<IReadOnlyList<TEntity>> ListAsync(params Expression<Func<TEntity, object>>[] includeProperties);
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TEntity entity);
-        Task<Guid> DeleteAsync(TEntity entity);
-        IObservable<PaginatedItem<TEntity>> ListStream(
-            Expression<Func<TEntity, bool>> filter = null, 
-            Criterion criterion = null, 
-            params Expression<Func<TEntity, object>>[] includeProperties);
+        Task<TEntity> DeleteAsync(TEntity entity);
     }
 }

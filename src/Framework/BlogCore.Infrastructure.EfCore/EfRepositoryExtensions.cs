@@ -10,6 +10,52 @@ namespace BlogCore.Infrastructure.EfCore
 {
     public static class EfRepositoryExtensions
     {
+        public static IObservable<PaginatedItem<TEntity>> ListStream<TDbContext, TEntity>(
+            this IEfRepository<TDbContext, TEntity> repo,
+            Expression<Func<TEntity, bool>> filter = null,
+            Criterion criterion = null,
+            params Expression<Func<TEntity, object>>[] includeProperties)
+            where TDbContext : DbContext
+            where TEntity : EntityBase
+        {
+            if (criterion.PageSize < 1 || criterion.PageSize > criterion.DefaultPagingOption.PageSize)
+            {
+                criterion.SetPageSize(criterion.DefaultPagingOption.PageSize);
+            }
+
+            var queryable = repo.DbContext.Set<TEntity>().AsNoTracking() as IQueryable<TEntity>;
+            var totalRecord = queryable.Count();
+            var totalPages = (int)Math.Ceiling((double)totalRecord / criterion.PageSize);
+
+            foreach (var includeProperty in includeProperties)
+            {
+                queryable = queryable.Include(includeProperty);
+            }
+
+            IQueryable<TEntity> criterionQueryable = null;
+            if (criterion != null && filter != null)
+            {
+                criterionQueryable = queryable.Skip(criterion.CurrentPage * criterion.PageSize)
+                    .Take(criterion.PageSize)
+                    .Where(filter);
+            }
+            else if (criterion == null)
+            {
+                criterionQueryable = queryable.Skip(criterion.CurrentPage * criterion.PageSize)
+                    .Take(criterion.PageSize);
+            }
+            else if (filter == null)
+            {
+                criterionQueryable = queryable.Where(filter);
+            }
+
+            return Observable.FromAsync(async () =>
+                new PaginatedItem<TEntity>(
+                    totalRecord,
+                    totalPages,
+                    await criterionQueryable.ToListAsync()));
+        }
+
         public static async Task<PaginatedItem<TResponse>> QueryAsync<TDbContext, TEntity, TResponse>(
             this IEfRepository<TDbContext, TEntity> repo,
             Criterion criterion,

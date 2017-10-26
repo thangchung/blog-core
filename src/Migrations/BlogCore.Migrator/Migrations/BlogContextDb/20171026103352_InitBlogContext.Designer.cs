@@ -12,7 +12,7 @@ using System;
 namespace BlogCore.Migrator.Migrations.BlogContextDb
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20171014100424_InitBlogContext")]
+    [Migration("20171026103352_InitBlogContext")]
     partial class InitBlogContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace BlogCore.Migrator.Migrations.BlogContextDb
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BlogCore.BlogContext.Domain.Blog", b =>
+            modelBuilder.Entity("BlogCore.BlogContext.Core.Domain.Blog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -51,9 +51,9 @@ namespace BlogCore.Migrator.Migrations.BlogContextDb
                     b.ToTable("Blogs","blog");
                 });
 
-            modelBuilder.Entity("BlogCore.BlogContext.Domain.BlogSetting", b =>
+            modelBuilder.Entity("BlogCore.BlogContext.Core.Domain.BlogSetting", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("BlogSettingId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("DaysToComment");
@@ -62,14 +62,14 @@ namespace BlogCore.Migrator.Migrations.BlogContextDb
 
                     b.Property<int>("PostsPerPage");
 
-                    b.HasKey("Id");
+                    b.HasKey("BlogSettingId");
 
                     b.ToTable("BlogSettings","blog");
                 });
 
-            modelBuilder.Entity("BlogCore.BlogContext.Domain.Blog", b =>
+            modelBuilder.Entity("BlogCore.BlogContext.Core.Domain.Blog", b =>
                 {
-                    b.HasOne("BlogCore.BlogContext.Domain.BlogSetting", "BlogSetting")
+                    b.HasOne("BlogCore.BlogContext.Core.Domain.BlogSetting", "BlogSetting")
                         .WithMany()
                         .HasForeignKey("BlogSettingId")
                         .OnDelete(DeleteBehavior.Cascade);

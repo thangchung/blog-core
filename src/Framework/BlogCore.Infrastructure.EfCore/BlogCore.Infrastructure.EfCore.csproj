@@ -13,10 +13,13 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+    <PackageReference Include="MediatR" Version="3.0.1" />
+    <PackageReference Include="FluentValidation" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BlogCore.Core\BlogCore.Core.csproj" />
+    <ProjectReference Include="..\BlogCore.Infrastructure\BlogCore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
