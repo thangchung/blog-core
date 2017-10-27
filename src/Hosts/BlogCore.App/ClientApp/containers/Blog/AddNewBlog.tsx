@@ -1,7 +1,7 @@
 import * as React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, FormProps, FormErrors } from "redux-form";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import { RouteComponentProps } from "react-router-dom";
 import {
   Card,
@@ -18,7 +18,7 @@ import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
 import { FormInput } from "../../components";
 
-type AddNewBlogFormProps = FormProps<BlogStore.Blog, any, any> &
+type AddNewBlogFormProps = InjectedFormProps<BlogStore.Blog, any> &
   typeof BlogStore.actionCreators &
   RouteComponentProps<any>;
 

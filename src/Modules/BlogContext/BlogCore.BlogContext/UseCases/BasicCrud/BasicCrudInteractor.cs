@@ -45,7 +45,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
         {
             await _createItemValidator.ValidateRequestAsync(request);
 
-            return await _blogRepository.CreateItemProcessAsync(
+            return await _blogRepository.CreateItemFlowAsync(
                 request,
                 (requested =>
                 {
@@ -70,7 +70,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
         public async Task<PaginatedItem<RetrieveBlogsResponse>> ProcessAsync(RetrieveBlogsRequest request)
         {
-            return await _blogRepository.RetrieveItemsProcessAsync(
+            return await _blogRepository.RetrieveListItemFlowAsync(
                 _pagingOption,
                 request,
                 b => new RetrieveBlogsResponse(
@@ -84,7 +84,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 
         public async Task<RetrieveBlogResponse> ProcessAsync(RetrieveBlogRequest request)
         {
-            return await _blogRepository.RetrieveItemProcessAsync(
+            return await _blogRepository.RetrieveItemFlowAsync(
                 request.Id,
                 blog =>
                     new RetrieveBlogResponse(
@@ -100,7 +100,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
         {
             await _updateItemValidator.ValidateRequestAsync(request);
 
-            return await _blogRepository.UpdateItemProcessAsync(
+            return await _blogRepository.UpdateItemFlowAsync(
                 request.Id,
                 (updateBlog) =>
                 {
@@ -129,7 +129,7 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
         {
             await _deleteItemValidator.ValidateRequestAsync(request);
 
-            return await _blogRepository.DeleteItemProcessAsync(
+            return await _blogRepository.DeleteItemFlowAsync(
                 request.Id,
                 (blog) =>
                 {

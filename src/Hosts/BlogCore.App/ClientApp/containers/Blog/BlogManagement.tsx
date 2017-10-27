@@ -37,12 +37,15 @@ class BlogManagement extends React.Component<BlogProps, any> {
   }
 
   render(): JSX.Element {
+    const blogs = this.props.ids.map((id: string, idx: number) => {
+      return this.props.blogByIds[id];
+    });
+
     var table = (
       <BlogTable
         totalPages={this.props.totalPages}
         loading={this.props.loading}
-        ids={this.props.ids}
-        blogByIds={this.props.blogByIds}
+        blogs={blogs}
         getBlogsByPage={this.props.getBlogsByPage}
         deleteBlog={this.deleteBlog}
         editBlog={this.editBlog}

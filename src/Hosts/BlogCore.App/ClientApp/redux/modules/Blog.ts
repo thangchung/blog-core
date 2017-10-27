@@ -55,6 +55,20 @@ interface AddBlogFailedAction {
   error: any;
 }
 
+interface UpdateBlogAction {
+  type: "UPDATE_BLOG";
+}
+
+interface UpdateBlogSuccessAction {
+  type: "UPDATE_BLOG_SUCCESSED";
+  data: any;
+}
+
+interface UpdateBlogFailedAction {
+  type: "UPDATE_BLOG_FAILED";
+  error: any;
+}
+
 interface DeleteBlogAction {
   type: "DELETE_BLOG";
 }
@@ -80,6 +94,11 @@ interface AddBlogWrapperAction {
   promise: any;
 }
 
+interface UpdateBlogWrapperAction {
+  types: ["UPDATE_BLOG", "UPDATE_BLOG_SUCCESSED", "UPDATE_BLOG_FAILED"];
+  promise: any;
+}
+
 interface DeleteBlogWrapperAction {
   types: ["DELETE_BLOG", "DELETE_BLOG_SUCCESSED", "DELETE_BLOG_FAILED"];
   promise: any;
@@ -92,6 +111,9 @@ type KnownAction =
   | AddBlogAction
   | AddBlogSuccessAction
   | AddBlogFailedAction
+  | UpdateBlogAction
+  | UpdateBlogSuccessAction
+  | UpdateBlogFailedAction
   | DeleteBlogAction
   | DeleteBlogSuccessAction
   | DeleteBlogFailedAction;
@@ -108,6 +130,11 @@ export const actionCreators = {
     <AddBlogWrapperAction>{
       types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"],
       promise: (client: AxiosInstance) => client.post(BLOGS_URL, blog)
+    },
+  updateBlog: (blog: any) =>
+    <UpdateBlogWrapperAction>{
+      types: ["UPDATE_BLOG", "UPDATE_BLOG_SUCCESSED", "UPDATE_BLOG_FAILED"],
+      promise: (client: AxiosInstance) => client.put(BLOGS_URL, blog)
     },
   deleteBlog: (blogId: string) =>
     <DeleteBlogWrapperAction>{
@@ -170,6 +197,27 @@ export const reducer: Reducer<BlogState> = (
       };
 
     case "ADD_BLOG_FAILED":
+      return {
+        ...state,
+        error: action.error,
+        loaded: true,
+        loading: false
+      };
+
+      case "UPDATE_BLOG":
+      return {
+        ...state,
+        loading: true
+      };
+
+    case "UPDATE_BLOG_SUCCESSED":
+      return {
+        ...state,
+        loading: false,
+        loaded: true
+      };
+
+    case "UPDATE_BLOG_FAILED":
       return {
         ...state,
         error: action.error,

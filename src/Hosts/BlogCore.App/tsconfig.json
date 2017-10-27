@@ -12,6 +12,10 @@
     "lib": ["es6", "dom"],
     "types": ["webpack-env"]
   },
+  "include": [
+    "./node_modules/@types/**/*.d.ts",
+    "./ClientApp/**/*"
+  ],
   "exclude": [
       "bin",
       "node_modules"

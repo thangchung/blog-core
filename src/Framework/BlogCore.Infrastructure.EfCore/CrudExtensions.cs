@@ -17,7 +17,7 @@ namespace BlogCore.Infrastructure.EfCore
 
     public static class CrudExtensions
     {
-        public static async Task<TCreateItemResponse> CreateItemProcessAsync<TDbContext, TEntity, TCreateItemRequest, TCreateItemResponse>(
+        public static async Task<TCreateItemResponse> CreateItemFlowAsync<TDbContext, TEntity, TCreateItemRequest, TCreateItemResponse>(
             this IEfRepository<TDbContext, TEntity> repo,
             TCreateItemRequest request,
             Func<TCreateItemRequest, TEntity> mapCreateItemFunc,
@@ -33,7 +33,7 @@ namespace BlogCore.Infrastructure.EfCore
             return mapResponseFunc(entityCreated);
         }
 
-        public static async Task<PaginatedItem<TRetrieveItemsResponse>> RetrieveItemsProcessAsync<TDbContext, TEntity, TRetrieveItemsResponse>(
+        public static async Task<PaginatedItem<TRetrieveItemsResponse>> RetrieveListItemFlowAsync<TDbContext, TEntity, TRetrieveItemsResponse>(
             this IEfRepository<TDbContext, TEntity> repo,
             IOptions<PagingOption> pagingOption,
             IRetrieveItemWithPage request,
@@ -45,7 +45,7 @@ namespace BlogCore.Infrastructure.EfCore
             return await repo.QueryAsync(criterion, expr);
         }
 
-        public static async Task<TRetrieveItemResponse> RetrieveItemProcessAsync<TDbContext, TEntity, TRetrieveItemResponse>(
+        public static async Task<TRetrieveItemResponse> RetrieveItemFlowAsync<TDbContext, TEntity, TRetrieveItemResponse>(
             this IEfRepository<TDbContext, TEntity> repo, Guid id,
             Func<TEntity, TRetrieveItemResponse> mapDataFunc)
             where TEntity : EntityBase
@@ -55,7 +55,7 @@ namespace BlogCore.Infrastructure.EfCore
             return mapDataFunc(retrieved);
         }
 
-        public static async Task<TUpdateItemResponse> UpdateItemProcessAsync<TDbContext, TEntity, TUpdateItemResponse>(
+        public static async Task<TUpdateItemResponse> UpdateItemFlowAsync<TDbContext, TEntity, TUpdateItemResponse>(
             this IEfRepository<TDbContext, TEntity> repo,
             Guid id,
             Func<TEntity, TEntity> updateMappingFunc,
@@ -72,7 +72,7 @@ namespace BlogCore.Infrastructure.EfCore
             return mapResponseFunc(itemUpdated);
         }
 
-        public static async Task<TDeleteItemResponse> DeleteItemProcessAsync<TDbContext, TEntity, TDeleteItemResponse>(
+        public static async Task<TDeleteItemResponse> DeleteItemFlowAsync<TDbContext, TEntity, TDeleteItemResponse>(
             this IEfRepository<TDbContext, TEntity> repo,
             Guid id,
             Func<TEntity, TDeleteItemResponse> mapResponseFunc,

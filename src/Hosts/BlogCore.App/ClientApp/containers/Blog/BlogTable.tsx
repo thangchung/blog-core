@@ -7,8 +7,7 @@ const ReactTable: any = require("react-table").default;
 export interface BlogTableProps {
   totalPages: number;
   loading: boolean;
-  ids: any;
-  blogByIds: any;
+  blogs: any;
   getBlogsByPage(page: number): void;
   deleteBlog(id: string): void;
   editBlog(blog: any): void;
@@ -141,8 +140,8 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
   public toggleSelectAll(): void {
     let newSelected: any = {};
     if (this.state.selectAll === 0) {
-      this.props.ids.map((id: any) => {
-        newSelected[id] = true;
+      this.props.blogs.map((blog: any) => {
+        newSelected[blog.id] = true;
       });
     }
 
@@ -162,15 +161,13 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
       this.props.deleteBlog
     );
 
-    const data = this.props.ids.map((id: string, idx: number) => {
-      return this.props.blogByIds[id];
-    });
+    
 
     const table = (
       <ReactTable
         columns={columns}
         manual
-        data={data}
+        data={this.props.blogs}
         className="-striped -highlight"
         defaultPageSize={5}
         showPageSizeOptions={false}
