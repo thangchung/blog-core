@@ -1,6 +1,8 @@
 import { Action, Reducer } from "redux";
 import { AxiosInstance } from "axios";
 
+import { CALL_API } from "./../middleware/clientMiddleware";
+
 const BLOGS_PUBLIC_URL = `/public/api/blogs`;
 const BLOGS_URL = `/api/blogs`;
 
@@ -104,6 +106,11 @@ interface DeleteBlogWrapperAction {
   promise: any;
 }
 
+interface CallApiAction {
+  type: "CALL_API";
+  payload: any;
+}
+
 type KnownAction =
   | LoadBlogAction
   | LoadBlogSuccessAction
@@ -120,16 +127,22 @@ type KnownAction =
 
 export const actionCreators = {
   getBlogsByPage: (pageNumber: number) =>
-    <LoadBlogWrapperAction>{
-      types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"],
-      promise: (client: AxiosInstance) =>
-        client.get(`${BLOGS_PUBLIC_URL}?page=${pageNumber + 1}`),
-      page: pageNumber
+    <CallApiAction>{
+      type: "CALL_API",
+      payload: <LoadBlogWrapperAction>{
+        types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"],
+        promise: (client: AxiosInstance) =>
+          client.get(`${BLOGS_PUBLIC_URL}?page=${pageNumber + 1}`),
+        page: pageNumber
+      }
     },
   addBlog: (blog: any) =>
-    <AddBlogWrapperAction>{
-      types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"],
-      promise: (client: AxiosInstance) => client.post(BLOGS_URL, blog)
+    <CallApiAction>{
+      type: "CALL_API",
+      payload: <AddBlogWrapperAction>{
+        types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"],
+        promise: (client: AxiosInstance) => client.post(BLOGS_URL, blog)
+      }
     },
   updateBlog: (blog: any) =>
     <UpdateBlogWrapperAction>{
@@ -182,55 +195,15 @@ export const reducer: Reducer<BlogState> = (
       };
 
     case "ADD_BLOG":
-      return {
-        ...state,
-        loading: true
-      };
-
-    case "ADD_BLOG_SUCCESSED":
-      const newBlog = action.data.item as Blog;
-      console.info(newBlog);
-      return {
-        ...state,
-        loading: false,
-        loaded: true
-      };
-
-    case "ADD_BLOG_FAILED":
-      return {
-        ...state,
-        error: action.error,
-        loaded: true,
-        loading: false
-      };
-
-      case "UPDATE_BLOG":
-      return {
-        ...state,
-        loading: true
-      };
-
-    case "UPDATE_BLOG_SUCCESSED":
-      return {
-        ...state,
-        loading: false,
-        loaded: true
-      };
-
-    case "UPDATE_BLOG_FAILED":
-      return {
-        ...state,
-        error: action.error,
-        loaded: true,
-        loading: false
-      };
-
+    case "UPDATE_BLOG":
     case "DELETE_BLOG":
       return {
         ...state,
         loading: true
       };
 
+    case "ADD_BLOG_SUCCESSED":
+    case "UPDATE_BLOG_SUCCESSED":
     case "DELETE_BLOG_SUCCESSED":
       return {
         ...state,
@@ -238,6 +211,8 @@ export const reducer: Reducer<BlogState> = (
         loaded: true
       };
 
+    case "ADD_BLOG_FAILED":
+    case "UPDATE_BLOG_FAILED":
     case "DELETE_BLOG_FAILED":
       return {
         ...state,

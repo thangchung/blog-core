@@ -2,12 +2,19 @@ import axios, { AxiosInstance } from "axios";
 import { camelizeKeys } from "humps";
 import { globalConfig as GlobalConfig } from "./../../configs";
 
+export const CALL_API = "Call API";
+
 export default (store: any) => (next: any) => (action: any) => {
   if (typeof action === "function") {
     return action(store.dispatch, store.getState);
   }
 
-  const { promise, types, ...rest } = action; // eslint-disable-line no-redeclare
+  const { payload } = action;
+  if(!payload) {
+    return next(action);
+  }
+
+  const { promise, types, ...rest } = payload; // eslint-disable-line no-redeclare
   if (!promise) {
     return next(action);
   }
@@ -30,7 +37,7 @@ export default (store: any) => (next: any) => (action: any) => {
     .then(
       (result: any) => {
         console.log({ ...rest, ...camelizeKeys(result), type: SUCCESS });
-        return next({ ...rest, ...camelizeKeys(result), type: SUCCESS })
+        return next({ ...rest, ...camelizeKeys(result), type: SUCCESS });
       },
       (error: any) => next({ ...rest, error, type: FAILURE })
     )

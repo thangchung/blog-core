@@ -9,11 +9,12 @@ import {
   ReducersMapObject
 } from "redux";
 import thunk from "redux-thunk";
-import client from "./middleware/clientMiddleware";
 import { routerReducer, routerMiddleware } from "react-router-redux";
+import { History } from "history";
+
+import client from "./middleware/clientMiddleware";
 import * as StoreModule from "./modules";
 import { ApplicationState, reducers } from "./modules";
-import { History } from "history";
 
 export default function configureStore(
   history: History,

@@ -24,6 +24,7 @@ type AddNewBlogFormProps = InjectedFormProps<BlogStore.Blog, any> &
 
 class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
   render(): JSX.Element {
+    console.log(this.props);
     const { error, handleSubmit, pristine, reset, submitting } = this.props;
     return (
       <div className="animated fadeIn">
@@ -155,8 +156,10 @@ export default connect(initData, BlogStore.actionCreators)(
     form: "addNewBlogForm",
     validate,
     onSubmit: (values: any, dispatch: any, props: any) => {
-      props.addBlog(values);
-      props.history.replace("/admin/blogs");
+      Promise.all([
+        props.addBlog(values),
+        props.history.replace("/admin/blogs")
+      ]);
     }
   })(AddNewBlogForm)
 );
