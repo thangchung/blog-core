@@ -6,7 +6,8 @@ import { PublicLayout, FullLayout } from "./containers";
 export const routeNames: any = {
   "/admin": "Dashboard",
   "/admin/blogs": "Blogs",
-  "/admin/new-blog": "New blog"
+  "/admin/blog": "New blog",
+  "/admin/blog/1": "Update blog"
 };
 
 export const routes: any = (

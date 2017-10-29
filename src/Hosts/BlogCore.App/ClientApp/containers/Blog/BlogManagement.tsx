@@ -9,35 +9,33 @@ import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
 import BlogTable from "./BlogTable";
 
-interface RefreshPageProps {
-  refreshPage: (target: any) => void;
-}
-
 type BlogProps = BlogStore.BlogState &
   typeof BlogStore.actionCreators &
-  RefreshPageProps &
   RouteComponentProps<{ page: number }>;
 
 class BlogManagement extends React.Component<BlogProps, any> {
   constructor(props: BlogProps) {
     super(props);
-    console.log(this.props);
     this.addRow = this.addRow.bind(this);
     this.editBlog = this.editBlog.bind(this);
     this.deleteBlog = this.deleteBlog.bind(this);
   }
 
   public addRow(): any {
-    this.props.history.replace("/admin/new-blog");
+    this.props.history.replace("/admin/blog");
   }
 
   public editBlog(blog: any): void {
     console.log(blog);
+    console.info(`[BLOG] UPDATE ITEM #${blog.id}`);
+    this.props.history.replace(`/admin/blog/${blog.id}`);
   }
 
   public deleteBlog(id: string): void {
-    console.info(`DELETE ITEM #${id}`);
-    Promise.all([this.props.deleteBlog(id)]);
+    console.info(`[BLOG] DELETE ITEM #${id}`);
+    Promise.all([this.props.deleteBlog(id)]).then(result => {
+      this.props.getBlogsByPage(this.props.page);
+    });
   }
 
   render(): JSX.Element {
@@ -81,22 +79,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
   }
 }
 
-// TODO: just for referencing
-function mapDispatchToProps(
-  dispatch: Dispatch<any>
-): typeof BlogStore.actionCreators & RefreshPageProps {
-  return bindActionCreators(
-    {
-      ...BlogStore.actionCreators,
-      refreshPage: (target: any) => {
-        dispatch(target);
-      }
-    },
-    dispatch
-  );
-}
-
 export default connect(
   (state: ApplicationState) => state.blog,
-  mapDispatchToProps
+  BlogStore.actionCreators
 )(BlogManagement);

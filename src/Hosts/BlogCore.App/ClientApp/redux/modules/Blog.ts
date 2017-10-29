@@ -32,7 +32,7 @@ interface LoadBlogAction {
   type: "LOAD_BLOGS";
 }
 
-interface LoadBlogSuccessAction {
+interface LoadBlogSuccessedAction {
   type: "LOAD_BLOGS_SUCCESSED";
   data: any;
   page: number;
@@ -43,11 +43,25 @@ interface LoadBlogFailedAction {
   error: any;
 }
 
+interface LoadBlogByIdAction {
+  type: "LOAD_BLOG_BY_ID";
+}
+
+interface LoadBlogByIdSuccessedAction {
+  type: "LOAD_BLOG_BY_ID_SUCCESSED";
+  data: any;
+}
+
+interface LoadBlogByIdFailedAction {
+  type: "LOAD_BLOG_BY_ID_FAILED";
+  error: any;
+}
+
 interface AddBlogAction {
   type: "ADD_BLOG";
 }
 
-interface AddBlogSuccessAction {
+interface AddBlogSuccessedAction {
   type: "ADD_BLOG_SUCCESSED";
   data: any;
 }
@@ -61,7 +75,7 @@ interface UpdateBlogAction {
   type: "UPDATE_BLOG";
 }
 
-interface UpdateBlogSuccessAction {
+interface UpdateBlogSuccessedAction {
   type: "UPDATE_BLOG_SUCCESSED";
   data: any;
 }
@@ -75,7 +89,7 @@ interface DeleteBlogAction {
   type: "DELETE_BLOG";
 }
 
-interface DeleteBlogSuccessAction {
+interface DeleteBlogSuccessedAction {
   type: "DELETE_BLOG_SUCCESSED";
   id: string;
 }
@@ -89,6 +103,11 @@ interface LoadBlogWrapperAction {
   types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"];
   promise: any;
   page: number;
+}
+
+interface LoadBlogByIdWrapperAction {
+  types: ["LOAD_BLOG_BY_ID", "LOAD_BLOG_BY_ID_SUCCESSED", "LOAD_BLOG_BY_ID_FAILED"];
+  promise: any;
 }
 
 interface AddBlogWrapperAction {
@@ -108,16 +127,16 @@ interface DeleteBlogWrapperAction {
 
 type KnownAction =
   | LoadBlogAction
-  | LoadBlogSuccessAction
+  | LoadBlogSuccessedAction
   | LoadBlogFailedAction
   | AddBlogAction
-  | AddBlogSuccessAction
+  | AddBlogSuccessedAction
   | AddBlogFailedAction
   | UpdateBlogAction
-  | UpdateBlogSuccessAction
+  | UpdateBlogSuccessedAction
   | UpdateBlogFailedAction
   | DeleteBlogAction
-  | DeleteBlogSuccessAction
+  | DeleteBlogSuccessedAction
   | DeleteBlogFailedAction;
 
 export const actionCreators = {
@@ -129,6 +148,17 @@ export const actionCreators = {
           promise: (client: AxiosInstance) =>
             request.Blogs.loadBlogsByPage(client, pageNumber),
           page: pageNumber
+        }
+      }
+    };
+  },
+  getBlogById: (id: string) => {
+    return {
+      [CALL_API]: {
+        payload: <LoadBlogByIdWrapperAction>{
+          types: ["LOAD_BLOG_BY_ID", "LOAD_BLOG_BY_ID_SUCCESSED", "LOAD_BLOG_BY_ID_FAILED"],
+          promise: (client: AxiosInstance) =>
+            request.Blogs.loadBlogById(client, id)
         }
       }
     };

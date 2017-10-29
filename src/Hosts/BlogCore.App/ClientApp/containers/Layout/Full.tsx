@@ -21,7 +21,7 @@ export default class Full extends React.Component<any, any> {
       <Switch>
         <Route exact path={`${match.url}`} component={Dashboard} />
         <Route path={`${match.url}/blogs/:page?`} component={BlogManagement} />
-        <Route path={`${match.url}/new-blog`} component={AddNewBlog} />
+        <Route path={`${match.url}/blog/:id?`} component={AddNewBlog} />
       </Switch>
     );
 

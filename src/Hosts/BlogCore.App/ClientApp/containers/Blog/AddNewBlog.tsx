@@ -23,7 +23,29 @@ type AddNewBlogFormProps = InjectedFormProps<BlogStore.Blog, any> &
   RouteComponentProps<any>;
 
 class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
-  render(): JSX.Element {
+  public componentDidMount(): void {
+    console.info("[BLOG]: Initialize data...");
+    const { initialize, match } = this.props;
+    if (match.params && match.params.id) {
+      Promise.all([
+        this.props.getBlogById(match.params.id)
+      ]).then((result: any) => {
+        const { data } = result[0];
+        initialize(data);
+      });
+    } else {
+      initialize({
+        title: "sample title",
+        description: "sample description",
+        theme: 1,
+        postsPerPage: 10,
+        daysToComment: 5,
+        moderateComments: true
+      });
+    }
+  }
+
+  public render(): JSX.Element {
     console.log(this.props);
     const { error, handleSubmit, pristine, reset, submitting } = this.props;
     return (
@@ -141,22 +163,28 @@ const validate = (
 };
 
 const initData: any = (state: any) => ({
-  initialValues: {
-    title: "sample title",
-    description: "sample description",
-    theme: 1,
-    postsPerPage: 10,
-    daysToComment: 5,
-    moderateComments: true
-  }
+  initialValues: {}
 });
 
 export default connect(initData, BlogStore.actionCreators)(
   reduxForm<Readonly<BlogStore.Blog>, AddNewBlogFormProps>({
     form: "addNewBlogForm",
     validate,
-    onSubmit: (values: any, dispatch: any, props: any) => {
-      Promise.all([props.addBlog(values), props.history.push("/admin/blogs")]);
+    onSubmit: (
+      values: any,
+      dispatch: any,
+      props: AddNewBlogFormProps
+    ): void => {
+      const { match } = props;
+      if (match.params && !match.params.id) {
+        Promise.all([props.addBlog(values)]).then(result => {
+          props.history.push("/admin/blogs");
+        });
+      } else {
+        Promise.all([props.updateBlog(values)]).then(result => {
+          props.history.push("/admin/blogs");
+        });
+      }
     }
   })(AddNewBlogForm)
 );
