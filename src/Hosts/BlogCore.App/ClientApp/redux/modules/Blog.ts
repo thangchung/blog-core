@@ -1,10 +1,10 @@
 import { Action, Reducer } from "redux";
 import { AxiosInstance } from "axios";
 
+import request from "./../client";
 import { CALL_API } from "./../middleware/clientMiddleware";
 
-const BLOGS_PUBLIC_URL = `/public/api/blogs`;
-const BLOGS_URL = `/api/blogs`;
+const responseData = (payload: any) => payload.data;
 
 export type Blog = {
   id: string;
@@ -106,11 +106,6 @@ interface DeleteBlogWrapperAction {
   promise: any;
 }
 
-interface CallApiAction {
-  type: "CALL_API";
-  payload: any;
-}
-
 type KnownAction =
   | LoadBlogAction
   | LoadBlogSuccessAction
@@ -126,35 +121,51 @@ type KnownAction =
   | DeleteBlogFailedAction;
 
 export const actionCreators = {
-  getBlogsByPage: (pageNumber: number) =>
-    <CallApiAction>{
-      type: "CALL_API",
-      payload: <LoadBlogWrapperAction>{
-        types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"],
-        promise: (client: AxiosInstance) =>
-          client.get(`${BLOGS_PUBLIC_URL}?page=${pageNumber + 1}`),
-        page: pageNumber
+  getBlogsByPage: (pageNumber: number) => {
+    return {
+      [CALL_API]: {
+        payload: <LoadBlogWrapperAction>{
+          types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"],
+          promise: (client: AxiosInstance) =>
+            request.Blogs.loadBlogsByPage(client, pageNumber),
+          page: pageNumber
+        }
       }
-    },
-  addBlog: (blog: any) =>
-    <CallApiAction>{
-      type: "CALL_API",
-      payload: <AddBlogWrapperAction>{
-        types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"],
-        promise: (client: AxiosInstance) => client.post(BLOGS_URL, blog)
+    };
+  },
+  addBlog: (blog: any) => {
+    return {
+      [CALL_API]: {
+        payload: <AddBlogWrapperAction>{
+          types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"],
+          promise: (client: AxiosInstance) =>
+            request.Blogs.createBlog(client, blog)
+        }
       }
-    },
-  updateBlog: (blog: any) =>
-    <UpdateBlogWrapperAction>{
-      types: ["UPDATE_BLOG", "UPDATE_BLOG_SUCCESSED", "UPDATE_BLOG_FAILED"],
-      promise: (client: AxiosInstance) => client.put(BLOGS_URL, blog)
-    },
-  deleteBlog: (blogId: string) =>
-    <DeleteBlogWrapperAction>{
-      types: ["DELETE_BLOG", "DELETE_BLOG_SUCCESSED", "DELETE_BLOG_FAILED"],
-      promise: (client: AxiosInstance) =>
-        client.delete(`${BLOGS_URL}/${blogId}`)
-    }
+    };
+  },
+  updateBlog: (blog: any) => {
+    return {
+      [CALL_API]: {
+        payload: <UpdateBlogWrapperAction>{
+          types: ["UPDATE_BLOG", "UPDATE_BLOG_SUCCESSED", "UPDATE_BLOG_FAILED"],
+          promise: (client: AxiosInstance) =>
+            request.Blogs.editBlog(client, blog)
+        }
+      }
+    };
+  },
+  deleteBlog: (blogId: string) => {
+    return {
+      [CALL_API]: {
+        payload: <DeleteBlogWrapperAction>{
+          types: ["DELETE_BLOG", "DELETE_BLOG_SUCCESSED", "DELETE_BLOG_FAILED"],
+          promise: (client: AxiosInstance) =>
+            request.Blogs.deleteBlog(client, blogId)
+        }
+      }
+    };
+  }
 };
 
 export const reducer: Reducer<BlogState> = (
@@ -169,18 +180,18 @@ export const reducer: Reducer<BlogState> = (
       };
 
     case "LOAD_BLOGS_SUCCESSED":
-      const blogs = action.data.items;
+      const data = responseData(action);
       return {
         ...state,
-        ids: blogs.map((blog: Blog) => blog.id),
-        blogByIds: blogs.reduce((obj: any, blog: Blog) => {
+        ids: data.items.map((blog: Blog) => blog.id),
+        blogByIds: data.items.reduce((obj: any, blog: Blog) => {
           obj[blog.id] = blog;
           return obj;
         }, {}),
         loaded: true,
         loading: false,
-        page: action.page || 0,
-        totalPages: action.data.totalPages
+        page: data.page || 0,
+        totalPages: data.totalPages
       };
 
     case "LOAD_BLOGS_FAILED":

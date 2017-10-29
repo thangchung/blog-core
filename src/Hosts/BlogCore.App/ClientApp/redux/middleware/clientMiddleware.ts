@@ -2,18 +2,19 @@ import axios, { AxiosInstance } from "axios";
 import { camelizeKeys } from "humps";
 import { globalConfig as GlobalConfig } from "./../../configs";
 
-export const CALL_API = "Call API";
+export const CALL_API = "CALL_API";
 
 export default (store: any) => (next: any) => (action: any) => {
-  if (typeof action === "function") {
-    return action(store.dispatch, store.getState);
-  }
-
-  const { payload } = action;
-  if(!payload) {
+  if (action === undefined) {
     return next(action);
   }
 
+  const callAPI = action[CALL_API];
+  if (callAPI === undefined) {
+    return next(action);
+  }
+
+  const { payload } = callAPI;
   const { promise, types, ...rest } = payload; // eslint-disable-line no-redeclare
   if (!promise) {
     return next(action);

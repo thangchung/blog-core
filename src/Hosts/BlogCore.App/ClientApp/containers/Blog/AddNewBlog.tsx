@@ -1,8 +1,8 @@
 import * as React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import { RouteComponentProps } from "react-router-dom";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import {
   Card,
   CardHeader,
@@ -156,10 +156,7 @@ export default connect(initData, BlogStore.actionCreators)(
     form: "addNewBlogForm",
     validate,
     onSubmit: (values: any, dispatch: any, props: any) => {
-      Promise.all([
-        props.addBlog(values),
-        props.history.replace("/admin/blogs")
-      ]);
+      Promise.all([props.addBlog(values), props.history.push("/admin/blogs")]);
     }
   })(AddNewBlogForm)
 );

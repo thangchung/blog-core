@@ -161,8 +161,6 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
       this.props.deleteBlog
     );
 
-    
-
     const table = (
       <ReactTable
         columns={columns}

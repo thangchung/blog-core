@@ -1,21 +1,27 @@
 import * as React from "react";
+import { bindActionCreators } from "redux";
+import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { Link, RouteProps, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
 import { Card, CardHeader, CardFooter, CardBlock, Button } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
 import BlogTable from "./BlogTable";
 
+interface RefreshPageProps {
+  refreshPage: (target: any) => void;
+}
+
 type BlogProps = BlogStore.BlogState &
   typeof BlogStore.actionCreators &
+  RefreshPageProps &
   RouteComponentProps<{ page: number }>;
 
 class BlogManagement extends React.Component<BlogProps, any> {
   constructor(props: BlogProps) {
     super(props);
-
+    console.log(this.props);
     this.addRow = this.addRow.bind(this);
     this.editBlog = this.editBlog.bind(this);
     this.deleteBlog = this.deleteBlog.bind(this);
@@ -31,9 +37,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
 
   public deleteBlog(id: string): void {
     console.info(`DELETE ITEM #${id}`);
-    this.props.deleteBlog(id);
-    this.props.getBlogsByPage(this.props.page);
-    this.props.history.replace("/admin/blogs");
+    Promise.all([this.props.deleteBlog(id)]);
   }
 
   render(): JSX.Element {
@@ -77,7 +81,22 @@ class BlogManagement extends React.Component<BlogProps, any> {
   }
 }
 
+// TODO: just for referencing
+function mapDispatchToProps(
+  dispatch: Dispatch<any>
+): typeof BlogStore.actionCreators & RefreshPageProps {
+  return bindActionCreators(
+    {
+      ...BlogStore.actionCreators,
+      refreshPage: (target: any) => {
+        dispatch(target);
+      }
+    },
+    dispatch
+  );
+}
+
 export default connect(
   (state: ApplicationState) => state.blog,
-  BlogStore.actionCreators
+  mapDispatchToProps
 )(BlogManagement);
