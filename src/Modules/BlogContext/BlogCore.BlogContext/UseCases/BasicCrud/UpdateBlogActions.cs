@@ -6,10 +6,16 @@ namespace BlogCore.BlogContext.UseCases.BasicCrud
 {
     public class UpdateBlogRequest : IRequest<UpdateBlogResponse>
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int Theme { get; set; } = 1; //default
+
+        public UpdateBlogRequest SetBlogId(Guid id)
+        {
+            Id = id;
+            return this;
+        }
     }
 
     public class UpdateBlogResponse

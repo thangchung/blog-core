@@ -6,4 +6,4 @@ export { default as Dashboard } from "./Dashboard/Dashboard";
 export { default as Counter } from "./Counter";
 export { default as FetchData } from "./FetchData";
 export { default as BlogManagement } from "./Blog/BlogManagement";
-export { default as AddNewBlog } from "./Blog/AddNewBlog";
+export { default as BlogForm } from "./Blog/BlogForm";

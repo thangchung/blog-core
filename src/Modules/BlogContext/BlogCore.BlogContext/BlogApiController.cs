@@ -58,10 +58,10 @@ namespace BlogCore.BlogContext
 
         // [Authorize(Roles = "Admin, User")]
         [AllowAnonymous]
-        [HttpPut]
-        public async Task<UpdateBlogResponse> Put([FromBody] UpdateBlogRequest request)
+        [HttpPut("{id:guid}")]
+        public async Task<UpdateBlogResponse> Put(Guid id, [FromBody] UpdateBlogRequest request)
         {
-            return await _updateItemHandler.ProcessAsync(request);
+            return await _updateItemHandler.ProcessAsync(request.SetBlogId(id));
         }
 
         // [Authorize(Roles = "Admin")]

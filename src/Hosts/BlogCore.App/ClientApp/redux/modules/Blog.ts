@@ -17,12 +17,18 @@ export type Blog = {
   moderateComments: boolean;
 };
 
+export type Theme = {
+  value: number;
+  label: string;
+};
+
 export interface BlogState {
   loading: boolean;
   loaded: boolean;
   ids: any;
   blogByIds: any;
   newBlog: Blog;
+  themes: Theme[];
   error: any;
   page: number;
   totalPages: number;
@@ -106,7 +112,11 @@ interface LoadBlogWrapperAction {
 }
 
 interface LoadBlogByIdWrapperAction {
-  types: ["LOAD_BLOG_BY_ID", "LOAD_BLOG_BY_ID_SUCCESSED", "LOAD_BLOG_BY_ID_FAILED"];
+  types: [
+    "LOAD_BLOG_BY_ID",
+    "LOAD_BLOG_BY_ID_SUCCESSED",
+    "LOAD_BLOG_BY_ID_FAILED"
+  ];
   promise: any;
 }
 
@@ -156,7 +166,11 @@ export const actionCreators = {
     return {
       [CALL_API]: {
         payload: <LoadBlogByIdWrapperAction>{
-          types: ["LOAD_BLOG_BY_ID", "LOAD_BLOG_BY_ID_SUCCESSED", "LOAD_BLOG_BY_ID_FAILED"],
+          types: [
+            "LOAD_BLOG_BY_ID",
+            "LOAD_BLOG_BY_ID_SUCCESSED",
+            "LOAD_BLOG_BY_ID_FAILED"
+          ],
           promise: (client: AxiosInstance) =>
             request.Blogs.loadBlogById(client, id)
         }
@@ -273,6 +287,12 @@ export const reducer: Reducer<BlogState> = (
       ids: [],
       blogByIds: [],
       newBlog: null,
+      themes: [
+        {
+          value: 1,
+          label: "Default"
+        }
+      ],
       error: null,
       page: 0,
       totalPages: 0

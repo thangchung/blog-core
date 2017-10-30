@@ -3,4 +3,9 @@ export { default as Breadcrumb } from "./Breadcrumb/Breadcrumb";
 export { default as Footer } from "./Footer/Footer";
 export { default as Header } from "./Header/Header";
 export { default as Sidebar } from "./Sidebar/Sidebar";
-export { default as FormInput } from "./Form/Input";
+export {
+  renderTextBoxField as TextBoxField,
+  renderNumberField as NumberField,
+  renderSingleSelectField as SingleSelectField,
+} from "./Form/Input";
+export { default as FormCheckbox } from "./Form/Checkbox";

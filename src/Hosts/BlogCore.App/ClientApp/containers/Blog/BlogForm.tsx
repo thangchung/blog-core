@@ -16,16 +16,34 @@ import {
 
 import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
-import { FormInput } from "../../components";
+import {
+  TextBoxField,
+  NumberField,
+  FormCheckbox,
+  SingleSelectField
+} from "../../components";
 
-type AddNewBlogFormProps = InjectedFormProps<BlogStore.Blog, any> &
+interface ExBlogFormProps extends InjectedFormProps<BlogStore.Blog, any> {
+  themes: BlogStore.Theme[];
+}
+
+type BlogFormProps = ExBlogFormProps &
   typeof BlogStore.actionCreators &
   RouteComponentProps<any>;
 
-class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
+class BlogForm extends React.Component<BlogFormProps, any> {
   public componentDidMount(): void {
     console.info("[BLOG]: Initialize data...");
     const { initialize, match } = this.props;
+    const defaultData: any = {
+      title: "sample title",
+      description: "sample description",
+      theme: 1,
+      postsPerPage: 10,
+      daysToComment: 5,
+      moderateComments: true
+    };
+
     if (match.params && match.params.id) {
       Promise.all([
         this.props.getBlogById(match.params.id)
@@ -34,14 +52,7 @@ class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
         initialize(data);
       });
     } else {
-      initialize({
-        title: "sample title",
-        description: "sample description",
-        theme: 1,
-        postsPerPage: 10,
-        daysToComment: 5,
-        moderateComments: true
-      });
+      initialize(defaultData);
     }
   }
 
@@ -62,26 +73,38 @@ class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
             <Form onSubmit={handleSubmit} className="b-form">
               <FormGroup>
                 <Label for="title">Title</Label>
-                <Field placeholder="Title" name="title" component={FormInput} />
+                <Field
+                  placeholder="Title"
+                  name="title"
+                  component={TextBoxField}
+                />
               </FormGroup>
               <FormGroup>
                 <Label for="description">Description</Label>
                 <Field
                   placeholder="Description"
                   name="description"
-                  component={FormInput}
+                  component={TextBoxField}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="theme">Theme</Label>
-                <Field placeholder="Theme" name="theme" component={FormInput} />
+                <Field
+                  placeholder="Theme"
+                  name="theme"
+                  component={SingleSelectField}
+                >
+                  {this.props.themes.map(theme => (
+                    <option value={theme.value}>{theme.label}</option>
+                  ))}
+                </Field>
               </FormGroup>
               <FormGroup>
                 <Label for="postsPerPage">Posts per page</Label>
                 <Field
                   placeholder="Posts per page"
                   name="postsPerPage"
-                  component={FormInput}
+                  component={NumberField}
                 />
               </FormGroup>
               <FormGroup>
@@ -89,7 +112,7 @@ class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
                 <Field
                   placeholder="Days to comment"
                   name="daysToComment"
-                  component={FormInput}
+                  component={NumberField}
                 />
               </FormGroup>
               <FormGroup>
@@ -97,7 +120,7 @@ class AddNewBlogForm extends React.Component<AddNewBlogFormProps, any> {
                 <Field
                   placeholder="Moderate comments"
                   name="moderateComments"
-                  component={FormInput}
+                  component={FormCheckbox}
                 />
               </FormGroup>
               <Button
@@ -162,19 +185,15 @@ const validate = (
   return errors;
 };
 
-const initData: any = (state: any) => ({
-  initialValues: {}
+const initData: any = (state: ApplicationState) => ({
+  themes: state.blog.themes
 });
 
 export default connect(initData, BlogStore.actionCreators)(
-  reduxForm<Readonly<BlogStore.Blog>, AddNewBlogFormProps>({
+  reduxForm<Readonly<BlogStore.Blog>, BlogFormProps>({
     form: "addNewBlogForm",
     validate,
-    onSubmit: (
-      values: any,
-      dispatch: any,
-      props: AddNewBlogFormProps
-    ): void => {
+    onSubmit: (values: any, dispatch: any, props: BlogFormProps): void => {
       const { match } = props;
       if (match.params && !match.params.id) {
         Promise.all([props.addBlog(values)]).then(result => {
@@ -186,5 +205,5 @@ export default connect(initData, BlogStore.actionCreators)(
         });
       }
     }
-  })(AddNewBlogForm)
+  })(BlogForm)
 );

@@ -12,7 +12,7 @@ import {
 
 import { Aside, Breadcrumb, Sidebar, Header, Footer } from "./../../components";
 
-import { Dashboard, BlogManagement, AddNewBlog } from "./../";
+import { Dashboard, BlogManagement, BlogForm } from "./../";
 
 export default class Full extends React.Component<any, any> {
   public render(): JSX.Element {
@@ -21,7 +21,7 @@ export default class Full extends React.Component<any, any> {
       <Switch>
         <Route exact path={`${match.url}`} component={Dashboard} />
         <Route path={`${match.url}/blogs/:page?`} component={BlogManagement} />
-        <Route path={`${match.url}/blog/:id?`} component={AddNewBlog} />
+        <Route path={`${match.url}/blog/:id?`} component={BlogForm} />
       </Switch>
     );
 
@@ -42,7 +42,7 @@ export default class Full extends React.Component<any, any> {
               </Row>
             </Container>
           </main>
-          { /*<Aside /> */}
+          {/*<Aside /> */}
         </div>
         <Footer />
       </div>
