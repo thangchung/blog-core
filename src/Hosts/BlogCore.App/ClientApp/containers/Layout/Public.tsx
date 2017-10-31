@@ -7,7 +7,7 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  CardBlock
+  CardBody
 } from "reactstrap";
 
 import { PublicBlog, Counter, FetchData } from "./../";
@@ -33,7 +33,7 @@ export default class Full extends React.Component<any, any> {
               <Row>
                 <Col xs="12" sm="12" md="12">
                   <Card>
-                    <CardBlock className="card-body">{routes}</CardBlock>
+                    <CardBody className="card-body">{routes}</CardBody>
                   </Card>
                 </Col>
               </Row>

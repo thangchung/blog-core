@@ -1,16 +1,12 @@
 import "babel-polyfill";
 
 // Styles
-// Import Font Awesome Icons Set
 import "font-awesome/css/font-awesome.min.css";
-// Import Simple Line Icons Set
 import "simple-line-icons/css/simple-line-icons.css";
-// Import react-table style
 import "react-table/react-table.css";
 
 // Import Main styles for this application
 import "./scss/style.scss";
-// Temp fix for reactstrap
 import "./scss/core/_dropdown-menu-right.scss";
 
 import * as React from "react";

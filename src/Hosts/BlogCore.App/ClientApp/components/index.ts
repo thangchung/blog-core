@@ -8,4 +8,4 @@ export {
   renderNumberField as NumberField,
   renderSingleSelectField as SingleSelectField,
 } from "./Form/Input";
-export { default as FormCheckbox } from "./Form/Checkbox";
+export { default as CheckboxField } from "./Form/Checkbox";

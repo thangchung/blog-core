@@ -10,7 +10,7 @@ export default class Checkbox extends React.Component<any, any> {
           <ReactStrapInput
             type={"checkbox"}
             {...this.props.input}
-            valid={`${valid}`}
+            valid={valid}
           />{" "}
           {this.props.label}
         </Label>

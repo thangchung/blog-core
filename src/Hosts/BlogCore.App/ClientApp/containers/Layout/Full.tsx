@@ -7,7 +7,7 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  CardBlock
+  CardBody
 } from "reactstrap";
 
 import { Aside, Breadcrumb, Sidebar, Header, Footer } from "./../../components";
@@ -36,7 +36,7 @@ export default class Full extends React.Component<any, any> {
               <Row>
                 <Col xs="12" sm="12" md="12">
                   <Card>
-                    <CardBlock className="card-body">{routes}</CardBlock>
+                    <CardBody className="card-body">{routes}</CardBody>
                   </Card>
                 </Col>
               </Row>

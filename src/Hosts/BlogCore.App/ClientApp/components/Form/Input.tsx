@@ -38,8 +38,7 @@ export const renderTextBoxField = ({
         type={"input"}
         placeholder={label}
         {...input}
-        valid={`${valid}`}
-        className={`${!valid ? "is-invalid" : ""}`}
+        valid={valid}
       />
       {touched &&
         ((error && (
@@ -65,8 +64,7 @@ export const renderNumberField = ({
         type={"number"}
         placeholder={label}
         {...input}
-        valid={`${valid}`}
-        className={`${!valid ? "is-invalid" : ""}`}
+        valid={valid}
       />
       {touched &&
         ((error && (
@@ -93,8 +91,7 @@ export const renderSingleSelectField = ({
         type={"select"}
         placeholder={label}
         {...input}
-        valid={`${valid}`}
-        className={`${!valid ? "is-invalid" : ""}`}
+        valid={valid}
       >
         {children}
       </ReactStrapInput>

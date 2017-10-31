@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { Link, RouteProps, Redirect } from "react-router-dom";
-import { Card, CardHeader, CardFooter, CardBlock, Button } from "reactstrap";
+import { Card, CardHeader, CardFooter, CardBody, Button } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
@@ -17,25 +17,10 @@ class BlogManagement extends React.Component<BlogProps, any> {
   constructor(props: BlogProps) {
     super(props);
     this.addRow = this.addRow.bind(this);
-    this.editBlog = this.editBlog.bind(this);
-    this.deleteBlog = this.deleteBlog.bind(this);
   }
 
   public addRow(): any {
     this.props.history.replace("/admin/blog");
-  }
-
-  public editBlog(blog: any): void {
-    console.log(blog);
-    console.info(`[BLOG] UPDATE ITEM #${blog.id}`);
-    this.props.history.replace(`/admin/blog/${blog.id}`);
-  }
-
-  public deleteBlog(id: string): void {
-    console.info(`[BLOG] DELETE ITEM #${id}`);
-    Promise.all([this.props.deleteBlog(id)]).then(result => {
-      this.props.getBlogsByPage(this.props.page);
-    });
   }
 
   render(): JSX.Element {
@@ -49,8 +34,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
         loading={this.props.loading}
         blogs={blogs}
         getBlogsByPage={this.props.getBlogsByPage}
-        deleteBlog={this.deleteBlog}
-        editBlog={this.editBlog}
+        history={this.props.history}
       />
     );
 
@@ -72,7 +56,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
               </Button>
             </span>
           </CardHeader>
-          <CardBlock className="card-body">{table}</CardBlock>
+          <CardBody className="card-body">{table}</CardBody>
         </Card>
       </div>
     );

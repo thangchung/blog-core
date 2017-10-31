@@ -4,22 +4,11 @@ import { ButtonGroup, Button } from "reactstrap";
 // ignore TS because react-table doesn't support TS correctly
 const ReactTable: any = require("react-table").default;
 
-export interface BlogTableProps {
-  totalPages: number;
-  loading: boolean;
-  blogs: any;
-  getBlogsByPage(page: number): void;
-  deleteBlog(id: string): void;
-  editBlog(blog: any): void;
-}
-
 const columnsRender = (
   selectAll: number,
   selected: any = {},
   toggleSelectAll: () => void,
-  toggleRow: (id: string) => void,
-  editBlog: (original: any) => void,
-  deleteBlog: (id: string) => void
+  toggleRow: (id: string) => void
 ): any => {
   return [
     {
@@ -28,6 +17,7 @@ const columnsRender = (
       Header: (x: any) => {
         return (
           <input
+            key={x.id}
             type="checkbox"
             className="checkbox"
             checked={selectAll === 1}
@@ -43,6 +33,7 @@ const columnsRender = (
       Cell: ({ original }: any) => {
         return (
           <input
+            key={original.id}
             type="checkbox"
             className="checkbox"
             checked={selected[original.id] === true}
@@ -71,7 +62,7 @@ const columnsRender = (
       Header: "Theme",
       accessor: "theme",
       Cell: (row: any) => (
-        <span>
+        <span key={row.id}>
           <span
             style={{
               color: row.value == 1 ? "#57d500" : "#ff2e00",
@@ -83,28 +74,17 @@ const columnsRender = (
           {row.value == 1 ? "Default" : "Any"}
         </span>
       )
-    },
-    {
-      Cell: ({ original }: any) => {
-        return (
-          <div>
-            <ButtonGroup>
-              <a onClick={() => editBlog(original)}>
-                <i className="icon-notebook" />
-              </a>
-              <a onClick={() => deleteBlog(original.id)}>
-                <i className="icon-trash" />
-              </a>
-            </ButtonGroup>
-          </div>
-        );
-      },
-      filterable: false,
-      sortable: false,
-      width: 50
     }
   ];
 };
+
+export interface BlogTableProps {
+  totalPages: number;
+  loading: boolean;
+  blogs: any;
+  getBlogsByPage(page: number): void;
+  history: any;
+}
 
 // reference at https://codepen.io/aaronschwartz/pen/WOOPRw?editors=0010
 export default class BlogTable extends React.Component<BlogTableProps, any> {
@@ -156,9 +136,7 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
       this.state.selectAll,
       this.state.selected,
       this.toggleSelectAll,
-      this.toggleRow,
-      this.props.editBlog,
-      this.props.deleteBlog
+      this.toggleRow
     );
 
     const table = (
@@ -167,7 +145,7 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
         manual
         data={this.props.blogs}
         className="-striped -highlight"
-        defaultPageSize={5}
+        defaultPageSize={10}
         showPageSizeOptions={false}
         filterable
         defaultSorted={[
@@ -179,6 +157,16 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
         pages={this.props.totalPages}
         loading={this.props.loading}
         onFetchData={this.fetchData}
+        getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
+          return {
+            onClick: (e: any, handleOriginal: any) => {
+              this.props.history.replace(`/admin/blog/${rowInfo.original.id}`);
+              if (handleOriginal) {
+                handleOriginal();
+              }
+            }
+          };
+        }}
       />
     );
 

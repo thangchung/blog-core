@@ -7,11 +7,15 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  CardBlock,
+  CardBody,
   Form,
   FormGroup,
   Label,
-  Button
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
@@ -19,7 +23,7 @@ import * as BlogStore from "../../redux/modules/Blog";
 import {
   TextBoxField,
   NumberField,
-  FormCheckbox,
+  CheckboxField,
   SingleSelectField
 } from "../../components";
 
@@ -32,6 +36,15 @@ type BlogFormProps = ExBlogFormProps &
   RouteComponentProps<any>;
 
 class BlogForm extends React.Component<BlogFormProps, any> {
+  constructor() {
+    super();
+    this.state = {
+      canDelete: false,
+      showConfirm: false
+    };
+    this.deleteBlog = this.deleteBlog.bind(this);
+  }
+
   public componentDidMount(): void {
     console.info("[BLOG]: Initialize data...");
     const { initialize, match } = this.props;
@@ -50,17 +63,45 @@ class BlogForm extends React.Component<BlogFormProps, any> {
       ]).then((result: any) => {
         const { data } = result[0];
         initialize(data);
+        this.setState({ canDelete: true });
       });
     } else {
       initialize(defaultData);
     }
   }
 
+  public deleteBlog(): void {
+    Promise.all([
+      this.props.deleteBlog(this.props.match.params.id)
+    ]).then(result => {
+      this.props.history.replace("/admin/blogs");
+    });
+  }
+
   public render(): JSX.Element {
     console.log(this.props);
     const { error, handleSubmit, pristine, reset, submitting } = this.props;
+
     return (
       <div className="animated fadeIn">
+        <Modal
+          isOpen={this.state.showConfirm}
+          autoFocus={false}
+        >
+          <ModalHeader>Confirmation Box</ModalHeader>
+          <ModalBody>Are you sure to delete?</ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.deleteBlog}>
+              Confirm
+            </Button>{" "}
+            <Button
+              color="secondary"
+              onClick={() => this.setState({ showConfirm: false })}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
         <Card className="b-panel">
           <CardHeader>
             <h3 className="b-panel-title">
@@ -68,59 +109,61 @@ class BlogForm extends React.Component<BlogFormProps, any> {
               Add a new Blog
             </h3>
           </CardHeader>
-          <CardBlock className="card-body">
+          <CardBody className="card-body">
             {error && <strong>{error}</strong>}
             <Form onSubmit={handleSubmit} className="b-form">
               <FormGroup>
                 <Label for="title">Title</Label>
                 <Field
-                  placeholder="Title"
                   name="title"
+                  placeholder="Title"
                   component={TextBoxField}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="description">Description</Label>
                 <Field
-                  placeholder="Description"
                   name="description"
+                  placeholder="Description"
                   component={TextBoxField}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="theme">Theme</Label>
                 <Field
-                  placeholder="Theme"
                   name="theme"
+                  placeholder="Theme"
                   component={SingleSelectField}
                 >
                   {this.props.themes.map(theme => (
-                    <option value={theme.value}>{theme.label}</option>
+                    <option key={theme.value} value={theme.value}>
+                      {theme.label}
+                    </option>
                   ))}
                 </Field>
               </FormGroup>
               <FormGroup>
                 <Label for="postsPerPage">Posts per page</Label>
                 <Field
-                  placeholder="Posts per page"
                   name="postsPerPage"
+                  placeholder="Posts per page"
                   component={NumberField}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="daysToComment">Days to comment</Label>
                 <Field
-                  placeholder="Days to comment"
                   name="daysToComment"
+                  placeholder="Days to comment"
                   component={NumberField}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="moderateComments">Moderate comments</Label>
                 <Field
-                  placeholder="Moderate comments"
                   name="moderateComments"
-                  component={FormCheckbox}
+                  placeholder="Moderate comments"
+                  component={CheckboxField}
                 />
               </FormGroup>
               <Button
@@ -138,6 +181,17 @@ class BlogForm extends React.Component<BlogFormProps, any> {
                 <i className="icon-reload b-icon" />Reset
               </Button>&nbsp;
               <Button
+                color="danger"
+                disabled={!this.state.canDelete}
+                onClick={() => {
+                  this.setState({
+                    showConfirm: !this.state.showConfirm
+                  });
+                }}
+              >
+                <i className="icon-trash b-icon" />Delete
+              </Button>&nbsp;
+              <Button
                 color="warning"
                 disabled={!pristine}
                 onClick={() => {
@@ -147,7 +201,7 @@ class BlogForm extends React.Component<BlogFormProps, any> {
                 <i className="icon-arrow-left b-icon" />Back
               </Button>
             </Form>
-          </CardBlock>
+          </CardBody>
         </Card>
       </div>
     );
