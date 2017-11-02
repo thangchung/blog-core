@@ -1,7 +1,9 @@
 import { Action, Reducer } from "redux";
 import { AxiosInstance } from "axios";
+import { Observable } from "rxjs";
+import { combineEpics, ActionsObservable } from "redux-observable";
 
-import request from "./../client";
+import request, { client } from "./../client";
 import { CALL_API } from "./../middleware/clientMiddleware";
 
 const responseData = (payload: any) => payload.data;
@@ -27,15 +29,16 @@ export interface BlogState {
   loaded: boolean;
   ids: any;
   blogByIds: any;
-  newBlog: Blog;
+  blogSelected: Blog | null;
   themes: Theme[];
   error: any;
   page: number;
   totalPages: number;
 }
 
-interface LoadBlogAction {
+export interface LoadBlogAction {
   type: "LOAD_BLOGS";
+  page: number;
 }
 
 interface LoadBlogSuccessedAction {
@@ -51,6 +54,7 @@ interface LoadBlogFailedAction {
 
 interface LoadBlogByIdAction {
   type: "LOAD_BLOG_BY_ID";
+  blogId: string;
 }
 
 interface LoadBlogByIdSuccessedAction {
@@ -135,10 +139,13 @@ interface DeleteBlogWrapperAction {
   promise: any;
 }
 
-type KnownAction =
+export type KnownAction =
   | LoadBlogAction
   | LoadBlogSuccessedAction
   | LoadBlogFailedAction
+  | LoadBlogByIdAction
+  | LoadBlogByIdSuccessedAction
+  | LoadBlogByIdFailedAction
   | AddBlogAction
   | AddBlogSuccessedAction
   | AddBlogFailedAction
@@ -149,34 +156,41 @@ type KnownAction =
   | DeleteBlogSuccessedAction
   | DeleteBlogFailedAction;
 
+export const blogEpics: any = [
+  (action$: ActionsObservable<LoadBlogAction>): Observable<Action> => {
+    return action$.ofType("LOAD_BLOGS").switchMap(q => {
+      console.log(q);
+      return Observable.fromPromise(
+        request.Blogs.loadBlogsByPage(client, q.page)
+      ).map(blogs => actionCreators.loadBlogsByPageSuccessed(blogs));
+    });
+  },
+  (action$: ActionsObservable<LoadBlogByIdAction>): Observable<Action> => {
+    return action$.ofType("LOAD_BLOG_BY_ID").switchMap(q => {
+      console.log(q);
+      return Observable.fromPromise(
+        request.Blogs.loadBlogById(client, q.blogId)
+      ).map(blog => {
+        console.log(blog);
+        return actionCreators.loadBlogByIdSuccessed(blog);
+      });
+    });
+  }
+];
+
 export const actionCreators = {
-  getBlogsByPage: (pageNumber: number) => {
-    return {
-      [CALL_API]: {
-        payload: <LoadBlogWrapperAction>{
-          types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"],
-          promise: (client: AxiosInstance) =>
-            request.Blogs.loadBlogsByPage(client, pageNumber),
-          page: pageNumber
-        }
-      }
-    };
-  },
-  getBlogById: (id: string) => {
-    return {
-      [CALL_API]: {
-        payload: <LoadBlogByIdWrapperAction>{
-          types: [
-            "LOAD_BLOG_BY_ID",
-            "LOAD_BLOG_BY_ID_SUCCESSED",
-            "LOAD_BLOG_BY_ID_FAILED"
-          ],
-          promise: (client: AxiosInstance) =>
-            request.Blogs.loadBlogById(client, id)
-        }
-      }
-    };
-  },
+  loadBlogsByPage: (page: number) =>
+    <LoadBlogAction>{ type: "LOAD_BLOGS", page },
+  loadBlogsByPageSuccessed: (data: any) =>
+    <LoadBlogSuccessedAction>{ type: "LOAD_BLOGS_SUCCESSED", ...data },
+  loadBlogsByPageFailed: (error: any) =>
+    <LoadBlogFailedAction>{ type: "LOAD_BLOGS_FAILED", error },
+  loadBlogById: (blogId: string) =>
+    <LoadBlogByIdAction>{ type: "LOAD_BLOG_BY_ID", blogId },
+  loadBlogByIdSuccessed: (data: any) =>
+    <LoadBlogByIdSuccessedAction>{ type: "LOAD_BLOG_BY_ID_SUCCESSED", ...data },
+  loadBlogByIdFailed: (error: any) =>
+    <LoadBlogByIdFailedAction>{ type: "LOAD_BLOG_BY_ID_FAILED", error },
   addBlog: (blog: any) => {
     return {
       [CALL_API]: {
@@ -224,6 +238,7 @@ export const reducer: Reducer<BlogState> = (
       };
 
     case "LOAD_BLOGS_SUCCESSED":
+      console.log(action);
       const data = responseData(action);
       return {
         ...state,
@@ -235,7 +250,8 @@ export const reducer: Reducer<BlogState> = (
         loaded: true,
         loading: false,
         page: data.page || 0,
-        totalPages: data.totalPages
+        totalPages: data.totalPages,
+        blogSelected: null
       };
 
     case "LOAD_BLOGS_FAILED":
@@ -246,7 +262,33 @@ export const reducer: Reducer<BlogState> = (
         error: action.error,
         loaded: true,
         loading: false,
-        page: 0
+        page: 0,
+        blogSelected: null
+      };
+
+    case "LOAD_BLOG_BY_ID":
+      return {
+        ...state,
+        blogSelected: null,
+        loaded: false,
+        loading: true
+      };
+
+    case "LOAD_BLOG_BY_ID_SUCCESSED":
+      console.log(action.data);
+      return {
+        ...state,
+        blogSelected: action.data,
+        loaded: true,
+        loading: false
+      };
+
+    case "LOAD_BLOG_BY_ID_FAILED":
+      return {
+        ...state,
+        blogSelected: null,
+        loaded: true,
+        loading: false
       };
 
     case "ADD_BLOG":
@@ -286,7 +328,7 @@ export const reducer: Reducer<BlogState> = (
       loaded: false,
       ids: [],
       blogByIds: [],
-      newBlog: null,
+      blogSelected: null,
       themes: [
         {
           value: 1,

@@ -1,4 +1,5 @@
-import { reducer as formReducer } from 'redux-form';
+import { combineEpics } from "redux-observable";
+import { reducer as formReducer } from "redux-form";
 import * as WeatherForecasts from "./WeatherForecasts";
 import * as Counter from "./Counter";
 import * as Blog from "./Blog";
@@ -19,6 +20,8 @@ export const reducers = {
   weatherForecasts: WeatherForecasts.reducer,
   blog: Blog.reducer
 };
+
+export const rootEpic = combineEpics(...Blog.blogEpics);
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are
 // correctly typed to match your store.

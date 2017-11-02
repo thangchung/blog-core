@@ -1,8 +1,15 @@
-import { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
+import { globalConfig as GlobalConfig } from "./../configs";
 import { Blog } from "./modules/Blog";
 
 const BLOGS_PUBLIC_URL = `/public/api/blogs`;
 const BLOGS_URL = `/api/blogs`;
+
+// TODO: will refactor this later
+export const client: AxiosInstance = axios.create({
+  baseURL: GlobalConfig.apiServer,
+  timeout: 1000
+});
 
 const Blogs = {
   loadBlogsByPage: (client: AxiosInstance, pageNumber: number) =>
@@ -16,6 +23,8 @@ const Blogs = {
   deleteBlog: (client: AxiosInstance, blogId: string) =>
     client.delete(`${BLOGS_URL}/${blogId}`)
 };
+
+
 
 export default {
   Blogs

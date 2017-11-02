@@ -36,8 +36,8 @@ type BlogFormProps = ExBlogFormProps &
   RouteComponentProps<any>;
 
 class BlogForm extends React.Component<BlogFormProps, any> {
-  constructor() {
-    super();
+  constructor(props: BlogFormProps) {
+    super(props);
     this.state = {
       canDelete: false,
       showConfirm: false
@@ -47,26 +47,12 @@ class BlogForm extends React.Component<BlogFormProps, any> {
 
   public componentDidMount(): void {
     console.info("[BLOG]: Initialize data...");
-    const { initialize, match } = this.props;
-    const defaultData: any = {
-      title: "sample title",
-      description: "sample description",
-      theme: 1,
-      postsPerPage: 10,
-      daysToComment: 5,
-      moderateComments: true
-    };
-
+    const { match } = this.props;
     if (match.params && match.params.id) {
-      Promise.all([
-        this.props.getBlogById(match.params.id)
-      ]).then((result: any) => {
-        const { data } = result[0];
-        initialize(data);
-        this.setState({ canDelete: true });
+      this.props.loadBlogById(match.params.id);
+      this.setState({
+        canDelete: true
       });
-    } else {
-      initialize(defaultData);
     }
   }
 
@@ -79,15 +65,11 @@ class BlogForm extends React.Component<BlogFormProps, any> {
   }
 
   public render(): JSX.Element {
-    console.log(this.props);
     const { error, handleSubmit, pristine, reset, submitting } = this.props;
 
     return (
       <div className="animated fadeIn">
-        <Modal
-          isOpen={this.state.showConfirm}
-          autoFocus={false}
-        >
+        <Modal isOpen={this.state.showConfirm} autoFocus={false}>
           <ModalHeader>Confirmation Box</ModalHeader>
           <ModalBody>Are you sure to delete?</ModalBody>
           <ModalFooter>
@@ -240,12 +222,21 @@ const validate = (
 };
 
 const initData: any = (state: ApplicationState) => ({
-  themes: state.blog.themes
+  themes: state.blog.themes,
+  initialValues: state.blog.blogSelected || {
+    title: "sample title",
+    description: "sample description",
+    theme: 1,
+    postsPerPage: 10,
+    daysToComment: 5,
+    moderateComments: true
+  }
 });
 
 export default connect(initData, BlogStore.actionCreators)(
   reduxForm<Readonly<BlogStore.Blog>, BlogFormProps>({
     form: "addNewBlogForm",
+    enableReinitialize: true,
     validate,
     onSubmit: (values: any, dispatch: any, props: BlogFormProps): void => {
       const { match } = props;

@@ -161,6 +161,7 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
         getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
           return {
             onClick: (e: any, handleOriginal: any) => {
+              
               this.props.history.replace(`/admin/blog/${rowInfo.original.id}`);
               if (handleOriginal) {
                 handleOriginal();
@@ -168,6 +169,8 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
             }
           };
         }}
+        previousText={<i className="icon-arrow-left" />}
+        nextText={<i className="icon-arrow-right" />}
       />
     );
 

@@ -33,7 +33,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
         totalPages={this.props.totalPages}
         loading={this.props.loading}
         blogs={blogs}
-        getBlogsByPage={this.props.getBlogsByPage}
+        getBlogsByPage={this.props.loadBlogsByPage}
         history={this.props.history}
       />
     );
