@@ -25,7 +25,7 @@ import {
   NumberField,
   CheckboxField,
   SingleSelectField
-} from "../../components";
+} from "Components";
 
 interface ExBlogFormProps extends InjectedFormProps<BlogStore.Blog, any> {
   themes: BlogStore.Theme[];

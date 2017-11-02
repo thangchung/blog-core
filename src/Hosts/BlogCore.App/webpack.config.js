@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CheckerPlugin = require("awesome-typescript-loader").CheckerPlugin;
 const merge = require("webpack-merge");
 
@@ -11,7 +11,12 @@ module.exports = env => {
   // Configuration in common to both client-side and server-side bundles
   const sharedConfig = () => ({
     stats: { modules: false },
-    resolve: { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+    resolve: {
+      extensions: [".js", ".jsx", ".ts", ".tsx"],
+      alias: {
+        Components: path.resolve(__dirname, "./ClientApp/components/")
+      }
+    },
     output: {
       filename: "[name].js",
       publicPath: "dist/" // Webpack dev middleware, if enabled, handles requests for this URL prefix
@@ -31,7 +36,7 @@ module.exports = env => {
       ]
     },
     plugins: [
-      new CheckerPlugin(),
+      new CheckerPlugin()
       /*new BundleAnalyzerPlugin({
         analyzerHost: '127.0.0.1',
         analyzerPort: 1234,

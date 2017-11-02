@@ -10,7 +10,11 @@
     "skipDefaultLibCheck": true,
     "strict": true,
     "lib": ["es6", "dom"],
-    "types": ["webpack-env"]
+    "types": ["webpack-env"],
+    "paths": {
+      "Components": ["./ClientApp/components"],
+      "Components/*": ["./ClientApp/components/*"]
+    }
   },
   "include": [
     "./node_modules/@types/**/*.d.ts",

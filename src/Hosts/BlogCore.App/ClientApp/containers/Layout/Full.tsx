@@ -10,7 +10,7 @@ import {
   CardBody
 } from "reactstrap";
 
-import { Aside, Breadcrumb, Sidebar, Header, Footer } from "./../../components";
+import { Aside, Breadcrumb, Sidebar, Header, Footer } from "Components";
 
 import { Dashboard, BlogManagement, BlogForm } from "./../";
 

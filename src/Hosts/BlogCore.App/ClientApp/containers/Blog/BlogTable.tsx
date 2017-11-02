@@ -105,6 +105,7 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
   }
 
   fetchData(state: any, instance: any): void {
+    console.log(instance);
     this.props.getBlogsByPage(state.page);
   }
 
