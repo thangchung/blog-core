@@ -68,7 +68,6 @@ export default class Header extends React.Component<any, HeaderState> {
   }
 
   public render(): JSX.Element {
-    const { ...attributes } = this.props;
     return this.dropAccnt();
   }
 }

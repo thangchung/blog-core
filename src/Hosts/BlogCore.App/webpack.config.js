@@ -14,7 +14,9 @@ module.exports = env => {
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
       alias: {
-        Components: path.resolve(__dirname, "./ClientApp/components/")
+        OurComponents: path.resolve(__dirname, "./ClientApp/components/"),
+        OurModules: path.resolve(__dirname, "./ClientApp/redux/modules/"),
+        OurConfigs: path.resolve(__dirname, "./ClientApp/configs/"),
       }
     },
     output: {

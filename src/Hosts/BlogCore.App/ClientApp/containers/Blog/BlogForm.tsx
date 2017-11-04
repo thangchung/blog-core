@@ -1,21 +1,15 @@
 import * as React from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import {
   Card,
   CardHeader,
-  CardFooter,
   CardBody,
   Form,
   FormGroup,
   Label,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
+  Button
 } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
@@ -24,8 +18,9 @@ import {
   TextBoxField,
   NumberField,
   CheckboxField,
-  SingleSelectField
-} from "Components";
+  SingleSelectField,
+  ConfirmationBox
+} from "OurComponents";
 
 interface ExBlogFormProps extends InjectedFormProps<BlogStore.Blog, any> {
   themes: BlogStore.Theme[];
@@ -43,6 +38,7 @@ class BlogForm extends React.Component<BlogFormProps, any> {
       showConfirm: false
     };
     this.deleteBlog = this.deleteBlog.bind(this);
+    this.onConfirmationCancel = this.onConfirmationCancel.bind(this);
   }
 
   public componentDidMount(): void {
@@ -56,34 +52,23 @@ class BlogForm extends React.Component<BlogFormProps, any> {
     }
   }
 
-  public deleteBlog(): void {
-    Promise.all([
-      this.props.deleteBlog(this.props.match.params.id)
-    ]).then(result => {
-      this.props.history.replace("/admin/blogs");
-    });
+  public deleteBlog(event: any): void {
+    this.props.deleteBlog(this.props.match.params.id);
+  }
+
+  public onConfirmationCancel(showConfirm: boolean): void {
+    this.setState({ showConfirm: showConfirm });
   }
 
   public render(): JSX.Element {
     const { error, handleSubmit, pristine, reset, submitting } = this.props;
-
     return (
       <div className="animated fadeIn">
-        <Modal isOpen={this.state.showConfirm} autoFocus={false}>
-          <ModalHeader>Confirmation Box</ModalHeader>
-          <ModalBody>Are you sure to delete?</ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.deleteBlog}>
-              Confirm
-            </Button>{" "}
-            <Button
-              color="secondary"
-              onClick={() => this.setState({ showConfirm: false })}
-            >
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+        <ConfirmationBox
+          showConfirm={this.state.showConfirm}
+          onConfirmed={this.deleteBlog}
+          onCancel={this.onConfirmationCancel}
+        />
         <Card className="b-panel">
           <CardHeader>
             <h3 className="b-panel-title">
@@ -241,13 +226,9 @@ export default connect(initData, BlogStore.actionCreators)(
     onSubmit: (values: any, dispatch: any, props: BlogFormProps): void => {
       const { match } = props;
       if (match.params && !match.params.id) {
-        Promise.all([props.addBlog(values)]).then(result => {
-          props.history.push("/admin/blogs");
-        });
+        props.addBlog(values);
       } else {
-        Promise.all([props.updateBlog(values)]).then(result => {
-          props.history.push("/admin/blogs");
-        });
+        props.updateBlog(values);
       }
     }
   })(BlogForm)

@@ -70,13 +70,13 @@ class FetchData extends React.Component<WeatherForecastProps, {}> {
       <p className="clearfix text-center">
         <Link
           className="btn btn-default pull-left"
-          to={`/fetchdata/${prevStartDateIndex}`}
+          to={`/public/fetchdata/${prevStartDateIndex}`}
         >
           Previous
         </Link>
         <Link
           className="btn btn-default pull-right"
-          to={`/fetchdata/${nextStartDateIndex}`}
+          to={`/public/fetchdata/${nextStartDateIndex}`}
         >
           Next
         </Link>

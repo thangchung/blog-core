@@ -1,10 +1,10 @@
 import { Action, Reducer } from "redux";
-import { AxiosInstance } from "axios";
+//import { push } from "react-router-redux";
 import { Observable } from "rxjs";
-import { combineEpics, ActionsObservable } from "redux-observable";
+import { ActionsObservable } from "redux-observable";
 
 import request, { client } from "./../client";
-import { CALL_API } from "./../middleware/clientMiddleware";
+import { actionCreators as commonActionCreators } from "./Common";
 
 const responseData = (payload: any) => payload.data;
 
@@ -27,6 +27,7 @@ export type Theme = {
 export interface BlogState {
   loading: boolean;
   loaded: boolean;
+  addLoading: boolean;
   ids: any;
   blogByIds: any;
   blogSelected: Blog | null;
@@ -69,6 +70,7 @@ interface LoadBlogByIdFailedAction {
 
 interface AddBlogAction {
   type: "ADD_BLOG";
+  blog: any;
 }
 
 interface AddBlogSuccessedAction {
@@ -83,6 +85,7 @@ interface AddBlogFailedAction {
 
 interface UpdateBlogAction {
   type: "UPDATE_BLOG";
+  blog: any;
 }
 
 interface UpdateBlogSuccessedAction {
@@ -97,46 +100,17 @@ interface UpdateBlogFailedAction {
 
 interface DeleteBlogAction {
   type: "DELETE_BLOG";
+  id: string;
 }
 
 interface DeleteBlogSuccessedAction {
   type: "DELETE_BLOG_SUCCESSED";
-  id: string;
+  data: any;
 }
 
 interface DeleteBlogFailedAction {
   type: "DELETE_BLOG_FAILED";
   error: any;
-}
-
-interface LoadBlogWrapperAction {
-  types: ["LOAD_BLOGS", "LOAD_BLOGS_SUCCESSED", "LOAD_BLOGS_FAILED"];
-  promise: any;
-  page: number;
-}
-
-interface LoadBlogByIdWrapperAction {
-  types: [
-    "LOAD_BLOG_BY_ID",
-    "LOAD_BLOG_BY_ID_SUCCESSED",
-    "LOAD_BLOG_BY_ID_FAILED"
-  ];
-  promise: any;
-}
-
-interface AddBlogWrapperAction {
-  types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"];
-  promise: any;
-}
-
-interface UpdateBlogWrapperAction {
-  types: ["UPDATE_BLOG", "UPDATE_BLOG_SUCCESSED", "UPDATE_BLOG_FAILED"];
-  promise: any;
-}
-
-interface DeleteBlogWrapperAction {
-  types: ["DELETE_BLOG", "DELETE_BLOG_SUCCESSED", "DELETE_BLOG_FAILED"];
-  promise: any;
 }
 
 export type KnownAction =
@@ -158,72 +132,120 @@ export type KnownAction =
 
 export const blogEpics: any = [
   (action$: ActionsObservable<LoadBlogAction>): Observable<Action> => {
-    return action$.ofType("LOAD_BLOGS").switchMap(q => {
-      console.log(q);
-      return Observable.fromPromise(
-        request.Blogs.loadBlogsByPage(client, q.page)
-      ).map(blogs => actionCreators.loadBlogsByPageSuccessed(blogs));
-    });
+    return action$
+      .ofType("LOAD_BLOGS")
+      .debounceTime(100)
+      .switchMap(q => {
+        return Observable.fromPromise(
+          request.Blogs.loadBlogsByPage(client, q.page)
+        )
+          .map(blogs => {
+            return actionCreators.loadBlogsByPageSuccessed(blogs);
+          })
+          .catch(error =>
+            Observable.of(actionCreators.loadBlogsByPageFailed(error))
+          );
+      });
   },
   (action$: ActionsObservable<LoadBlogByIdAction>): Observable<Action> => {
-    return action$.ofType("LOAD_BLOG_BY_ID").switchMap(q => {
-      console.log(q);
-      return Observable.fromPromise(
-        request.Blogs.loadBlogById(client, q.blogId)
-      ).map(blog => {
-        console.log(blog);
-        return actionCreators.loadBlogByIdSuccessed(blog);
+    return action$
+      .ofType("LOAD_BLOG_BY_ID")
+      .debounceTime(200)
+      .switchMap(q => {
+        return Observable.fromPromise(
+          request.Blogs.loadBlogById(client, q.blogId)
+        )
+          .map(blog => actionCreators.loadBlogByIdSuccessed(blog))
+          .catch(error =>
+            Observable.of(actionCreators.loadBlogByIdFailed(error))
+          );
       });
-    });
+  },
+  (action$: ActionsObservable<AddBlogAction>): Observable<Action> => {
+    return action$
+      .ofType("ADD_BLOG")
+      .debounceTime(200)
+      .switchMap(q => {
+        return Observable.fromPromise(request.Blogs.createBlog(client, q.blog))
+          .map(data => actionCreators.addBlogSuccessed(data))
+          .catch(error => Observable.of(actionCreators.addBlogFailed(error)));
+      })
+      .delay(200)
+      .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
+    //.mapTo(push("/admin/blogs"));
+  },
+  (action$: ActionsObservable<UpdateBlogAction>): Observable<Action> => {
+    return action$
+      .ofType("UPDATE_BLOG")
+      .debounceTime(200)
+      .switchMap(q => {
+        return Observable.fromPromise(request.Blogs.editBlog(client, q.blog))
+          .map(data => actionCreators.updateBlogSuccessed(responseData(data)))
+          .catch(error =>
+            Observable.of(actionCreators.updateBlogFailed(error))
+          );
+      })
+      .delay(200)
+      .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
+  },
+  (action$: ActionsObservable<DeleteBlogAction>): Observable<Action> => {
+    return action$
+      .ofType("DELETE_BLOG")
+      .debounceTime(200)
+      .switchMap(q => {
+        return Observable.fromPromise(request.Blogs.deleteBlog(client, q.id))
+          .map(data => actionCreators.deleteBlogSuccessed(responseData(data)))
+          .catch(error =>
+            Observable.of(actionCreators.deleteBlogFailed(error))
+          );
+      })
+      .delay(200)
+      .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
   }
 ];
 
 export const actionCreators = {
   loadBlogsByPage: (page: number) =>
     <LoadBlogAction>{ type: "LOAD_BLOGS", page },
+
   loadBlogsByPageSuccessed: (data: any) =>
     <LoadBlogSuccessedAction>{ type: "LOAD_BLOGS_SUCCESSED", ...data },
+
   loadBlogsByPageFailed: (error: any) =>
     <LoadBlogFailedAction>{ type: "LOAD_BLOGS_FAILED", error },
+
   loadBlogById: (blogId: string) =>
     <LoadBlogByIdAction>{ type: "LOAD_BLOG_BY_ID", blogId },
+
   loadBlogByIdSuccessed: (data: any) =>
     <LoadBlogByIdSuccessedAction>{ type: "LOAD_BLOG_BY_ID_SUCCESSED", ...data },
+
   loadBlogByIdFailed: (error: any) =>
     <LoadBlogByIdFailedAction>{ type: "LOAD_BLOG_BY_ID_FAILED", error },
-  addBlog: (blog: any) => {
-    return {
-      [CALL_API]: {
-        payload: <AddBlogWrapperAction>{
-          types: ["ADD_BLOG", "ADD_BLOG_SUCCESSED", "ADD_BLOG_FAILED"],
-          promise: (client: AxiosInstance) =>
-            request.Blogs.createBlog(client, blog)
-        }
-      }
-    };
-  },
-  updateBlog: (blog: any) => {
-    return {
-      [CALL_API]: {
-        payload: <UpdateBlogWrapperAction>{
-          types: ["UPDATE_BLOG", "UPDATE_BLOG_SUCCESSED", "UPDATE_BLOG_FAILED"],
-          promise: (client: AxiosInstance) =>
-            request.Blogs.editBlog(client, blog)
-        }
-      }
-    };
-  },
-  deleteBlog: (blogId: string) => {
-    return {
-      [CALL_API]: {
-        payload: <DeleteBlogWrapperAction>{
-          types: ["DELETE_BLOG", "DELETE_BLOG_SUCCESSED", "DELETE_BLOG_FAILED"],
-          promise: (client: AxiosInstance) =>
-            request.Blogs.deleteBlog(client, blogId)
-        }
-      }
-    };
-  }
+
+  addBlog: (blog: any) => <AddBlogAction>{ type: "ADD_BLOG", blog },
+
+  addBlogSuccessed: (data: any) =>
+    <AddBlogSuccessedAction>{ type: "ADD_BLOG_SUCCESSED", data },
+
+  addBlogFailed: (error: any) =>
+    <AddBlogFailedAction>{ type: "ADD_BLOG_FAILED", error },
+
+  updateBlog: (blog: any) => <UpdateBlogAction>{ type: "UPDATE_BLOG", blog },
+
+  updateBlogSuccessed: (data: any) =>
+    <UpdateBlogSuccessedAction>{ type: "UPDATE_BLOG_SUCCESSED", data },
+
+  updateBlogFailed: (error: any) =>
+    <UpdateBlogFailedAction>{ type: "UPDATE_BLOG_FAILED", error },
+
+  deleteBlog: (id: string) => <DeleteBlogAction>{ type: "DELETE_BLOG", id },
+
+  deleteBlogSuccessed: (data: any) =>
+    <DeleteBlogSuccessedAction>{ type: "DELETE_BLOG_SUCCESSED", data },
+
+  deleteBlogFailed: (error: any) =>
+    <DeleteBlogFailedAction>{ type: "DELETE_BLOG_FAILED", error }
 };
 
 export const reducer: Reducer<BlogState> = (
@@ -301,6 +323,12 @@ export const reducer: Reducer<BlogState> = (
 
     case "ADD_BLOG_SUCCESSED":
     case "UPDATE_BLOG_SUCCESSED":
+      return {
+        ...state,
+        loading: false,
+        loaded: true
+      };
+
     case "DELETE_BLOG_SUCCESSED":
       return {
         ...state,
@@ -319,13 +347,15 @@ export const reducer: Reducer<BlogState> = (
       };
 
     default:
-      const exhaustiveCheck: never = action;
+    // const exhaustiveCheck: never = action;
+    // console.info(exhaustiveCheck);
   }
 
   return (
     state || {
       loading: true,
       loaded: false,
+      redirectTo: "/",
       ids: [],
       blogByIds: [],
       blogSelected: null,

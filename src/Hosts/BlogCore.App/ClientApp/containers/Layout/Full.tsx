@@ -1,20 +1,30 @@
 import * as React from "react";
-import { Switch, Route } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardFooter,
-  CardBody
-} from "reactstrap";
+import { bindActionCreators, Dispatch } from "redux";
+import { connect } from "react-redux";
+import { RouteComponentProps, Switch, Route } from "react-router-dom";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 
-import { Aside, Breadcrumb, Sidebar, Header, Footer } from "Components";
-
+import { Breadcrumb, Sidebar, Header, Footer } from "OurComponents";
 import { Dashboard, BlogManagement, BlogForm } from "./../";
+import { ApplicationState } from "OurModules";
 
-export default class Full extends React.Component<any, any> {
+interface FullAppProps {
+  onRedirect: () => any;
+}
+
+type ExFullAppProps = ApplicationState &
+  FullAppProps &
+  RouteComponentProps<any>;
+
+class Full extends React.Component<ExFullAppProps, any> {
+  componentWillReceiveProps(nextProps: any) {
+    if (nextProps.common.to) {
+      console.log(nextProps);
+      this.props.history.replace(nextProps.common.to);
+      this.props.onRedirect();
+    }
+  }
+
   public render(): JSX.Element {
     const { match } = this.props;
     const routes: JSX.Element = (
@@ -49,3 +59,18 @@ export default class Full extends React.Component<any, any> {
     );
   }
 }
+
+function mapDispatchToProps(dispatch: Dispatch<any>): FullAppProps {
+  return bindActionCreators(
+    {
+      onRedirect: (): any => {
+        return dispatch({ type: "REDIRECT_TO", to: null });
+      }
+    },
+    dispatch
+  );
+}
+
+export default connect((state: ApplicationState) => state, mapDispatchToProps)(
+  Full
+);

@@ -19,6 +19,7 @@ import { createBrowserHistory } from "history";
 import configureStore from "./redux/configureStore";
 import { ApplicationState } from "./redux/modules";
 import * as RoutesModule from "./routes";
+import registerServiceWorker from "./registerServiceWorker";
 
 let routes = RoutesModule.routes;
 
@@ -44,6 +45,7 @@ function renderApp() {
 }
 
 renderApp();
+registerServiceWorker();
 
 // Allow Hot Module Replacement
 if (module.hot) {

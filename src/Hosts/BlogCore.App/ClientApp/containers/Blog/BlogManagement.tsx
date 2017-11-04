@@ -1,9 +1,7 @@
 import * as React from "react";
-import { bindActionCreators } from "redux";
-import { connect, Dispatch } from "react-redux";
+import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
-import { Link, RouteProps, Redirect } from "react-router-dom";
-import { Card, CardHeader, CardFooter, CardBody, Button } from "reactstrap";
+import { Card, CardHeader, CardBody, Button } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
 import * as BlogStore from "../../redux/modules/Blog";
@@ -19,6 +17,10 @@ class BlogManagement extends React.Component<BlogProps, any> {
     this.addRow = this.addRow.bind(this);
   }
 
+  public componentWillMount(): void {
+    // this.props.loadBlogsByPage(1);
+  }
+
   public addRow(): any {
     this.props.history.replace("/admin/blog");
   }
@@ -31,7 +33,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
     var table = (
       <BlogTable
         totalPages={this.props.totalPages}
-        loading={this.props.loading}
+        loading={this.props.loading && this.props.addLoading}
         blogs={blogs}
         getBlogsByPage={this.props.loadBlogsByPage}
         history={this.props.history}
@@ -44,7 +46,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
           <CardHeader>
             <h3 className="b-panel-title">
               <i className="icon-notebook b-icon" />
-              Blog Management
+              Blog Page
             </h3>
             <span className="b-panel-actions">
               <Button

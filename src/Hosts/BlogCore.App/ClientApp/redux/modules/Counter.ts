@@ -1,4 +1,4 @@
-import { Action, Reducer } from "redux";
+import { Reducer } from "redux";
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
@@ -46,7 +46,8 @@ export const reducer: Reducer<CounterState> = (
       return { count: state.count - 1 };
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above
-      const exhaustiveCheck: never = action;
+      // const exhaustiveCheck: never = action;
+      // console.info(exhaustiveCheck);
   }
 
   // For unrecognized actions (or in cases where actions have no effect), must return the existing state

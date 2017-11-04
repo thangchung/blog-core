@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link, RouteProps } from "react-router-dom";
 import {
   Nav,
   NavbarBrand,

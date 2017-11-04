@@ -8,7 +8,7 @@ const BLOGS_URL = `/api/blogs`;
 // TODO: will refactor this later
 export const client: AxiosInstance = axios.create({
   baseURL: GlobalConfig.apiServer,
-  timeout: 1000
+  timeout: 2000
 });
 
 const Blogs = {
@@ -23,8 +23,6 @@ const Blogs = {
   deleteBlog: (client: AxiosInstance, blogId: string) =>
     client.delete(`${BLOGS_URL}/${blogId}`)
 };
-
-
 
 export default {
   Blogs

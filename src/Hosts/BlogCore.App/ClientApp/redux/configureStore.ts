@@ -16,7 +16,6 @@ import { History } from "history";
 import client from "./middleware/clientMiddleware";
 import * as StoreModule from "./modules";
 import { ApplicationState, reducers, rootEpic } from "./modules";
-// import rootEpic from "./epics";
 
 export default function configureStore(
   history: History,
@@ -33,7 +32,7 @@ export default function configureStore(
     windowIfDefined &&
     (windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__ as () => GenericStoreEnhancer);
   const createStoreWithMiddleware: any = compose(
-    applyMiddleware(/*thunk,*/ epicMiddleware, client, routerMiddleware(history)),
+    applyMiddleware(thunk, epicMiddleware, client, routerMiddleware(history)),
     devToolsExtension
       ? devToolsExtension()
       : <S>(next: StoreEnhancerStoreCreator<S>) => next

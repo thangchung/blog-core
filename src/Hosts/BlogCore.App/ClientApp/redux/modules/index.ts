@@ -3,12 +3,14 @@ import { reducer as formReducer } from "redux-form";
 import * as WeatherForecasts from "./WeatherForecasts";
 import * as Counter from "./Counter";
 import * as Blog from "./Blog";
+import * as Common from "./Common";
 
 // The top-level state object
 export interface ApplicationState {
   counter: Counter.CounterState;
   weatherForecasts: WeatherForecasts.WeatherForecastsState;
   blog: Blog.BlogState;
+  common: Common.CommonState;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -18,7 +20,8 @@ export const reducers = {
   form: formReducer,
   counter: Counter.reducer,
   weatherForecasts: WeatherForecasts.reducer,
-  blog: Blog.reducer
+  blog: Blog.reducer,
+  common: Common.reducer
 };
 
 export const rootEpic = combineEpics(...Blog.blogEpics);

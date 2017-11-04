@@ -9,7 +9,7 @@ import SidebarMinimizer from "./../SidebarMinimizer/SidebarMinimizer";
 import nav from "./_nav";
 
 export default class Sidebar extends React.Component<any, any> {
-  shouldComponentUpdate(){
+  shouldComponentUpdate() {
     return false;
   }
 
@@ -35,15 +35,14 @@ export default class Sidebar extends React.Component<any, any> {
     const handleClick = this.handleClick;
 
     // badge addon to NavItem
-    const badge = (badge: any) => {
-      if (badge) {
-        const classes = classNames(badge.class);
-        return (
-          <Badge className={classes} color={badge.variant}>
-            {badge.text}
-          </Badge>
-        );
-      }
+    const badge = (badge: any): JSX.Element => {
+      if (!badge) return <div />;
+      const classes = classNames(badge.class);
+      return (
+        <Badge className={classes} color={badge.variant}>
+          {badge.text}
+        </Badge>
+      );
     };
 
     // simple wrapper for nav-title item

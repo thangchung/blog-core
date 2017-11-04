@@ -1,11 +1,10 @@
 import * as React from "react";
-import { Link, RouteProps } from "react-router-dom";
+import { RouteProps } from "react-router-dom";
 import { connect } from "react-redux";
 import { Button } from "reactstrap";
 
 import { ApplicationState } from "../redux/modules";
 import * as CounterStore from "../redux/modules/Counter";
-import * as WeatherForecasts from "../redux/modules/WeatherForecasts";
 
 type CounterProps = CounterStore.CounterState &
   typeof CounterStore.actionCreators &

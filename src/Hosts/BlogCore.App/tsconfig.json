@@ -8,12 +8,22 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "skipDefaultLibCheck": true,
+    "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noImplicitReturns": true,
+    // "forceConsistentCasingInFileNames": true,
+    // "noFallthroughCasesInSwitch": true,
+    "removeComments": true,
     "strict": true,
     "lib": ["es6", "dom"],
     "types": ["webpack-env"],
     "paths": {
-      "Components": ["./ClientApp/components"],
-      "Components/*": ["./ClientApp/components/*"]
+      "OurComponents": ["./ClientApp/components"],
+      "OurComponents/*": ["./ClientApp/components/*"],
+      "OurModules": ["./ClientApp/redux/modules"],
+      "OurModules/*": ["./ClientApp/redux/modules/*"],
+      "OurConfigs": ["./ClientApp/configs"],
+      "OurConfigs/*": ["./ClientApp/configs/*"]
     }
   },
   "include": [

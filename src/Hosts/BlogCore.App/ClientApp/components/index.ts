@@ -6,6 +6,9 @@ export { default as Sidebar } from "./Sidebar/Sidebar";
 export {
   renderTextBoxField as TextBoxField,
   renderNumberField as NumberField,
-  renderSingleSelectField as SingleSelectField,
+  renderSingleSelectField as SingleSelectField
 } from "./Form/Input";
 export { default as CheckboxField } from "./Form/Checkbox";
+export {
+  confirmationBox as ConfirmationBox
+} from "./Confirmation/ConfirmationBox";

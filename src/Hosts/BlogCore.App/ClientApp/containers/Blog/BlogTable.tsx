@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ButtonGroup, Button } from "reactstrap";
 
 // ignore TS because react-table doesn't support TS correctly
 const ReactTable: any = require("react-table").default;
@@ -105,7 +104,7 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
   }
 
   fetchData(state: any, instance: any): void {
-    console.log(instance);
+    console.info(instance);
     this.props.getBlogsByPage(state.page);
   }
 
@@ -160,7 +159,7 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
         onFetchData={this.fetchData}
         getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
           return {
-            onClick: (e: any, handleOriginal: any) => {
+            onClick: (event: any, handleOriginal: any) => {
               
               this.props.history.replace(`/admin/blog/${rowInfo.original.id}`);
               if (handleOriginal) {

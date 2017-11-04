@@ -1,5 +1,5 @@
 import { fetch, addTask } from "domain-task";
-import { Action, Reducer, ActionCreator } from "redux";
+import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
 
 // -----------------
@@ -100,7 +100,8 @@ export const reducer: Reducer<WeatherForecastsState> = (
       break;
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above
-      const exhaustiveCheck: never = action;
+      // const exhaustiveCheck: never = action;
+      // console.info(exhaustiveCheck);
   }
 
   return state || unloadedState;
