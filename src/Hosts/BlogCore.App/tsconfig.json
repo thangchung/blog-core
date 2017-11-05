@@ -23,7 +23,9 @@
       "OurModules": ["./ClientApp/redux/modules"],
       "OurModules/*": ["./ClientApp/redux/modules/*"],
       "OurConfigs": ["./ClientApp/configs"],
-      "OurConfigs/*": ["./ClientApp/configs/*"]
+      "OurConfigs/*": ["./ClientApp/configs/*"],
+      "OurUtils": ["./ClientApp/utils"],
+      "OurUtils/*": ["./ClientApp/utils/*"]
     }
   },
   "include": [

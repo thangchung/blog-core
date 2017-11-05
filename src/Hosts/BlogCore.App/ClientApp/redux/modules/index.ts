@@ -2,7 +2,7 @@ import { combineEpics } from "redux-observable";
 import { reducer as formReducer } from "redux-form";
 import * as WeatherForecasts from "./WeatherForecasts";
 import * as Counter from "./Counter";
-import * as Blog from "./Blog";
+import * as Blog from "./blog";
 import * as Common from "./Common";
 
 // The top-level state object

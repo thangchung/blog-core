@@ -53,6 +53,7 @@ class BlogForm extends React.Component<BlogFormProps, any> {
   }
 
   public deleteBlog(event: any): void {
+    console.info(`[BLOG]: Delete id#${this.props.match.params.id}`);
     this.props.deleteBlog(this.props.match.params.id);
   }
 

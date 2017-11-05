@@ -17,6 +17,7 @@ module.exports = env => {
         OurComponents: path.resolve(__dirname, "./ClientApp/components/"),
         OurModules: path.resolve(__dirname, "./ClientApp/redux/modules/"),
         OurConfigs: path.resolve(__dirname, "./ClientApp/configs/"),
+        OurUtils: path.resolve(__dirname, "./ClientApp/utils/")
       }
     },
     output: {
