@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { Card, CardHeader, CardBody, Button } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
-import * as BlogStore from "../../redux/modules/Blog";
+import * as BlogStore from "../../redux/modules/blog";
 import BlogTable from "./BlogTable";
 
 type BlogProps = BlogStore.BlogState &

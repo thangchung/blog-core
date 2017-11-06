@@ -4,13 +4,15 @@ export interface CommonState {
   redirectTo: string;
 }
 
-export interface RedirectToAction {
-  type: "REDIRECT_TO";
+const REDIRECT_TO = "REDIRECT_TO";
+
+export type RedirectToAction = {
+  type: typeof REDIRECT_TO;
   to: string | null;
 }
 
 export const actionCreators = {
-  redirectTo: (to: string) => <RedirectToAction>{ type: "REDIRECT_TO", to }
+  redirectTo: (to: string) => <RedirectToAction>{ type: REDIRECT_TO, to }
 };
 
 export type KnownAction = RedirectToAction;
@@ -20,13 +22,14 @@ export const reducer: Reducer<CommonState> = (
   action: KnownAction
 ) => {
   switch (action.type) {
-    case "REDIRECT_TO":
+    case REDIRECT_TO:
       return {
         ...state,
         to: action.to
       };
     default:
-    // const exhaustiveCheck: never = action;
+      // const exhaustiveCheck: never = action;
+      // if (typeof exhaustiveCheck != "undefined") break;
   }
 
   return (

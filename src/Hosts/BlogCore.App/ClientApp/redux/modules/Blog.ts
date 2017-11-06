@@ -1,10 +1,15 @@
+import { Observable } from "rxjs/Observable";
+import { AjaxResponse } from "rxjs/Observable/dom/AjaxObservable";
 import { Action, Reducer } from "redux";
-import { Observable } from "rxjs";
 import { ActionsObservable } from "redux-observable";
 
-import request from "./../client";
-import { actionCreators as commonActionCreators } from "./Common";
+import { get, post, put, del } from "./../client";
+import { actionCreators as commonActionCreators } from "./common";
+import { globalConfig as GlobalConfig } from "./../../configs";
 import { responseData } from "OurUtils";
+
+const BLOGS_PUBLIC_URL: string = `${GlobalConfig.apiServer}/public/api/blogs`;
+const BLOGS_URL: string = `${GlobalConfig.apiServer}/api/blogs`;
 
 export type Blog = {
   id: string;
@@ -56,86 +61,86 @@ const UPDATE_BLOG_SUCCESSED = "UPDATE_BLOG_SUCCESSED";
 const UPDATE_BLOG_FAILED = "UPDATE_BLOG_FAILED";
 
 // Delete blog
-const DELETE_BLOG = "UPDATE_BLOG";
-const DELETE_BLOG_SUCCESSED = "UPDATE_BLOG_SUCCESSED";
-const DELETE_BLOG_FAILED = "UPDATE_BLOG_FAILED";
+const DELETE_BLOG = "DELETE_BLOG";
+const DELETE_BLOG_SUCCESSED = "DELETE_BLOG_SUCCESSED";
+const DELETE_BLOG_FAILED = "DELETE_BLOG_FAILED";
 
-export interface LoadBlogAction {
+type LoadBlogAction = {
   type: typeof LOAD_BLOGS;
   page: number;
-}
+};
 
-interface LoadBlogSuccessedAction {
+type LoadBlogSuccessedAction = {
   type: typeof LOAD_BLOGS_SUCCESSED;
   items: any;
   totalPages: number;
   page: number;
-}
+};
 
-interface LoadBlogFailedAction {
+type LoadBlogFailedAction = {
   type: typeof LOAD_BLOGS_FAILED;
   error: any;
-}
+};
 
-interface LoadBlogByIdAction {
+type LoadBlogByIdAction = {
   type: typeof LOAD_BLOG_BY_ID;
   blogId: string;
-}
+};
 
-interface LoadBlogByIdSuccessedAction {
+type LoadBlogByIdSuccessedAction = {
   type: typeof LOAD_BLOG_BY_ID_SUCCESSED;
   data: any;
-}
+};
 
-interface LoadBlogByIdFailedAction {
+type LoadBlogByIdFailedAction = {
   type: typeof LOAD_BLOG_BY_ID_FAILED;
   error: any;
-}
+};
 
-interface AddBlogAction {
+type AddBlogAction = {
   type: typeof ADD_BLOG;
   blog: any;
-}
+};
 
-interface AddBlogSuccessedAction {
+type AddBlogSuccessedAction = {
   type: typeof ADD_BLOG_SUCCESSED;
   data: any;
-}
+};
 
-interface AddBlogFailedAction {
+type AddBlogFailedAction = {
   type: typeof ADD_BLOG_FAILED;
   error: any;
-}
+};
 
-interface UpdateBlogAction {
+type UpdateBlogAction = {
   type: typeof UPDATE_BLOG;
   blog: any;
-}
+};
 
-interface UpdateBlogSuccessedAction {
+type UpdateBlogSuccessedAction = {
   type: typeof UPDATE_BLOG_SUCCESSED;
   data: any;
-}
+};
 
-interface UpdateBlogFailedAction {
+type UpdateBlogFailedAction = {
   type: typeof UPDATE_BLOG_FAILED;
   error: any;
-}
+};
 
-interface DeleteBlogAction {
+type DeleteBlogAction = {
   type: typeof DELETE_BLOG;
   id: string;
-}
+};
 
-interface DeleteBlogSuccessedAction {
+type DeleteBlogSuccessedAction = {
   type: typeof DELETE_BLOG_SUCCESSED;
   data: any;
-}
+};
 
-interface DeleteBlogFailedAction {
+type DeleteBlogFailedAction = {
   type: typeof DELETE_BLOG_FAILED;
   error: any;
-}
+};
 
 export type KnownAction =
   | LoadBlogAction
@@ -154,82 +159,81 @@ export type KnownAction =
   | DeleteBlogSuccessedAction
   | DeleteBlogFailedAction;
 
+const blogRequest = {
+  loadBlogs: (page: number): Observable<AjaxResponse> =>
+    get(`${BLOGS_PUBLIC_URL}?page=${page + 1}`),
+  loadBlogById: (id: string): Observable<AjaxResponse> =>
+    get(`${BLOGS_PUBLIC_URL}/${id}`),
+  createBlog: (blog: Blog): Observable<AjaxResponse> => post(BLOGS_URL, blog),
+  editBlog: (blog: Blog): Observable<AjaxResponse> =>
+    put(`${BLOGS_URL}/${blog.id}`, blog),
+  deleteBlog: (blogId: string): Observable<AjaxResponse> =>
+    del(`${BLOGS_URL}/${blogId}`)
+};
+
 export const blogEpics: any = [
   (action$: ActionsObservable<LoadBlogAction>): Observable<Action> => {
-    return action$
-      .ofType(LOAD_BLOGS)
-      .debounceTime(100)
-      .mergeMap(action =>
-        request.Blogs
-          .loadBlogs(action.page)
-          .map(result => {
-            return actionCreators.loadBlogsByPageSuccessed(result.response);
-          })
-          .catch(error =>
-            Observable.of(actionCreators.loadBlogsByPageFailed(error))
-          )
-      );
+    return action$.ofType(LOAD_BLOGS).switchMap(action =>
+      blogRequest
+        .loadBlogs(action.page)
+        .map(result => {
+          return actionCreators.loadBlogsByPageSuccessed(result.response);
+        })
+        .catch(error =>
+          Observable.of(actionCreators.loadBlogsByPageFailed(error))
+        )
+    );
   },
   (action$: ActionsObservable<LoadBlogByIdAction>): Observable<Action> => {
-    return action$
-      .ofType(LOAD_BLOG_BY_ID)
-      .debounceTime(100)
-      .mergeMap(action =>
-        request.Blogs
-          .loadBlogById(action.blogId)
-          .map(result => actionCreators.loadBlogByIdSuccessed(result.response))
-          .catch(error =>
-            Observable.of(actionCreators.loadBlogByIdFailed(error))
-          )
-      );
+    return action$.ofType(LOAD_BLOG_BY_ID).switchMap(action =>
+      blogRequest
+        .loadBlogById(action.blogId)
+        .map(result => actionCreators.loadBlogByIdSuccessed(result.response))
+        .catch(error => Observable.of(actionCreators.loadBlogByIdFailed(error)))
+    );
   },
   (action$: ActionsObservable<AddBlogAction>): Observable<Action> => {
     return action$
       .ofType(ADD_BLOG)
-      .debounceTime(200)
-      .mergeMap(action =>
-        request.Blogs
+      .switchMap(action =>
+        blogRequest
           .createBlog(action.blog)
           .map(result => actionCreators.addBlogSuccessed(result.response))
           .catch(error => Observable.of(actionCreators.addBlogFailed(error)))
       )
-      .delay(200)
       .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
   },
   (action$: ActionsObservable<UpdateBlogAction>): Observable<Action> => {
     return action$
       .ofType(UPDATE_BLOG)
-      .debounceTime(200)
-      .mergeMap(action =>
-        request.Blogs
+      .switchMap(action =>
+        blogRequest
           .editBlog(action.blog)
           .map(result =>
             actionCreators.updateBlogSuccessed(responseData(result.response))
           )
           .catch(error => Observable.of(actionCreators.updateBlogFailed(error)))
       )
-      .delay(200)
       .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
   },
   (action$: ActionsObservable<DeleteBlogAction>): Observable<Action> => {
     return action$
       .ofType(DELETE_BLOG)
-      .debounceTime(200)
-      .mergeMap(action =>
-        request.Blogs
+      .switchMap(action =>
+        blogRequest
           .deleteBlog(action.id)
           .map(result =>
             actionCreators.deleteBlogSuccessed(responseData(result.response))
           )
           .catch(error => Observable.of(actionCreators.deleteBlogFailed(error)))
       )
-      .delay(200)
       .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
   }
 ];
 
 export const actionCreators = {
-  loadBlogsByPage: (page: number) => <LoadBlogAction>{ type: LOAD_BLOGS, page },
+  loadBlogsByPage: (page: number) =>
+    <LoadBlogAction>{ type: LOAD_BLOGS, page },
 
   loadBlogsByPageSuccessed: (data: any) =>
     <LoadBlogSuccessedAction>{ type: LOAD_BLOGS_SUCCESSED, ...data },
@@ -284,7 +288,6 @@ export const reducer: Reducer<BlogState> = (
 
     case LOAD_BLOGS_SUCCESSED:
       console.log(action);
-      // const data = responseData(action);
       return {
         ...state,
         ids: action.items.map((blog: Blog) => blog.id),
@@ -364,8 +367,8 @@ export const reducer: Reducer<BlogState> = (
       };
 
     default:
-    // const exhaustiveCheck: never = action;
-    // console.info(exhaustiveCheck);
+      const exhaustiveCheck: never = action;
+      if (typeof exhaustiveCheck != "undefined") break;
   }
 
   return (

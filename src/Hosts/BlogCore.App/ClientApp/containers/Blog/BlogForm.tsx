@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 import { ApplicationState } from "../../redux/modules";
-import * as BlogStore from "../../redux/modules/Blog";
+import * as BlogStore from "../../redux/modules/blog";
 import {
   TextBoxField,
   NumberField,
@@ -53,6 +53,7 @@ class BlogForm extends React.Component<BlogFormProps, any> {
   }
 
   public deleteBlog(event: any): void {
+    event.preventDefault();
     console.info(`[BLOG]: Delete id#${this.props.match.params.id}`);
     this.props.deleteBlog(this.props.match.params.id);
   }

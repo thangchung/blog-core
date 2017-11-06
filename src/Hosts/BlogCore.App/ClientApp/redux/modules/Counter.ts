@@ -46,8 +46,8 @@ export const reducer: Reducer<CounterState> = (
       return { count: state.count - 1 };
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above
-      // const exhaustiveCheck: never = action;
-      // console.info(exhaustiveCheck);
+      const exhaustiveCheck: never = action;
+      if (typeof exhaustiveCheck != "undefined") break;
   }
 
   // For unrecognized actions (or in cases where actions have no effect), must return the existing state
