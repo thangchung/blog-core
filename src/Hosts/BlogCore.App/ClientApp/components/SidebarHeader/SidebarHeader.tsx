@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export default class SidebarHeader extends React.Component<any, any> {
   public render(): JSX.Element {

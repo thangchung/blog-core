@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
 // ignore TS because react-table doesn't support TS correctly
-const ReactTable: any = require("react-table").default;
+const ReactTable: any = require('react-table').default;
 
 const columnsRender = (
   selectAll: number,
@@ -11,8 +11,8 @@ const columnsRender = (
 ): any => {
   return [
     {
-      id: "checkbox",
-      accessor: "",
+      id: 'checkbox',
+      accessor: '',
       Header: (x: any) => {
         return (
           <input
@@ -45,32 +45,32 @@ const columnsRender = (
       width: 45
     },
     {
-      Header: "Id",
-      accessor: "id",
+      Header: 'Id',
+      accessor: 'id',
       show: false
     },
     {
-      Header: "Title",
-      accessor: "title"
+      Header: 'Title',
+      accessor: 'title'
     },
     {
-      Header: "Description",
-      accessor: "description"
+      Header: 'Description',
+      accessor: 'description'
     },
     {
-      Header: "Theme",
-      accessor: "theme",
+      Header: 'Theme',
+      accessor: 'theme',
       Cell: (row: any) => (
         <span key={row.id}>
           <span
             style={{
-              color: row.value == 1 ? "#57d500" : "#ff2e00",
-              transition: "all .3s ease"
+              color: row.value == 1 ? '#57d500' : '#ff2e00',
+              transition: 'all .3s ease'
             }}
           >
             &#x25cf;
-          </span>{" "}
-          {row.value == 1 ? "Default" : "Any"}
+          </span>{' '}
+          {row.value == 1 ? 'Default' : 'Any'}
         </span>
       )
     }
@@ -150,7 +150,7 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
         filterable
         defaultSorted={[
           {
-            id: "title",
+            id: 'title',
             desc: true
           }
         ]}
@@ -160,7 +160,6 @@ export default class BlogTable extends React.Component<BlogTableProps, any> {
         getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
           return {
             onClick: (event: any, handleOriginal: any) => {
-              
               this.props.history.replace(`/admin/blog/${rowInfo.original.id}`);
               if (handleOriginal) {
                 handleOriginal();

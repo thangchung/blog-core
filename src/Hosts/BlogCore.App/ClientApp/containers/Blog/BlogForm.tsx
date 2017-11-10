@@ -1,7 +1,7 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
-import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
+import { Field, reduxForm, InjectedFormProps, FormErrors } from 'redux-form';
 import {
   Card,
   CardHeader,
@@ -10,17 +10,17 @@ import {
   FormGroup,
   Label,
   Button
-} from "reactstrap";
+} from 'reactstrap';
 
-import { ApplicationState } from "../../redux/modules";
-import * as BlogStore from "../../redux/modules/blog";
+import { ApplicationState } from '../../redux/modules';
+import * as BlogStore from '../../redux/modules/blog';
 import {
   TextBoxField,
   NumberField,
   CheckboxField,
   SingleSelectField,
   ConfirmationBox
-} from "OurComponents";
+} from 'OurComponents';
 
 interface ExBlogFormProps extends InjectedFormProps<BlogStore.Blog, any> {
   themes: BlogStore.Theme[];
@@ -28,7 +28,7 @@ interface ExBlogFormProps extends InjectedFormProps<BlogStore.Blog, any> {
 
 type BlogFormProps = ExBlogFormProps &
   typeof BlogStore.actionCreators &
-  RouteComponentProps<any>;
+  RouteComponentProps<{ id?: string }>;
 
 class BlogForm extends React.Component<BlogFormProps, any> {
   constructor(props: BlogFormProps) {
@@ -42,7 +42,7 @@ class BlogForm extends React.Component<BlogFormProps, any> {
   }
 
   public componentDidMount(): void {
-    console.info("[BLOG]: Initialize data...");
+    console.info('[BLOG]: Initialize data...');
     const { match } = this.props;
     if (match.params && match.params.id) {
       this.props.loadBlogById(match.params.id);
@@ -52,10 +52,10 @@ class BlogForm extends React.Component<BlogFormProps, any> {
     }
   }
 
-  public deleteBlog(event: any): void {
+  public deleteBlog(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     console.info(`[BLOG]: Delete id#${this.props.match.params.id}`);
-    this.props.deleteBlog(this.props.match.params.id);
+    this.props.deleteBlog(this.props.match.params.id as string);
   }
 
   public onConfirmationCancel(showConfirm: boolean): void {
@@ -164,7 +164,7 @@ class BlogForm extends React.Component<BlogFormProps, any> {
                 color="warning"
                 disabled={!pristine}
                 onClick={() => {
-                  this.props.history.replace("/admin/blogs");
+                  this.props.history.replace('/admin/blogs');
                 }}
               >
                 <i className="icon-arrow-left b-icon" />Back
@@ -182,27 +182,27 @@ const validate = (
 ): FormErrors<BlogStore.Blog> => {
   const errors: FormErrors<BlogStore.Blog> = {};
   if (!values.title) {
-    errors.title = "Required.";
+    errors.title = 'Required.';
   } else if (values.title.length > 30) {
-    errors.title = "Too long.";
+    errors.title = 'Too long.';
   }
 
   if (!values.theme) {
-    errors.theme = "Required.";
+    errors.theme = 'Required.';
   } else if (values.theme != 1) {
-    errors.theme = "Only supports default theme (1).";
+    errors.theme = 'Only supports default theme (1).';
   }
 
   if (!values.postsPerPage) {
-    errors.postsPerPage = "Required.";
+    errors.postsPerPage = 'Required.';
   }
 
   if (!values.daysToComment) {
-    errors.daysToComment = "Required.";
+    errors.daysToComment = 'Required.';
   }
 
   if (!values.moderateComments) {
-    errors.moderateComments = "Required.";
+    errors.moderateComments = 'Required.';
   }
 
   return errors;
@@ -211,8 +211,8 @@ const validate = (
 const initData: any = (state: ApplicationState) => ({
   themes: state.blog.themes,
   initialValues: state.blog.blogSelected || {
-    title: "sample title",
-    description: "sample description",
+    title: 'sample title',
+    description: 'sample description',
     theme: 1,
     postsPerPage: 10,
     daysToComment: 5,
@@ -222,7 +222,7 @@ const initData: any = (state: ApplicationState) => ({
 
 export default connect(initData, BlogStore.actionCreators)(
   reduxForm<Readonly<BlogStore.Blog>, BlogFormProps>({
-    form: "addNewBlogForm",
+    form: 'addNewBlogForm',
     enableReinitialize: true,
     validate,
     onSubmit: (values: any, dispatch: any, props: BlogFormProps): void => {

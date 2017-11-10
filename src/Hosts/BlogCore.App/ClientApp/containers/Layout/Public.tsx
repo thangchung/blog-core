@@ -1,14 +1,8 @@
-import * as React from "react";
-import { Switch, Route } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardBody
-} from "reactstrap";
+import * as React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 
-import { PublicBlog, Counter, FetchData } from "./../";
+import { PublicBlog, Counter, FetchData } from './../';
 
 export default class Full extends React.Component<any, any> {
   public render(): JSX.Element {

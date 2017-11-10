@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Nav,
   NavbarBrand,
@@ -6,36 +6,36 @@ import {
   NavItem,
   NavLink,
   Badge
-} from "reactstrap";
-import HeaderDropdown from "./HeaderDropdown";
+} from 'reactstrap';
+import HeaderDropdown from './HeaderDropdown';
 
 export default class Header extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
   }
 
-  shouldComponentUpdate(){
+  shouldComponentUpdate() {
     return false;
   }
 
   sidebarToggle(e: any): void {
     e.preventDefault();
-    document.body.classList.toggle("sidebar-hidden");
+    document.body.classList.toggle('sidebar-hidden');
   }
 
   sidebarMinimize(e: any): void {
     e.preventDefault();
-    document.body.classList.toggle("sidebar-minimized");
+    document.body.classList.toggle('sidebar-minimized');
   }
 
   mobileSidebarToggle(e: any): void {
     e.preventDefault();
-    document.body.classList.toggle("sidebar-mobile-show");
+    document.body.classList.toggle('sidebar-mobile-show');
   }
 
   asideToggle(e: any): void {
     e.preventDefault();
-    document.body.classList.toggle("aside-menu-hidden");
+    document.body.classList.toggle('aside-menu-hidden');
   }
 
   public render(): JSX.Element {

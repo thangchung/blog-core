@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import * as React from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export const confirmationBox = ({
   showConfirm,
@@ -13,7 +13,7 @@ export const confirmationBox = ({
       <ModalFooter>
         <Button color="primary" onClick={e => onConfirmed(e)}>
           Confirm
-        </Button>{" "}
+        </Button>{' '}
         <Button color="secondary" onClick={() => onCancel(false)}>
           Cancel
         </Button>

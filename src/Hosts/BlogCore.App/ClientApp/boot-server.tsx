@@ -1,13 +1,13 @@
-import * as React from "react";
-import { Provider } from "react-redux";
-import { renderToString } from "react-dom/server";
-import { StaticRouter } from "react-router-dom";
-import { replace } from "react-router-redux";
-import { createMemoryHistory } from "history";
-import { createServerRenderer, RenderResult } from "aspnet-prerendering";
+import * as React from 'react';
+import { Provider } from 'react-redux';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
+import { replace } from 'react-router-redux';
+import { createMemoryHistory } from 'history';
+import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 
-import { routes } from "./routes";
-import configureStore from "./redux/configureStore";
+import { routes } from './routes';
+import configureStore from './redux/configureStore';
 
 export default createServerRenderer(params => {
   return new Promise<RenderResult>((resolve, reject) => {

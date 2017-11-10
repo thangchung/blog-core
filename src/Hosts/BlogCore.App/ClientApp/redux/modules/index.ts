@@ -1,9 +1,9 @@
-import { combineEpics } from "redux-observable";
-import { reducer as formReducer } from "redux-form";
-import * as WeatherForecasts from "./WeatherForecasts";
-import * as Counter from "./Counter";
-import * as Blog from "./blog";
-import * as Common from "./common";
+import { combineEpics } from 'redux-observable';
+import { reducer as formReducer } from 'redux-form';
+import * as WeatherForecasts from './WeatherForecasts';
+import * as Counter from './Counter';
+import * as Blog from './blog';
+import * as Common from './common';
 
 // The top-level state object
 export interface ApplicationState {

@@ -1,12 +1,12 @@
-import { Observable } from "rxjs/Observable";
-import { AjaxResponse } from "rxjs/Observable/dom/AjaxObservable";
-import { Action, Reducer } from "redux";
-import { ActionsObservable } from "redux-observable";
+import { Observable } from 'rxjs/Observable';
+import { AjaxResponse } from 'rxjs/Observable/dom/AjaxObservable';
+import { Action, Reducer } from 'redux';
+import { ActionsObservable } from 'redux-observable';
 
-import { get, post, put, del } from "./../client";
-import { actionCreators as commonActionCreators } from "./common";
-import { globalConfig as GlobalConfig } from "./../../configs";
-import { responseData } from "OurUtils";
+import { get, post, put, del } from './../client';
+import { actionCreators as commonActionCreators } from './common';
+import { globalConfig as GlobalConfig } from './../../configs';
+import { responseData } from 'OurUtils';
 
 const BLOGS_PUBLIC_URL: string = `${GlobalConfig.apiServer}/public/api/blogs`;
 const BLOGS_URL: string = `${GlobalConfig.apiServer}/api/blogs`;
@@ -41,106 +41,106 @@ export interface BlogState {
 }
 
 // Load blogs
-const LOAD_BLOGS = "LOAD_BLOGS";
-const LOAD_BLOGS_SUCCESSED = "LOAD_BLOGS_SUCCESSED";
-const LOAD_BLOGS_FAILED = "LOAD_BLOGS_FAILED";
+const LOAD_BLOGS = 'LOAD_BLOGS';
+const LOAD_BLOGS_SUCCESSED = 'LOAD_BLOGS_SUCCESSED';
+const LOAD_BLOGS_FAILED = 'LOAD_BLOGS_FAILED';
 
 // Load blog by id
-const LOAD_BLOG_BY_ID = "LOAD_BLOG_BY_ID";
-const LOAD_BLOG_BY_ID_SUCCESSED = "LOAD_BLOG_BY_ID_SUCCESSED";
-const LOAD_BLOG_BY_ID_FAILED = "LOAD_BLOG_BY_ID_FAILED";
+const LOAD_BLOG_BY_ID = 'LOAD_BLOG_BY_ID';
+const LOAD_BLOG_BY_ID_SUCCESSED = 'LOAD_BLOG_BY_ID_SUCCESSED';
+const LOAD_BLOG_BY_ID_FAILED = 'LOAD_BLOG_BY_ID_FAILED';
 
 // Add blog
-const ADD_BLOG = "ADD_BLOG";
-const ADD_BLOG_SUCCESSED = "ADD_BLOG_SUCCESSED";
-const ADD_BLOG_FAILED = "ADD_BLOG_FAILED";
+const ADD_BLOG = 'ADD_BLOG';
+const ADD_BLOG_SUCCESSED = 'ADD_BLOG_SUCCESSED';
+const ADD_BLOG_FAILED = 'ADD_BLOG_FAILED';
 
 // Update blog
-const UPDATE_BLOG = "UPDATE_BLOG";
-const UPDATE_BLOG_SUCCESSED = "UPDATE_BLOG_SUCCESSED";
-const UPDATE_BLOG_FAILED = "UPDATE_BLOG_FAILED";
+const UPDATE_BLOG = 'UPDATE_BLOG';
+const UPDATE_BLOG_SUCCESSED = 'UPDATE_BLOG_SUCCESSED';
+const UPDATE_BLOG_FAILED = 'UPDATE_BLOG_FAILED';
 
 // Delete blog
-const DELETE_BLOG = "DELETE_BLOG";
-const DELETE_BLOG_SUCCESSED = "DELETE_BLOG_SUCCESSED";
-const DELETE_BLOG_FAILED = "DELETE_BLOG_FAILED";
+const DELETE_BLOG = 'DELETE_BLOG';
+const DELETE_BLOG_SUCCESSED = 'DELETE_BLOG_SUCCESSED';
+const DELETE_BLOG_FAILED = 'DELETE_BLOG_FAILED';
 
-type LoadBlogAction = {
+interface LoadBlogAction extends Action {
   type: typeof LOAD_BLOGS;
   page: number;
-};
+}
 
-type LoadBlogSuccessedAction = {
+interface LoadBlogSuccessedAction extends Action {
   type: typeof LOAD_BLOGS_SUCCESSED;
   items: any;
   totalPages: number;
   page: number;
-};
+}
 
-type LoadBlogFailedAction = {
+interface LoadBlogFailedAction {
   type: typeof LOAD_BLOGS_FAILED;
   error: any;
-};
+}
 
-type LoadBlogByIdAction = {
+interface LoadBlogByIdAction {
   type: typeof LOAD_BLOG_BY_ID;
   blogId: string;
-};
+}
 
-type LoadBlogByIdSuccessedAction = {
+interface LoadBlogByIdSuccessedAction {
   type: typeof LOAD_BLOG_BY_ID_SUCCESSED;
   data: any;
-};
+}
 
-type LoadBlogByIdFailedAction = {
+interface LoadBlogByIdFailedAction {
   type: typeof LOAD_BLOG_BY_ID_FAILED;
   error: any;
-};
+}
 
-type AddBlogAction = {
+interface AddBlogAction {
   type: typeof ADD_BLOG;
   blog: any;
-};
+}
 
-type AddBlogSuccessedAction = {
+interface AddBlogSuccessedAction {
   type: typeof ADD_BLOG_SUCCESSED;
   data: any;
-};
+}
 
-type AddBlogFailedAction = {
+interface AddBlogFailedAction {
   type: typeof ADD_BLOG_FAILED;
   error: any;
-};
+}
 
-type UpdateBlogAction = {
+interface UpdateBlogAction {
   type: typeof UPDATE_BLOG;
   blog: any;
-};
+}
 
-type UpdateBlogSuccessedAction = {
+interface UpdateBlogSuccessedAction {
   type: typeof UPDATE_BLOG_SUCCESSED;
   data: any;
-};
+}
 
-type UpdateBlogFailedAction = {
+interface UpdateBlogFailedAction {
   type: typeof UPDATE_BLOG_FAILED;
   error: any;
-};
+}
 
-type DeleteBlogAction = {
+interface DeleteBlogAction {
   type: typeof DELETE_BLOG;
   id: string;
-};
+}
 
-type DeleteBlogSuccessedAction = {
+interface DeleteBlogSuccessedAction {
   type: typeof DELETE_BLOG_SUCCESSED;
   data: any;
-};
+}
 
-type DeleteBlogFailedAction = {
+interface DeleteBlogFailedAction {
   type: typeof DELETE_BLOG_FAILED;
   error: any;
-};
+}
 
 export type KnownAction =
   | LoadBlogAction
@@ -173,16 +173,19 @@ const blogRequest = {
 
 export const blogEpics: any = [
   (action$: ActionsObservable<LoadBlogAction>): Observable<Action> => {
-    return action$.ofType(LOAD_BLOGS).switchMap(action =>
-      blogRequest
-        .loadBlogs(action.page)
-        .map(result => {
-          return actionCreators.loadBlogsByPageSuccessed(result.response);
-        })
-        .catch(error =>
-          Observable.of(actionCreators.loadBlogsByPageFailed(error))
-        )
-    );
+    return action$
+      .ofType(LOAD_BLOGS)
+      .debounceTime(100)
+      .switchMap(action =>
+        blogRequest
+          .loadBlogs(action.page)
+          .map(result => {
+            return actionCreators.loadBlogsByPageSuccessed(result.response);
+          })
+          .catch(error =>
+            Observable.of(actionCreators.loadBlogsByPageFailed(error))
+          )
+      );
   },
   (action$: ActionsObservable<LoadBlogByIdAction>): Observable<Action> => {
     return action$.ofType(LOAD_BLOG_BY_ID).switchMap(action =>
@@ -201,7 +204,7 @@ export const blogEpics: any = [
           .map(result => actionCreators.addBlogSuccessed(result.response))
           .catch(error => Observable.of(actionCreators.addBlogFailed(error)))
       )
-      .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
+      .mapTo(commonActionCreators.redirectTo('/admin/blogs'));
   },
   (action$: ActionsObservable<UpdateBlogAction>): Observable<Action> => {
     return action$
@@ -214,7 +217,7 @@ export const blogEpics: any = [
           )
           .catch(error => Observable.of(actionCreators.updateBlogFailed(error)))
       )
-      .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
+      .mapTo(commonActionCreators.redirectTo('/admin/blogs'));
   },
   (action$: ActionsObservable<DeleteBlogAction>): Observable<Action> => {
     return action$
@@ -227,12 +230,12 @@ export const blogEpics: any = [
           )
           .catch(error => Observable.of(actionCreators.deleteBlogFailed(error)))
       )
-      .mapTo(commonActionCreators.redirectTo("/admin/blogs"));
+      .mapTo(commonActionCreators.redirectTo('/admin/blogs'));
   }
 ];
 
 export const actionCreators = {
-  loadBlogsByPage: (page: number) =>
+  loadBlogsByPage: (page: number): Action =>
     <LoadBlogAction>{ type: LOAD_BLOGS, page },
 
   loadBlogsByPageSuccessed: (data: any) =>
@@ -368,21 +371,21 @@ export const reducer: Reducer<BlogState> = (
 
     default:
       const exhaustiveCheck: never = action;
-      if (typeof exhaustiveCheck != "undefined") break;
+      if (typeof exhaustiveCheck != 'undefined') break;
   }
 
   return (
     state || {
       loading: true,
       loaded: false,
-      redirectTo: "/",
+      redirectTo: '/',
       ids: [],
       blogByIds: [],
       blogSelected: null,
       themes: [
         {
           value: 1,
-          label: "Default"
+          label: 'Default'
         }
       ],
       error: null,

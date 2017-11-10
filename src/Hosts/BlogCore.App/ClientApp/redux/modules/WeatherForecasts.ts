@@ -1,6 +1,6 @@
-import { fetch, addTask } from "domain-task";
-import { Action, Reducer } from "redux";
-import { AppThunkAction } from "./";
+import { fetch, addTask } from 'domain-task';
+import { Action, Reducer } from 'redux';
+import { AppThunkAction } from './';
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
@@ -21,12 +21,12 @@ export interface WeatherForecast {
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 interface RequestWeatherForecastsAction {
-  type: "REQUEST_WEATHER_FORECASTS";
+  type: 'REQUEST_WEATHER_FORECASTS';
   startDateIndex: number;
 }
 
 interface ReceiveWeatherForecastsAction {
-  type: "RECEIVE_WEATHER_FORECASTS";
+  type: 'RECEIVE_WEATHER_FORECASTS';
   startDateIndex: number;
   forecasts: WeatherForecast[];
 }
@@ -52,7 +52,7 @@ export const actionCreators = {
         .then(response => response.json() as Promise<WeatherForecast[]>)
         .then(data => {
           dispatch({
-            type: "RECEIVE_WEATHER_FORECASTS",
+            type: 'RECEIVE_WEATHER_FORECASTS',
             startDateIndex: startDateIndex,
             forecasts: data
           });
@@ -60,7 +60,7 @@ export const actionCreators = {
 
       addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
       dispatch({
-        type: "REQUEST_WEATHER_FORECASTS",
+        type: 'REQUEST_WEATHER_FORECASTS',
         startDateIndex: startDateIndex
       });
     }
@@ -81,13 +81,13 @@ export const reducer: Reducer<WeatherForecastsState> = (
 ) => {
   const action = incomingAction as KnownAction;
   switch (action.type) {
-    case "REQUEST_WEATHER_FORECASTS":
+    case 'REQUEST_WEATHER_FORECASTS':
       return {
         startDateIndex: action.startDateIndex,
         forecasts: state.forecasts,
         isLoading: true
       };
-    case "RECEIVE_WEATHER_FORECASTS":
+    case 'RECEIVE_WEATHER_FORECASTS':
       // Only accept the incoming data if it matches the most recent request. This ensures we correctly
       // handle out-of-order responses.
       if (action.startDateIndex === state.startDateIndex) {
@@ -101,7 +101,7 @@ export const reducer: Reducer<WeatherForecastsState> = (
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above
       const exhaustiveCheck: never = action;
-      if (typeof exhaustiveCheck != "undefined") break;
+      if (typeof exhaustiveCheck != 'undefined') break;
   }
 
   return state || unloadedState;

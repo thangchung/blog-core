@@ -1,11 +1,11 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
-import { Card, CardHeader, CardBody, Button } from "reactstrap";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
+import { Card, CardHeader, CardBody, Button } from 'reactstrap';
 
-import { ApplicationState } from "../../redux/modules";
-import * as BlogStore from "../../redux/modules/blog";
-import BlogTable from "./BlogTable";
+import { ApplicationState } from '../../redux/modules';
+import * as BlogStore from '../../redux/modules/blog';
+import BlogTable from './BlogTable';
 
 type BlogProps = BlogStore.BlogState &
   typeof BlogStore.actionCreators &
@@ -22,7 +22,7 @@ class BlogManagement extends React.Component<BlogProps, any> {
   }
 
   public addRow(): any {
-    this.props.history.replace("/admin/blog");
+    this.props.history.replace('/admin/blog');
   }
 
   render(): JSX.Element {

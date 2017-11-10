@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Badge,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   NavDropdown
-} from "reactstrap";
+} from 'reactstrap';
 
 interface HeaderState {
   dropdownOpen: boolean;
@@ -33,7 +33,7 @@ export default class Header extends React.Component<any, HeaderState> {
       <NavDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav caret={this.state.caretVisible}>
           <img
-            src={"img/avatars/6.jpg"}
+            src={'img/avatars/6.jpg'}
             className="img-avatar"
             alt="admin@bootstrapmaster.com"
           />

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export default class PublicBlog extends React.Component<any, {}> {
   render(): JSX.Element {
@@ -8,15 +8,15 @@ export default class PublicBlog extends React.Component<any, {}> {
         <p>Welcome to your new single-page application, built with:</p>
         <ul>
           <li>
-            <a href="https://get.asp.net/">ASP.NET Core</a> and{" "}
+            <a href="https://get.asp.net/">ASP.NET Core</a> and{' '}
             <a href="https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx">
               C#
-            </a>{" "}
+            </a>{' '}
             for cross-platform server-side code
           </li>
           <li>
-            <a href="https://facebook.github.io/react/">React</a>,{" "}
-            <a href="http://redux.js.org">Redux</a>, and{" "}
+            <a href="https://facebook.github.io/react/">React</a>,{' '}
+            <a href="http://redux.js.org">Redux</a>, and{' '}
             <a href="http://www.typescriptlang.org/">TypeScript</a> for
             client-side code
           </li>
@@ -32,7 +32,7 @@ export default class PublicBlog extends React.Component<any, {}> {
         <p>To help you get started, we've also set up:</p>
         <ul>
           <li>
-            <strong>Client-side navigation</strong>. For example, click{" "}
+            <strong>Client-side navigation</strong>. For example, click{' '}
             <em>Counter</em> then <em>Back</em> to return here.
           </li>
           <li>
@@ -50,7 +50,7 @@ export default class PublicBlog extends React.Component<any, {}> {
           </li>
           <li>
             <strong>Efficient production builds</strong>. In production mode,
-            development-time features are disabled, and the <code>webpack</code>{" "}
+            development-time features are disabled, and the <code>webpack</code>{' '}
             build tool produces minified static CSS and JavaScript files.
           </li>
           <li>

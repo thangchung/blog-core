@@ -1,8 +1,8 @@
-import { Observable, AjaxResponse } from "rxjs";
+import { Observable, AjaxResponse } from 'rxjs';
 
 const defaultHeaders = {
   //Authorization: "<put here in future>",
-  "Content-Type": "application/json"
+  'Content-Type': 'application/json'
 };
 
 export const get = (url: string, headers: any = {}): Observable<AjaxResponse> =>

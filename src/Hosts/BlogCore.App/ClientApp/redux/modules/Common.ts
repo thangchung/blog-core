@@ -1,15 +1,15 @@
-import { Reducer } from "redux";
+import { Reducer } from 'redux';
 
 export interface CommonState {
   redirectTo: string;
 }
 
-const REDIRECT_TO = "REDIRECT_TO";
+const REDIRECT_TO = 'REDIRECT_TO';
 
 export type RedirectToAction = {
   type: typeof REDIRECT_TO;
   to: string | null;
-}
+};
 
 export const actionCreators = {
   redirectTo: (to: string) => <RedirectToAction>{ type: REDIRECT_TO, to }
@@ -28,8 +28,8 @@ export const reducer: Reducer<CommonState> = (
         to: action.to
       };
     default:
-      // const exhaustiveCheck: never = action;
-      // if (typeof exhaustiveCheck != "undefined") break;
+    // const exhaustiveCheck: never = action;
+    // if (typeof exhaustiveCheck != "undefined") break;
   }
 
   return (

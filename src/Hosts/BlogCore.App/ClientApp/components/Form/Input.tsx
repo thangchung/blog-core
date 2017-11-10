@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Input as ReactStrapInput, FormFeedback } from "reactstrap";
+import * as React from 'react';
+import { Input as ReactStrapInput, FormFeedback } from 'reactstrap';
 
 export const renderTextBoxField = ({
   input,
@@ -9,7 +9,7 @@ export const renderTextBoxField = ({
   return (
     <div>
       <ReactStrapInput
-        type={"input"}
+        type={'input'}
         placeholder={label}
         {...input}
         valid={valid}
@@ -35,7 +35,7 @@ export const renderNumberField = ({
   return (
     <div>
       <ReactStrapInput
-        type={"number"}
+        type={'number'}
         placeholder={label}
         {...input}
         valid={valid}
@@ -62,7 +62,7 @@ export const renderSingleSelectField = ({
   return (
     <div>
       <ReactStrapInput
-        type={"select"}
+        type={'select'}
         placeholder={label}
         {...input}
         valid={valid}

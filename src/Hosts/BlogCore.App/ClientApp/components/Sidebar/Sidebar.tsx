@@ -1,12 +1,12 @@
-import * as React from "react";
-import { NavLink } from "react-router-dom";
-import { Badge, Nav, NavItem, NavLink as RsNavLink } from "reactstrap";
-import * as classNames from "classnames";
-import SidebarFooter from "./../SidebarFooter/SidebarFooter";
-import SidebarForm from "./../SidebarForm/SidebarForm";
-import SidebarHeader from "./../SidebarHeader/SidebarHeader";
-import SidebarMinimizer from "./../SidebarMinimizer/SidebarMinimizer";
-import nav from "./_nav";
+import * as React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap';
+import * as classNames from 'classnames';
+import SidebarFooter from './../SidebarFooter/SidebarFooter';
+import SidebarForm from './../SidebarForm/SidebarForm';
+import SidebarHeader from './../SidebarHeader/SidebarHeader';
+import SidebarMinimizer from './../SidebarMinimizer/SidebarMinimizer';
+import nav from './_nav';
 
 export default class Sidebar extends React.Component<any, any> {
   shouldComponentUpdate() {
@@ -15,13 +15,13 @@ export default class Sidebar extends React.Component<any, any> {
 
   public handleClick(e: any): void {
     e.preventDefault();
-    e.target.parentElement.classList.toggle("open");
+    e.target.parentElement.classList.toggle('open');
   }
 
   public activeRoute(routeName: string, props: any): string {
     return props.location.pathname.indexOf(routeName) > -1
-      ? "nav-item nav-dropdown open"
-      : "nav-item nav-dropdown";
+      ? 'nav-item nav-dropdown open'
+      : 'nav-item nav-dropdown';
   }
 
   // todo Sidebar nav secondLevel
@@ -58,10 +58,10 @@ export default class Sidebar extends React.Component<any, any> {
 
     // nav list section title
     const title = (title: any, key: number) => {
-      const classes = classNames("nav-title", title.class);
+      const classes = classNames('nav-title', title.class);
       return (
         <li key={key} className={classes}>
-          {wrapper(title)}{" "}
+          {wrapper(title)}{' '}
         </li>
       );
     };
@@ -75,8 +75,8 @@ export default class Sidebar extends React.Component<any, any> {
     const navItem = (item: any, key: number) => {
       const classes = classNames(item.class);
       const variant = classNames(
-        "nav-link",
-        item.variant ? `nav-link-${item.variant}` : ""
+        'nav-link',
+        item.variant ? `nav-link-${item.variant}` : ''
       );
       return (
         <NavItem key={key} className={classes}>

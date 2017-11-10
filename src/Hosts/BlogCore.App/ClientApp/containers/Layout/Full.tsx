@@ -1,12 +1,12 @@
-import * as React from "react";
-import { bindActionCreators, Dispatch } from "redux";
-import { connect } from "react-redux";
-import { RouteComponentProps, Switch, Route } from "react-router-dom";
-import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import * as React from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { RouteComponentProps, Switch, Route } from 'react-router-dom';
+import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 
-import { Breadcrumb, Sidebar, Header, Footer } from "OurComponents";
-import { Dashboard, BlogManagement, BlogForm } from "./../";
-import { ApplicationState } from "OurModules";
+import { Breadcrumb, Sidebar, Header, Footer } from 'OurComponents';
+import { Dashboard, BlogManagement, BlogForm } from './../';
+import { ApplicationState } from 'OurModules';
 
 interface FullAppProps {
   onRedirect: () => any;
@@ -64,7 +64,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>): FullAppProps {
   return bindActionCreators(
     {
       onRedirect: (): any => {
-        return dispatch({ type: "REDIRECT_TO", to: null });
+        return dispatch({ type: 'REDIRECT_TO', to: null });
       }
     },
     dispatch

@@ -1,8 +1,8 @@
-import axios, { AxiosInstance } from "axios";
-import { camelizeKeys } from "humps";
-import { globalConfig as GlobalConfig } from "./../../configs";
+import axios, { AxiosInstance } from 'axios';
+import { camelizeKeys } from 'humps';
+import { globalConfig as GlobalConfig } from './../../configs';
 
-export const CALL_API = "CALL_API";
+export const CALL_API = 'CALL_API';
 
 export default (store: any) => (next: any) => (action: any) => {
   if (action === undefined) {
@@ -43,7 +43,7 @@ export default (store: any) => (next: any) => (action: any) => {
       (error: any) => next({ ...rest, error, type: FAILURE })
     )
     .catch((error: any) => {
-      console.error("MIDDLEWARE ERROR:", error);
+      console.error('MIDDLEWARE ERROR:', error);
       next({ ...rest, error, type: FAILURE });
     });
 
