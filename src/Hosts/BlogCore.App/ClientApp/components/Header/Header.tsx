@@ -9,31 +9,27 @@ import {
 } from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
 
-export default class Header extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-  }
-
+export default class Header extends React.Component<{}, {}> {
   shouldComponentUpdate() {
     return false;
   }
 
-  sidebarToggle(e: any): void {
+  sidebarToggle(e: React.FormEvent<HTMLAnchorElement>): void {
     e.preventDefault();
     document.body.classList.toggle('sidebar-hidden');
   }
 
-  sidebarMinimize(e: any): void {
+  sidebarMinimize(e: React.FormEvent<HTMLAnchorElement>): void {
     e.preventDefault();
     document.body.classList.toggle('sidebar-minimized');
   }
 
-  mobileSidebarToggle(e: any): void {
+  mobileSidebarToggle(e: React.FormEvent<HTMLAnchorElement>): void {
     e.preventDefault();
     document.body.classList.toggle('sidebar-mobile-show');
   }
 
-  asideToggle(e: any): void {
+  asideToggle(e: React.FormEvent<HTMLAnchorElement>): void {
     e.preventDefault();
     document.body.classList.toggle('aside-menu-hidden');
   }

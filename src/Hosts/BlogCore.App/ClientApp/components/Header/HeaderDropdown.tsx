@@ -12,8 +12,8 @@ interface HeaderState {
   caretVisible: boolean;
 }
 
-export default class Header extends React.Component<any, HeaderState> {
-  constructor(props: any) {
+export default class Header extends React.Component<{}, HeaderState> {
+  constructor(props: {}) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {

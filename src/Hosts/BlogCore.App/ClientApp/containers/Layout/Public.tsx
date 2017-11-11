@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, RouteComponentProps } from 'react-router-dom';
 import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 
 import { PublicBlog, Counter, FetchData } from './../';
 
-export default class Full extends React.Component<any, any> {
+export default class Full extends React.Component<
+  RouteComponentProps<{}>,
+  {}
+> {
   public render(): JSX.Element {
     const { match } = this.props;
     const routes: JSX.Element = (

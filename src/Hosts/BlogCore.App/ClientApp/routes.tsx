@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { PublicLayout, FullLayout } from './containers';
 
-export const routeNames: any = {
+export const routeNames: { [key: string]: string } = {
   '/admin': 'Dashboard',
   '/admin/blogs': 'Blogs',
   '/admin/blog': 'New blog',

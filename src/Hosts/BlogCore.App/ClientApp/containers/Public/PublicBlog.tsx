@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { RouteComponentProps, RouteProps } from 'react-router-dom';
 
-export default class PublicBlog extends React.Component<any, {}> {
-  render(): JSX.Element {
+type PublicBlogProps = RouteComponentProps<void> & RouteProps;
+
+export default class PublicBlog extends React.Component<PublicBlogProps, {}> {
+  public render(): JSX.Element {
     return (
       <div className="animated fadeIn b-panel-margin-down">
         <h1>Hello, world!</h1>

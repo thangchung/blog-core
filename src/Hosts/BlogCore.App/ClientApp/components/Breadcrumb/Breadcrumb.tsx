@@ -3,14 +3,14 @@ import { Route, Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { routeNames as routes } from '../../routes';
 
-const findRouteName: any = (url: string): string => routes[url];
+const findRouteName = (url: string): string => routes[url];
 
-const getPaths: any = (pathname: any): string[] => {
+const getPaths = (pathname: string): string[] => {
   const paths: string[] = ['/'];
 
   if (pathname === '/') return paths;
 
-  pathname.split('/').reduce((prev: number, curr: number, index: number) => {
+  pathname.split('/').reduce((prev: string, curr: string, index: number) => {
     const currPath = `${prev}/${curr}`;
     paths.push(currPath);
     return currPath;
@@ -45,7 +45,7 @@ const Breadcrumbs = ({
   return <Breadcrumb>{items}</Breadcrumb>;
 };
 
-export default (props: any): JSX.Element => (
+export default (props: {}): JSX.Element => (
   <div>
     <Route path="/:path" component={Breadcrumbs} {...props} />
   </div>
