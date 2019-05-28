@@ -1,31 +1,26 @@
-﻿using System;
-using Microsoft.AspNetCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.IO;
 
-namespace BlogCore.Api
+namespace BlogCore.Web.Server
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            Console.Title = "ApiServer";
-            BuildWebHost(args).Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureLogging(builder =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    builder.SetMinimumLevel(LogLevel.Warning);
-                    builder.AddFilter("ApiServer", LogLevel.Debug);
-                })
-                .UseKestrel()
-                .UseUrls("http://localhost:8484")
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
