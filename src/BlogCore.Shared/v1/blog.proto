@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package blogcore;
+
+option csharp_namespace = "BlogCore.DataContracts.Blog";
+import "google/protobuf/empty.proto";
+
+service BlogService {
+  rpc GetPing(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+message ValueDto {
+  string value = 1;
+}

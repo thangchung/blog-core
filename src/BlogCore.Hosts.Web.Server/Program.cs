@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace BlogCore.Web.Server
+namespace BlogCore.Hosts.Web.Server
 {
     public class Program
     {

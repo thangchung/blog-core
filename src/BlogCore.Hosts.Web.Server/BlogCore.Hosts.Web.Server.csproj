@@ -11,7 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlogCore.Web\BlogCore.Web.Client.csproj" />
+    <ProjectReference Include="..\BlogCore.Hosts.Web.Client\BlogCore.Hosts.Web.Client.csproj" />
+    <ProjectReference Include="..\BlogCore.Shared\BlogCore.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using System.Net.Mime;
 
-namespace BlogCore.Web.Server
+namespace BlogCore.Hosts.Web.Server
 {
     public class Startup
     {

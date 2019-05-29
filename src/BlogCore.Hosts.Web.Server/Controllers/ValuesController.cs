@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BlogCore.DataContracts.Blog;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
-namespace BlogCore.Web.Server.Controllers
+namespace BlogCore.Hosts.Web.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,7 +12,8 @@ namespace BlogCore.Web.Server.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var values = new List<ValueDto> { new ValueDto { Value = "value1" }, new ValueDto { Value = "value2" } };
+            return Ok(values);
         }
 
         // GET api/values/5

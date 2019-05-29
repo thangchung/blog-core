@@ -1,6 +1,6 @@
 using System;
 
-namespace BlogCore.Web.Server.Data
+namespace BlogCore.Hosts.Web.Server.Data
 {
     public class WeatherForecast
     {

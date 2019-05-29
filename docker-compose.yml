@@ -1,0 +1,16 @@
+version: "3"
+services:
+  sqlserverdb:
+    container_name: sqlserverdb
+    image: microsoft/mssql-server-linux:2017-latest
+    restart: always
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    expose:
+      - "${SQLSERVER_DB_PORT}"
+    ports:
+      - "${SQLSERVER_DB_PORT}:${SQLSERVER_DB_PORT}"
+
+volumes:
+  shareData:
