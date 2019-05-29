@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlogCore.Hosts.Web.Client\BlogCore.Hosts.Web.Client.csproj" />
+    <ProjectReference Include="..\BlogCore.Modules.BlogContext\BlogCore.Modules.BlogContext.csproj" />
     <ProjectReference Include="..\BlogCore.Shared\BlogCore.Shared.csproj" />
   </ItemGroup>
 

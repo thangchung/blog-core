@@ -4,8 +4,45 @@ package blogcore;
 option csharp_namespace = "BlogCore.DataContracts.Blog";
 import "google/protobuf/empty.proto";
 
-service BlogService {
-  rpc GetPing(google.protobuf.Empty) returns (google.protobuf.Empty);
+// GetBlogsByUserName usecase
+message GetBlogsByUserNameRequest {
+  int32 page = 1;
+  string username = 2;
+}
+
+message GetBlogsByUserNameResponse {
+  repeated BlogDto blog = 1;
+}
+
+// ListOutBlogByOwner usecase
+message ListOutBlogByOwnerRequest {
+ string email = 1;
+}
+
+message ListOutBlogByOwnerResponse {
+  repeated BlogDto blog = 1;
+}
+
+// UpdateBlogSetting usecase
+message UpdateBlogSettingRequest {
+  string blog_id = 1;
+  int32 posts_per_page = 2;
+  int32 days_to_comment = 3;
+  bool moderate_comments = 4;
+}
+
+message UpdateBlogSettingResponse {
+  bool succeed = 1;
+  string blog_id = 2;
+}
+
+// shared
+message BlogDto {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string image = 4;
+  int32 theme = 5;
 }
 
 message ValueDto {
