@@ -1,5 +1,29 @@
 version: "3"
 services:
+  web:
+    container_name: blogcore-web
+    image: vndg/blogcore-web:latest
+    restart: always
+    expose:
+      - "${WEB_PORT}"
+    ports:
+      - "8080:${WEB_PORT}"
+    build:
+      context: .
+      dockerfile: ./src/BlogCore.Hosts.Web.Server/Dockerfile
+
+  idp:
+    container_name: blogcore-identity
+    image: vndg/blogcore-identity:latest
+    restart: always
+    expose:
+      - "${IDENTITY_PORT}"
+    ports:
+      - "8081:${IDENTITY_PORT}"
+    build:
+      context: .
+      dockerfile: ./src/BlogCore.Hosts.IdentityServer/Dockerfile
+
   sqlserverdb:
     container_name: sqlserverdb
     image: microsoft/mssql-server-linux:2017-latest

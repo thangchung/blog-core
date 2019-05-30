@@ -1,4 +1,5 @@
 using BlogCore.Modules.BlogContext;
+using BlogCore.Modules.CommonContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -24,7 +25,8 @@ namespace BlogCore.Hosts.Web.Server
             var mvcBuilder = services.AddControllers()
                 .AddNewtonsoftJson();
 
-            mvcBuilder.AddApplicationPart(typeof(BlogApiController).Assembly);
+            mvcBuilder.AddApplicationPart(typeof(ValuesController).Assembly);
+            mvcBuilder.AddApplicationPart(typeof(BlogsController).Assembly);
 
             services.AddResponseCompression(options =>
             {

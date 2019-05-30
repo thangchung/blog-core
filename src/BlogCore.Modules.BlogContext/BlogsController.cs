@@ -7,7 +7,7 @@ namespace BlogCore.Modules.BlogContext
 {
     [Route("api/blogs")]
     [ApiController]
-    public class BlogApiController : ControllerBase
+    public class BlogsController : ControllerBase
     {
         // GET api/values
         [HttpGet]

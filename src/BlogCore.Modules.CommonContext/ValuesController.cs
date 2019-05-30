@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace BlogCore.Hosts.Web.Server.Controllers
+namespace BlogCore.Modules.CommonContext
 {
     [Route("api/[controller]")]
     [ApiController]
