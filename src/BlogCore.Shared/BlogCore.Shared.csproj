@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Protobuf Include="v1\blog.proto" />
+    <Protobuf Include="v1\post.proto" />
   </ItemGroup>
 
 </Project>

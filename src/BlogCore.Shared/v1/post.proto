@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+package blogcore;
+
+option csharp_namespace = "BlogCore.DataContracts.Post";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// GetPostByBlog usecase
+message GetPostsByBlogRequest {
+  string blog_id = 1;
+  int32 page = 2;
+}
+
+message GetPostsByBlogResponse {
+  repeated PostDto posts = 1;
+}
+
+// GetSpecificPostForBlog usecase
+message GetSpecificPostForBlogRequest {
+  string blog_id = 1;
+  string post_id = 2;
+}
+
+message GetSpecificPostForBlogResponse {
+  PostDto post = 1;
+}
+
+// Dtos
+message PostDto {
+  string id = 1;
+  string title = 2;
+  string excerpt = 3;
+  string slug = 4;
+  string author_id = 5;
+  string author_family_name = 6;
+  string author_given_name = 7;
+  repeated TagDto tags = 8;
+  google.protobuf.Timestamp created_at = 9;
+}
+
+message TagDto {
+  string id = 1;
+  string name = 2;
+}

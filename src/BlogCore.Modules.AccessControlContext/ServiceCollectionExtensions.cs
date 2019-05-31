@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace BlogCore.Modules.BlogContext
+namespace BlogCore.Modules.AccessControlContext
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddBlogModule(this IServiceCollection services)
+        public static IServiceCollection AddAccessControlModule(this IServiceCollection services)
         {
             return services;
         }

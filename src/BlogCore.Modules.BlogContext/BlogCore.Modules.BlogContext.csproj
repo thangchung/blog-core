@@ -3,13 +3,20 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
-    <ApplicationIcon />
     <OutputType>Library</OutputType>
-    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NetCoreKit.Domain" Version="0.1.145" />
+    <PackageReference Include="NetCoreKit.Utils" Version="0.1.145" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BlogCore.Shared\BlogCore.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Usecases\" />
   </ItemGroup>
 
 </Project>

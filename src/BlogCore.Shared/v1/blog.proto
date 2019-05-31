@@ -4,23 +4,76 @@ package blogcore;
 option csharp_namespace = "BlogCore.DataContracts.Blog";
 import "google/protobuf/empty.proto";
 
-// GetBlogsByUserName usecase
-message GetBlogsByUserNameRequest {
+// GetMyBlogs usecase
+message GetMyBlogsRequest {
   int32 page = 1;
   string username = 2;
 }
 
-message GetBlogsByUserNameResponse {
-  repeated BlogDto blog = 1;
+message GetMyBlogsResponse {
+  repeated BlogDto blogs = 1;
 }
 
-// ListOutBlogByOwner usecase
-message ListOutBlogByOwnerRequest {
+// GetBlogByUser usecase
+message GetBlogByUserRequest {
  string email = 1;
 }
 
-message ListOutBlogByOwnerResponse {
-  repeated BlogDto blog = 1;
+message GetBlogByUserResponse {
+  repeated BlogDto blogs = 1;
+}
+
+// RetrieveBlog usecase
+message RetrieveBlogRequest {
+  string id = 1;
+}
+
+message RetrieveBlogResponse {
+  BlogDto blog = 1;
+}
+
+// RetrieveBlogs usecase
+message RetrieveBlogsRequest {
+  int32 current_page = 1;
+}
+
+message RetrieveBlogsResponse {
+  repeated BlogDto blogs = 1;
+}
+
+// CreateBlog usecase
+message CreateBlogRequest {
+  string title = 1;
+  string description = 2;
+  int32 theme = 3;
+  int32 posts_per_page = 4;
+  int32 days_to_comment = 5;
+  bool moderate_comments = 6;
+}
+
+message CreateBlogResponse {
+  BlogDto blog = 1;
+}
+
+// UpdateBlog usecase
+message UpdateBlogRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  int32 theme = 4;
+}
+
+message UpdateBlogResponse {
+  BlogDto blog = 1;
+}
+
+// DeleteBlog usecase
+message DeleteBlogRequest {
+  string id = 1;
+}
+
+message DeleteBlogResponse {
+  BlogDto blog = 1;
 }
 
 // UpdateBlogSetting usecase
