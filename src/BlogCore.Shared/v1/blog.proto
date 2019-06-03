@@ -1,7 +1,7 @@
 ﻿syntax = "proto3";
 package blogcore;
 
-option csharp_namespace = "BlogCore.DataContracts.Blog";
+option csharp_namespace = "BlogCore.Shared.v1.Blog";
 import "google/protobuf/empty.proto";
 
 // GetMyBlogs usecase

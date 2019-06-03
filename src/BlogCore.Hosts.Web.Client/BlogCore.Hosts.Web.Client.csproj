@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview5-19227-01" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BlogCore.Shared\BlogCore.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

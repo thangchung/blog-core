@@ -1,4 +1,4 @@
-﻿using BlogCore.DataContracts.Post;
+﻿using BlogCore.Shared.v1.Post;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Domain;
 using System;
