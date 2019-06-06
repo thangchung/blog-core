@@ -7,6 +7,7 @@ namespace BlogCore.Hosts.Web.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<AppState>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)
