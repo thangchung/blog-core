@@ -4,7 +4,7 @@
     <MatAppBar Fixed="true">
         <MatAppBarRow>
             <MatAppBarSection>
-                <MatIconButton Icon="menu" OnClick="@((e) => ButtonClicked())"></MatIconButton>
+                <MatIconButton Icon="menu" OnClick="@((e) => HideMenuClicked())"></MatIconButton>
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
@@ -15,7 +15,9 @@
                 <NavMenu />
             </MatDrawer>
             <MatDrawerContent>
-                <p>@Body</p>
+                <div class="mat-layout-grid">
+                    @Body
+                </div>
             </MatDrawerContent>
         </MatDrawerContainer>
     </MatAppBarContent>
@@ -25,7 +27,7 @@
 {
     bool Opened = true;
 
-    void ButtonClicked()
+    void HideMenuClicked()
     {
         Opened = !Opened;
     }

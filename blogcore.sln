@@ -7,7 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{CA6E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{696924EE-FEC5-443B-9AE9-DC3E8EBB0F0A}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.env = .env
+		.gitignore = .gitignore
+		.gitmodules = .gitmodules
+		docker-compose.yml = docker-compose.yml
 		global.json = global.json
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{8491E3C7-0ED9-4C8D-8179-EB25E3A2A9B9}"
@@ -29,6 +36,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Modules.CommonContext", "src\BlogCore.Modules.CommonContext\BlogCore.Modules.CommonContext.csproj", "{B5820080-EC28-4097-B7BA-68AF6B16370B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Hosts.IdentityServer", "src\BlogCore.Hosts.IdentityServer\BlogCore.Hosts.IdentityServer.csproj", "{04466CA7-6AE6-4362-804B-0A0AEB1E0629}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3438F3F8-1870-47BA-95FE-C1E5EB756D46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCore.Hosts.Tests", "src\BlogCore.Hosts.Tests\BlogCore.Hosts.Tests.csproj", "{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +79,10 @@ Global
 		{04466CA7-6AE6-4362-804B-0A0AEB1E0629}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04466CA7-6AE6-4362-804B-0A0AEB1E0629}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04466CA7-6AE6-4362-804B-0A0AEB1E0629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +96,7 @@ Global
 		{0FBD62EF-717B-41DD-BB5F-C8F1B89060E1} = {CA6EEB0C-66AF-43E5-8FDF-97FD6ECF8F5D}
 		{B5820080-EC28-4097-B7BA-68AF6B16370B} = {CA6EEB0C-66AF-43E5-8FDF-97FD6ECF8F5D}
 		{04466CA7-6AE6-4362-804B-0A0AEB1E0629} = {D70FC638-62EE-49C8-890E-9BCC5C67780B}
+		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019} = {3438F3F8-1870-47BA-95FE-C1E5EB756D46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2224EE99-F02E-4D63-AC5C-D026FD76F1BF}

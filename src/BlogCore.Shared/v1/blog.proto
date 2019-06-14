@@ -98,6 +98,12 @@ message BlogDto {
   int32 theme = 5;
 }
 
+message PaginatedBlogDto {
+  int32 total_items = 1;
+  int32 total_pages = 2;
+  repeated BlogDto items = 3;
+}
+
 message ValueDto {
   string value = 1;
 }

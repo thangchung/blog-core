@@ -25,4 +25,8 @@
     <ProjectReference Include="..\BlogCore.Shared\BlogCore.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Watch Include="**\*.razor" />
+  </ItemGroup>
+
 </Project>
