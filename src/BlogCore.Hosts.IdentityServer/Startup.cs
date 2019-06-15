@@ -43,14 +43,14 @@ namespace BlogCore.Hosts.IdentityServer
             .AddTestUsers(TestUsers.Users);
 
             // in-memory, code config
-            //builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
-            //builder.AddInMemoryApiResources(Config.GetApis());
-            //builder.AddInMemoryClients(Config.GetClients());
+            builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
+            builder.AddInMemoryApiResources(Config.GetApis());
+            builder.AddInMemoryClients(Config.GetClients());
 
             // in-memory, json config
-            builder.AddInMemoryIdentityResources(Configuration.GetSection("IdentityResources"));
-            builder.AddInMemoryApiResources(Configuration.GetSection("ApiResources"));
-            builder.AddInMemoryClients(Configuration.GetSection("clients"));
+            //builder.AddInMemoryIdentityResources(Configuration.GetSection("IdentityResources"));
+            //builder.AddInMemoryApiResources(Configuration.GetSection("ApiResources"));
+            //builder.AddInMemoryClients(Configuration.GetSection("clients"));
 
             builder.AddDeveloperSigningCredential();
             /*if (Environment.IsDevelopment())
@@ -63,16 +63,6 @@ namespace BlogCore.Hosts.IdentityServer
             }*/
 
             services.AddAuthentication();
-                /*.AddGoogle(options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-                    // register your IdentityServer with Google at https://console.developers.google.com
-                    // enable the Google+ API
-                    // set the redirect URI to http://localhost:5000/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
-                });*/
         }
 
         public void Configure(IApplicationBuilder app)
@@ -84,6 +74,8 @@ namespace BlogCore.Hosts.IdentityServer
 
             app.UseIdentityServer();
             app.UseStaticFiles();
+
+            app.UseAuthorization();
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>

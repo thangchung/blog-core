@@ -27,34 +27,28 @@ namespace BlogCore.Shared
     /// </summary>
     public class ProtoMessageConverter : JsonConverter
     {
-        public override bool CanConvert(System.Type objectType)
+        public override bool CanConvert(Type objectType)
         {
-            return typeof(Google.Protobuf.IMessage)
-                .IsAssignableFrom(objectType);
+            return typeof(IMessage).IsAssignableFrom(objectType);
         }
 
-        public override object ReadJson(JsonReader reader,
-            System.Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             // Read an entire object from the reader.
             var converter = new ExpandoObjectConverter();
-            object o = converter.ReadJson(reader, objectType, existingValue,
-                serializer);
+            object o = converter.ReadJson(reader, objectType, existingValue, serializer);
+
             // Convert it back to json text.
             string text = JsonConvert.SerializeObject(o);
+
             // And let protobuf's parser parse the text.
-            IMessage message = (IMessage)Activator
-                .CreateInstance(objectType);
-            return Google.Protobuf.JsonParser.Default.Parse(text,
-                message.Descriptor);
+            IMessage message = (IMessage)Activator.CreateInstance(objectType);
+            return JsonParser.Default.Parse(text, message.Descriptor);
         }
 
-        public override void WriteJson(JsonWriter writer, object value,
-            JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteRawValue(Google.Protobuf.JsonFormatter.Default
-                .Format((IMessage)value));
+            writer.WriteRawValue(JsonFormatter.Default.Format((IMessage)value));
         }
     }
 }

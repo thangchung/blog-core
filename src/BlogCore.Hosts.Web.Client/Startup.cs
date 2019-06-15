@@ -8,6 +8,7 @@ namespace BlogCore.Hosts.Web.Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<AppState>();
+            services.AddAuthorizationCore();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

@@ -64,21 +64,21 @@ namespace BlogCore.Hosts.IdentityServer
                 {
                     ClientId = "spa",
                     ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
+                    ClientUri = "http://localhost:5000",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "http://localhost:5000",
+                        "http://localhost:5000/callback",
+                        "http://localhost:5000/silent",
+                        "http://localhost:5000/popup",
                     },
 
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
+                    PostLogoutRedirectUris = { "http://localhost:5000" },
+                    AllowedCorsOrigins = { "http://localhost:5000" },
 
                     AllowedScopes = { "openid", "profile", "api1" }
                 }

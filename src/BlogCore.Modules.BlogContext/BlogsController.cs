@@ -1,5 +1,6 @@
 ﻿using BlogCore.Shared;
 using BlogCore.Shared.v1.Blog;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Domain;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext
 {
+    [Authorize]
     [Route("api/blogs")]
     [ApiController]
     public class BlogsController : ControllerBase

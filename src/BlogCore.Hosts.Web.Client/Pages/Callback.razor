@@ -1,0 +1,17 @@
+﻿@page "/callback"
+@inject AppState AppState
+@inject IJSRuntime JS
+@inject IUriHelper UriHelper
+
+@functions {
+    protected override async Task OnInitAsync()
+    {
+        var user = await JS.CallbackAsync();
+        if (user != null)
+        {
+            AppState.UserProfile = await JS.GetUserInfoAsync();
+            //await JS.LogAsync(AppState.UserProfile.ToString());
+            UriHelper.NavigateTo("blogs");
+        }
+    }
+}

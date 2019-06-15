@@ -2,13 +2,16 @@ using BlogCore.Modules.AccessControlContext;
 using BlogCore.Modules.BlogContext;
 using BlogCore.Modules.CommonContext;
 using BlogCore.Modules.PostContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Linq;
 using System.Net.Mime;
 
@@ -16,6 +19,9 @@ namespace BlogCore.Hosts.Web.Server
 {
     public class Startup
     {
+        public static readonly SymmetricSecurityKey
+            SecurityKey = new SymmetricSecurityKey(Guid.NewGuid().ToByteArray());
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,7 +31,7 @@ namespace BlogCore.Hosts.Web.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvcBuilder = services.AddControllers()
+            var mvcBuilder = services.AddMvc()
                 .AddNewtonsoftJson();
 
             RegisterServices(services, mvcBuilder);
@@ -37,6 +43,53 @@ namespace BlogCore.Hosts.Web.Server
             });
 
             RegisterOpenApi(services);
+
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters =
+                        new TokenValidationParameters
+                        {
+                            LifetimeValidator = (before, expires, token, param) => expires > DateTime.UtcNow,
+                            ValidateAudience = false,
+                            ValidateIssuer = false,
+                            ValidateActor = false,
+                            ValidateLifetime = true,
+                            IssuerSigningKey = SecurityKey,
+                        };
+
+                    options.Authority = "http://localhost:5001";
+                    options.Audience = "api1";
+                    options.RequireHttpsMetadata = false; // for Demo only
+                });
+
+            /*.AddIdentityServerAuthentication("token", options =>
+            {
+                options.Authority = "http://localhost:5001";
+                options.RequireHttpsMetadata = false; // for demo
+
+                options.ApiName = "api";
+                options.ApiSecret = "secret";
+            });*/
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("api", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5001");
+
+                    policy
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,16 +104,19 @@ namespace BlogCore.Hosts.Web.Server
 
             app.UseRouting();
 
+            app.UseCors("api");
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseClientSideBlazorFiles<Client.Startup>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
             });
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogCore Api v1"); });
-            app.UseBlazor<Client.Startup>();
         }
 
         private static void RegisterServices(IServiceCollection services, IMvcBuilder mvcBuilder)

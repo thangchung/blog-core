@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4" Version="2.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="IdentityServer4" Version="3.0.0-preview3.4" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.0-preview.2" />
+    <PackageReference Include="IdentityServer4.Storage" Version="3.0.0-preview3.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview6.19307.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview6.19307.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.0.0-rc2" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0-rc2" />
@@ -23,10 +25,6 @@
     <ProjectReference Include="..\BlogCore.Modules.CommonContext\BlogCore.Modules.CommonContext.csproj" />
     <ProjectReference Include="..\BlogCore.Modules.PostContext\BlogCore.Modules.PostContext.csproj" />
     <ProjectReference Include="..\BlogCore.Shared\BlogCore.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Watch Include="**\*.razor" />
   </ItemGroup>
 
 </Project>

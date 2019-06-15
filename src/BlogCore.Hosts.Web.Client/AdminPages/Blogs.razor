@@ -1,0 +1,46 @@
+﻿@page "/blogs"
+@inject HttpClient HttpClient
+@inject AppState AppState
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@if (blogs == null || blogs.Count <= 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MatTable Items="@blogs">
+        <MatTableHeader>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Desc</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Title</td>
+            <td>@context.Description</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@functions {
+
+    List<BlogDto> blogs = new List<BlogDto>();
+
+    protected override async Task OnInitAsync()
+    {
+        var id = Guid.NewGuid();
+        var token = AppState.UserProfile.AccessToken;
+        HttpClient.DefaultRequestHeaders.Remove("Authorization");
+        HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+        var response = await HttpClient.GetProtobufAsync<PaginatedBlogDto>($"api/blogs?page=1");
+
+        blogs = new List<BlogDto>();
+        blogs.AddRange(response.Items);
+
+        this.StateHasChanged();
+    }
+}
