@@ -74,10 +74,10 @@ function getUserInfo() {
             tokenType: user.token_type,
             scope: user.scope,
             profile: {
-                UserId: user.profile.sub,
-                Name: user.profile.name,
-                Email: user.profile.email,
-                Website: user.profile.website
+                userId: user.profile.sub,
+                name: user.profile.name,
+                email: user.profile.email,
+                website: user.profile.website
             }
         };
     }).catch(function (e) {
@@ -185,4 +185,5 @@ function endSignoutMainWindow() {
 
 function log(message) {
     console.log(message);
+    return true;
 }

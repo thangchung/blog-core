@@ -1,10 +1,7 @@
 ﻿@page "/blogs"
 @inject HttpClient HttpClient
 @inject AppState AppState
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+@inject IJSRuntime JS
 
 @if (blogs == null || blogs.Count <= 0)
 {
@@ -26,14 +23,16 @@ else
     </MatTable>
 }
 
-@functions {
+@code {
 
     List<BlogDto> blogs = new List<BlogDto>();
 
     protected override async Task OnInitAsync()
     {
+        AppState.SetUserInfo(await JS.GetUserInfoAsync()); // todo: fix later
+
         var id = Guid.NewGuid();
-        var token = AppState.UserProfile.AccessToken;
+        var token = AppState.UserInfo.AccessToken;
         HttpClient.DefaultRequestHeaders.Remove("Authorization");
         HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
         var response = await HttpClient.GetProtobufAsync<PaginatedBlogDto>($"api/blogs?page=1");

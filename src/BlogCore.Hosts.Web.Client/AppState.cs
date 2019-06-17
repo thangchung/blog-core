@@ -1,28 +1,33 @@
 ﻿using BlogCore.Shared.v1.Blog;
+using System;
 using System.Collections.Generic;
 
 namespace BlogCore.Hosts.Web.Client
 {
     public class AppState
     {
-        public UserModel UserProfile { get; set; }
+        public event Action OnChange;
+        public UserInfoModel UserInfo { get; private set; }
         public List<BlogDto> Blogs { get; set; } = new List<BlogDto>();
+
+        public void SetUserInfo(UserInfoModel userInfo)
+        {
+            UserInfo = userInfo;
+            NotifyStateChanged();
+        }
+
+        private void NotifyStateChanged() => OnChange?.Invoke();
     }
 
-    public class UserModel
+    public class UserInfoModel
     {
         public string AccessToken { get; set; }
         public string TokenType { get; set; }
         public string Scope { get; set; }
-        public ProfileModel Profile { get; set; } = new ProfileModel();
-
-        public override string ToString()
-        {
-            return $"{AccessToken}-{TokenType}-{Scope}";
-        }
+        public UserProfileModel Profile { get; set; } = new UserProfileModel();
     }
 
-    public class ProfileModel
+    public class UserProfileModel
     {
         public string UserId { get; set; }
         public string Name { get; set; }

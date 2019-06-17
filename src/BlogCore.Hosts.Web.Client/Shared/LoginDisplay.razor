@@ -1,0 +1,29 @@
+@inject IJSRuntime JS
+@inject AppState AppState
+
+<AuthorizeView>
+    <Authorized>
+        <NavLink class="nav-link" href="profile">Hello, @context.User.Identity.Name!</NavLink>
+        &nbsp;&nbsp;<MatButton Raised="true" OnClick="@LogOut">Logout</MatButton>
+    </Authorized>
+    <NotAuthorized>
+        <MatButton Raised="true" OnClick="@LogIn">Login</MatButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    protected override void OnInit()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    async Task LogIn()
+    {
+        await JS.SignInAsync();
+    }
+
+    async Task LogOut()
+    {
+        await JS.SignOutAsync();
+    }
+}

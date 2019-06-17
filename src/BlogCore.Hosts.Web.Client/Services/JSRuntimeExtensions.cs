@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace BlogCore.Hosts.Web.Client.Services
@@ -15,19 +16,19 @@ namespace BlogCore.Hosts.Web.Client.Services
             await jsRuntime.InvokeAsync<bool>("startSignoutMainWindow");
         }
 
-        public async static Task<UserModel> CallbackAsync(this IJSRuntime jsRuntime)
+        public async static Task<UserInfoModel> CallbackAsync(this IJSRuntime jsRuntime)
         {
-            return await jsRuntime.InvokeAsync<UserModel>("endSigninMainWindow");
+            return await jsRuntime.InvokeAsync<UserInfoModel>("endSigninMainWindow");
         }
 
-        public async static Task<UserModel> GetUserInfoAsync(this IJSRuntime jsRuntime)
+        public async static Task<UserInfoModel> GetUserInfoAsync(this IJSRuntime jsRuntime)
         {
-            return await jsRuntime.InvokeAsync<UserModel>("getUserInfo");
+            return await jsRuntime.InvokeAsync<UserInfoModel>("getUserInfo");
         }
 
-        public async static Task LogAsync(this IJSRuntime jsRuntime, string message)
+        public async static Task LogAsync(this IJSRuntime jsRuntime, object output)
         {
-            await jsRuntime.InvokeAsync<bool>("log", message);
+            await jsRuntime.InvokeAsync<bool>("log", JsonConvert.SerializeObject(output));
         }
     }
 }

@@ -11,9 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace BlogCore.Hosts.Web.Server
 {
@@ -31,6 +35,13 @@ namespace BlogCore.Hosts.Web.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
             var mvcBuilder = services.AddMvc()
                 .AddNewtonsoftJson();
 
@@ -50,6 +61,7 @@ namespace BlogCore.Hosts.Web.Server
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
+                .AddCookie()
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters =
@@ -66,16 +78,17 @@ namespace BlogCore.Hosts.Web.Server
                     options.Authority = "http://localhost:5001";
                     options.Audience = "api1";
                     options.RequireHttpsMetadata = false; // for Demo only
+                    options.SaveToken = true;
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            context.HttpContext.User = context.Principal;
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
-
-            /*.AddIdentityServerAuthentication("token", options =>
-            {
-                options.Authority = "http://localhost:5001";
-                options.RequireHttpsMetadata = false; // for demo
-
-                options.ApiName = "api";
-                options.ApiSecret = "secret";
-            });*/
 
             services.AddCors(options =>
             {
@@ -121,6 +134,8 @@ namespace BlogCore.Hosts.Web.Server
 
         private static void RegisterServices(IServiceCollection services, IMvcBuilder mvcBuilder)
         {
+            services.AddHttpContextAccessor();
+
             mvcBuilder.AddApplicationPart(typeof(ValuesController).Assembly);
             mvcBuilder.AddApplicationPart(typeof(UsersController).Assembly);
             mvcBuilder.AddApplicationPart(typeof(BlogsController).Assembly);

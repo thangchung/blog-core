@@ -1,17 +1,19 @@
-﻿@page "/callback"
+﻿@layout NoLayout
+@page "/callback"
 @inject AppState AppState
 @inject IJSRuntime JS
 @inject IUriHelper UriHelper
+@inject HttpClient HttpClient
 
-@functions {
+@code {
     protected override async Task OnInitAsync()
     {
         var user = await JS.CallbackAsync();
         if (user != null)
         {
-            AppState.UserProfile = await JS.GetUserInfoAsync();
-            //await JS.LogAsync(AppState.UserProfile.ToString());
-            UriHelper.NavigateTo("blogs");
+            AppState.SetUserInfo(await JS.GetUserInfoAsync());
+            await JS.LogAsync(AppState);
+            UriHelper.NavigateTo("", true);
         }
     }
 }

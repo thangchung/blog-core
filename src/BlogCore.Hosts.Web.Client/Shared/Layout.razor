@@ -1,10 +1,15 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime JS
+@inject AppState AppState
 
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
         <MatAppBarRow>
             <MatAppBarSection>
                 <MatIconButton Icon="menu" OnClick="@((e) => HideMenuClicked())"></MatIconButton>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <LoginDisplay />
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
@@ -23,13 +28,16 @@
     </MatAppBarContent>
 </MatAppBarContainer>
 
-@functions
-{
+@code {
     bool Opened = true;
+
+    protected override async Task OnInitAsync()
+    {
+        AppState.SetUserInfo(await JS.GetUserInfoAsync());
+    }
 
     void HideMenuClicked()
     {
         Opened = !Opened;
     }
-
 }
