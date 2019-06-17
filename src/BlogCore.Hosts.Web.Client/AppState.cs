@@ -7,12 +7,31 @@ namespace BlogCore.Hosts.Web.Client
     public class AppState
     {
         public event Action OnChange;
-        public UserInfoModel UserInfo { get; private set; }
+
+        public bool IsUserInfoLoading { get; private set; } = true;
+        public UserInfoModel UserInfo { get; private set; } = new UserInfoModel();
         public List<BlogDto> Blogs { get; set; } = new List<BlogDto>();
+
+        public bool IsUserInfoLoaded()
+        {
+            if(UserInfo != null && UserInfo.AccessToken != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public void SetUserInfo(UserInfoModel userInfo)
         {
             UserInfo = userInfo;
+            NotifyStateChanged();
+        }
+
+        public void SetBlogs(IEnumerable<BlogDto> blogs)
+        {
+            Blogs.Clear();
+            Blogs.AddRange(blogs);
             NotifyStateChanged();
         }
 

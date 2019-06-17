@@ -1,3 +1,4 @@
+using BlogCore.Hosts.Web.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +9,8 @@ namespace BlogCore.Hosts.Web.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<AppState>();
+            services.AddScoped<AppState>();
+            services.AddScoped<BlogService, BlogService>();
             services.AddAuthorizationCore();
             services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
         }

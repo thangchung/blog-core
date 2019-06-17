@@ -12,11 +12,6 @@
 </AuthorizeView>
 
 @code {
-    protected override void OnInit()
-    {
-        AppState.OnChange += StateHasChanged;
-    }
-
     async Task LogIn()
     {
         await JS.SignInAsync();

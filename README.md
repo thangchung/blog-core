@@ -4,6 +4,8 @@ A headless CMS builds with clean modern architecture and technology.
 
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/thangchung/blog-core/blob/master/LICENSE)
 
+![Alt Text](art/blogcore.gif)
+
 ## Table of contents
 - [Quick start](https://github.com/thangchung/blog-core#quick-start)
 - [What's included](https://github.com/thangchung/blog-core#whats-included)

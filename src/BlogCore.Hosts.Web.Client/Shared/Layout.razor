@@ -33,7 +33,11 @@
 
     protected override async Task OnInitAsync()
     {
-        AppState.SetUserInfo(await JS.GetUserInfoAsync());
+        if (!AppState.IsUserInfoLoaded())
+        {
+            AppState.SetUserInfo(await JS.GetUserInfoAsync());
+        }
+        AppState.OnChange += StateHasChanged;
     }
 
     void HideMenuClicked()

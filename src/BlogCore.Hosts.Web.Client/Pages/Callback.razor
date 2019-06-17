@@ -3,7 +3,6 @@
 @inject AppState AppState
 @inject IJSRuntime JS
 @inject IUriHelper UriHelper
-@inject HttpClient HttpClient
 
 @code {
     protected override async Task OnInitAsync()
@@ -13,7 +12,7 @@
         {
             AppState.SetUserInfo(await JS.GetUserInfoAsync());
             await JS.LogAsync(AppState);
-            UriHelper.NavigateTo("", true);
+            UriHelper.NavigateTo("", true); // help to reload layout
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿@page "/blogs"
-@inject HttpClient HttpClient
+@page "/blogs/{Page:int}"
 @inject AppState AppState
 @inject IJSRuntime JS
+@inject BlogService BlogService
 
-@if (blogs == null || blogs.Count <= 0)
+@if (AppState.Blogs == null || AppState.Blogs.Count <= 0)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <MatTable Items="@blogs">
+    <MatTable Items="@AppState.Blogs">
         <MatTableHeader>
             <th>Id</th>
             <th>Title</th>
@@ -24,22 +25,11 @@ else
 }
 
 @code {
-
-    List<BlogDto> blogs = new List<BlogDto>();
+    [Parameter]
+    int Page { get; set; } = 1;
 
     protected override async Task OnInitAsync()
     {
-        AppState.SetUserInfo(await JS.GetUserInfoAsync()); // todo: fix later
-
-        var id = Guid.NewGuid();
-        var token = AppState.UserInfo.AccessToken;
-        HttpClient.DefaultRequestHeaders.Remove("Authorization");
-        HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-        var response = await HttpClient.GetProtobufAsync<PaginatedBlogDto>($"api/blogs?page=1");
-
-        blogs = new List<BlogDto>();
-        blogs.AddRange(response.Items);
-
-        this.StateHasChanged();
+        await BlogService.GetBlogs(Page);
     }
 }
