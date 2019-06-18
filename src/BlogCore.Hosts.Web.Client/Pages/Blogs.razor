@@ -1,8 +1,8 @@
 ﻿@page "/blogs"
 @page "/blogs/{Page:int}"
 @inject AppState AppState
-@inject IJSRuntime JS
 @inject BlogService BlogService
+@inject GuardService GuardService
 
 @if (AppState.Blogs == null || AppState.Blogs.Count <= 0)
 {
@@ -30,6 +30,9 @@ else
 
     protected override async Task OnInitAsync()
     {
-        await BlogService.GetBlogs(Page);
+        await GuardService.Check();
+
+        var pagination = await BlogService.GetBlogs(Page);
+        AppState.SetBlogs(pagination.Items);
     }
 }

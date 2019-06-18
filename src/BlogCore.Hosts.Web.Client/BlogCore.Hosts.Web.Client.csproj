@@ -20,4 +20,8 @@
     <Watch Include="**\*.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Watch Remove="Pages\Profile.razor" />
+  </ItemGroup>
+
 </Project>

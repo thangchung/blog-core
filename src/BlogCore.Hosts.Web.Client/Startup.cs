@@ -9,10 +9,14 @@ namespace BlogCore.Hosts.Web.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<AppState>();
-            services.AddScoped<BlogService, BlogService>();
+            // authn
             services.AddAuthorizationCore();
             services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+
+            // services and state
+            services.AddScoped<AppState>();
+            services.AddScoped<BlogService>();
+            services.AddScoped<GuardService>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

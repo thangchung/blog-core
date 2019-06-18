@@ -15,14 +15,12 @@
     </MatAppBar>
 
     <MatAppBarContent>
-        <MatDrawerContainer>
+        <MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="mat">
             <MatDrawer Opened="@Opened">
                 <NavMenu />
             </MatDrawer>
-            <MatDrawerContent>
-                <div class="mat-layout-grid">
-                    @Body
-                </div>
+            <MatDrawerContent Style="padding-left: 25px; padding-right: 25px;">
+                @Body
             </MatDrawerContent>
         </MatDrawerContainer>
     </MatAppBarContent>
