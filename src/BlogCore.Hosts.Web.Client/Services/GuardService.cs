@@ -12,6 +12,7 @@ namespace BlogCore.Hosts.Web.Client.Services
 
         public async Task Check()
         {
+            AppState.SetUserInfo(await JS.GetUserInfoAsync());
             if (!AppState.IsLogin())
             {
                 await JS.SignInAsync();

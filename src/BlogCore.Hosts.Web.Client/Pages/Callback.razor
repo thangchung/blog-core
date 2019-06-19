@@ -12,7 +12,7 @@
         {
             AppState.SetUserInfo(await JS.GetUserInfoAsync());
             await JS.LogAsync(AppState);
-            UriHelper.NavigateTo("", true); // help to reload layout
+            UriHelper.NavigateTo("dashboard", true); // help to reload layout
         }
     }
 }

@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Watch Remove="Pages\Dashboard.razor" />
+    <Watch Remove="Pages\Home.razor" />
     <Watch Remove="Pages\Profile.razor" />
   </ItemGroup>
 

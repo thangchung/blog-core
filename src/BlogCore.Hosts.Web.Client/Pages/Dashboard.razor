@@ -1,0 +1,11 @@
+﻿@page "/dashboard"
+@inject GuardService GuardService
+
+<h1>Dashboard page</h1>
+
+@code {
+    protected override async Task OnInitAsync()
+    {
+        await GuardService.Check();
+    }
+}

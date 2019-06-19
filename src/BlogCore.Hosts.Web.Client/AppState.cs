@@ -13,19 +13,8 @@ namespace BlogCore.Hosts.Web.Client
     {
         public event Action OnChange;
 
-        public bool IsUserInfoLoading { get; private set; } = true;
         public UserInfoModel UserInfo { get; private set; } = new UserInfoModel();
         public List<BlogDto> Blogs { get; set; } = new List<BlogDto>();
-
-        public bool IsUserInfoLoaded()
-        {
-            if(UserInfo != null && UserInfo.AccessToken != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
 
         public void SetUserInfo(UserInfoModel userInfo)
         {
@@ -48,7 +37,7 @@ namespace BlogCore.Hosts.Web.Client
 
         public bool IsLogin()
         {
-            return !string.IsNullOrEmpty(UserInfo.AccessToken);
+            return !string.IsNullOrEmpty(UserInfo.AccessToken) && !UserInfo.Expired;
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();
@@ -59,14 +48,15 @@ namespace BlogCore.Hosts.Web.Client
         public string AccessToken { get; set; }
         public string TokenType { get; set; }
         public string Scope { get; set; }
+        public bool Expired { get; set; }
         public UserProfileModel Profile { get; set; } = new UserProfileModel();
     }
 
     public class UserProfileModel
     {
-        public string UserId { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Website { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Website { get; set; } = string.Empty;
     }
 }

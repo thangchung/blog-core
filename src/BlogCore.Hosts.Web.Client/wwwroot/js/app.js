@@ -73,6 +73,7 @@ function getUserInfo() {
             accessToken: user.access_token,
             tokenType: user.token_type,
             scope: user.scope,
+            expired: user.expired,
             profile: {
                 userId: user.profile.sub,
                 name: user.profile.name,
