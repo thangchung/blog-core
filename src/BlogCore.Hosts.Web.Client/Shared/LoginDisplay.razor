@@ -3,11 +3,11 @@
 
 <AuthorizeView>
     <Authorized>
-        <NavLink class="nav-link" href="profile" style="color: #fff;">Hello, @context.User.Identity.Name!</NavLink>
-        <MatButton Raised="true" OnClick="@LogOut" Style="margin-left: 10px;">Logout</MatButton>
+        <NavLink class="d-block" href="profile">@context.User.Identity.Name!</NavLink>
+        <!--<MatButton Raised="true" OnClick="@LogOut">Logout</MatButton>-->
     </Authorized>
     <NotAuthorized>
-        <MatButton Raised="true" OnClick="@LogIn">Login</MatButton>
+        <!--<MatButton Raised="true" OnClick="@LogIn">Login</MatButton>-->
     </NotAuthorized>
 </AuthorizeView>
 
