@@ -1,0 +1,65 @@
+{
+  "name": "blogcore.hosts.web.client",
+  "version": "0.0.1",
+  "description": "This is a client of blogcore app",
+  "main": "index.js",
+  "scripts": {
+    "copy": "webpack --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
+    "@fullcalendar/bootstrap": "^4.2.0",
+    "@fullcalendar/core": "^4.2.0",
+    "@fullcalendar/daygrid": "^4.2.0",
+    "@fullcalendar/interaction": "^4.2.0",
+    "@fullcalendar/timegrid": "^4.2.0",
+    "@lgaitan/pace-progress": "^1.0.7",
+    "bootstrap": "^4.3.1",
+    "bootstrap-colorpicker": "^3.1.2",
+    "bootstrap-slider": "^10.6.1",
+    "chart.js": "^2.8.0",
+    "copy-webpack-plugin": "^5.0.3",
+    "datatables.net": "^1.10.19",
+    "datatables.net-bs4": "^1.10.19",
+    "daterangepicker": "^3.0.5",
+    "fastclick": "^1.0.6",
+    "flot": "^3.1.1",
+    "icheck-bootstrap": "^3.0.1",
+    "inputmask": "^4.0.8",
+    "ion-rangeslider": "^2.3.0",
+    "jquery": "^3.4.1",
+    "jquery-knob-chif": "^1.2.13",
+    "jquery-mapael": "^2.2.0",
+    "jquery-mousewheel": "^3.1.13",
+    "jquery-ui-dist": "^1.12.1",
+    "jqvmap": "github:CivilError/jqvmap",
+    "moment": "^2.24.0",
+    "overlayscrollbars": "^1.7.2",
+    "popper.js": "^1.15.0",
+    "raphael": "^2.2.8",
+    "select2": "^4.0.7",
+    "sparklines": "^1.2.0",
+    "summernote": "^0.8.12",
+    "sweetalert2": "^8.12.1",
+    "tempusdominus-bootstrap-4": "^5.1.2",
+    "toastr": "^2.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thangchung/blog-core.git"
+  },
+  "keywords": [
+    "blogcore"
+  ],
+  "author": "Thang Chung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thangchung/blog-core/issues"
+  },
+  "homepage": "https://github.com/thangchung/blog-core#readme",
+  "devDependencies": {
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.5"
+  }
+}

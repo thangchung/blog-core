@@ -255,6 +255,7 @@ paket-files/
 
 # dependencies
 /node_modules
+**/*/wwwroot/plugins/
 
 # testing
 /coverage

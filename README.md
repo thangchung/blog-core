@@ -6,60 +6,47 @@ A headless CMS builds with clean modern architecture and technology.
 
 ![Alt Text](art/blogcore.gif)
 
-## Table of contents
-- [Quick start](https://github.com/thangchung/blog-core#quick-start)
-- [What's included](https://github.com/thangchung/blog-core#whats-included)
-- [Bugs and feature requests](https://github.com/thangchung/blog-core#bugs-and-feature-requests)
-- [Dependencies](https://github.com/thangchung/blog-core#dependencies)
-- [Community](https://github.com/thangchung/blog-core#community)
-- [Development](https://github.com/thangchung/blog-core#development)
-- [Contributors](https://github.com/thangchung/blog-core#contributors)
-- [Copyright and license](https://github.com/thangchung/blog-core#copyright-and-license)
+# Technical Stack
 
-## Quick start
+- .NET SDK (v3.0.100-preview6) & NodeJS
+- Blazor v3.0.0-preview6
+- IdentityServer 4
+- Entity Framework Core
+- Protobuf v3.8.0
+- Swashbuckle v5.0.0-rc2
+- [AdminLTE](https://github.com/ColorlibHQ/AdminLTE) v3.0.0-beta.1
 
-- Download the latest .NET SDK (2.x) & NodeJS
-- Clone the repo: `git clone [https://github.com/thangchung/blog-core.git](https://github.com/thangchung/blog-core.git)`
-- Run database [migration](https://github.com/thangchung/blog-core/wiki/Migrations)
-- Change location to `\blog-core\src\Hosts\BlogCore.Api`, then run command `dotnet run`
-- Change location to `\blog-core\src\Hosts\BlogCore.App`, then run command `dotnet run`
-- Default username / password should be **root@blogcore.com** / **r00t** or **user1@blogcore.com** / **user1**
+# Run Application
 
-Check out [this article](https://weblogs.asp.net/thangchung/how-to-organize-clean-architecture-to-modular-patterns-in-10-minutes) for how the architecture working.
+```bash
+$ cd src\BlogCore.Hosts.Web.Client\ && npm install && npm run copy && cd ../..
+```
 
-## What's included
+At this root folder
 
-*Coming soon...*
+```bash
+$ dotnet run --project src\BlogCore.Hosts.Web.Server\BlogCore.Hosts.Web.Server.csproj
+```
 
-## Bugs and feature requests
-Have a bug or a feature request? Please first read the issue guidelines and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](https://github.com/thangchung/blog-core/issues/new).
+Open an another terminal and run
 
-## Dependencies
+```bash
+$ dotnet run --project src\BlogCore.Hosts.IdentityServer\BlogCore.Hosts.IdentityServer.csproj
+```
 
-## Community
-Get updates on Blog-Core' development and chat with the project maintainers and community members:
-- Follow [@thangchung on Twitter](https://twitter.com/thangchung)
+Now, you can access to
+- BlogCore Application at http://localhost:5000
+- IdentityServer at http://localhost:5001
 
-## Development
-#### Get code
+# Development
+## Get code
 
 ```bash
 git clone git@github.com:thangchung/blog-core.git
 cd blog-core
 ```
+Start hacking it!!!
 
-#### Install dependencies and run project
+# Copyright and license
 
-```bash
-dotnet restore
-yarn install
-```
-
-## Contributors
-
-*Coming soon...*
-
-
-## Copyright and license
-
-Code and documentation copyright 2017 [Thang Chung](https://github.com/thangchung). Code released under the [MIT License](https://github.com/thangchung/blog-core/blob/master/LICENSE).
+Code and documentation copyright 2019 [Thang Chung](https://github.com/thangchung). Code released under the [MIT License](https://github.com/thangchung/blog-core/blob/master/LICENSE).

@@ -17,13 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Watch Include="**\*.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Watch Remove="Pages\Dashboard.razor" />
-    <Watch Remove="Pages\Home.razor" />
-    <Watch Remove="Pages\Profile.razor" />
+    <Folder Include="Components\" />
   </ItemGroup>
 
 </Project>
