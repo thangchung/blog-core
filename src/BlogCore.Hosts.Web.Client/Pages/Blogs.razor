@@ -54,10 +54,12 @@ else
     protected override async Task OnInitAsync()
     {
         await GuardService.Check();
+        var pages = await BlogService.GetBlogs(Page);
+        AppState.SetBlogs(pages.Items);
+    }
 
-        var pagination = await BlogService.GetBlogs(Page);
-        AppState.SetBlogs(pagination.Items);
-        await JS.LoadBlogsAsync();
-        this.StateHasChanged();
+    protected override async Task OnAfterRenderAsync()
+    {
+        await JS.BindBlogDataTableAsync();
     }
 }

@@ -31,9 +31,9 @@ namespace BlogCore.Hosts.Web.Client.Services
             await jsRuntime.InvokeAsync<bool>("log", JsonConvert.SerializeObject(output));
         }
 
-        public async static Task LoadBlogsAsync(this IJSRuntime jsRuntime)
+        public async static Task BindBlogDataTableAsync(this IJSRuntime jsRuntime)
         {
-            await jsRuntime.InvokeAsync<bool>("bindBlogs");
+            await jsRuntime.InvokeAsync<bool>("bindBlogDataTable");
         }
     }
 }
