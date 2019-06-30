@@ -3,6 +3,7 @@
 @inject AppState AppState
 @inject BlogService BlogService
 @inject GuardService GuardService
+@inject IJSRuntime JS
 
 @if (AppState.Blogs == null || AppState.Blogs.Count <= 0)
 {
@@ -10,18 +11,40 @@
 }
 else
 {
-    <MatTable Items="@AppState.Blogs">
-        <MatTableHeader>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Desc</th>
-        </MatTableHeader>
-        <MatTableRow>
-            <td>@context.Id</td>
-            <td>@context.Title</td>
-            <td>@context.Description</td>
-        </MatTableRow>
-    </MatTable>
+    <div style="width: 100%">
+        <div class="card">
+            <div class="card-body">
+                <table id="blogs" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Desc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var blog in @AppState.Blogs)
+                        {
+                            <tr>
+                                <td>@blog.Id</td>
+                                <td>@blog.Title</td>
+                                <td>@blog.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Desc</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
 }
 
 @code {
@@ -34,5 +57,7 @@ else
 
         var pagination = await BlogService.GetBlogs(Page);
         AppState.SetBlogs(pagination.Items);
+        await JS.LoadBlogsAsync();
+        this.StateHasChanged();
     }
 }

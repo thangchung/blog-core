@@ -68,12 +68,12 @@ module.exports = {
             {
                 context: NODE_PACKAGES_PATH + 'datatables.net/',
                 from: '**/*',
-                to: WWWROOT_PATH + 'datatables.net/'
+                to: WWWROOT_PATH + 'datatables/'
             },
             {
                 context: NODE_PACKAGES_PATH + 'datatables.net-bs4/',
                 from: '**/*',
-                to: WWWROOT_PATH + 'datatables.net-bs4/'
+                to: WWWROOT_PATH + 'datatables/'
             },
             {
                 context: NODE_PACKAGES_PATH + 'daterangepicker/',

@@ -3,22 +3,17 @@
 
 <AuthorizeView>
     <Authorized>
-        <NavLink class="d-block" href="profile">@context.User.Identity.Name!</NavLink>
-        <!--<MatButton Raised="true" OnClick="@LogOut">Logout</MatButton>-->
+        <div class="image">
+            <img src="img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+            <NavLink class="d-block" href="profile">@context.User.Identity.Name</NavLink>
+        </div>
     </Authorized>
     <NotAuthorized>
-        <!--<MatButton Raised="true" OnClick="@LogIn">Login</MatButton>-->
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
-    async Task LogIn()
-    {
-        await JS.SignInAsync();
-    }
-
-    async Task LogOut()
-    {
-        await JS.SignOutAsync();
-    }
+    
 }

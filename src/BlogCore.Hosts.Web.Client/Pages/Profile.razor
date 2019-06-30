@@ -2,28 +2,61 @@
 @inject IJSRuntime JS
 @inject GuardService GuardService
 
-<h1>Profile information</h1>
-<p>
-    <MatTextField Disabled="true"
-                  FullWidth="true"
-                  Value="@(userProfileModel.Name ?? string.Empty)"
-                  Label="Name">
-    </MatTextField>
-</p>
-<p>
-    <MatTextField Disabled="true"
-                  FullWidth="true"
-                  Value="@(userProfileModel.Email ?? string.Empty)"
-                  Label="Email">
-    </MatTextField>
-</p>
-<p>
-    <MatTextField Disabled="true"
-                  FullWidth="true"
-                  Value="@(userProfileModel.Website ?? string.Empty)"
-                  Label="Website">
-    </MatTextField>
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Basic User Information
+                </div>
+                <div class="card-body">
+                    <form style="width: 100%">
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 control-label">Name</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputName" placeholder="Name" value="@(userProfileModel.Name ?? string.Empty)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="inputEmail" placeholder="Email" value="@(userProfileModel.Email ?? string.Empty)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputWebSite" class="col-sm-2 control-label">Website</label>
+
+                            <div class="col-sm-10">
+                                <input type="url" class="form-control" id="inputWebSite" placeholder="Name" value="@(userProfileModel.Website ?? string.Empty)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Others
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-danger" @onclick="@LogOut">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @code {
     UserProfileModel userProfileModel = new UserProfileModel();
@@ -34,5 +67,10 @@
         var userModel = await JS.GetUserInfoAsync();
         userProfileModel = userModel.Profile;
         StateHasChanged();
+    }
+
+    async Task LogOut()
+    {
+        await JS.SignOutAsync();
     }
 }

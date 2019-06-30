@@ -25,13 +25,14 @@ $ cd src\BlogCore.Hosts.Web.Client\ && npm install && npm run copy && cd ../..
 At this root folder
 
 ```bash
-$ dotnet run --project src\BlogCore.Hosts.Web.Server\BlogCore.Hosts.Web.Server.csproj
+$ dotnet run -p src\BlogCore.Hosts.Web.Server\BlogCore.Hosts.Web.Server.csproj
+$ dotnet watch -p src/BlogCore.Hosts.Web.Server/BlogCore.Hosts.Web.Server.csproj run // live reloading
 ```
 
 Open an another terminal and run
 
 ```bash
-$ dotnet run --project src\BlogCore.Hosts.IdentityServer\BlogCore.Hosts.IdentityServer.csproj
+$ dotnet run -p src\BlogCore.Hosts.IdentityServer\BlogCore.Hosts.IdentityServer.csproj
 ```
 
 Now, you can access to

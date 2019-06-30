@@ -1,0 +1,86 @@
+﻿@page "/"
+@layout NoLayout
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">My Blog</h1>
+        <p class="lead">This is my blog.</p>
+        <NavLink href="/dashboard">Go to dashboard</NavLink>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Post -->
+            <div class="post">
+                <div class="user-block">
+                    <h1>
+                        <NavLink href="/post/1">This is post 1</NavLink>
+                    </h1>
+                    <div>Created at 7:30 PM today</div>
+                </div>
+                <!-- /.user-block -->
+                <p>
+                    Lorem ipsum represents a long-held tradition for designers,
+                    typographers and the like. Some people hate it and argue for
+                    its demise, but others ignore the hate as they create awesome
+                    tools to help create filler text for everyone from bacon lovers
+                    to Charlie Sheen fans...
+                </p>
+
+                <p>
+                    <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                    <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                    <span class="float-right">
+                        <NavLink href="#" class="link-black text-sm">
+                            <i class="far fa-comments mr-1"></i> Comments (5)
+                        </NavLink>
+                    </span>
+                </p>
+            </div>
+            <!-- /.post -->
+            <!-- Post -->
+            <div class="post clearfix">
+                <div class="user-block">
+                    <h1>
+                        <NavLink href="/post/2">This is post 2</NavLink>
+                    </h1>
+                    <div>Created at 3 days ago</div>
+                </div>
+                <!-- /.user-block -->
+                <p>
+                    Lorem ipsum represents a long-held tradition for designers,
+                    typographers and the like. Some people hate it and argue for
+                    its demise, but others ignore the hate as they create awesome
+                    tools to help create filler text for everyone from bacon lovers
+                    to Charlie Sheen fans...
+                </p>
+
+                <p>
+                    <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                    <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                    <span class="float-right">
+                        <NavLink href="#" class="link-black text-sm">
+                            <i class="far fa-comments mr-1"></i> Comments (5)
+                        </NavLink>
+                    </span>
+                </p>
+            </div>
+            <!-- /.post -->
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" style="padding: 50px 30px 10px;">
+    <footer>
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.0.0-beta.1
+        </div>
+        <strong>Copyright &copy; 2014-2018 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        reserved.
+    </footer>
+</div>
+
+@code {
+}
