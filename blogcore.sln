@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28917.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{CA6EEB0C-66AF-43E5-8FDF-97FD6ECF8F5D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{696924EE-FEC5-443B-9AE9-DC3E8EBB0F0A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{8491E3C7-0ED9-4C8D-8179-EB25E3A2A9B9}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.env = .env
@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NuGet.config = NuGet.config
 		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{8491E3C7-0ED9-4C8D-8179-EB25E3A2A9B9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Shared", "src\BlogCore.Shared\BlogCore.Shared.csproj", "{631727AA-D6DA-40BC-90C6-DF6E0EE9B18E}"
 EndProject
@@ -89,7 +87,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{696924EE-FEC5-443B-9AE9-DC3E8EBB0F0A} = {8491E3C7-0ED9-4C8D-8179-EB25E3A2A9B9}
 		{4F2D3EC9-A687-46C6-9F37-A848E78D20A0} = {D70FC638-62EE-49C8-890E-9BCC5C67780B}
 		{89D5D263-E802-43E1-A826-0524F979DDC5} = {D70FC638-62EE-49C8-890E-9BCC5C67780B}
 		{C00D297C-B657-4FC9-9137-4A64B4508850} = {CA6EEB0C-66AF-43E5-8FDF-97FD6ECF8F5D}

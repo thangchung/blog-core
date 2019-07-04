@@ -1,3 +1,4 @@
+using BlogCore.Hosts.Web.Server.Middlewares;
 using BlogCore.Modules.AccessControlContext;
 using BlogCore.Modules.BlogContext;
 using BlogCore.Modules.CommonContext;
@@ -115,6 +116,7 @@ namespace BlogCore.Hosts.Web.Server
                 app.UseBlazorDebugging();
             }
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseRouting();
 
             app.UseCors("api");

@@ -1,4 +1,5 @@
-﻿using BlogCore.Shared;
+﻿using BlogCore.Modules.BlogContext.Usecases;
+using BlogCore.Shared;
 using BlogCore.Shared.v1.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,18 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/blogs")]
     [ApiController]
     public class BlogsController : ControllerBase
     {
+        private readonly GetBlogByUsernameInteractor _getBlogByUsernameInteractor;
+
+        public BlogsController(GetBlogByUsernameInteractor getBlogByUsernameInteractor)
+        {
+            _getBlogByUsernameInteractor = getBlogByUsernameInteractor;
+        }
+
         [HttpGet("owner")]
         public async Task<ActionResult<PaginatedItem<GetBlogByUserResponse>>> GetOwner()
         {
@@ -21,26 +29,28 @@ namespace BlogCore.Modules.BlogContext
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedItem<BlogDto>>> GetByPage([FromQuery] int page = 1)
+        public async Task<ActionResult<PaginatedBlogDto>> GetByPage([FromQuery] int page = 1)
         {
-            var blogs = new List<BlogDto>();
-            blogs.Add(new BlogDto
+            var blogs = new List<BlogDto>
             {
-                Id = Guid.NewGuid().ToString(),
-                Title = "My blog 1",
-                Description = "This is my blog 1",
-                Image = "/images/my-blog-1.png",
-                Theme = 1
-            });
+                new BlogDto
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Title = "My blog 1",
+                    Description = "This is my blog 1",
+                    Image = "/images/my-blog-1.png",
+                    Theme = 1
+                },
 
-            blogs.Add(new BlogDto
-            {
-                Id = Guid.NewGuid().ToString(),
-                Title = "My blog 2",
-                Description = "This is my blog 2",
-                Image = "/images/my-blog-2.png",
-                Theme = 2
-            });
+                new BlogDto
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Title = "My blog 2",
+                    Description = "This is my blog 2",
+                    Image = "/images/my-blog-2.png",
+                    Theme = 2
+                }
+            };
 
             var pager = new PaginatedBlogDto();
             pager.Items.AddRange(blogs);
@@ -53,23 +63,35 @@ namespace BlogCore.Modules.BlogContext
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<RetrieveBlogResponse>> Get(Guid id)
         {
-            var response = new RetrieveBlogResponse();
-            response.Blog = new BlogDto
+            var response = new RetrieveBlogResponse
             {
-                Id = id.ToString(),
-                Title = "My blog",
-                Description = "This is my blog",
-                Image = "/images/my-blog.png",
-                Theme = 1
+                Blog = new BlogDto
+                {
+                    Id = id.ToString(),
+                    Title = "My blog",
+                    Description = "This is my blog",
+                    Image = "/images/my-blog.png",
+                    Theme = 1
+                }
             };
 
             return Ok(await Task.FromResult(response.SerializeProtobufToJson()));
         }
 
         [HttpGet("username/{username:required}")]
-        public async Task<ActionResult<PaginatedItem<GetMyBlogsResponse>>> GetBlogByUserName(string username, [FromQuery]int page = 1)
+        public async Task<ActionResult<PaginatedBlogDto>> GetBlogByUserName(string username, [FromQuery]int page = 1)
         {
-            throw new NotImplementedException();
+            var request = new GetMyBlogsRequest {
+                Page = page,
+                Username = username
+            };
+            var response = await _getBlogByUsernameInteractor.Handle(request);
+            var pager = new PaginatedBlogDto();
+            pager.Items.AddRange(response.Items);
+            pager.TotalItems = (int)response.TotalItems;
+            pager.TotalPages = (int)response.TotalPages;
+
+            return Ok(pager.SerializeProtobufToJson());
         }
 
         [HttpPost]

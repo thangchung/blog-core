@@ -1,4 +1,5 @@
-﻿using Google.Protobuf;
+﻿using BlogCore.Shared.v1.Blog;
+using Google.Protobuf;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;

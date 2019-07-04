@@ -7,16 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.4.0" />
     <PackageReference Include="NetCoreKit.Domain" Version="0.1.145" />
     <PackageReference Include="NetCoreKit.Utils" Version="0.1.145" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BlogCore.Shared\BlogCore.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Usecases\" />
   </ItemGroup>
 
 </Project>

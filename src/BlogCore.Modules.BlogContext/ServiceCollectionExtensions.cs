@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BlogCore.Modules.BlogContext.Usecases;
+using BlogCore.Shared.v1.Validators;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogCore.Modules.BlogContext
 {
@@ -6,6 +8,8 @@ namespace BlogCore.Modules.BlogContext
     {
         public static IServiceCollection AddBlogModule(this IServiceCollection services)
         {
+            services.AddTransient<GetMyBlogsRequestValidator>();
+            services.AddTransient<GetBlogByUsernameInteractor>();
             return services;
         }
     }
