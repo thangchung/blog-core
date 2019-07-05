@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="8.4.0" />
+    <PackageReference Include="FluentValidation" Version="8.5.0-preview2" />
     <PackageReference Include="NetCoreKit.Domain" Version="0.1.145" />
     <PackageReference Include="NetCoreKit.Utils" Version="0.1.145" />
   </ItemGroup>

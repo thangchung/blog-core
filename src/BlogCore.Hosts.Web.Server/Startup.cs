@@ -1,11 +1,15 @@
-using BlogCore.Hosts.Web.Server.Middlewares;
+using BlogCore.Hosts.Web.Server.Middleware;
 using BlogCore.Modules.AccessControlContext;
 using BlogCore.Modules.BlogContext;
 using BlogCore.Modules.CommonContext;
 using BlogCore.Modules.PostContext;
+using BlogCore.Shared.v1.ValidationModel;
+using FluentValidation.AspNetCore;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +21,7 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -27,17 +32,20 @@ namespace BlogCore.Hosts.Web.Server
         public static readonly SymmetricSecurityKey
             SecurityKey = new SymmetricSecurityKey(Guid.NewGuid().ToByteArray());
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            WebHostEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment WebHostEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddProblemDetails(RegisterProblemDetails);
 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -106,17 +114,18 @@ namespace BlogCore.Hosts.Web.Server
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseResponseCompression();
 
-            if (env.IsDevelopment())
+            if (WebHostEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBlazorDebugging();
             }
 
-            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseProblemDetails();
+            app.UseMiddleware<ValidationMiddleware>();
             app.UseRouting();
 
             app.UseCors("api");
@@ -146,6 +155,8 @@ namespace BlogCore.Hosts.Web.Server
             services.AddAccessControlModule();
             services.AddBlogModule();
             services.AddPostModule();
+
+            mvcBuilder.AddFluentValidation(c => c.RegisterValidatorsFromAssemblies(new[] { typeof(ValidationResultModel).Assembly }));
         }
 
         private void RegisterOpenApi(IServiceCollection services)
@@ -166,6 +177,22 @@ namespace BlogCore.Hosts.Web.Server
                 };
                 return info;
             }
+        }
+
+        private void RegisterProblemDetails(ProblemDetailsOptions options)
+        {
+            // This is the default behavior; only include exception details in a development environment.
+            options.IncludeExceptionDetails = ctx => WebHostEnvironment.IsDevelopment();
+
+            // This will map NotImplementedException to the 501 Not Implemented status code.
+            options.Map<NotImplementedException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status501NotImplemented));
+
+            // This will map HttpRequestException to the 503 Service Unavailable status code.
+            options.Map<HttpRequestException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status503ServiceUnavailable));
+
+            // Because exceptions are handled polymorphically, this will act as a "catch all" mapping, which is why it's added last.
+            // If an exception other than NotImplementedException and HttpRequestException is thrown, this will handle it.
+            options.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
         }
     }
 }

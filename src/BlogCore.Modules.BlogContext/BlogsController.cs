@@ -1,6 +1,7 @@
-﻿using BlogCore.Modules.BlogContext.Usecases;
-using BlogCore.Shared;
+﻿using BlogCore.Shared;
+using BlogCore.Shared.v1;
 using BlogCore.Shared.v1.Blog;
+using BlogCore.Shared.v1.Usecase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Domain;
@@ -15,11 +16,11 @@ namespace BlogCore.Modules.BlogContext
     [ApiController]
     public class BlogsController : ControllerBase
     {
-        private readonly GetBlogByUsernameInteractor _getBlogByUsernameInteractor;
+        private readonly IUseCase<GetMyBlogsRequest, PaginatedBlogDto> _getBlogByUsernameUseCase;
 
-        public BlogsController(GetBlogByUsernameInteractor getBlogByUsernameInteractor)
+        public BlogsController(IUseCase<GetMyBlogsRequest, PaginatedBlogDto> getBlogByUsernameInteractor)
         {
-            _getBlogByUsernameInteractor = getBlogByUsernameInteractor;
+            _getBlogByUsernameUseCase = getBlogByUsernameInteractor;
         }
 
         [HttpGet("owner")]
@@ -81,17 +82,12 @@ namespace BlogCore.Modules.BlogContext
         [HttpGet("username/{username:required}")]
         public async Task<ActionResult<PaginatedBlogDto>> GetBlogByUserName(string username, [FromQuery]int page = 1)
         {
-            var request = new GetMyBlogsRequest {
+            var response = await _getBlogByUsernameUseCase.HandleAsync(new GetMyBlogsRequest
+            {
                 Page = page,
                 Username = username
-            };
-            var response = await _getBlogByUsernameInteractor.Handle(request);
-            var pager = new PaginatedBlogDto();
-            pager.Items.AddRange(response.Items);
-            pager.TotalItems = (int)response.TotalItems;
-            pager.TotalPages = (int)response.TotalPages;
-
-            return Ok(pager.SerializeProtobufToJson());
+            });
+            return Ok(new ResultModel(response.SerializeProtobufToJson()));
         }
 
         [HttpPost]

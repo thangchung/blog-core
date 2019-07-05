@@ -1,23 +1,23 @@
 ﻿using BlogCore.Shared.v1.Blog;
+using BlogCore.Shared.v1.Usecase;
 using BlogCore.Shared.v1.ValidationModel;
-using BlogCore.Shared.v1.Validators;
-using NetCoreKit.Domain;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext.Usecases
 {
-    public class GetBlogByUsernameInteractor
+    public class GetBlogByUsernameInteractor : IUseCase<GetMyBlogsRequest, PaginatedBlogDto>
     {
-        private readonly GetMyBlogsRequestValidator _validator;
+        private readonly IValidator<GetMyBlogsRequest> _validator;
 
-        public GetBlogByUsernameInteractor(GetMyBlogsRequestValidator validator)
+        public GetBlogByUsernameInteractor(IValidator<GetMyBlogsRequest> validator)
         {
             _validator = validator;
         }
 
-        public async Task<PaginatedItem<BlogDto>> Handle(GetMyBlogsRequest request)
+        public async Task<PaginatedBlogDto> HandleAsync(GetMyBlogsRequest request)
         {
             var validationResult = await _validator.ValidateAsync(request);
             if (!validationResult.IsValid)
@@ -26,12 +26,14 @@ namespace BlogCore.Modules.BlogContext.Usecases
             }
 
             // TODO: get from database
+            // ...
 
-            return await Task.FromResult(
-                new PaginatedItem<BlogDto>(
-                    1,
-                    1,
-                    new List<BlogDto> {
+            var pager = new PaginatedBlogDto
+            {
+                TotalItems = 1,
+                TotalPages = 1,
+            };
+            pager.Items.AddRange(new List<BlogDto> {
                         new BlogDto
                         {
                             Id = Guid.NewGuid().ToString(),
@@ -40,7 +42,9 @@ namespace BlogCore.Modules.BlogContext.Usecases
                             Image = "/images/my-blog.png",
                             Theme = 1
                         }
-                    }));
+                    });
+
+            return await Task.FromResult(pager);
         }
     }
 }

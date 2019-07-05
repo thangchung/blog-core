@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.5.0-preview2" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview2" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="3.1.0" />
     <PackageReference Include="IdentityServer4" Version="3.0.0-preview3.4" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.0-preview.2" />
     <PackageReference Include="IdentityServer4.Storage" Version="3.0.0-preview3.4" />
