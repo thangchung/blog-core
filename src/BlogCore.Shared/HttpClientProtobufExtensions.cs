@@ -5,19 +5,24 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BlogCore.Shared.v1;
 
 namespace BlogCore.Shared
 {
     public static class HttpClientProtobufExtensions
     {
-        public static async Task<T> GetProtobufAsync<T>(this HttpClient httpClient, string requestUri)
-            where T : IMessage<T>, new()
+        public static async Task<TResultModel> GetProtobufAsync<TResultModel, TProtoModel>(this HttpClient httpClient, string requestUri)
+            where TResultModel : ProtoResultModel<TProtoModel>
+            where TProtoModel : IMessage<TProtoModel>, new()
         {
             var stringContent = await httpClient.GetStringAsync(requestUri);
-            return JsonConvert.DeserializeObject<T>(stringContent, new ProtoMessageConverter());
+            var resultModel = JsonConvert.DeserializeObject<TResultModel>(stringContent);
+            resultModel.Data = JsonConvert.DeserializeObject<TProtoModel>(resultModel.Data.ToString(), new ProtoMessageConverter());
+            return resultModel;
         }
 
-        public static string SerializeProtobufToJson<T>(this T data) where T : IMessage<T>, new()
+        public static string SerializeProtobufToJson<TProtoModel>(this TProtoModel data) 
+            where TProtoModel : IMessage<TProtoModel>, new()
         {
             return JsonConvert.SerializeObject(data, new ProtoMessageConverter());
         }

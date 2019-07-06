@@ -1,12 +1,12 @@
 ﻿using BlogCore.Shared;
 using BlogCore.Shared.v1;
 using BlogCore.Shared.v1.Blog;
+using BlogCore.Shared.v1.Presenter;
 using BlogCore.Shared.v1.Usecase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Domain;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext
@@ -14,13 +14,20 @@ namespace BlogCore.Modules.BlogContext
     //[Authorize]
     [Route("api/blogs")]
     [ApiController]
-    public class BlogsController : ControllerBase
+    public class BlogController : ControllerBase
     {
-        private readonly IUseCase<GetMyBlogsRequest, PaginatedBlogDto> _getBlogByUsernameUseCase;
-
-        public BlogsController(IUseCase<GetMyBlogsRequest, PaginatedBlogDto> getBlogByUsernameInteractor)
+        private readonly IUseCase<RetrieveBlogsRequest, PaginatedBlogResponse> _retrieveBlogsUseCase;
+        private readonly IUseCase<GetMyBlogsRequest, PaginatedBlogResponse> _getBlogByUsernameUseCase;
+        private readonly IApiPresenter<PaginatedBlogResponse> _retrieveBlogsPresenter;
+        public BlogController(
+            IUseCase<RetrieveBlogsRequest, PaginatedBlogResponse> retrieveBlogsUseCase,
+            IUseCase<GetMyBlogsRequest, PaginatedBlogResponse> getBlogByUsernameUseCase,
+            IApiPresenter<PaginatedBlogResponse> retrieveBlogsPresenter
+            )
         {
-            _getBlogByUsernameUseCase = getBlogByUsernameInteractor;
+            _retrieveBlogsUseCase = retrieveBlogsUseCase;
+            _getBlogByUsernameUseCase = getBlogByUsernameUseCase;
+            _retrieveBlogsPresenter = retrieveBlogsPresenter;
         }
 
         [HttpGet("owner")]
@@ -30,35 +37,13 @@ namespace BlogCore.Modules.BlogContext
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedBlogDto>> GetByPage([FromQuery] int page = 1)
+        public async Task<ActionResult<ProtoResultModel<PaginatedBlogResponse>>> RetrieveBlogs([FromQuery] int page = 1)
         {
-            var blogs = new List<BlogDto>
-            {
-                new BlogDto
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Title = "My blog 1",
-                    Description = "This is my blog 1",
-                    Image = "/images/my-blog-1.png",
-                    Theme = 1
-                },
-
-                new BlogDto
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Title = "My blog 2",
-                    Description = "This is my blog 2",
-                    Image = "/images/my-blog-2.png",
-                    Theme = 2
-                }
-            };
-
-            var pager = new PaginatedBlogDto();
-            pager.Items.AddRange(blogs);
-            pager.TotalItems = 1;
-            pager.TotalPages = 1;
-
-            return Ok(await Task.FromResult(pager.SerializeProtobufToJson()));
+            var response = await _retrieveBlogsUseCase.ExecuteAsync(new RetrieveBlogsRequest {
+                CurrentPage = page
+            });
+            _retrieveBlogsPresenter.Handle(response);
+            return _retrieveBlogsPresenter.OkResult;
         }
 
         [HttpGet("{id:guid}")]
@@ -80,14 +65,15 @@ namespace BlogCore.Modules.BlogContext
         }
 
         [HttpGet("username/{username:required}")]
-        public async Task<ActionResult<PaginatedBlogDto>> GetBlogByUserName(string username, [FromQuery]int page = 1)
+        public async Task<ActionResult<ProtoResultModel<PaginatedBlogResponse>>> GetBlogByUserName(string username, [FromQuery]int page = 1)
         {
-            var response = await _getBlogByUsernameUseCase.HandleAsync(new GetMyBlogsRequest
+            var response = await _getBlogByUsernameUseCase.ExecuteAsync(new GetMyBlogsRequest
             {
                 Page = page,
                 Username = username
             });
-            return Ok(new ResultModel(response.SerializeProtobufToJson()));
+            _retrieveBlogsPresenter.Handle(response);
+            return _retrieveBlogsPresenter.OkResult;
         }
 
         [HttpPost]

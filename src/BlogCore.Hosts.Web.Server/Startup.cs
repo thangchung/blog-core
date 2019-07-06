@@ -1,8 +1,4 @@
 using BlogCore.Hosts.Web.Server.Middleware;
-using BlogCore.Modules.AccessControlContext;
-using BlogCore.Modules.BlogContext;
-using BlogCore.Modules.CommonContext;
-using BlogCore.Modules.PostContext;
 using BlogCore.Shared.v1.ValidationModel;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
@@ -23,6 +19,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace BlogCore.Hosts.Web.Server
@@ -147,14 +144,21 @@ namespace BlogCore.Hosts.Web.Server
         {
             services.AddHttpContextAccessor();
 
-            mvcBuilder.AddApplicationPart(typeof(ValuesController).Assembly);
-            mvcBuilder.AddApplicationPart(typeof(UsersController).Assembly);
-            mvcBuilder.AddApplicationPart(typeof(BlogsController).Assembly);
-            mvcBuilder.AddApplicationPart(typeof(PostsController).Assembly);
-
-            services.AddAccessControlModule();
-            services.AddBlogModule();
-            services.AddPostModule();
+            AppDomain.CurrentDomain.GetAssemblies()
+                .Where(x => x.GetName().Name.Contains("BlogCore.Modules"))
+                .Distinct()
+                .Select(assembly =>
+                {
+                    mvcBuilder.AddApplicationPart(assembly);
+                    var type = assembly.GetType($"{assembly.GetName().Name}.ServiceCollectionExtensions");
+                    if (type != null)
+                    {
+                        MethodInfo method = type.GetMethod("ConfigureServices");
+                        method?.Invoke(null, new[] { services });
+                    }
+                    return true;
+                })
+                .ToArray();
 
             mvcBuilder.AddFluentValidation(c => c.RegisterValidatorsFromAssemblies(new[] { typeof(ValidationResultModel).Assembly }));
         }

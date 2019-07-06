@@ -20,8 +20,4 @@
     <Protobuf Include="v1\post.proto" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="v1\Presenter\" />
-  </ItemGroup>
-
 </Project>

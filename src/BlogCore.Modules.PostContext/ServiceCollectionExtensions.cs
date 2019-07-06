@@ -4,7 +4,7 @@ namespace BlogCore.Modules.PostContext
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddPostModule(this IServiceCollection services)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
             return services;
         }

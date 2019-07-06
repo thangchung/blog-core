@@ -1,4 +1,5 @@
 ﻿using BlogCore.Shared;
+using BlogCore.Shared.v1;
 using BlogCore.Shared.v1.Blog;
 using Microsoft.JSInterop;
 using System.Net.Http;
@@ -13,10 +14,10 @@ namespace BlogCore.Hosts.Web.Client.Services
         {
         }
 
-        public async Task<PaginatedBlogDto> GetBlogs(int page)
+        public async Task<ProtoResultModel<PaginatedBlogResponse>> GetBlogs(int page)
         {
             await SetHeader();
-            return await HttpClient.GetProtobufAsync<PaginatedBlogDto>($"api/blogs?page={page}");
+            return await HttpClient.GetProtobufAsync<ProtoResultModel<PaginatedBlogResponse>, PaginatedBlogResponse>($"api/blogs?page={page}");
         }
     }
 }

@@ -17,7 +17,6 @@ else
                 <table id="blogs" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Title</th>
                             <th>Desc</th>
                         </tr>
@@ -26,15 +25,13 @@ else
                         @foreach (var blog in @AppState.Blogs)
                         {
                             <tr>
-                                <td>@blog.Id</td>
-                                <td>@blog.Title</td>
+                                <td><a href="/blog/@blog.Id">@blog.Title</a></td>
                                 <td>@blog.Description</td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Id</th>
                             <th>Title</th>
                             <th>Desc</th>
                         </tr>
@@ -54,8 +51,8 @@ else
     protected override async Task OnInitAsync()
     {
         await GuardService.Check();
-        var pages = await BlogService.GetBlogs(Page);
-        AppState.SetBlogs(pages.Items);
+        var resultModel = await BlogService.GetBlogs(Page);
+        AppState.SetBlogs(resultModel.Data.Items);
     }
 
     protected override async Task OnAfterRenderAsync()

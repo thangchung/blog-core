@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Hosts.Web.Server.Middleware
 {
+    /// <summary>
+    /// Ref https://martinfowler.com/articles/replaceThrowWithNotification.html
+    /// </summary>
     public class ValidationMiddleware
     {
         private readonly RequestDelegate _next;

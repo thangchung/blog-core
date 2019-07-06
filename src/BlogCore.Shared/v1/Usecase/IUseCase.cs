@@ -7,6 +7,6 @@ namespace BlogCore.Shared.v1.Usecase
         where TRequest : class, IMessage 
         where TResponse : class, IMessage
     {
-        Task<TResponse> HandleAsync(TRequest request) ;
+        Task<TResponse> ExecuteAsync(TRequest request);
     }
 }

@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlogCore.Hosts.Web.Client\BlogCore.Hosts.Web.Client.csproj" />
+    <ProjectReference Include="..\BlogCore.Hosts.Web.Client\BlogCore.Hosts.Web.Client.csproj">
+      <Private></Private>
+    </ProjectReference>
     <ProjectReference Include="..\BlogCore.Modules.AccessControlContext\BlogCore.Modules.AccessControlContext.csproj" />
     <ProjectReference Include="..\BlogCore.Modules.BlogContext\BlogCore.Modules.BlogContext.csproj" />
     <ProjectReference Include="..\BlogCore.Modules.CommonContext\BlogCore.Modules.CommonContext.csproj" />

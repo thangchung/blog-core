@@ -2,7 +2,7 @@
 namespace BlogCore.Shared.v1.ValidationModel
 {
     /// <summary>
-    /// Ref https://www.jerriepelser.com/blog/validation-response-aspnet-core-webapi/
+    /// Ref https://www.jerriepelser.com/blog/validation-response-aspnet-core-webapi
     /// </summary>
     public static class ValidationModelExtensions
     {

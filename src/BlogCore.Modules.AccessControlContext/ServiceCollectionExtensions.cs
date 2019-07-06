@@ -4,7 +4,7 @@ namespace BlogCore.Modules.AccessControlContext
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAccessControlModule(this IServiceCollection services)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
             return services;
         }

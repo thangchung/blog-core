@@ -1,0 +1,12 @@
+﻿@page "/blog/{BlogId:guid}"
+@inject GuardService GuardService
+
+@code {
+    [Parameter]
+    Guid BlogId { get; set; }
+
+    protected override async Task OnInitAsync()
+    {
+        await GuardService.Check();
+    }
+}

@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext.Usecases
 {
-    public class GetBlogByUsernameInteractor : IUseCase<GetMyBlogsRequest, PaginatedBlogDto>
+    public class GetBlogByUserNameUseCase : IUseCase<GetMyBlogsRequest, PaginatedBlogResponse>
     {
         private readonly IValidator<GetMyBlogsRequest> _validator;
 
-        public GetBlogByUsernameInteractor(IValidator<GetMyBlogsRequest> validator)
+        public GetBlogByUserNameUseCase(IValidator<GetMyBlogsRequest> validator)
         {
             _validator = validator;
         }
 
-        public async Task<PaginatedBlogDto> HandleAsync(GetMyBlogsRequest request)
+        public async Task<PaginatedBlogResponse> ExecuteAsync(GetMyBlogsRequest request)
         {
             var validationResult = await _validator.ValidateAsync(request);
             if (!validationResult.IsValid)
             {
-                throw new Shared.v1.ValidationModel.ValidationException(validationResult.ToValidationResultModel());
+                throw new BlogCore.Shared.v1.ValidationModel.ValidationException(validationResult.ToValidationResultModel());
             }
 
             // TODO: get from database
             // ...
 
-            var pager = new PaginatedBlogDto
+            var pager = new PaginatedBlogResponse
             {
                 TotalItems = 1,
                 TotalPages = 1,
