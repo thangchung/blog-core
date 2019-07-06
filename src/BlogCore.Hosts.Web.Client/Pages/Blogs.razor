@@ -25,7 +25,11 @@ else
                         @foreach (var blog in @AppState.Blogs)
                         {
                             <tr>
-                                <td><a href="/blog/@blog.Id">@blog.Title</a></td>
+                                <td>
+                                    <a @onclick="(e) => { }" href="/blog/@blog.Id">
+                                        @blog.Title
+                                    </a>
+                                </td>
                                 <td>@blog.Description</td>
                             </tr>
                         }

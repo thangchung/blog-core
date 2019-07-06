@@ -7,7 +7,7 @@
             <img src="img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <NavLink class="d-block" href="profile">@context.User.Identity.Name</NavLink>
+            <NavLink class="d-block" href="profile" Match="NavLinkMatch.All">@context.User.Identity.Name</NavLink>
         </div>
     </Authorized>
     <NotAuthorized>
