@@ -33,7 +33,7 @@ namespace BlogCore.Hosts.Web.Client.Services
 
         public async static Task BindBlogDataTableAsync(this IJSRuntime jsRuntime)
         {
-            await jsRuntime.InvokeAsync<bool>("bindBlogDataTable");
+            await jsRuntime.InvokeAsync<bool>("blogs.bindBlogDataTable");
         }
     }
 }

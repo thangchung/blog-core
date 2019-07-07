@@ -11,9 +11,19 @@ module.exports = {
     plugins: [
         new CopyPlugin([
             {
+                context: NODE_PACKAGES_PATH + 'oidc-client/',
+                from: '**/*',
+                to: WWWROOT_PATH + 'oidc-client/'
+            },
+            {
                 context: NODE_PACKAGES_PATH + '@fortawesome/fontawesome-free/',
                 from: '**/*',
                 to: WWWROOT_PATH + '@fortawesome/fontawesome-free/'
+            },
+            {
+                context: NODE_PACKAGES_PATH + 'ionicons/',
+                from: '**/*',
+                to: WWWROOT_PATH + 'ionicons/'
             },
             {
                 context: NODE_PACKAGES_PATH + '@fullcalendar/bootstrap/',

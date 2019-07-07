@@ -1,7 +1,7 @@
 {
-  "name": "blogcore.hosts.web.client",
+  "name": "blogcore.componentslibrary",
   "version": "0.0.1",
-  "description": "This is a client of blogcore app",
+  "description": "This is a components library of blogcore app",
   "main": "index.js",
   "scripts": {
     "copy": "webpack --mode development",
@@ -43,7 +43,9 @@
     "summernote": "^0.8.12",
     "sweetalert2": "^8.12.1",
     "tempusdominus-bootstrap-4": "^5.1.2",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+    "ionicons": "^4.6.1",
+    "oidc-client": "^1.8.2"
   },
   "repository": {
     "type": "git",

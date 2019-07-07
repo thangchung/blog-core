@@ -1,9 +1,15 @@
 ﻿@page "/settings"
+@inject AppState AppState
 @inject GuardService GuardService
 
 @code {
     protected override async Task OnInitAsync()
     {
         await GuardService.Check();
+
+        AppState.SetContentHeader("Settings", new List<BreadcrumbItem> {
+                new BreadcrumbItem { Text = "Home", Route = "#" },
+                new BreadcrumbItem { Text = "Settings", Route = "settings" }
+        });
     }
 }

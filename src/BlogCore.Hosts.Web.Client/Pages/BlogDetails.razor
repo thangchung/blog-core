@@ -13,33 +13,25 @@
                         <FluentValidationValidator />
                         <ValidationSummary />
                         <div class="form-group">
-                            <label for="title" class="col-sm-2 control-label">Title</label>
-                            <div class="col-sm-10">
-                                <InputText @bind-Value="@Model.Title" class="form-control" id="title" placeholder="title"></InputText>
-                            </div>
+                            <label for="title" class="control-label">Title</label>
+                            <InputText @bind-Value="@Model.Title" class="form-control" id="title" placeholder="title"></InputText>
                         </div>
                         <div class="form-group">
-                            <label for="description" class="col-sm-2 control-label">Description</label>
-                            <div class="col-sm-10">
-                                <InputText @bind-Value="@Model.Description" class="form-control" id="description" placeholder="description"></InputText>
-                            </div>
+                            <label for="description" class="control-label">Description</label>
+                            <InputText @bind-Value="@Model.Description" class="form-control" id="description" placeholder="description"></InputText>
                         </div>
                         <div class="form-group">
-                            <label for="posts-per-page" class="col-sm-2 control-label">Posts per Page</label>
-                            <div class="col-sm-10">
-                                <InputNumber @bind-Value="@Model.PostsPerPage" class="form-control" id="posts-per-page" placeholder="posts per page"></InputNumber>
-                            </div>
+                            <label for="posts-per-page" class=" control-label">Posts per Page</label>
+                            <InputNumber @bind-Value="@Model.PostsPerPage" class="form-control" id="posts-per-page" placeholder="posts per page"></InputNumber>
                         </div>
                         <div class="form-group">
-                            <label for="days-to-comment" class="col-sm-2 control-label">Days to Comment</label>
-                            <div class="col-sm-10">
-                                <InputNumber @bind-Value="@Model.DaysToComment" class="form-control" id="days-to-comment" placeholder="days to comment"></InputNumber>
-                            </div>
+                            <label for="days-to-comment" class="control-label">Days to Comment</label>
+                            <InputNumber @bind-Value="@Model.DaysToComment" class="form-control" id="days-to-comment" placeholder="days to comment"></InputNumber>
                         </div>
                         <div class="form-group">
-                            <label for="moderate-comments" class="col-sm-2 control-label">Moderate Comments</label>
-                            <div class="col-sm-10">
-                                <InputCheckbox @bind-Value="@Model.ModerateComments" class="form-control" id="moderate-comments" placeholder="moderate-comments"></InputCheckbox>
+                            <div class="form-check">
+                                <InputCheckbox @bind-Value="@Model.ModerateComments" class="form-check-input" id="moderate-comments"></InputCheckbox>
+                                <label for="moderate-comments" class="form-check-label">Moderate Comments</label>
                             </div>
                         </div>
                         <div class="form-group">

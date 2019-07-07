@@ -63,7 +63,6 @@ namespace BlogCore.Shared.v1.Validation
             var abstractValidatorType = typeof(AbstractValidator<>).MakeGenericType(model.GetType());
             var modelValidatorType = Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(t => t.IsSubclassOf(abstractValidatorType));
             var modelValidatorInstance = (IValidator)Activator.CreateInstance(modelValidatorType);
-
             return modelValidatorInstance;
         }
     }

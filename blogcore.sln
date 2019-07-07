@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{8491E3C7-0ED9-
 		.env = .env
 		.gitignore = .gitignore
 		.gitmodules = .gitmodules
+		Directory.Build.props = Directory.Build.props
 		docker-compose.yml = docker-compose.yml
 		global.json = global.json
 		LICENSE = LICENSE
@@ -39,6 +40,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3438F3F8-1870-47BA-95FE-C1E5EB756D46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Hosts.Tests", "src\BlogCore.Hosts.Tests\BlogCore.Hosts.Tests.csproj", "{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCore.ComponentsLibrary", "src\BlogCore.ComponentsLibrary\BlogCore.ComponentsLibrary.csproj", "{6B852269-71A7-4A47-B3E5-E9A682E3B3A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +85,10 @@ Global
 		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B852269-71A7-4A47-B3E5-E9A682E3B3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B852269-71A7-4A47-B3E5-E9A682E3B3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B852269-71A7-4A47-B3E5-E9A682E3B3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B852269-71A7-4A47-B3E5-E9A682E3B3A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
