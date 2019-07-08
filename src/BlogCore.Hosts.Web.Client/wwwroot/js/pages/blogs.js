@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function ($) {
     window.blogs = {
         bindBlogDataTable: function () {
             if (!$.fn.DataTable.isDataTable('#blogs')) {
@@ -14,4 +14,4 @@
             return true;
         }
     }
-})();
+})(jQuery);
