@@ -25,7 +25,7 @@ $ cd src\BlogCore.Hosts.Web.Client\ && npm install && npm run copy && cd ../..
 At this root folder
 
 ```bash
-$ dotnet run -p src\BlogCore.Hosts.Web.Server\BlogCore.Hosts.Web.Server.csproj
+$ dotnet clean && dotnet run -p src\BlogCore.Hosts.Web.Server\BlogCore.Hosts.Web.Server.csproj
 $ dotnet watch -p src/BlogCore.Hosts.Web.Server/BlogCore.Hosts.Web.Server.csproj run // live reloading
 ```
 

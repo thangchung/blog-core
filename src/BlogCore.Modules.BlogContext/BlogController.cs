@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/blogs")]
     [ApiController]
     public class BlogController : ControllerBase

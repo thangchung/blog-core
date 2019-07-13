@@ -1,10 +1,9 @@
-﻿using BlogCore.Hosts.Web.Client.Services;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace BlogCore.Hosts.Web.Client
+namespace BlogCore.Hosts.Web.Client.Services
 {
     public class ServerAuthenticationStateProvider : AuthenticationStateProvider
     {

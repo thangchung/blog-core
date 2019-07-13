@@ -1,6 +1,6 @@
 ﻿@page "/profile"
+@attribute [Authorize]
 @inject IJSRuntime JS
-@inject GuardService GuardService
 
 <div class="container">
     <div class="row">
@@ -62,8 +62,6 @@
     UserProfileModel userProfileModel = new UserProfileModel();
     protected override async Task OnInitAsync()
     {
-        await GuardService.Check();
-
         var userModel = await JS.GetUserInfoAsync();
         userProfileModel = userModel.Profile;
         StateHasChanged();

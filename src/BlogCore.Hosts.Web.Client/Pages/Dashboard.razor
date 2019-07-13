@@ -1,15 +1,15 @@
 ﻿@page "/dashboard"
-@inject AppState AppState
-@inject GuardService GuardService
+@attribute [Authorize]
 
 @code {
-    protected override async Task OnInitAsync()
-    {
-        await GuardService.Check();
+    [CascadingParameter] AppState AppState { get; set; }
 
+    protected override Task OnInitAsync()
+    {
         AppState.SetContentHeader("Dashboard", new List<BreadcrumbItem> {
             new BreadcrumbItem { Text = "Home", Route = "#" },
             new BreadcrumbItem { Text = "Dashboard", Route = "dashboard" }
         });
+        return Task.CompletedTask;
     }
 }

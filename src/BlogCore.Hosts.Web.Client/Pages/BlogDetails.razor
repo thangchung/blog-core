@@ -1,5 +1,5 @@
 ﻿@page "/blog/{BlogId:guid}"
-@inject GuardService GuardService
+@attribute [Authorize]
 
 <div class="container">
     <div class="row">
@@ -52,11 +52,6 @@
     Guid BlogId { get; set; }
 
     CreateBlogRequest Model { get; set; } = new CreateBlogRequest();
-
-    protected override async Task OnInitAsync()
-    {
-        await GuardService.Check();
-    }
 
     void SubmitValidForm()
     {

@@ -16,7 +16,6 @@ namespace BlogCore.Hosts.Web.Client
             // services and state
             services.AddScoped<AppState>();
             services.AddScoped<BlogService>();
-            services.AddScoped<GuardService>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

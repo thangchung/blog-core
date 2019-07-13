@@ -121,6 +121,9 @@ namespace BlogCore.Hosts.Web.Server
                 app.UseBlazorDebugging();
             }
 
+            app.UseClientSideBlazorFiles<Client.Startup>();
+            app.UseStaticFiles();
+
             app.UseProblemDetails();
             app.UseMiddleware<ValidationMiddleware>();
             app.UseRouting();
@@ -128,11 +131,10 @@ namespace BlogCore.Hosts.Web.Server
             app.UseCors("api");
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseClientSideBlazorFiles<Client.Startup>();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
             });
 

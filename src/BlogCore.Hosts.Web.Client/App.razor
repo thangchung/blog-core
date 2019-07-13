@@ -1,7 +1,24 @@
-﻿<CascadingAuthenticationState>
-    <Router AppAssembly="typeof(Startup).Assembly">
-        <NotFoundContent>
-            <p>Sorry, there's nothing at this address.</p>
-        </NotFoundContent>
-    </Router>
+﻿@inject IJSRuntime JS
+
+<CascadingAuthenticationState>
+    <CascadingAppState>
+        <Router AppAssembly="typeof(Startup).Assembly">
+            <NotFoundContent>
+                <p>Sorry, there's nothing at this address.</p>
+            </NotFoundContent>
+            <NotAuthorizedContent>
+                <h1>Access denied</h1>
+                <div>
+                    <p>Only logged-in user may access this area. Click <a class="text-primary" @onclick="@Login">HERE</a> for sign-in.</p>
+                </div>
+            </NotAuthorizedContent>
+        </Router>
+    </CascadingAppState>
 </CascadingAuthenticationState>
+
+@code {
+    async Task Login()
+    {
+        await JS.SignInAsync();
+    }
+}
