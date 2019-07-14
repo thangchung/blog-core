@@ -1,10 +1,12 @@
 ﻿using BlogCore.Shared;
 using BlogCore.Shared.v1;
 using BlogCore.Shared.v1.Blog;
+using BlogCore.Shared.v1.Guard;
 using BlogCore.Shared.v1.Presenter;
 using BlogCore.Shared.v1.Usecase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 using System;
 using System.Threading.Tasks;
@@ -16,22 +18,15 @@ namespace BlogCore.Modules.BlogContext
     [ApiController]
     public class BlogController : ControllerBase
     {
-        private readonly IUseCase<RetrieveBlogsRequest, PaginatedBlogResponse> _retrieveBlogsUseCase;
-        private readonly IUseCase<GetMyBlogsRequest, PaginatedBlogResponse> _getBlogByUsernameUseCase;
-        private readonly IApiPresenter<PaginatedBlogResponse> _retrieveBlogsPresenter;
-        public BlogController(
-            IUseCase<RetrieveBlogsRequest, PaginatedBlogResponse> retrieveBlogsUseCase,
-            IUseCase<GetMyBlogsRequest, PaginatedBlogResponse> getBlogByUsernameUseCase,
-            IApiPresenter<PaginatedBlogResponse> retrieveBlogsPresenter
-            )
+        private readonly IServiceProvider _serviceProvider;
+
+        public BlogController(IServiceProvider serviceProvider)
         {
-            _retrieveBlogsUseCase = retrieveBlogsUseCase;
-            _getBlogByUsernameUseCase = getBlogByUsernameUseCase;
-            _retrieveBlogsPresenter = retrieveBlogsPresenter;
+            _serviceProvider = serviceProvider;
         }
 
         [HttpGet("owner")]
-        public async Task<ActionResult<PaginatedItem<GetBlogByUserResponse>>> GetOwner()
+        public Task<ActionResult<PaginatedItem<GetBlogByUserResponse>>> GetOwner()
         {
             throw new NotImplementedException();
         }
@@ -39,11 +34,14 @@ namespace BlogCore.Modules.BlogContext
         [HttpGet]
         public async Task<ActionResult<ProtoResultModel<PaginatedBlogResponse>>> RetrieveBlogs([FromQuery] int page = 1)
         {
-            var response = await _retrieveBlogsUseCase.ExecuteAsync(new RetrieveBlogsRequest {
+            var useCase = _serviceProvider.GetService<IUseCase<RetrieveBlogsRequest, PaginatedBlogResponse>>().NotNull();
+            var presenter = _serviceProvider.GetService<IApiPresenter<PaginatedBlogResponse>>().NotNull();
+
+            var response = await useCase.ExecuteAsync(new RetrieveBlogsRequest {
                 CurrentPage = page
             });
-            _retrieveBlogsPresenter.Handle(response);
-            return _retrieveBlogsPresenter.OkResult;
+
+            return presenter.Handle(response);
         }
 
         [HttpGet("{id:guid}")]
@@ -67,35 +65,42 @@ namespace BlogCore.Modules.BlogContext
         [HttpGet("username/{username:required}")]
         public async Task<ActionResult<ProtoResultModel<PaginatedBlogResponse>>> GetBlogByUserName(string username, [FromQuery]int page = 1)
         {
-            var response = await _getBlogByUsernameUseCase.ExecuteAsync(new GetMyBlogsRequest
+            var useCase = _serviceProvider.GetService<IUseCase<GetMyBlogsRequest, PaginatedBlogResponse>>().NotNull();
+            var presenter = _serviceProvider.GetService<IApiPresenter<PaginatedBlogResponse>>().NotNull();
+
+            var response = await useCase.ExecuteAsync(new GetMyBlogsRequest
             {
                 Page = page,
                 Username = username
             });
-            _retrieveBlogsPresenter.Handle(response);
-            return _retrieveBlogsPresenter.OkResult;
+
+            return presenter.Handle(response);
         }
 
         [HttpPost]
         public async Task<ActionResult<CreateBlogResponse>> CreateBlog([FromBody] CreateBlogRequest request)
         {
-            throw new NotImplementedException();
+            var useCase = _serviceProvider.GetService<IUseCase<CreateBlogRequest, CreateBlogResponse>>().NotNull();
+            var presenter = _serviceProvider.GetService<IApiPresenter<CreateBlogResponse>>().NotNull();
+
+            var response = await useCase.ExecuteAsync(request);
+            return presenter.Handle(response);
         }
 
         [HttpPut("{blogId:guid}/users/{userId:guid}/setting")]
-        public async Task<ActionResult<UpdateBlogSettingResponse>> UpdateBlogSetting(Guid blogId, Guid userId, [FromBody] UpdateBlogSettingRequest inputModel)
+        public Task<ActionResult<UpdateBlogSettingResponse>> UpdateBlogSetting(Guid blogId, Guid userId, [FromBody] UpdateBlogSettingRequest inputModel)
         {
             throw new NotImplementedException();
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult<UpdateBlogResponse>> Put(Guid id, [FromBody] UpdateBlogRequest request)
+        public Task<ActionResult<UpdateBlogResponse>> Put(Guid id, [FromBody] UpdateBlogRequest request)
         {
             throw new NotImplementedException();
         }
 
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<DeleteBlogResponse>> Delete(Guid id, [FromBody] DeleteBlogRequest request)
+        public Task<ActionResult<DeleteBlogResponse>> Delete(Guid id, [FromBody] DeleteBlogRequest request)
         {
             throw new NotImplementedException();
         }

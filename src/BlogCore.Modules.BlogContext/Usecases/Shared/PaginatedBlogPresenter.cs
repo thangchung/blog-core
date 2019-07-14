@@ -7,11 +7,9 @@ namespace BlogCore.Modules.BlogContext.Usecases.Shared
 {
     public class PaginatedBlogPresenter : IApiPresenter<PaginatedBlogResponse>
     {
-        public dynamic OkResult { get; private set; }
-
-        public void Handle(PaginatedBlogResponse response)
+        public dynamic Handle(PaginatedBlogResponse response)
         {
-            OkResult = new OkObjectResult(new ProtoResultModel<PaginatedBlogResponse>(response));
+            return new OkObjectResult(new ProtoResultModel<PaginatedBlogResponse>(response));
         }
     }
 }

@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{8491E3C7-0ED9-
 		.dockerignore = .dockerignore
 		.env = .env
 		.gitignore = .gitignore
-		.gitmodules = .gitmodules
 		Directory.Build.props = Directory.Build.props
 		docker-compose.yml = docker-compose.yml
 		global.json = global.json
@@ -41,7 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3438F3F8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.Hosts.Tests", "src\BlogCore.Hosts.Tests\BlogCore.Hosts.Tests.csproj", "{A6F46F4E-FCE6-49DC-8D1D-6E186CF29019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCore.ComponentsLibrary", "src\BlogCore.ComponentsLibrary\BlogCore.ComponentsLibrary.csproj", "{6B852269-71A7-4A47-B3E5-E9A682E3B3A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogCore.ComponentsLibrary", "src\BlogCore.ComponentsLibrary\BlogCore.ComponentsLibrary.csproj", "{6B852269-71A7-4A47-B3E5-E9A682E3B3A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

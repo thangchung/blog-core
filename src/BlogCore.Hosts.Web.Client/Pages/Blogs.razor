@@ -4,70 +4,64 @@
 @inject BlogService BlogService
 @inject IJSRuntime JS
 
-@if (AppState.Blogs == null || AppState.Blogs.Count <= 0)
-{
-    <p><i class="fas fa-spinner fa-pulse"></i></p>
-}
-else
-{
-    <div style="width: 100%">
-        <div class="card">
-            <div class="card-header">
-                <button class="btn btn-primary btn-sm">New</button>
-                <button class="btn btn-danger btn-sm">Delete Selected</button>
-            </div>
-            <div class="card-body">
-                <table id="blogs" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Desc</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var blog in @AppState.Blogs)
-                        {
-                            <tr>
-                                <td>
-                                    <a @onclick="(e) => { }" href="/blog/@blog.Id">
-                                        @blog.Title
-                                    </a>
-                                </td>
-                                <td>@blog.Description</td>
-                            </tr>
-                        }
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Title</th>
-                            <th>Desc</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-}
+<div class="container-fluid">
+    <BadminLteCard>
+        <CardHeader>
+            <NavLink href="create-blog" class="btn btn-primary btn-sm">New</NavLink>
+            <button class="btn btn-danger btn-sm">Delete Selected</button>
+        </CardHeader>
+        <CardBody>
+            <BadminLteTable TableId="blogs"
+                            LoadItemHeaders="@TableHeaders"
+                            DataLoader="@LoadBlogs"
+                            DataLoaded="@BindTable"
+                            DataUnloaded="@UnbindTable">
+                <LoadingContent><p><i class="fas fa-spinner fa-pulse"></i></p></LoadingContent>
+                <EmptyContent>&nbsp;</EmptyContent>
+                <ItemContent Context="item">
+                    <td>
+                        <a @onclick="(e) => { }" href="/blog/@item.Id">
+                            @item.Title
+                        </a>
+                    </td>
+                    <td>@item.Description</td>
+                </ItemContent>
+            </BadminLteTable>
+        </CardBody>
+    </BadminLteCard>
+</div>
 
 @code {
     [Parameter] int Page { get; set; } = 1;
     [CascadingParameter] AppState AppState { get; set; }
 
-    protected override async Task OnInitAsync()
+    protected override Task OnInitAsync()
     {
         AppState.SetContentHeader("Blog", new List<BreadcrumbItem> {
                 new BreadcrumbItem { Text = "Home", Route = "#" },
                 new BreadcrumbItem { Text = "Blogs", Route = "blogs" }
         });
-
-        var resultModel = await BlogService.GetBlogs(Page);
-        AppState.SetBlogs(resultModel.Data.Items);
+        return Task.CompletedTask;
     }
 
-    protected override async Task OnAfterRenderAsync()
+    List<string> TableHeaders()
+    {
+        return new[] { "Title", "Desc" }.ToList();
+    }
+
+    async Task<List<BlogDto>> LoadBlogs()
+    {
+        var resultModel = await BlogService.GetBlogs(Page);
+        return resultModel.Data.Items.ToList<BlogDto>();
+    }
+
+    async Task BindTable()
     {
         await JS.BindBlogDataTableAsync();
+    }
+
+    async Task UnbindTable()
+    {
+        await JS.UnbindBlogDataTableAsync();
     }
 }

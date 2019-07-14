@@ -11,7 +11,7 @@ namespace BlogCore.Hosts.Web.Client
         {
             // authn
             services.AddAuthorizationCore();
-            services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, TokenAuthStateProvider>();
 
             // services and state
             services.AddScoped<AppState>();

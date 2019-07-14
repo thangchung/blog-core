@@ -19,5 +19,11 @@ namespace BlogCore.Hosts.Web.Client.Services
             await SetHeader();
             return await HttpClient.GetProtobufAsync<ProtoResultModel<PaginatedBlogResponse>, PaginatedBlogResponse>($"api/blogs?page={page}");
         }
+
+        public async Task<ProtoResultModel<CreateBlogResponse>> CreateBlog(CreateBlogRequest model)
+        {
+            await SetHeader();
+            return await HttpClient.PostProtobufAsync<ProtoResultModel<CreateBlogResponse>, CreateBlogResponse>($"api/blogs", model);
+        }
     }
 }

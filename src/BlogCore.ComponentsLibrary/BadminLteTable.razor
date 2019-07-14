@@ -1,0 +1,68 @@
+@typeparam TItem
+@implements IDisposable
+
+@if (items == null)
+{
+    @LoadingContent
+}
+else if (items.Count == 0)
+{
+    @EmptyContent
+}
+else
+{
+    <table id="@TableId" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                @foreach (var header in headers)
+                {
+                    <th>@header</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    @ItemContent(item)
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+    List<TItem> items;
+    List<string> headers;
+
+    [Parameter] Func<Task<List<TItem>>> DataLoader { get; set; }
+    [Parameter] Func<Task> DataLoaded { get; set; }
+    [Parameter] Func<Task> DataUnloaded { get; set; }
+
+    [Parameter] string TableId { get; set; }
+    [Parameter] Func<List<string>> LoadItemHeaders { get; set; }
+
+    [Parameter] RenderFragment LoadingContent { get; set; }
+    [Parameter] RenderFragment EmptyContent { get; set; }
+    [Parameter] RenderFragment<TItem> ItemContent { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        items = await DataLoader();
+        headers = LoadItemHeaders();
+    }
+
+    protected override async Task OnAfterRenderAsync()
+    {
+        await DataLoaded();
+    }
+
+    void IDisposable.Dispose()
+    {
+        items = null;
+        headers = null;
+        DataLoader = null;
+        DataLoaded = null;
+        DataUnloaded().ConfigureAwait(false);
+    }
+}

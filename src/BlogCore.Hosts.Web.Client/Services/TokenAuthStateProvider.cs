@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Hosts.Web.Client.Services
 {
-    public class ServerAuthenticationStateProvider : AuthenticationStateProvider
+    public class TokenAuthStateProvider : AuthenticationStateProvider
     {
         private readonly IJSRuntime _js;
-        public ServerAuthenticationStateProvider(IJSRuntime js)
+        public TokenAuthStateProvider(IJSRuntime js)
         {
             _js = js;
         }

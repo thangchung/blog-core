@@ -35,5 +35,10 @@ namespace BlogCore.Hosts.Web.Client.Services
         {
             await jsRuntime.InvokeAsync<bool>("blogs.bindBlogDataTable");
         }
+
+        public async static Task UnbindBlogDataTableAsync(this IJSRuntime jsRuntime)
+        {
+            await jsRuntime.InvokeAsync<bool>("blogs.unbindBlogDataTable");
+        }
     }
 }

@@ -1,0 +1,58 @@
+@page "/create-blog"
+@attribute [Authorize]
+@inject BlogService BlogService
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Create new Blog
+                </div>
+                <div class="card-body">
+                    <EditForm Model="@Model" OnValidSubmit="@SubmitValidForm">
+                        <FluentValidationValidator />
+                        <ValidationSummary />
+                        <div class="form-group">
+                            <label for="title" class="control-label">Title</label>
+                            <InputText @bind-Value="@Model.Title" class="form-control" id="title" placeholder="title"></InputText>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="control-label">Description</label>
+                            <InputText @bind-Value="@Model.Description" class="form-control" id="description" placeholder="description"></InputText>
+                        </div>
+                        <div class="form-group">
+                            <label for="posts-per-page" class=" control-label">Posts per Page</label>
+                            <InputNumber @bind-Value="@Model.PostsPerPage" class="form-control" id="posts-per-page" placeholder="posts per page"></InputNumber>
+                        </div>
+                        <div class="form-group">
+                            <label for="days-to-comment" class="control-label">Days to Comment</label>
+                            <InputNumber @bind-Value="@Model.DaysToComment" class="form-control" id="days-to-comment" placeholder="days to comment"></InputNumber>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <InputCheckbox @bind-Value="@Model.ModerateComments" class="form-check-input" id="moderate-comments"></InputCheckbox>
+                                <label for="moderate-comments" class="form-check-label">Moderate Comments</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    CreateBlogRequest Model { get; set; } = new CreateBlogRequest();
+
+    async Task SubmitValidForm()
+    {
+        Console.WriteLine("OnValidSubmit");
+        await BlogService.CreateBlog(Model);
+    }
+}

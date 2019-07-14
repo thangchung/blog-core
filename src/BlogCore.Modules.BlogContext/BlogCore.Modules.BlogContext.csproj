@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.5.0-preview2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0-preview6.19304.6" />
     <PackageReference Include="NetCoreKit.Domain" Version="0.1.145" />
     <PackageReference Include="NetCoreKit.Utils" Version="0.1.145" />
   </ItemGroup>

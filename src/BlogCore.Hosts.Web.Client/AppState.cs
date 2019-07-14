@@ -1,5 +1,4 @@
-﻿using BlogCore.Shared.v1.Blog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +15,6 @@ namespace BlogCore.Hosts.Web.Client
 
         public ContentHeaderModel ContentHeader { get; private set; } = new ContentHeaderModel();
         public UserInfoModel UserInfo { get; private set; } = new UserInfoModel();
-        public List<BlogDto> Blogs { get; set; } = new List<BlogDto>();
 
         public void SetUserInfo(UserInfoModel userInfo)
         {
@@ -30,13 +28,6 @@ namespace BlogCore.Hosts.Web.Client
                 ContentHeader = contentHeader,
                 BreadcrumbItems = breadcrumbItems.ToList()
             };
-            NotifyStateChanged();
-        }
-
-        public void SetBlogs(IEnumerable<BlogDto> blogs)
-        {
-            Blogs.Clear();
-            Blogs.AddRange(blogs);
             NotifyStateChanged();
         }
 

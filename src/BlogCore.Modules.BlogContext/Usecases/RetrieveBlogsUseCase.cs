@@ -1,4 +1,5 @@
 ﻿using BlogCore.Shared.v1.Blog;
+using BlogCore.Shared.v1.Guard;
 using BlogCore.Shared.v1.Usecase;
 using BlogCore.Shared.v1.ValidationModel;
 using FluentValidation;
@@ -13,16 +14,12 @@ namespace BlogCore.Modules.BlogContext.Usecases
         private readonly IValidator<RetrieveBlogsRequest> _validator;
         public RetrieveBlogsUseCase(IValidator<RetrieveBlogsRequest> validator)
         {
-            _validator = validator;
+            _validator = validator.NotNull();
         }
 
         public async Task<PaginatedBlogResponse> ExecuteAsync(RetrieveBlogsRequest request)
         {
-            var validationResult = await _validator.ValidateAsync(request);
-            if (!validationResult.IsValid)
-            {
-                throw new BlogCore.Shared.v1.ValidationModel.ValidationException(validationResult.ToValidationResultModel());
-            }
+            await _validator.HandleValidation(request);
 
             // TODO: get from database
             // ...
