@@ -52,7 +52,8 @@
     async Task<List<BlogDto>> LoadBlogs()
     {
         var resultModel = await BlogService.GetBlogs(Page);
-        return resultModel.Data.Items.ToList<BlogDto>();
+        var blogs = resultModel.Data.Items.Select(x => x.DeserializeData<BlogDto>());
+        return blogs.ToList();
     }
 
     async Task BindTable()

@@ -1,13 +1,10 @@
 ﻿using BlogCore.Shared.v1.Blog;
-using BlogCore.Shared.v1.Usecase;
 using BlogCore.Shared.v1.Guard;
+using BlogCore.Shared.v1.Usecase;
+using BlogCore.Shared.v1.ValidationModel;
 using FluentValidation;
 using System;
 using System.Threading.Tasks;
-using BlogCore.Shared.v1.ValidationModel;
-using BlogCore.Shared.v1.Presenter;
-using Microsoft.AspNetCore.Mvc;
-using BlogCore.Shared.v1;
 
 namespace BlogCore.Modules.BlogContext.Usecases
 {
@@ -34,14 +31,6 @@ namespace BlogCore.Modules.BlogContext.Usecases
                     Description = "created desc"
                 }
             });
-        }
-    }
-
-    public class CreateBlogResponsePresenter : IApiPresenter<CreateBlogResponse>
-    {
-        public dynamic Handle(CreateBlogResponse resultModel)
-        {
-            return new OkObjectResult(new ProtoResultModel<CreateBlogResponse>(resultModel));
         }
     }
 }

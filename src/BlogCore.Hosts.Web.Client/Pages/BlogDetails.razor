@@ -1,5 +1,6 @@
 ﻿@page "/blog/{BlogId:guid}"
 @attribute [Authorize]
+@inject BlogService BlogService
 
 <div class="container">
     <div class="row">
@@ -52,6 +53,14 @@
     Guid BlogId { get; set; }
 
     CreateBlogRequest Model { get; set; } = new CreateBlogRequest();
+
+    protected override async Task OnInitAsync()
+    {
+        var resultModel = await BlogService.GetBlogById(BlogId);
+        Model.Title = resultModel.Data.Blog.Title;
+        Model.Description = resultModel.Data.Blog.Description;
+        this.StateHasChanged();
+    }
 
     void SubmitValidForm()
     {

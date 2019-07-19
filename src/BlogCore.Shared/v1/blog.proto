@@ -3,14 +3,12 @@ package blogcore;
 
 option csharp_namespace = "BlogCore.Shared.v1.Blog";
 
+import "v1/common.proto";
+
 // GetMyBlogs usecase
 message GetMyBlogsRequest {
   int32 page = 1;
   string username = 2;
-}
-
-message GetMyBlogsResponse {
-  repeated BlogDto blogs = 1;
 }
 
 // GetBlogByUser usecase
@@ -34,10 +32,6 @@ message RetrieveBlogResponse {
 // RetrieveBlogs usecase
 message RetrieveBlogsRequest {
   int32 current_page = 1;
-}
-
-message RetrieveBlogsResponse {
-  repeated BlogDto blogs = 1;
 }
 
 // CreateBlog usecase
@@ -84,23 +78,15 @@ message UpdateBlogSettingRequest {
 }
 
 message UpdateBlogSettingResponse {
-  bool succeed = 1;
-  string blog_id = 2;
+  string blog_id = 1;
 }
 
-// shared
 message BlogDto {
   string id = 1;
   string title = 2;
   string description = 3;
   string image = 4;
   int32 theme = 5;
-}
-
-message PaginatedBlogResponse {
-  int32 total_items = 1;
-  int32 total_pages = 2;
-  repeated BlogDto items = 3;
 }
 
 message ValueDto {

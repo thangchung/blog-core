@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package blogcore;
+
+option csharp_namespace = "BlogCore.Shared.v1.Common";
+
+// both sides shared
+message PaginatedItemResponse {
+  int32 total_items = 1;
+  int32 total_pages = 2;
+  repeated ItemContainer items = 4;
+}
+
+message ItemContainer {
+  map<string, string> item = 1;
+}

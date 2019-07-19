@@ -1,8 +1,10 @@
 ﻿using BlogCore.Shared.v1;
+using BlogCore.Shared.v1.Common;
 using Google.Protobuf;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,6 +71,33 @@ namespace BlogCore.Shared
         class IgnoreResponse { }
     }
 
+    public static class ProtoJsonExtensions
+    {
+        public static Dictionary<string, string> SerializeObjectToDictionary(this object obj)
+        {
+            var json = JsonConvert.SerializeObject(obj);
+            var dicObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return dicObject;
+        }
+
+        public static ItemContainer SerializeData<TData>(this TData obj)
+        {
+            var dicObject = obj.SerializeObjectToDictionary();
+            var container = new ItemContainer();
+            foreach (var attr in dicObject)
+            {
+                container.Item.Add(attr.Key, attr.Value);
+            }
+            return container;
+        }
+
+        public static TData DeserializeData<TData>(this ItemContainer itemContainer)
+        {
+            var json = JsonConvert.SerializeObject(itemContainer.Item);
+            return JsonConvert.DeserializeObject<TData>(json);
+        }
+    }
+
     /// <summary>
     /// Ref to https://github.com/GoogleCloudPlatform/dotnet-docs-samples/blob/8a942cae26/monitoring/api/AlertSample/Program.cs
     /// </summary>
@@ -83,10 +112,10 @@ namespace BlogCore.Shared
         {
             // Read an entire object from the reader.
             var converter = new ExpandoObjectConverter();
-            object o = converter.ReadJson(reader, objectType, existingValue, serializer);
+            var o = converter.ReadJson(reader, objectType, existingValue, serializer);
 
             // Convert it back to json text.
-            string text = JsonConvert.SerializeObject(o);
+            var text = JsonConvert.SerializeObject(o);
 
             // And let protobuf's parser parse the text.
             IMessage message = (IMessage)Activator.CreateInstance(objectType);

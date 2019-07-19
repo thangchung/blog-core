@@ -1,4 +1,6 @@
-﻿using BlogCore.Shared.v1.Blog;
+﻿using BlogCore.Shared;
+using BlogCore.Shared.v1.Blog;
+using BlogCore.Shared.v1.Common;
 using BlogCore.Shared.v1.Guard;
 using BlogCore.Shared.v1.Usecase;
 using BlogCore.Shared.v1.ValidationModel;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext.Usecases
 {
-    public class GetBlogByUserNameUseCase : IUseCase<GetMyBlogsRequest, PaginatedBlogResponse>
+    public class GetBlogByUserNameUseCase : IUseCase<GetMyBlogsRequest, PaginatedItemResponse>
     {
         private readonly IValidator<GetMyBlogsRequest> _validator;
 
@@ -18,29 +20,29 @@ namespace BlogCore.Modules.BlogContext.Usecases
             _validator = validator.NotNull();
         }
 
-        public async Task<PaginatedBlogResponse> ExecuteAsync(GetMyBlogsRequest request)
+        public async Task<PaginatedItemResponse> ExecuteAsync(GetMyBlogsRequest request)
         {
             await _validator.HandleValidation(request);
 
             // TODO: get from database
             // ...
 
-            var pager = new PaginatedBlogResponse
+            var pager = new PaginatedItemResponse
             {
                 TotalItems = 1,
                 TotalPages = 1,
             };
-            pager.Items.AddRange(new List<BlogDto> {
-                        new BlogDto
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Title = "My blog",
-                            Description = "This is my blog",
-                            Image = "/images/my-blog.png",
-                            Theme = 1
-                        }
-                    });
 
+            var blog = new BlogDto
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = "My blog",
+                Description = "This is my blog",
+                Image = "/images/my-blog.png",
+                Theme = 1
+            };
+
+            pager.Items.AddRange(new List<ItemContainer> { blog.SerializeData() });
             return await Task.FromResult(pager);
         }
     }
