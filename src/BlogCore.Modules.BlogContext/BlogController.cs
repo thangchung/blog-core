@@ -6,14 +6,13 @@ using BlogCore.Shared.v1.Usecase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreKit.Domain;
 using System;
 using System.Threading.Tasks;
 
 namespace BlogCore.Modules.BlogContext
 {
     [Authorize]
-    [Route("api/blogs")]
+    [Route("api/@blogs")]
     [ApiController]
     public class BlogController : ControllerBase
     {
@@ -24,21 +23,7 @@ namespace BlogCore.Modules.BlogContext
             _serviceProvider = serviceProvider;
         }
 
-        [HttpGet("owner")]
-        public Task<ActionResult<PaginatedItem<GetBlogByUserResponse>>> GetOwner()
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<ProtoResultModel<PaginatedItemResponse>>> RetrieveBlogs([FromQuery] int page = 1)
-        {
-            var useCase = _serviceProvider.GetService<IUseCase<RetrieveBlogsRequest, PaginatedItemResponse>>().NotNull();
-            var response = await useCase.ExecuteAsync(new RetrieveBlogsRequest {
-                CurrentPage = page
-            });
-            return new OkObjectResult(new ProtoResultModel<PaginatedItemResponse>(response));
-        }
+        
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<RetrieveBlogResponse>> Get(Guid id)

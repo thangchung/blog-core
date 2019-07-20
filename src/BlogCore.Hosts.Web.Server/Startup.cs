@@ -19,7 +19,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace BlogCore.Hosts.Web.Server
@@ -32,11 +31,11 @@ namespace BlogCore.Hosts.Web.Server
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
-            WebHostEnvironment = env;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
-        public IWebHostEnvironment WebHostEnvironment { get; }
+        public IWebHostEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -115,7 +114,7 @@ namespace BlogCore.Hosts.Web.Server
         {
             app.UseResponseCompression();
 
-            if (WebHostEnvironment.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBlazorDebugging();
@@ -155,7 +154,7 @@ namespace BlogCore.Hosts.Web.Server
                     var type = assembly.GetType($"{assembly.GetName().Name}.ServiceCollectionExtensions");
                     if (type != null)
                     {
-                        MethodInfo method = type.GetMethod("ConfigureServices");
+                        var method = type.GetMethod("ConfigureServices");
                         method?.Invoke(null, new[] { services });
                     }
                     return true;
@@ -187,17 +186,9 @@ namespace BlogCore.Hosts.Web.Server
 
         private void RegisterProblemDetails(ProblemDetailsOptions options)
         {
-            // This is the default behavior; only include exception details in a development environment.
-            options.IncludeExceptionDetails = ctx => WebHostEnvironment.IsDevelopment();
-
-            // This will map NotImplementedException to the 501 Not Implemented status code.
+            options.IncludeExceptionDetails = ctx => Environment.IsDevelopment();
             options.Map<NotImplementedException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status501NotImplemented));
-
-            // This will map HttpRequestException to the 503 Service Unavailable status code.
             options.Map<HttpRequestException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status503ServiceUnavailable));
-
-            // Because exceptions are handled polymorphically, this will act as a "catch all" mapping, which is why it's added last.
-            // If an exception other than NotImplementedException and HttpRequestException is thrown, this will handle it.
             options.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
         }
     }
