@@ -1,7 +1,10 @@
 ﻿using BlogCore.Shared.v1;
 using BlogCore.Shared.v1.Common;
+using BlogCore.Shared.v1.Post;
 using Google.Protobuf;
+using Google.Protobuf.Collections;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -59,13 +62,15 @@ namespace BlogCore.Shared
     {
         public static Dictionary<string, string> SerializeObjectToDictionary(this object obj)
         {
-            var json = JsonConvert.SerializeObject(obj);
+            var json = JsonConvert.SerializeObject(obj, new DictionaryObjectConverter());
             var dicObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             return dicObject;
         }
 
         public static ItemContainer SerializeData<TData>(this TData obj)
         {
+            var json = JsonConvert.SerializeObject(obj, new DictionaryObjectConverter());
+
             var dicObject = obj.SerializeObjectToDictionary();
             var container = new ItemContainer();
             foreach (var attr in dicObject)
@@ -79,6 +84,32 @@ namespace BlogCore.Shared
         {
             var json = JsonConvert.SerializeObject(itemContainer.Item);
             return JsonConvert.DeserializeObject<TData>(json);
+        }
+    }
+
+    public class DictionaryObjectConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(RepeatedField<ItemContainer>);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var json = JsonConvert.SerializeObject(existingValue);
+            var dicObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return dicObject;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            if (((RepeatedField<ItemContainer>)value).Count <= 0) writer.WriteRawValue("\"\"");
+            else
+            {
+                var json = JsonConvert.SerializeObject(value);
+                var dicObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                writer.WriteRawValue(JsonConvert.SerializeObject(dicObject));
+            }
         }
     }
 }

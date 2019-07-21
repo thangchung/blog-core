@@ -19,6 +19,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BlogCore.Hosts.Web.Server
@@ -32,6 +33,9 @@ namespace BlogCore.Hosts.Web.Server
         {
             Configuration = configuration;
             Environment = env;
+
+            // https://github.com/dotnet/corefx/issues/9158
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         public IConfiguration Configuration { get; }

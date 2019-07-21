@@ -1,13 +1,14 @@
 ﻿@page "/blogs"
 @page "/blogs/{Page:int}"
 @attribute [Authorize]
-@inject BlogService BlogService
 @inject IJSRuntime JS
+@inject BlogService BlogService
 
 <div class="container-fluid">
     <BadminLteCard>
         <CardHeader>
             <NavLink href="create-blog" class="btn btn-primary btn-sm">New</NavLink>
+            <NavLink href="blog-settings" class="btn btn-info btn-sm">Settings</NavLink>
             <button class="btn btn-danger btn-sm">Delete Selected</button>
         </CardHeader>
         <CardBody>

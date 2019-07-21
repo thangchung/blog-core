@@ -1,6 +1,6 @@
 using BlogCore.Shared.v1.Blog;
+using BlogCore.Shared.v1.Blogs.Validators;
 using BlogCore.Shared.v1.ValidationModel;
-using BlogCore.Shared.v1.Validators;
 using Google.Protobuf;
 using System;
 using System.Threading.Tasks;

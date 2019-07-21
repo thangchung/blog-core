@@ -1,4 +1,4 @@
-﻿@page "/post/{PostId:int}"
+﻿@page "/post/{PostId:guid}"
 @layout NoLayout
 
 <div class="jumbotron jumbotron-fluid">
@@ -93,6 +93,5 @@
 </div>
 
 @code {
-    [Parameter]
-    int PostId { get; set; } = 1;
+    [Parameter] Guid PostId { get; set; }
 }

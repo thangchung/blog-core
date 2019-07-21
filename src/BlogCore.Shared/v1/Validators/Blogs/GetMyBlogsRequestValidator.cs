@@ -1,7 +1,7 @@
 ﻿using BlogCore.Shared.v1.Blog;
 using FluentValidation;
 
-namespace BlogCore.Shared.v1.Validators
+namespace BlogCore.Shared.v1.Blogs.Validators
 {
     public class GetMyBlogsRequestValidator : AbstractValidator<GetMyBlogsRequest>
     {

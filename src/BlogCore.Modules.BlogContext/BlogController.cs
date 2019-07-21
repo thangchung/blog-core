@@ -23,7 +23,22 @@ namespace BlogCore.Modules.BlogContext
             _serviceProvider = serviceProvider;
         }
 
-        
+        [HttpGet("owner")]
+        public Task<ActionResult<ProtoResultModel<PaginatedItemResponse>>> GetOwner()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ProtoResultModel<PaginatedItemResponse>>> RetrieveBlogs([FromQuery] int page = 1)
+        {
+            var useCase = _serviceProvider.GetService<IUseCase<RetrieveBlogsRequest, PaginatedItemResponse>>().NotNull();
+            var response = await useCase.ExecuteAsync(new RetrieveBlogsRequest
+            {
+                CurrentPage = page
+            });
+            return new OkObjectResult(new ProtoResultModel<PaginatedItemResponse>(response));
+        }
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<RetrieveBlogResponse>> Get(Guid id)

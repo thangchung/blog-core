@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BlogCore.Modules.PostContext.Usecases;
+using BlogCore.Shared.v1.Post;
+using BlogCore.Shared.v1.Usecase;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogCore.Modules.PostContext
 {
@@ -6,6 +9,7 @@ namespace BlogCore.Modules.PostContext
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
+            services.AddScoped<IUseCase<GetPostsByBlogRequest, GetPostsByBlogResponse>, GetPostsByBlogUseCase>();
             return services;
         }
     }
