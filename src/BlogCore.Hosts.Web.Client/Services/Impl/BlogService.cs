@@ -13,6 +13,11 @@ namespace BlogCore.Hosts.Web.Client.Services.Impl
         {
         }
 
+        public async Task<ProtoResultModel<GetBlogInfoResponse>> GetBlogInfo(Guid blogId)
+        {
+            return await HttpClient.GetProtoAsync<GetBlogInfoResponse>($"api/blogs/{blogId}/info");
+        }
+
         public async Task<ProtoResultModel<PaginatedItemResponse>> GetBlogs(int page)
         {
             var httpClient = await SecureHttpClientAsync();

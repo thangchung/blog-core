@@ -13,6 +13,7 @@ namespace BlogCore.Modules.BlogContext
             services.AddScoped<IUseCase<RetrieveBlogsRequest, PaginatedItemResponse>, RetrieveBlogsUseCase>();
             services.AddScoped<IUseCase<GetMyBlogsRequest, PaginatedItemResponse>, GetBlogByUserNameUseCase>();
             services.AddScoped<IUseCase<CreateBlogRequest, CreateBlogResponse>, CreateBlogUseCase>();
+            services.AddScoped<IUseCase<GetBlogInfoRequest, GetBlogInfoResponse>, GetBlogInfoUseCase>();
             return services;
         }
     }

@@ -12,7 +12,6 @@ message GetPostsByBlogResponse {
   int32 total_items = 1;
   int32 total_pages = 2;
   repeated PostDto posts = 3;
-  map<string, PostTagsDto> tag_fragment = 4;
 }
 
 message GetSpecificPostForBlogRequest {
@@ -30,10 +29,7 @@ message PostDto {
   string author_family_name = 7;
   string author_given_name = 8;
   string created_at = 9;
-}
-
-message PostTagsDto {
-  repeated TagDto tags = 1;
+  repeated TagDto Tags = 10;
 }
 
 message TagDto {

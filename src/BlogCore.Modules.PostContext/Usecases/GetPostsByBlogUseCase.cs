@@ -25,14 +25,18 @@ namespace BlogCore.Modules.PostContext.Usecases
             //TODO: save to database
             //...
 
+            var pageSize = 10;
             var pager = new GetPostsByBlogResponse
             {
-                TotalItems = 1,
-                TotalPages = 1,
+                TotalItems = 50,
+                TotalPages = 5,
             };
 
-            for (int i = 1; i < 50; i++)
+            for (int i = (request.Page - 1) * pageSize + 1; i <= request.Page * pageSize; i++)
             {
+                var tag1 = new TagDto { Id = Guid.NewGuid().ToString(), Name = "tag 1" };
+                var tag2 = new TagDto { Id = Guid.NewGuid().ToString(), Name = "tag 2" };
+
                 var post = new PostDto
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -52,12 +56,8 @@ namespace BlogCore.Modules.PostContext.Usecases
                     CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow.Date).ToString(),
                 };
 
+                post.Tags.AddRange(new[] { tag1, tag2 });
                 pager.Posts.Add(post);
-
-                var linkTag = new PostTagsDto();
-                linkTag.Tags.Add(new TagDto { Id = Guid.NewGuid().ToString(), Name = "tag 1" });
-
-                pager.TagFragment.Add(post.Id, linkTag);
             }
             
             return await Task.FromResult(pager);

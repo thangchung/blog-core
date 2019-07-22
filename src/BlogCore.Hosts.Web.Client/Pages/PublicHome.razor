@@ -1,13 +1,14 @@
 ﻿@page "/"
 @page "/{Page:int}"
 @layout NoLayout
+@inject BlogService BlogService
 @inject PostService PostService
 
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-4">My Blog</h1>
-        <p class="lead">This is my blog.</p>
-        <NavLink href="/dashboard">Go to dashboard</NavLink>
+        <h1 class="display-4">@Blog.Title</h1>
+        <p class="lead">@Blog.Description</p>
+        <NavLink href="/dashboard" class="p-1 bg-danger text-white">Dashboard</NavLink>
     </div>
 </div>
 
@@ -29,7 +30,7 @@
                         @post.Excerpt...
                     </p>
                     <p>
-                        @RenderTag(post.Id)
+                        @RenderTag(post)
                     </p>
                     <p>
                         <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
@@ -43,6 +44,23 @@
                 </div>
                 <!-- /.post -->
             }
+        </div>
+
+        <div class="col-md-12">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item">
+                        <a class="page-link" href="" tabindex="-1" @onclick=@(async () => await OnPrevious(Page - 1))>Previous</a>
+                    </li>
+                    @for (int i = 1; i <= TotalPages; i++)
+                    {
+                        <li class="page-item"><a class="page-link" href="/@i" @onclick=@((e) => { })>@i</a></li>
+                    }
+                    <li class="page-item">
+                        <a class="page-link" href="" @onclick=@(async () => await OnNext(Page + 1))>Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -59,25 +77,46 @@
 
 @code {
     [Parameter] int Page { get; set; } = 1;
-
+    BlogDto Blog = new BlogDto();
     List<PostDto> Posts = new List<PostDto>();
-    MapField<string, PostTagsDto> PostTags = new MapField<string, PostTagsDto>();
+    int TotalItems = 0;
+    int TotalPages = 0;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        var resultModel = await PostService.GetPostsByBlog(Guid.NewGuid(), Page);
-        Posts = resultModel.Data.Posts.ToList();
-        PostTags = resultModel.Data.TagFragment;
+        await LoadDataAsync();
     }
 
-    MarkupString RenderTag(string postId)
+    async Task OnNext(int page)
     {
-        var result = PostTags
-            .Where(x => x.Key == postId)
-            .Select(x => x.Value)
-            .SelectMany(x => x.Tags)
+        Page = page <= TotalPages ? page : TotalPages;
+        await LoadDataAsync();
+    }
+
+    async Task OnPrevious(int page)
+    {
+        Page = page >= 1 ? page : 1;
+        await LoadDataAsync();
+    }
+
+    async Task LoadDataAsync()
+    {
+        var blogId = Guid.NewGuid();
+        var blogResultModel = await BlogService.GetBlogInfo(blogId);
+        var postResultModel = await PostService.GetPostsByBlog(blogId, Page);
+
+        Blog = blogResultModel.Data.Blog;
+        Posts = postResultModel.Data.Posts.ToList();
+
+        TotalItems = postResultModel.Data.TotalItems;
+        TotalPages = postResultModel.Data.TotalPages;
+    }
+
+    MarkupString RenderTag(PostDto post)
+    {
+        var result = post.Tags
             .Select(x => x?.Name)
-            .Aggregate("", (r, x) => r + string.Format("<span class=\"badge badge-info\">{0}</span>", x));
+            .Aggregate("", (r, x) => r + string.Format("&nbsp;<span class=\"badge badge-info\">{0}</span>", x));
 
         return (MarkupString)result;
     }

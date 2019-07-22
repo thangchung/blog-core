@@ -34,6 +34,14 @@ message RetrieveBlogsRequest {
   int32 current_page = 1;
 }
 
+message GetBlogInfoRequest {
+  string blog_id = 1;
+}
+
+message GetBlogInfoResponse {
+  BlogDto blog = 1;
+}
+
 // CreateBlog usecase
 message CreateBlogRequest {
   string title = 1;
