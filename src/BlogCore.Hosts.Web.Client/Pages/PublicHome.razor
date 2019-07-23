@@ -43,22 +43,14 @@
                 <!-- /.post -->
             }
         </div>
+    </div>
 
+    <div class="row">
         <div class="col-md-12">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item @(RenderDisableFirst())">
-                        <a class="page-link" href="" tabindex="-1" @onclick=@(async () => await OnPrevious(Page - 1))>Previous</a>
-                    </li>
-                    @for (int i = 1; i <= TotalPages; i++)
-                    {
-                        <li class="page-item @(RenderActivePage(i))"><a class="page-link" href="/@i" @onclick=@((e) => { })>@i</a></li>
-                    }
-                    <li class="page-item @(RenderDisableLast())">
-                        <a class="page-link" href="" @onclick=@(async () => await OnNext(Page + 1))>Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <BadminLtePagination Page="@Page"
+                                 TotalPages="@TotalPages"
+                                 OnPageClick="@OnPageClick">
+            </BadminLtePagination>
         </div>
     </div>
 </div>
@@ -70,74 +62,28 @@
 
     BlogDto Blog = new BlogDto();
     List<PostDto> Posts = new List<PostDto>();
-    int TotalItems = 0;
     int TotalPages = 0;
-    bool IsFirst = false;
-    bool IsLast = false;
 
     protected override async Task OnParametersSetAsync()
     {
-        await LoadDataAsync();
-        IsFirst = Page == 1 ? true : false;
-        IsLast = Page == TotalPages ? true : false;
+        await LoadDataAsync(Page);
     }
 
-    async Task OnNext(int page)
+    async Task OnPageClick(int page)
     {
-        if(page <= TotalPages)
-        {
-            Page = page;
-        }
-        else
-        {
-            Page = TotalPages;
-            IsLast = true;
-            IsFirst = false;
-        }
-        await LoadDataAsync();
+        await LoadDataAsync(page);
+        Page = page;
     }
 
-    async Task OnPrevious(int page)
-    {
-        if(page >= 1)
-        {
-            Page = page;
-        }
-        else
-        {
-            Page = 1;
-            IsFirst = true;
-            IsLast = false;
-        }
-        await LoadDataAsync();
-    }
-
-    async Task LoadDataAsync()
+    async Task LoadDataAsync(int page)
     {
         var blogId = Guid.NewGuid();
         var blogResultModel = await BlogService.GetBlogInfo(blogId);
-        var postResultModel = await PostService.GetPostsByBlog(blogId, Page);
+        var postResultModel = await PostService.GetPostsByBlog(blogId, page);
 
         Blog = blogResultModel.Data.Blog;
         Posts = postResultModel.Data.Posts.ToList();
-
-        TotalItems = postResultModel.Data.TotalItems;
         TotalPages = postResultModel.Data.TotalPages;
-    }
-
-    string RenderDisableFirst()
-    {
-        return IsFirst ? "disabled" : string.Empty;
-    }
-
-    string RenderDisableLast()
-    {
-        return IsLast ? "disabled" : string.Empty;
-    }
-
-    string RenderActivePage(int index)
-    {
-        return index == Page ? "active" : string.Empty;
     }
 
     MarkupString RenderTag(PostDto post)

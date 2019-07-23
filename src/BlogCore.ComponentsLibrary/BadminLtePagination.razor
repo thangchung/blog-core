@@ -1,0 +1,77 @@
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-end">
+        <li class="page-item @(RenderDisableFirstButton())">
+            <a class="page-link" href="" tabindex="-1" @onclick=@(async () => await OnPrevious(Page - 1))>Previous</a>
+        </li>
+        @for (int i = 1; i <= TotalPages; i++)
+        {
+            <li class="page-item @(RenderActivePageButton(i))"><a class="page-link" href="/@i" @onclick=@((e) => { })>@i</a></li>
+        }
+        <li class="page-item @(RenderDisableLastButton())">
+            <a class="page-link" href="" @onclick=@(async () => await OnNext(Page + 1))>Next</a>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    [Parameter] int Page { get; set; } = 1;
+    [Parameter] int TotalPages { get; set; } = 0;
+    [Parameter] EventCallback<int> OnPageClick { get; set; }
+
+    bool IsFirst = false;
+    bool IsLast = false;
+
+    protected override Task OnParametersSetAsync()
+    {
+        IsFirst = Page == 1 ? true : false;
+        IsLast = Page == TotalPages ? true : false;
+        return Task.CompletedTask;
+    }
+
+    async Task OnNext(int page)
+    {
+        if(page <= TotalPages)
+        {
+            Page = page;
+        }
+        else
+        {
+            Page = TotalPages;
+            IsLast = true;
+            IsFirst = false;
+        }
+
+        await OnPageClick.InvokeAsync(Page);
+    }
+
+    async Task OnPrevious(int page)
+    {
+        if(page >= 1)
+        {
+            Page = page;
+        }
+        else
+        {
+            Page = 1;
+            IsFirst = true;
+            IsLast = false;
+        }
+
+        await OnPageClick.InvokeAsync(Page);
+    }
+
+    string RenderDisableFirstButton()
+    {
+        return IsFirst ? "disabled" : string.Empty;
+    }
+
+    string RenderDisableLastButton()
+    {
+        return IsLast ? "disabled" : string.Empty;
+    }
+
+    string RenderActivePageButton(int index)
+    {
+        return index == Page ? "active" : string.Empty;
+    }
+}
