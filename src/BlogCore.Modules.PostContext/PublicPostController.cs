@@ -33,9 +33,15 @@ namespace BlogCore.Modules.BlogContext
         }
 
         [HttpGet("{blogId:guid}/posts/{postId:guid}")]
-        public async Task<ActionResult<ProtoResultModel<PostDto>>> GetPost(Guid blogId, Guid postId)
+        public async Task<ActionResult<ProtoResultModel<GetPostResponse>>> GetPost(Guid blogId, Guid postId)
         {
-            throw new NotImplementedException();
+            var useCase = _serviceProvider.GetService<IUseCase<GetPostRequest, GetPostResponse>>().NotNull();
+            var response = await useCase.ExecuteAsync(new GetPostRequest
+            {
+                BlogId = blogId.ToString(),
+                PostId = postId.ToString()
+            });
+            return new OkObjectResult(new ProtoResultModel<GetPostResponse>(response));
         }
     }
 }

@@ -7,9 +7,10 @@
                 <p>Sorry, there's nothing at this address.</p>
             </NotFoundContent>
             <NotAuthorizedContent>
-                <h1>Access denied</h1>
-                <div>
-                    <p>Only logged-in user may access this area. Click <a class="p-1 bg-success text-white" @onclick="@Login">HERE</a> for sign-in.</p>
+                <div class="container-fluid">
+                    <h1 class="text-danger text-uppercase">Access denied</h1>
+                    <p class="text-uppercase">Only logged-in user may access this area.</p>
+                    <p>Click <a class="p-1 bg-success text-white" @onclick="@Login">HERE</a> for sign-in.</p>
                 </div>
             </NotAuthorizedContent>
         </Router>

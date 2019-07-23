@@ -1,0 +1,13 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">@Title</h1>
+        <p class="lead">@Description</p>
+        @NavLinks
+    </div>
+</div>
+
+@code {
+    [Parameter] string Title { get; set; }
+    [Parameter] string Description { get; set; }
+    [Parameter] RenderFragment NavLinks { get; set; }
+}

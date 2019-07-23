@@ -16,5 +16,10 @@ namespace BlogCore.Hosts.Web.Client.Services.Impl
         {
             return await HttpClient.GetProtoAsync<GetPostsByBlogResponse>($"api/posts/{blogId}/posts?page={page}");
         }
+
+        public async Task<ProtoResultModel<GetPostResponse>> GetPost(Guid blogId, Guid postId)
+        {
+            return await HttpClient.GetProtoAsync<GetPostResponse>($"api/posts/{blogId}/posts/{postId}");
+        }
     }
 }

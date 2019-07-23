@@ -4,13 +4,11 @@
 @inject BlogService BlogService
 @inject PostService PostService
 
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-4">@Blog.Title</h1>
-        <p class="lead">@Blog.Description</p>
+<PublicBlogHeader Title="@Blog.Title" Description="@Blog.Description">
+    <NavLinks>
         <NavLink href="/dashboard" class="p-1 bg-danger text-white">Dashboard</NavLink>
-    </div>
-</div>
+    </NavLinks>
+</PublicBlogHeader>
 
 <div class="container">
     <div class="row">
@@ -21,7 +19,7 @@
                 <div class="post">
                     <div class="user-block">
                         <h1>
-                            <a href="/post/@post.Id">@post.Title</a>
+                            <a href="/@Blog.Title.GenerateSlug()/post/@post.Slug/@post.Id/@Blog.Id">@post.Title</a>
                         </h1>
                         <div>Created at @post.CreatedAt</div>
                     </div>
@@ -49,14 +47,14 @@
         <div class="col-md-12">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">
-                    <li class="page-item">
+                    <li class="page-item @(RenderDisableFirst())">
                         <a class="page-link" href="" tabindex="-1" @onclick=@(async () => await OnPrevious(Page - 1))>Previous</a>
                     </li>
                     @for (int i = 1; i <= TotalPages; i++)
                     {
-                        <li class="page-item"><a class="page-link" href="/@i" @onclick=@((e) => { })>@i</a></li>
+                        <li class="page-item @(RenderActivePage(i))"><a class="page-link" href="/@i" @onclick=@((e) => { })>@i</a></li>
                     }
-                    <li class="page-item">
+                    <li class="page-item @(RenderDisableLast())">
                         <a class="page-link" href="" @onclick=@(async () => await OnNext(Page + 1))>Next</a>
                     </li>
                 </ul>
@@ -65,37 +63,52 @@
     </div>
 </div>
 
-<div class="container-fluid" style="padding: 50px 30px 10px;">
-    <footer>
-        <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.0.0-beta.1
-        </div>
-        <strong>Copyright &copy; 2014-2018 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-        reserved.
-    </footer>
-</div>
+<PublicBlogFooter></PublicBlogFooter>
 
 @code {
     [Parameter] int Page { get; set; } = 1;
+
     BlogDto Blog = new BlogDto();
     List<PostDto> Posts = new List<PostDto>();
     int TotalItems = 0;
     int TotalPages = 0;
+    bool IsFirst = false;
+    bool IsLast = false;
 
     protected override async Task OnParametersSetAsync()
     {
         await LoadDataAsync();
+        IsFirst = Page == 1 ? true : false;
+        IsLast = Page == TotalPages ? true : false;
     }
 
     async Task OnNext(int page)
     {
-        Page = page <= TotalPages ? page : TotalPages;
+        if(page <= TotalPages)
+        {
+            Page = page;
+        }
+        else
+        {
+            Page = TotalPages;
+            IsLast = true;
+            IsFirst = false;
+        }
         await LoadDataAsync();
     }
 
     async Task OnPrevious(int page)
     {
-        Page = page >= 1 ? page : 1;
+        if(page >= 1)
+        {
+            Page = page;
+        }
+        else
+        {
+            Page = 1;
+            IsFirst = true;
+            IsLast = false;
+        }
         await LoadDataAsync();
     }
 
@@ -110,6 +123,21 @@
 
         TotalItems = postResultModel.Data.TotalItems;
         TotalPages = postResultModel.Data.TotalPages;
+    }
+
+    string RenderDisableFirst()
+    {
+        return IsFirst ? "disabled" : string.Empty;
+    }
+
+    string RenderDisableLast()
+    {
+        return IsLast ? "disabled" : string.Empty;
+    }
+
+    string RenderActivePage(int index)
+    {
+        return index == Page ? "active" : string.Empty;
     }
 
     MarkupString RenderTag(PostDto post)

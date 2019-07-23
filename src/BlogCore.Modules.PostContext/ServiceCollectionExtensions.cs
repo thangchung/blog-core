@@ -10,6 +10,7 @@ namespace BlogCore.Modules.PostContext
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<IUseCase<GetPostsByBlogRequest, GetPostsByBlogResponse>, GetPostsByBlogUseCase>();
+            services.AddScoped<IUseCase<GetPostRequest, GetPostResponse>, GetPostUseCase>();
             return services;
         }
     }

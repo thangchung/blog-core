@@ -14,9 +14,13 @@ message GetPostsByBlogResponse {
   repeated PostDto posts = 3;
 }
 
-message GetSpecificPostForBlogRequest {
+message GetPostRequest {
   string blog_id = 1;
   string post_id = 2;
+}
+
+message GetPostResponse {
+  PostDto post = 1;
 }
 
 message PostDto {

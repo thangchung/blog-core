@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using ValidationException = NetCoreKit.Domain.ValidationException;
+using BlogCore.Shared;
 
 namespace BlogCore.Modules.PostContext.Domain
 {

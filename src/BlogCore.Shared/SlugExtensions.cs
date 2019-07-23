@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 
-namespace BlogCore.Modules.PostContext
+namespace BlogCore.Shared
 {
     /// <summary>
     /// Reference at https://stackoverflow.com/questions/2920744/url-slugify-algorithm-in-c

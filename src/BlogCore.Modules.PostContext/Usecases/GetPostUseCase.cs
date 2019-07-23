@@ -10,58 +10,39 @@ using System.Threading.Tasks;
 
 namespace BlogCore.Modules.PostContext.Usecases
 {
-    public class GetPostsByBlogUseCase : IUseCase<GetPostsByBlogRequest, GetPostsByBlogResponse>
+    public class GetPostUseCase : IUseCase<GetPostRequest, GetPostResponse>
     {
-        private readonly IValidator<GetPostsByBlogRequest> _validator;
+        private readonly IValidator<GetPostRequest> _validator;
 
-        public GetPostsByBlogUseCase(IValidator<GetPostsByBlogRequest> validator)
+        public GetPostUseCase(IValidator<GetPostRequest> validator)
         {
             _validator = validator.NotNull();
         }
 
-        public async Task<GetPostsByBlogResponse> ExecuteAsync(GetPostsByBlogRequest request)
+        public async Task<GetPostResponse> ExecuteAsync(GetPostRequest request)
         {
             await _validator.HandleValidation(request);
 
-            //TODO: save to database
-            //...
-
-            var pageSize = 10;
-            var pager = new GetPostsByBlogResponse
+            var post = new PostDto
             {
-                TotalItems = 50,
-                TotalPages = 5,
-            };
-
-            for (int i = (request.Page - 1) * pageSize + 1; i <= request.Page * pageSize; i++)
-            {
-                var tag1 = new TagDto { Id = Guid.NewGuid().ToString(), Name = "tag 1" };
-                var tag2 = new TagDto { Id = Guid.NewGuid().ToString(), Name = "tag 2" };
-
-                var post = new PostDto
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Title = $"This is post {i}",
-                    Excerpt = @"Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.",
-                    Body = @"
+                Id = request.PostId,
+                Title = $"This is post {request.PostId}",
+                Excerpt = @"Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.",
+                Body = @"
                     Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.
                     Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.
                     Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.
                     Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.
                     Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.
                     ",
-                    AuthorId = Guid.NewGuid().ToString(),
-                    AuthorFamilyName = "Thang",
-                    AuthorGivenName = "Chung",
-                    Slug = $"This is post {i}".GenerateSlug(),
-                    CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow.Date).ToString(),
-                };
+                AuthorId = Guid.NewGuid().ToString(),
+                AuthorFamilyName = "Thang",
+                AuthorGivenName = "Chung",
+                Slug = $"This is post {request.PostId}".GenerateSlug(),
+                CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow.Date).ToString(),
+            };
 
-                post.Tags.AddRange(new[] { tag1, tag2 });
-                pager.Posts.Add(post);
-            }
-            
-            return await Task.FromResult(pager);
+            return new GetPostResponse { Post = post };
         }
     }
 }

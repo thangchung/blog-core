@@ -3,11 +3,18 @@ using BlogCore.Hosts.Web.Client.Services.Impl;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 
 namespace BlogCore.Hosts.Web.Client
 {
     public class Startup
     {
+        public Startup()
+        {
+            // https://github.com/dotnet/corefx/issues/9158
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             // authn

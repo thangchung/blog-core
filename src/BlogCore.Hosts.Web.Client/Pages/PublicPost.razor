@@ -1,13 +1,13 @@
-﻿@page "/post/{PostId:guid}"
+﻿@page "/{BlogSlug}/post/{PostSlug}/{BlogId:guid}/{PostId:guid}"
 @layout NoLayout
+@inject BlogService BlogService
+@inject PostService PostService
 
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-4">My Blog</h1>
-        <p class="lead">This is my blog.</p>
+<PublicBlogHeader Title="@Blog.Title" Description="@Blog.Description">
+    <NavLinks>
         <NavLink href="/" class="p-1 bg-success text-white">Back</NavLink>&nbsp;<NavLink href="/dashboard" class="p-1 bg-danger text-white">Dashboard</NavLink>
-    </div>
-</div>
+    </NavLinks>
+</PublicBlogHeader>
 
 <div class="container">
     <div class="row">
@@ -16,53 +16,13 @@
             <div class="post">
                 <div class="user-block">
                     <h1>
-                        <a href="#">This is post @PostId</a>
+                        <a href="#">@Post.Title</a>
                     </h1>
-                    <div>Created at 7:30 PM today</div>
+                    <div>Created at @Post.CreatedAt</div>
                 </div>
                 <!-- /.user-block -->
                 <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                </p>
-
-                <!-- /.user-block -->
-                <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                </p>
-
-                <!-- /.user-block -->
-                <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                </p>
-
-                <!-- /.user-block -->
-                <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                </p>
-
-                <!-- /.user-block -->
-                <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
+                    @Post.Body
                 </p>
 
                 <p>
@@ -82,16 +42,29 @@
     </div>
 </div>
 
-<div class="container-fluid" style="padding: 50px 30px 10px;">
-    <footer>
-        <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.0.0-beta.1
-        </div>
-        <strong>Copyright &copy; 2014-2018 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-        reserved.
-    </footer>
-</div>
+<PublicBlogFooter></PublicBlogFooter>
 
 @code {
+    [Parameter] string BlogSlug { get; set; }
+    [Parameter] Guid BlogId { get; set; }
+    [Parameter] string PostSlug { get; set; }
     [Parameter] Guid PostId { get; set; }
+
+    BlogDto Blog = new BlogDto();
+    PostDto Post = new PostDto();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadDataAsync();
+    }
+
+    async Task LoadDataAsync()
+    {
+        var blogId = Guid.NewGuid();
+        var blogResultModel = await BlogService.GetBlogInfo(blogId);
+        var postResultModel = await PostService.GetPost(blogId, PostId);
+
+        Blog = blogResultModel.Data.Blog;
+        Post = postResultModel.Data.Post;
+    }
 }
