@@ -1,45 +1,32 @@
-﻿using NetCoreKit.Domain;
+﻿using BlogCore.Shared;
+using BlogCore.Shared.v1.Post;
+using NetCoreKit.Domain;
+using NetCoreKit.Utils.Extensions;
 using NetCoreKit.Utils.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using ValidationException = NetCoreKit.Domain.ValidationException;
-using BlogCore.Shared;
 
 namespace BlogCore.Modules.PostContext.Domain
 {
     public class Post : AggregateRootWithIdBase<Guid>
     {
-        internal Post()
+        private Post()
         {
         }
 
-        internal Post(BlogId blogId, string title, string excerpt, string body, AuthorId authorId)
-            : this(blogId, IdHelper.GenerateId(), title, excerpt, body, authorId)
+        public static Post CreateInstance(CreatePostRequest request)
         {
-        }
-
-        internal Post(BlogId blogId, Guid postId, string title, string excerpt, string body, AuthorId authorId) : base(postId)
-        {
-            Blog = blogId;
-            Title = title;
-            Excerpt = excerpt;
-            Slug = title.GenerateSlug();
-            Body = body;
-            Author = authorId;
-            CreatedAt = DateTimeHelper.GenerateDateTime();
-            AddEvent(new PostCreated(postId));
-        }
-
-        public static Post CreateInstance(BlogId blogId, Guid postId, string title, string excerpt, string body, AuthorId authorId)
-        {
-            return new Post(blogId, postId, title, excerpt, body, authorId);
-        }
-
-        public static Post CreateInstance(BlogId blogId, string title, string excerpt, string body, AuthorId authorId)
-        {
-            return new Post(blogId, title, excerpt, body, authorId);
+            return new Post
+            {
+                Blog = new BlogId(request.BlogId.ConvertTo<Guid>()),
+                Id = IdHelper.GenerateId(),
+                Title = request.Title,
+                Excerpt = request.Excerpt,
+                Body = request.Body,
+                Author = new AuthorId(request.AuthorId.ConvertTo<Guid>())
+            };
         }
 
         /// <summary>
@@ -102,37 +89,13 @@ namespace BlogCore.Modules.PostContext.Domain
         /// </summary>
         public DateTime UpdatedAt { get; private set; }
 
-        public Post ChangeTitle(string title)
+        public Post UpdatePost(UpdatePostRequest request, ITagService tagService)
         {
-            if (string.IsNullOrEmpty(title))
-            {
-                throw new ValidationException("Title could not be null or empty.");
-            }
-
-            Title = title;
-            Slug = title.GenerateSlug();
-            return this;
-        }
-
-        public Post ChangeExcerpt(string excerpt)
-        {
-            if (string.IsNullOrEmpty(excerpt))
-            {
-                throw new ValidationException("Excerpt could not be null or empty.");
-            }
-
-            Excerpt = excerpt;
-            return this;
-        }
-
-        public Post ChangeBody(string body)
-        {
-            if (string.IsNullOrEmpty(body))
-            {
-                throw new ValidationException("Body could not be null or empty.");
-            }
-
-            Excerpt = body;
+            Title = request.Title;
+            Slug = request.Title.GenerateSlug();
+            Body = request.Body;
+            Excerpt = request.Excerpt;
+            Tags = tagService.UpsertTags(request.Id.ConvertTo<Guid>(), request.Tags).ToList();
             return this;
         }
 
@@ -175,34 +138,5 @@ namespace BlogCore.Modules.PostContext.Domain
         {
             return Tags?.Any() ?? false;
         }
-
-        #region "TODO: might consider how can we manage Tags"
-
-        public Post AssignTag(string name)
-        {
-            var tag = Tags.FirstOrDefault(x => x.Name == name);
-            if (tag == null)
-            {
-                Tags.Add(new Tag(IdHelper.GenerateId(), name, 1));
-            }
-            else
-            {
-                tag.IncreaseFrequency();
-            }
-            return this;       
-        }
-
-        public Post RemoveTag(string name)
-        {
-            var tag = Tags.FirstOrDefault(x => x.Name == name);
-            if (tag != null)
-            {
-                tag.DecreaseFrequency();
-                Tags.Remove(tag);
-            }
-            return this;    
-        }
-
-        #endregion
     }
 }

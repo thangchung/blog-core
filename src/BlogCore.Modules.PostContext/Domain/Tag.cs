@@ -1,26 +1,25 @@
-﻿using NetCoreKit.Domain;
+﻿using BlogCore.Shared.v1.Post;
+using NetCoreKit.Domain;
 using NetCoreKit.Utils.Helpers;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlogCore.Modules.PostContext.Domain
 {
-    public class Tag : EntityBase
+    public class Tag : AggregateRootWithIdBase<Guid>
     {
         private Tag()
         {
         }
 
-        public Tag(string name, int frequency)
-            : this(IdHelper.GenerateId(), name, frequency)
+        public static Tag CreateInstance(CreateTagRequest request)
         {
-        }
-
-        public Tag(Guid postId, string name, int frequency) 
-            : base(postId)
-        {
-            Name = name;
-            Frequency = frequency;
+            return new Tag
+            {
+                Id = IdHelper.GenerateId(),
+                Name = request.Name,
+                Frequency = request.Frequency
+            };
         }
 
         [Required]

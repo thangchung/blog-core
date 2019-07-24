@@ -1,7 +1,4 @@
-﻿using BlogCore.Modules.BlogContext.Usecases;
-using BlogCore.Shared.v1.Blog;
-using BlogCore.Shared.v1.Common;
-using BlogCore.Shared.v1.Usecase;
+﻿using BlogCore.Shared.v1.Usecase;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogCore.Modules.BlogContext
@@ -10,10 +7,12 @@ namespace BlogCore.Modules.BlogContext
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            services.AddScoped<IUseCase<RetrieveBlogsRequest, PaginatedItemResponse>, RetrieveBlogsUseCase>();
-            services.AddScoped<IUseCase<GetMyBlogsRequest, PaginatedItemResponse>, GetBlogByUserNameUseCase>();
-            services.AddScoped<IUseCase<CreateBlogRequest, CreateBlogResponse>, CreateBlogUseCase>();
-            services.AddScoped<IUseCase<GetBlogInfoRequest, GetBlogInfoResponse>, GetBlogInfoUseCase>();
+            services.Scan(s =>
+                s.FromCallingAssembly()
+                    .AddClasses(c => c.AssignableTo(typeof(IUseCase<,>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime());
+
             return services;
         }
     }

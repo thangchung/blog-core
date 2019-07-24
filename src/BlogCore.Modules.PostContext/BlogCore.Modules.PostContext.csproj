@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="NetCoreKit.Domain" Version="0.1.145" />
     <PackageReference Include="NetCoreKit.Utils" Version="0.1.145" />
+    <PackageReference Include="Scrutor" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>

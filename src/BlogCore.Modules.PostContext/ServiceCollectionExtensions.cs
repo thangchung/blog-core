@@ -1,5 +1,5 @@
-﻿using BlogCore.Modules.PostContext.Usecases;
-using BlogCore.Shared.v1.Post;
+﻿using BlogCore.Modules.PostContext.Domain;
+using BlogCore.Modules.PostContext.Services;
 using BlogCore.Shared.v1.Usecase;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,8 +9,13 @@ namespace BlogCore.Modules.PostContext
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            services.AddScoped<IUseCase<GetPostsByBlogRequest, GetPostsByBlogResponse>, GetPostsByBlogUseCase>();
-            services.AddScoped<IUseCase<GetPostRequest, GetPostResponse>, GetPostUseCase>();
+            services.Scan(s => 
+                s.FromCallingAssembly()
+                    .AddClasses(c => c.AssignableTo(typeof(IUseCase<,>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime());
+
+            services.AddScoped<ITagService, TagService>();
             return services;
         }
     }

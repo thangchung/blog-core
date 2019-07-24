@@ -51,8 +51,6 @@ namespace BlogCore.Modules.PostContext.Usecases
                     Lorem ipsum represents a long-held tradition for designers, typographers and the like.Some people hate it and argue for its demise, but others ignore the hate as they create awesome tools to help create filler text for everyone from bacon lovers to Charlie Sheen fans.
                     ",
                     AuthorId = Guid.NewGuid().ToString(),
-                    AuthorFamilyName = "Thang",
-                    AuthorGivenName = "Chung",
                     Slug = $"This is post {i}".GenerateSlug(),
                     CreatedAt = Timestamp.FromDateTime(DateTime.UtcNow.Date).ToString(),
                 };

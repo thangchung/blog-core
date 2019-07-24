@@ -1,6 +1,6 @@
 using BlogCore.Hosts.Web.Server.Middleware;
 using BlogCore.Shared.v1.ValidationModel;
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -36,6 +35,7 @@ namespace BlogCore.Hosts.Web.Server
 
             // https://github.com/dotnet/corefx/issues/9158
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfiguration Configuration { get; }
@@ -44,17 +44,74 @@ namespace BlogCore.Hosts.Web.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddProblemDetails(RegisterProblemDetails);
+            RegisterModuleServices(services);
+            RegisterOpenApi(services);
+            RegisterAuthentication(services);
+        }
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseResponseCompression();
+
+            if (Environment.IsDevelopment())
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
+                app.UseDeveloperExceptionPage();
+                app.UseBlazorDebugging();
+            }
 
-            var mvcBuilder = services.AddMvc()
-                .AddNewtonsoftJson();
+            app.UseClientSideBlazorFiles<Client.Startup>();
+            app.UseStaticFiles();
 
-            RegisterServices(services, mvcBuilder);
+            app.UseProblemDetails();
+            app.UseMiddleware<ValidationMiddleware>();
+            app.UseRouting();
+
+            app.UseCors("api");
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogCore Api v1"); });
+        }
+
+        private static void RegisterModuleServices(IServiceCollection services)
+        {
+            var mvcBuilder = services
+                .AddMvc()
+                .AddNewtonsoftJson(o =>
+                {
+                    o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
+
+            services.AddHttpContextAccessor();
+
+            AppDomain.CurrentDomain.GetAssemblies()
+                .Where(x => x.GetName().Name.Contains("BlogCore.Modules"))
+                .Distinct()
+                .Select(assembly =>
+                {
+                    mvcBuilder.AddApplicationPart(assembly);
+                    var type = assembly.GetType($"{assembly.GetName().Name}.ServiceCollectionExtensions");
+                    if (type != null)
+                    {
+                        var method = type.GetMethod("ConfigureServices");
+                        method?.Invoke(null, new[] { services });
+                    }
+                    return true;
+                })
+                .ToArray();
+
+            services.Scan(s =>
+                s.FromAssemblyOf<ValidationResultModel>()
+                    .AddClasses(c => c.AssignableTo(typeof(IValidator<>)))
+                    .AsImplementedInterfaces()
+                    .WithTransientLifetime());
 
             services.AddResponseCompression(options =>
             {
@@ -62,8 +119,23 @@ namespace BlogCore.Hosts.Web.Server
                     new[] { MediaTypeNames.Application.Octet });
             });
 
-            RegisterOpenApi(services);
+            services.AddCors(options =>
+            {
+                options.AddPolicy("api", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5001");
 
+                    policy
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                });
+            });
+        }
+
+        private static void RegisterAuthentication(IServiceCollection services)
+        {
             services
                 .AddAuthentication(options =>
                 {
@@ -98,74 +170,6 @@ namespace BlogCore.Hosts.Web.Server
                         }
                     };
                 });
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("api", policy =>
-                {
-                    policy.WithOrigins("http://localhost:5001");
-
-                    policy
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials()
-                        .SetIsOriginAllowedToAllowWildcardSubdomains();
-                });
-            });
-        }
-
-        public void Configure(IApplicationBuilder app)
-        {
-            app.UseResponseCompression();
-
-            if (Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBlazorDebugging();
-            }
-
-            app.UseClientSideBlazorFiles<Client.Startup>();
-            app.UseStaticFiles();
-
-            app.UseProblemDetails();
-            app.UseMiddleware<ValidationMiddleware>();
-            app.UseRouting();
-
-            app.UseCors("api");
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-                endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
-            });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogCore Api v1"); });
-        }
-
-        private static void RegisterServices(IServiceCollection services, IMvcBuilder mvcBuilder)
-        {
-            services.AddHttpContextAccessor();
-
-            AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => x.GetName().Name.Contains("BlogCore.Modules"))
-                .Distinct()
-                .Select(assembly =>
-                {
-                    mvcBuilder.AddApplicationPart(assembly);
-                    var type = assembly.GetType($"{assembly.GetName().Name}.ServiceCollectionExtensions");
-                    if (type != null)
-                    {
-                        var method = type.GetMethod("ConfigureServices");
-                        method?.Invoke(null, new[] { services });
-                    }
-                    return true;
-                })
-                .ToArray();
-
-            mvcBuilder.AddFluentValidation(c => c.RegisterValidatorsFromAssemblies(new[] { typeof(ValidationResultModel).Assembly }));
         }
 
         private void RegisterOpenApi(IServiceCollection services)

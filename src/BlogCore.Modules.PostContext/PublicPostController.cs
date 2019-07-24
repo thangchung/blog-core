@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace BlogCore.Modules.BlogContext
+namespace BlogCore.Modules.PostContext
 {
     [Route("api/posts")]
     [ApiController]

@@ -23,20 +23,50 @@ message GetPostResponse {
   PostDto post = 1;
 }
 
+message CreatePostRequest {
+  string title = 1;
+  string body = 2;
+  string excerpt = 3;
+  string blog_id = 4;
+  string author_id = 5;
+  repeated string tags = 6;
+}
+
+message CreatePostResponse {
+  PostDto post = 1;
+}
+
+message UpdatePostRequest {
+  string id = 1;
+  string title = 2;
+  string body = 3;
+  string excerpt = 4;
+  repeated string tags = 5;
+}
+
+message UpdatePostResponse {
+  PostDto post = 1;
+}
+
+message CreateTagRequest {
+  string name = 2;
+  int32 frequency = 3;
+}
+
 message PostDto {
   string id = 1;
   string title = 2;
   string body = 3;
   string excerpt = 4;
   string slug = 5;
-  string author_id = 6;
-  string author_family_name = 7;
-  string author_given_name = 8;
-  string created_at = 9;
-  repeated TagDto Tags = 10;
+  string blog_id = 6;
+  string author_id = 7;
+  string created_at = 8;
+  repeated TagDto Tags = 9;
 }
 
 message TagDto {
   string id = 1;
   string name = 2;
+  int32 frequency = 3;
 }
