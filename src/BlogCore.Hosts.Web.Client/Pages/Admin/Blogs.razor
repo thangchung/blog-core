@@ -17,7 +17,9 @@
                             DataLoader="@LoadBlogs"
                             DataLoaded="@BindTable"
                             DataUnloaded="@UnbindTable">
-                <LoadingContent><p><i class="fas fa-spinner fa-pulse"></i></p></LoadingContent>
+                <LoadingContent>
+                    <BadminLteShimmer></BadminLteShimmer>
+                </LoadingContent>
                 <EmptyContent>&nbsp;</EmptyContent>
                 <ItemContent Context="item">
                     <td>

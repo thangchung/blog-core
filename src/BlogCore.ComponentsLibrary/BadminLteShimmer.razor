@@ -1,0 +1,29 @@
+@if (ShowShimmer)
+{
+    <div class="shimmer-group">
+        <div class="shimmer-div">
+            <lines class="shine"></lines>
+            <lines class="shine"></lines>
+            <lines class="shine"></lines>
+        </div>
+        <div class="shimmer-div">
+            <lines class="shine"></lines>
+            <lines class="shine"></lines>
+            <lines class="shine"></lines>
+        </div>
+        <div class="shimmer-div">
+            <lines class="shine"></lines>
+            <lines class="shine"></lines>
+            <lines class="shine"></lines>
+        </div>
+    </div>
+}
+else
+{
+    @MainContent
+}
+
+@code {
+    [Parameter] bool ShowShimmer { get; set; } = true;
+    [Parameter] RenderFragment MainContent { get; set; }
+}

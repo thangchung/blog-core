@@ -17,4 +17,8 @@
     <EmbeddedResource Include="wwwroot\**" Exclude="**\*.js;**\*.css" LogicalName="blazor:file:%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\css\badminlte.css" />
+  </ItemGroup>
+
 </Project>

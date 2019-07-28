@@ -100,7 +100,3 @@ message BlogSettingDto {
   int32 days_to_comment = 3;
   bool moderate_comments = 4;
 }
-
-message ValueDto {
-  string value = 1;
-}
