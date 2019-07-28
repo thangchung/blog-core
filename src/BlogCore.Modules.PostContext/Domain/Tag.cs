@@ -12,7 +12,7 @@ namespace BlogCore.Modules.PostContext.Domain
         {
         }
 
-        public static Tag CreateInstance(CreateTagRequest request)
+        public static Tag Of(CreateTagRequest request)
         {
             return new Tag
             {

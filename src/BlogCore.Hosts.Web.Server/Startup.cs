@@ -45,8 +45,10 @@ namespace BlogCore.Hosts.Web.Server
         {
             services.AddProblemDetails(RegisterProblemDetails);
             RegisterModuleServices(services);
-            RegisterOpenApi(services);
             RegisterAuthentication(services);
+
+            if(Environment.IsDevelopment())
+                RegisterOpenApi(services);
         }
 
         public void Configure(IApplicationBuilder app)
@@ -76,8 +78,11 @@ namespace BlogCore.Hosts.Web.Server
                 endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogCore Api v1"); });
+            if (Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogCore Api v1"); });
+            }
         }
 
         private static void RegisterModuleServices(IServiceCollection services)

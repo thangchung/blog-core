@@ -1,49 +1,49 @@
+using BlogCore.Shared.v1.Blog;
 using NetCoreKit.Domain;
+using NetCoreKit.Utils.Extensions;
 using NetCoreKit.Utils.Helpers;
 using System;
 using System.ComponentModel.DataAnnotations;
-using ValidationException = NetCoreKit.Domain.ValidationException;
 
 namespace BlogCore.Modules.BlogContext.Domain
 {
     public class Blog : AggregateRootWithIdBase<Guid>
     {
-        internal Blog()
+        private Blog()
         {
-        }
-
-        internal Blog(string title, string ownerEmail) 
-            : this(IdHelper.GenerateId(), title, ownerEmail)
-        {
-        }
-
-        internal Blog(Guid id, string title, string ownerEmail) : base(id)
-        {
-            AssertTitle(title);
-            AssertOwnerEmail(ownerEmail);
-
-            Title = title;
-            OwnerEmail = ownerEmail;
-            Theme = Theme.Default;
-            ImageFilePath = "/images/default-blog.png";
-
-            Status = BlogStatus.Registered;
             AddEvent(new BlogCreated());
         }
 
-        public static Blog CreateInstance(Guid id, string title, string ownerEmail)
+        public static Blog Of(CreateBlogRequest request)
         {
-            return new Blog(id, title, ownerEmail);    
-        }
+            var blog = new Blog
+            {
+                Title = request.Title,
+                OwnerEmail = request.OwnerEmail,
+                Description = request.Description,
+                Theme = Theme.Default,
+                Status = BlogStatus.Registered,
+                ImageFilePath = "/images/default-blog.png"
+            };
 
-        public static Blog CreateInstance(string title, string ownerEmail)
-        {
-            return new Blog(title, ownerEmail);
-        }
+            if (request.BlogSetting != null && request.BlogSetting.Id == Guid.Empty.ToString())
+            {
+                blog.BlogSetting = new BlogSetting(
+                    IdHelper.GenerateId(),
+                    request.BlogSetting.PostsPerPage,
+                    request.BlogSetting.DaysToComment,
+                    request.BlogSetting.ModerateComments);
+            }
+            else
+            {
+                blog.ChangeSetting(new BlogSetting(
+                    request.BlogSetting.Id.ConvertTo<Guid>(),
+                    request.BlogSetting.PostsPerPage,
+                    request.BlogSetting.DaysToComment,
+                    request.BlogSetting.ModerateComments));
+            }
 
-        public static BlogSetting CreateBlogSettingInstane(int postsPerPage, int daysToComment, bool moderateComments)
-        {
-            return new BlogSetting(IdHelper.GenerateId(), postsPerPage, daysToComment, moderateComments);
+            return blog;
         }
 
         [Required]
@@ -67,26 +67,6 @@ namespace BlogCore.Modules.BlogContext.Domain
 
         public string Description { get; private set; }
 
-        public Blog ChangeTitle(string title)
-        {
-            AssertTitle(title);
-            Title = title;
-            return this;
-        }
-
-        public Blog ChangeTheme(Theme theme)
-        {
-            Theme = theme;
-            return this;
-        }
-
-        public Blog ChangeImageFilePath(string imageFilePath)
-        {
-            AssertImageFilePath(imageFilePath);
-            ImageFilePath = imageFilePath;
-            return this;
-        }
-
         public Blog ChangeSetting(BlogSetting setting)
         {
             Guid oldBlogSettingId = Guid.Empty;
@@ -95,7 +75,6 @@ namespace BlogCore.Modules.BlogContext.Domain
                 oldBlogSettingId = BlogSetting.BlogSettingId;
             }
 
-            AssertSetting(setting);
             BlogSetting = setting;
             if (BlogSetting != null && Guid.Empty != oldBlogSettingId)
             {
@@ -104,18 +83,12 @@ namespace BlogCore.Modules.BlogContext.Domain
             return this;
         }
 
-        public Blog ChangeDescription(string description)
-        {
-            Description = description;
-            return this;
-        }
-
         public Blog Deactivate()
         {
             if (Status == BlogStatus.Registered || Status == BlogStatus.Activated)
             {
-                Status = BlogStatus.DeActivated;
-                AddEvent(new BlogStatusChanged(Id, BlogStatus.DeActivated));
+                Status = BlogStatus.Deactivated;
+                AddEvent(new BlogStatusChanged(Id, BlogStatus.Deactivated));
             }
             else
             {
@@ -126,7 +99,7 @@ namespace BlogCore.Modules.BlogContext.Domain
 
         public Blog Activate()
         {
-            if (Status == BlogStatus.Registered || Status == BlogStatus.DeActivated)
+            if (Status == BlogStatus.Registered || Status == BlogStatus.Deactivated)
             {
                 Status = BlogStatus.Activated;
                 AddEvent(new BlogStatusChanged(Id, BlogStatus.Activated));
@@ -136,48 +109,6 @@ namespace BlogCore.Modules.BlogContext.Domain
                 throw new BlogActivatedException("Blog has already activated.");
             }
             return this;
-        }
-
-        private static void AssertTitle(string title)
-        {
-            if (string.IsNullOrEmpty(title))
-            {
-                throw new ValidationException("Title could not be null or empty.");
-            }
-        }
-
-        private static void AssertImageFilePath(string imageFilePath)
-        {
-            if (string.IsNullOrEmpty(imageFilePath))
-            {
-                throw new ValidationException("The path of image could not be null or empty.");
-            }
-        }
-
-        private static void AssertOwnerEmail(string ownerEmail)
-        {
-            if (string.IsNullOrEmpty(ownerEmail))
-            {
-                throw new ValidationException("The email of owner could not be null or empty.");
-            }
-        }
-
-        private static void AssertSetting(BlogSetting setting)
-        {
-            if (setting == null)
-            {
-                throw new ValidationException("BlogSetting could not be null or empty.");
-            }
-
-            if (setting.PostsPerPage <= 0 || setting.PostsPerPage >= 20)
-            {
-                throw new ValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 20 posts.");
-            }
-
-            if (setting.DaysToComment <= 0 || setting.DaysToComment >= 10)
-            {
-                throw new ValidationException("PostsPerPage in BlogSetting could not be less than zero and greater than 10 days.");
-            }
         }
     }
 }

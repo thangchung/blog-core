@@ -4,6 +4,6 @@ namespace BlogCore.Modules.BlogContext.Domain
     {
         Registered = 1,
         Activated = 2,
-        DeActivated = 3
+        Deactivated = 3
     }
 }

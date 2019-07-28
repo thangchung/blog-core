@@ -1,6 +1,6 @@
 # BlogCore project
 
-A headless CMS builds with clean modern architecture and technology.
+A blog application built with Blazor and clean domain-driven design patterns.
 
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/thangchung/blog-core/blob/master/LICENSE)
 

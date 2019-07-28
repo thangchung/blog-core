@@ -45,11 +45,9 @@ message GetBlogInfoResponse {
 // CreateBlog usecase
 message CreateBlogRequest {
   string title = 1;
-  string description = 2;
-  int32 theme = 3;
-  int32 posts_per_page = 4;
-  int32 days_to_comment = 5;
-  bool moderate_comments = 6;
+  string owner_email = 2;
+  string description = 3;
+  BlogSettingDto blog_setting = 4;
 }
 
 message CreateBlogResponse {
@@ -61,7 +59,6 @@ message UpdateBlogRequest {
   string id = 1;
   string title = 2;
   string description = 3;
-  int32 theme = 4;
 }
 
 message UpdateBlogResponse {
@@ -95,6 +92,13 @@ message BlogDto {
   string description = 3;
   string image = 4;
   int32 theme = 5;
+}
+
+message BlogSettingDto {
+  string id = 1;
+  int32 posts_per_page = 2;
+  int32 days_to_comment = 3;
+  bool moderate_comments = 4;
 }
 
 message ValueDto {

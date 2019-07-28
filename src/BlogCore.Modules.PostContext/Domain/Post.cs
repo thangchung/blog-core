@@ -16,7 +16,7 @@ namespace BlogCore.Modules.PostContext.Domain
         {
         }
 
-        public static Post CreateInstance(CreatePostRequest request)
+        public static Post Of(CreatePostRequest request)
         {
             return new Post
             {

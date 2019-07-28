@@ -23,15 +23,15 @@
                         </div>
                         <div class="form-group">
                             <label for="posts-per-page" class=" control-label">Posts per Page</label>
-                            <InputNumber @bind-Value="@Model.PostsPerPage" class="form-control" id="posts-per-page" placeholder="posts per page"></InputNumber>
+                            <InputNumber @bind-Value="@Model.BlogSetting.PostsPerPage" class="form-control" id="posts-per-page" placeholder="posts per page"></InputNumber>
                         </div>
                         <div class="form-group">
                             <label for="days-to-comment" class="control-label">Days to Comment</label>
-                            <InputNumber @bind-Value="@Model.DaysToComment" class="form-control" id="days-to-comment" placeholder="days to comment"></InputNumber>
+                            <InputNumber @bind-Value="@Model.BlogSetting.DaysToComment" class="form-control" id="days-to-comment" placeholder="days to comment"></InputNumber>
                         </div>
                         <div class="form-group">
                             <div class="form-check">
-                                <InputCheckbox @bind-Value="@Model.ModerateComments" class="form-check-input" id="moderate-comments"></InputCheckbox>
+                                <InputCheckbox @bind-Value="@Model.BlogSetting.ModerateComments" class="form-check-input" id="moderate-comments"></InputCheckbox>
                                 <label for="moderate-comments" class="form-check-label">Moderate Comments</label>
                             </div>
                         </div>
@@ -47,15 +47,17 @@
     </div>
 </div>
 
-
 @code {
     [Parameter]
     Guid BlogId { get; set; }
 
-    CreateBlogRequest Model { get; set; } = new CreateBlogRequest();
+    CreateBlogRequest Model { get; set; }
 
     protected override async Task OnInitAsync()
     {
+        Model = new CreateBlogRequest();
+        Model.BlogSetting = new BlogSettingDto();
+
         var resultModel = await BlogService.GetBlogById(BlogId);
         Model.Title = resultModel.Data.Blog.Title;
         Model.Description = resultModel.Data.Blog.Description;

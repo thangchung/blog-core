@@ -36,7 +36,7 @@ namespace BlogCore.Modules.PostContext.Services
             }*/
 
             // TODO: 1. upsert tag; 2. link with Post
-            return tags.Select(t => Tag.CreateInstance(new Shared.v1.Post.CreateTagRequest { Name = t, Frequency = 1 }));
+            return tags.Select(t => Tag.Of(new Shared.v1.Post.CreateTagRequest { Name = t, Frequency = 1 }));
         }
     }
 }

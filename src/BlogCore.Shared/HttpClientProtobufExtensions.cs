@@ -1,6 +1,5 @@
 ﻿using BlogCore.Shared.v1;
 using BlogCore.Shared.v1.Common;
-using BlogCore.Shared.v1.Post;
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Newtonsoft.Json;
