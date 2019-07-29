@@ -1,7 +1,6 @@
 ﻿using BlogCore.Shared;
 using BlogCore.Shared.v1;
 using BlogCore.Shared.v1.Blog;
-using BlogCore.Shared.v1.Common;
 using System;
 using System.Threading.Tasks;
 
@@ -18,10 +17,10 @@ namespace BlogCore.Hosts.Web.Client.Services.Impl
             return await HttpClient.GetProtoAsync<GetBlogInfoResponse>($"api/blogs/{blogId}/info");
         }
 
-        public async Task<ProtoResultModel<PaginatedItemResponse>> GetBlogs(int page)
+        public async Task<ProtoResultModel<RetrieveBlogsResponse>> GetBlogs(int page)
         {
             var httpClient = await SecureHttpClientAsync();
-            return await httpClient.GetProtoAsync<PaginatedItemResponse>($"api/@blogs?page={page}");
+            return await httpClient.GetProtoAsync<RetrieveBlogsResponse>($"api/@blogs?page={page}");
         }
 
         public async Task<ProtoResultModel<RetrieveBlogResponse>> GetBlogById(Guid blogId)

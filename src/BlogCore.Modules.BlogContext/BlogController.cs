@@ -30,14 +30,14 @@ namespace BlogCore.Modules.BlogContext
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProtoResultModel<PaginatedItemResponse>>> RetrieveBlogs([FromQuery] int page = 1)
+        public async Task<ActionResult<ProtoResultModel<RetrieveBlogsResponse>>> RetrieveBlogs([FromQuery] int page = 1)
         {
-            var useCase = _serviceProvider.GetService<IUseCase<RetrieveBlogsRequest, PaginatedItemResponse>>().NotNull();
+            var useCase = _serviceProvider.GetService<IUseCase<RetrieveBlogsRequest, RetrieveBlogsResponse>>().NotNull();
             var response = await useCase.ExecuteAsync(new RetrieveBlogsRequest
             {
                 CurrentPage = page
             });
-            return new OkObjectResult(new ProtoResultModel<PaginatedItemResponse>(response));
+            return new OkObjectResult(new ProtoResultModel<RetrieveBlogsResponse>(response));
         }
 
         [HttpGet("{id:guid}")]
@@ -59,15 +59,15 @@ namespace BlogCore.Modules.BlogContext
         }
 
         [HttpGet("username/{username:required}")]
-        public async Task<ActionResult<ProtoResultModel<PaginatedItemResponse>>> GetBlogByUserName(string username, [FromQuery]int page = 1)
+        public async Task<ActionResult<ProtoResultModel<GetMyBlogsResponse>>> GetBlogByUserName(string username, [FromQuery]int page = 1)
         {
-            var useCase = _serviceProvider.GetService<IUseCase<GetMyBlogsRequest, PaginatedItemResponse>>().NotNull();
+            var useCase = _serviceProvider.GetService<IUseCase<GetMyBlogsRequest, GetMyBlogsResponse>>().NotNull();
             var response = await useCase.ExecuteAsync(new GetMyBlogsRequest
             {
                 Page = page,
                 Username = username
             });
-            return new OkObjectResult(new ProtoResultModel<PaginatedItemResponse>(response));
+            return new OkObjectResult(new ProtoResultModel<GetMyBlogsResponse>(response));
         }
 
         [HttpPost]

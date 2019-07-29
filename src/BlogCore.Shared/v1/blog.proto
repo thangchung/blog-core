@@ -11,6 +11,12 @@ message GetMyBlogsRequest {
   string username = 2;
 }
 
+message GetMyBlogsResponse {
+  int32 total_items = 1;
+  int32 total_pages = 2;
+  repeated BlogDto items = 3;
+}
+
 // GetBlogByUser usecase
 message GetBlogByUserRequest {
  string email = 1;
@@ -32,6 +38,12 @@ message RetrieveBlogResponse {
 // RetrieveBlogs usecase
 message RetrieveBlogsRequest {
   int32 current_page = 1;
+}
+
+message RetrieveBlogsResponse {
+  int32 total_items = 1;
+  int32 total_pages = 2;
+  repeated BlogDto items = 3;
 }
 
 message GetBlogInfoRequest {

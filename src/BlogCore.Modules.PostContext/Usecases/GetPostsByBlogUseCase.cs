@@ -1,9 +1,6 @@
-﻿using BlogCore.Shared.v1.Guard;
-using BlogCore.Shared.v1.Post;
+﻿using BlogCore.Shared.v1.Post;
 using BlogCore.Shared.v1.Usecase;
-using BlogCore.Shared.v1.ValidationModel;
 using BlogCore.Shared;
-using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Threading.Tasks;
@@ -12,17 +9,8 @@ namespace BlogCore.Modules.PostContext.Usecases
 {
     public class GetPostsByBlogUseCase : IUseCase<GetPostsByBlogRequest, GetPostsByBlogResponse>
     {
-        private readonly IValidator<GetPostsByBlogRequest> _validator;
-
-        public GetPostsByBlogUseCase(IValidator<GetPostsByBlogRequest> validator)
-        {
-            _validator = validator.NotNull();
-        }
-
         public async Task<GetPostsByBlogResponse> ExecuteAsync(GetPostsByBlogRequest request)
         {
-            await _validator.HandleValidation(request);
-
             //TODO: save to database
             //...
 

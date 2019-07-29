@@ -15,7 +15,10 @@ namespace BlogCore.Modules.PostContext
                     .AsImplementedInterfaces()
                     .WithScopedLifetime());
 
+            services.Decorate(typeof(IUseCase<,>), typeof(ValidUseCaseDecorator<,>));
+
             services.AddScoped<ITagService, TagService>();
+
             return services;
         }
     }

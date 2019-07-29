@@ -13,6 +13,8 @@ namespace BlogCore.Modules.BlogContext
                     .AsImplementedInterfaces()
                     .WithScopedLifetime());
 
+            services.Decorate(typeof(IUseCase<,>), typeof(ValidUseCaseDecorator<,>));
+
             return services;
         }
     }
