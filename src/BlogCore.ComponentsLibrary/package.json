@@ -20,7 +20,7 @@
     "bootstrap-slider": "^10.6.1",
     "chart.js": "^2.8.0",
     "copy-webpack-plugin": "^5.0.3",
-    "datatables.net": "^1.10.19",
+    "datatables.net": "^1.10.22",
     "datatables.net-bs4": "^1.10.19",
     "daterangepicker": "^3.0.5",
     "fastclick": "^1.0.6",
