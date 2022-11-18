@@ -62,6 +62,6 @@
   "homepage": "https://github.com/thangchung/blog-core#readme",
   "devDependencies": {
     "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.12"
   }
 }
