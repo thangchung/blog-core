@@ -19,7 +19,7 @@
     "bootstrap-colorpicker": "^3.1.2",
     "bootstrap-slider": "^10.6.1",
     "chart.js": "^2.8.0",
-    "copy-webpack-plugin": "^5.0.3",
+    "copy-webpack-plugin": "^11.0.0",
     "datatables.net": "^1.10.19",
     "datatables.net-bs4": "^1.10.19",
     "daterangepicker": "^3.0.5",
@@ -61,7 +61,7 @@
   },
   "homepage": "https://github.com/thangchung/blog-core#readme",
   "devDependencies": {
-    "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.5"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
